@@ -73,3 +73,5 @@
 ｜–　phpspec.yml phpspec（一种PHP测试框架）配置文件
 ｜–　phpunit.xml phpunit（一种PHP测试框架）配置文件
 ｜–　server.php PHP内置的Web服务器将把这个文件作为入口。以public/index.php为入口的可以忽略掉该文件
+
+APP_ENV设置值:   开发: local    测试: testing    预上线: staging    正式环境: production

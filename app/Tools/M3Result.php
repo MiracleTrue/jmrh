@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by LaravelShop.
+ * Created by BocWeb.
  * Author: Walker  QQ:120007700
- * Date  : 2017/5/17 0017
- * Time  : 16:40
+ * Date  : 2017/10/12
+ * Time  : 11:17
  */
 namespace App\Tools;
 

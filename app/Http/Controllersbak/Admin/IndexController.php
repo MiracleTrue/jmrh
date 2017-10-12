@@ -1,66 +1,51 @@
 <?php
 /**
- * Created by BocWeb.
+ * Created by LaravelShop.
  * Author: Walker  QQ:120007700
- * Date  : 2017/10/12
- * Time  : 11:17
+ * Date  : 2017/5/15 0015
+ * Time  : 16:02
  */
-namespace App\Http\Controllers;
+
+namespace App\Http\Controllers\Admin;
+use App\Models\Admin;
+use App\Models\Menu;
+use App\Models\Rbac;
+use App\Tools\M3Result;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * 首页控制器
- * Class IndexController
- * @package App\Http\Controllers\Admin
+ * Class 后台 首页控制器
  */
-class IndexController extends Controller
+class IndexController extends CommonController
 {
     public $ViewData = array(); /*传递页面的数组*/
 
     /**
-     * 后台主框架
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * 后台首页
+     * @return View
      */
     public function Index()
     {
         /*初始化*/
-//        $menu = new Menu();
-//        $admin_u = session('AdminUser');
+        $menu = new Menu();
+        $admin_u = session('AdminUser');
 
         /*根据角色权限生成栏目菜单*/
-//        if($admin_u->admin_role->is_super_management_group == Rbac::IS_SUPER_MANAGEMENT_GROUP)
-//        {
-//            $this->ViewData['menu_list'] = $menu->getAdminMenus();
-//        }
-//        else
-//        {
-//            $this->ViewData['menu_list'] = $menu->getAdminFilterMenus();
-//
-//        }
-        return view('index',$this->ViewData);
+        if($admin_u->admin_role->is_super_management_group == Rbac::IS_SUPER_MANAGEMENT_GROUP)
+        {
+            $this->ViewData['menu_list'] = $menu->getAdminMenus();
+        }
+        else
+        {
+            $this->ViewData['menu_list'] = $menu->getAdminFilterMenus();
+
+        }
+
+        return view('admin.index',$this->ViewData);
     }
-
-    /**
-     * 后台首页
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function Welcome()
-    {
-        return view('welcome',$this->ViewData);
-    }
-
-    /**
-     * 登录页面
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function Login()
-    {
-        return view('login',$this->ViewData);
-    }
-
-
-
-
-/********************************************************************************************************************/
 
     /**
      * 用户登出(退出)处理,跳转注册页面
@@ -73,8 +58,14 @@ class IndexController extends Controller
         return redirect(action('Admin\MenuController@MenusAccess'));
     }
 
-
-
+    /**
+     * 用户登录页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function Login()
+    {
+        return view('admin.login',$this->ViewData);
+    }
 
     /**
      * 用户登录Ajax提交
@@ -123,7 +114,14 @@ class IndexController extends Controller
         return $m3result->toJson();
 
     }
-
+    /**
+     * 后台 iframe 首页
+     * @return View
+     */
+    public function Welcome()
+    {
+        return view('admin.welcome');
+    }
 
     /**
      * 设置后台显示的语言（session）

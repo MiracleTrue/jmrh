@@ -268,7 +268,6 @@ class Goods extends CommonModel{
         $my_file     = new MyFile();
 
         /*验证必要数据*/
-
         if(!empty($arr['show_attr'])  &&  !$arr['show_attr'] = $this->checkShowJson($arr['show_attr']))
         {
             $this->errors['code'] = 2;

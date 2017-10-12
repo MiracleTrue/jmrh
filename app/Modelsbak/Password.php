@@ -1,21 +1,19 @@
 <?php
 /**
- * Created by BocWeb.
+ * Created by LaravelShop.
  * Author: Walker  QQ:120007700
- * Date  : 2017/10/12
- * Time  : 13:38
+ * Date  : 2017/5/18 0018
+ * Time  : 14:17
  */
 
 namespace App\Models;
-
 use Illuminate\Support\Facades\Hash;
 
 /**
  * Class Password 密码编译类
  * @package App\Models
  */
-class Password extends CommonModel
-{
+class Password extends CommonModel{
 
     /**
      * 生成密码 (Hash)
@@ -24,7 +22,7 @@ class Password extends CommonModel
      */
     public function makeHashPassword($pass)
     {
-        if (!empty($pass))
+        if(!empty($pass))
         {
             return Hash::make($pass);
         }
@@ -40,8 +38,9 @@ class Password extends CommonModel
      * @param $hash_pass & 数据库中Hash的密码
      * @return bool
      */
-    public function checkHashPassword($pass, $hash_pass)
+    public function checkHashPassword($pass , $hash_pass)
     {
         return Hash::check($pass, $hash_pass);
+
     }
 }
