@@ -1,0 +1,86 @@
+section{
+	width: 85%;
+	margin-left: 2%;
+	height: auto;
+	overflow: hidden;
+}
+p{
+	overflow: hidden;
+}
+i{
+	font-style: normal;
+}
+.head{
+	height: 70px;
+	border-bottom: 1px solid #ccc;
+	line-height: 70px;
+	overflow: hidden;
+	
+}
+.point{
+	width: 4px;
+	height: 4px;
+	background: #dddddd;
+	display: inline-block;
+	margin-right: 12px;
+	align-self:center;
+}
+.backgo{
+	font-size: 16px;
+	height: 36px;
+	width: 102px;
+	border: 1px solid #CCCCCC;
+	line-height: 36px;
+	border-radius:15px ;
+	text-align: center;
+	text-decoration:none;
+	display: inline-block;
+	float: right;
+	margin-top: 16px;
+	color: #555555;
+
+	 
+}
+.head span,.head i{
+	font-size: 16px;
+}
+.goodsimg{
+	margin-top: 35px;
+	width: 39%;
+	border: 1px solid #333333;
+	float: left;
+}
+.detalsdata{
+	margin-top: 35px;
+	float: right;
+	width: 57%;
+	
+}
+.detalsdata h5{
+	font-size: 18px;
+	height: 40px;
+	line-height: 40px;
+}
+.detalsdata p:nth-child(2){
+	font-size: 16px;
+	height: 35px;
+	line-height: 35px;
+	
+}
+.detalsdata p:nth-child(3){
+	font-size: 14px;
+	height: 32px;
+	width: 86px;
+	line-height: 32px;
+	text-align: center;
+	border-radius:15px ;
+	color: #ffffff;
+	background: #feb501;
+	margin-top: 32px;
+	margin-bottom: 25px;
+	cursor: auto;
+}
+.detalsdata p:nth-child(4){
+	font-size: 16px;
+	
+}

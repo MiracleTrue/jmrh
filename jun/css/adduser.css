@@ -1,0 +1,68 @@
+.adr-box{
+	width: 520px;
+	height: 730px;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+.adr-box header{
+	height: 85px;
+	line-height: 85px;
+	color: #1f93dc;
+	font-size: 25px;
+	font-weight: bolder;
+	border-bottom: 1px solid #dddddd;
+}
+.adr-box p{
+	text-align: right;
+	line-height: 66px;
+	height: 66px;
+	position: relative;
+	margin-bottom: 20px;
+	
+}
+.adr-box span{
+	font-size: 14px;
+	
+	
+}
+.adr-box input{
+	display: inline-block;
+	width: 440px;
+	height: 42px;
+	outline: none;	
+	margin-left: 15px;
+	text-indent: 18px;
+}
+
+.adr-box select{
+	display: inline-block;
+	height: 46px;
+	width: 444px;
+	margin-left: 15px;
+}
+.adr-box a{
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
+	}
+.adr-submit{
+	background: #fe8d01;
+	color: #FFFFFF;
+	margin-left: 45px;
+	
+}
+.adr-reset{
+	background: #EEEEEE;
+	color: #000000;
+	margin-left: 20px;
+}
+.adr-money{
+	position: absolute;
+	right: 20px;
+	
+}
+

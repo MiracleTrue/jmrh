@@ -1,0 +1,165 @@
+section {
+	padding-top: 41px;
+	padding-left: 40px;
+}
+
+.mly-tianjia {
+	display: block;
+	width: 100px;
+	height: 36px;
+	background: url(../img/tianjia.png) no-repeat;
+	float: left;
+}
+
+section>div {
+	overflow: hidden;
+	margin-bottom: 78px;
+}
+
+.mly-shaixuan {
+	width: 627px;
+	height: 36px;
+	background: url(../img/junfang2.png) no-repeat;
+	float: left;
+	margin-left: 35px;
+	line-height: 36px;
+}
+
+.mly-state {
+	width: 151px;
+	height: 24px;
+	margin-left: 137px;
+}
+
+.mly-time {
+	width: 151px;
+	height: 24px;
+	margin-left: 116px;
+}
+
+.mly-btn {
+	display: block;
+	width: 91px;
+	height: 36px;
+	background: #f3570d;
+	text-align: center;
+	line-height: 36px;
+	float: left;
+	color: #FFFFFF;
+	font-size: 16px;
+	border-radius: 15px;
+	margin-left: 10px;
+}
+
+table {
+	border-collapse: collapse;
+	width: 85%;
+}
+
+table .tr1 {
+	height: 48px;
+}
+
+table tr {
+	height: 36px;
+	background: #fef8e9;
+	border-left: 1px solid #f5f5f5;
+}
+
+table tr:nth-child(10n) {
+	border-bottom: 1px solid #f5f5f5;
+}
+
+table tr:nth-child(2n) {
+	background: #FFFFFF;
+}
+
+table tr th,
+table tr td {
+	text-align: center;
+	font-size: 15px;
+}
+
+table tr th {
+	font-size: 14px;
+	color: #FFFFFF;
+	border-right: 1px solid #9f9f9f;
+	background: #949494;
+}
+
+table tr td {
+	border-right: 1px solid #f5f5f5;
+}
+
+tr a {
+	text-decoration: underline;
+	color: #4284c5;
+}
+
+.mly-more {
+	height: 500px;
+	width: 820px;
+	
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.mly-more div:nth-child(1) {
+	height: 86px;
+	line-height: 86px;
+	color: #0c9bdd;
+	font-weight: bolder;
+	font-size: 24px;
+	border-bottom: 1px solid #dddddd;
+}
+
+.mly-more div:nth-child(2) {
+	overflow: hidden;
+	margin-top: 38px;
+}
+
+.mly-more div:nth-child(2) p:nth-child(1) {
+	float: left;
+	font-size: 16px;
+}
+
+.mly-more div:nth-child(2) p:nth-child(2) {
+	float: right;
+	font-size: 16px;
+}
+
+.mly-more div:nth-child(2) p input {
+	height: 43px;
+	width: 305px;
+	outline: 0;
+	margin-left: 18px;
+}
+.mly-more div:nth-child(3) {
+	overflow: hidden;
+	margin-top: 38px;
+}
+.mly-more div:nth-child(3) p:nth-child(1) {
+	float: left;
+	font-size: 16px;
+	position: relative;
+}
+
+.mly-more div:nth-child(3) p:nth-child(2) {
+	float: right;
+	font-size: 16px;
+}
+
+.mly-more div:nth-child(3) p input {
+	height: 43px;
+	width: 305px;
+	outline: 0;
+	margin-left: 18px;
+}
+.mly-more div:nth-child(3) p select {
+	height: 30px;
+	width: 60px;
+	outline: 0;
+	position: absolute;
+	top: 9px;
+	right: 6px;
+}

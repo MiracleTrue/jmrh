@@ -1,0 +1,63 @@
+.umt-add {
+	display: block;
+	width: 100px;
+	height: 36px;
+	background: url(../img/tianjia.png) no-repeat;
+	float: left;
+}
+.umt-filtrate {
+	width: 64%;
+	height: 36px;
+	background: #eeeeee;
+	float: left;
+	margin-left: 35px;
+	line-height: 36px;
+	border-radius:15px ;
+	font-size: 16px;
+	
+}
+.umt-filtrate select:nth-child(2),.umt-filtrate select:nth-child(4){
+	width: 13%;
+	height: 24px;
+	margin-left: 15px;
+	margin-right: 3%;
+}
+.umt-filtrate input{
+	height: 21px;
+	width: 13%;
+	margin-left: 1%;
+}
+.umt-seek{
+	display: block;
+	width: 91px;
+	height: 36px;
+	background: #f3570d;
+	text-align: center;
+	line-height: 36px;
+	float: left;
+	color: #FFFFFF;
+	font-size: 16px;
+	border-radius: 15px;
+	margin-left: 3%;
+}
+.czi-filtrate{
+	width:32%;
+	height: 36px;
+	background: #eeeeee;
+	float: left;
+	margin-left: 35px;
+	line-height: 36px;
+	border-radius:15px ;
+	font-size: 16px;
+}
+
+.czi-filtrate select:nth-child(2){
+	width: 26%;
+	height: 24px;
+	margin-left: 15px;
+	margin-right: 3%;
+}
+.czi-filtrate input{
+	height: 21px;
+	width: 26%;
+	margin-left: 1%;

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>登陆</title>
+		<link rel="stylesheet" type="text/css" href="../mycss/reset.css" />
+		<style type="text/css">
+			.login-box {
+				position: relative;
+				background-image: url(../mycss/images/loginbg.png);
+				background-size: cover;
+				font-family: "微软雅黑"
+			}
+			
+			.loginkuang {
+				width: 452px;
+				height: 325px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: url(../mycss/images/loginbg2.png);
+				padding-top: 100px;
+				padding-left: 50px;
+				padding-right: 50px;
+			}
+			
+			.username {
+				width: 452px;
+				height: 50px;
+				background: url(../mycss/images/username.png) no-repeat;
+			}
+			
+			#uname {
+				height: 48px;
+				margin-left: 52px;
+				border: none;
+				width: 400px;
+				text-indent: 20px;
+			}
+			
+			.possword {
+				width: 452px;
+				height: 50px;
+				background: url(../mycss/images/username.png) no-repeat;
+				margin-top: 22px;
+			}
+			
+			#possd {
+				height: 48px;
+				margin-left: 52px;
+				border: none;
+				width: 400px;
+				text-indent: 20px;
+			}
+			.remeword{
+				text-align: right;
+				margin-top: 22px;
+			}
+			.loginbtn{
+				width: 452px;
+				height: 52px;
+				/*background: url(../mycss/images/loginbutton.png) no-repeat;*/
+				background-color: #ff8705;
+				text-align: center;
+				line-height: 52px;
+				color: #FFFFFF;
+				border-radius: 5px;
+				margin-top: 20px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="login-box">
+			<div class="loginkuang">
+				<div class="username">
+					<input type="text" name="uname" id="uname" value="" placeholder="用户名" />
+				</div>
+				<div class="possword">
+					<input type="password" name="possd" id="possd" value="" placeholder="密码" />
+				</div>
+				<div class="remeword">
+					<input type="checkbox" name="" id="" value="记住密码" />
+					<span style="font-size: 12px;">记住密码</span>
+				</div>
+				<div class="loginbtn"><a>登录</a></div>
+			</div>
+		</div>
+		<script src="../mycss/jquery-1.11.0.js"></script>
+		<script>
+			$(document).ready(function() {
+				var iheight = $(window).height();
+				$(".login-box").height(iheight)
+
+			})
+		</script>
+	</body>
+
+</html>
