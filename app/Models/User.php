@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /**
- * 用户相关模型
- * Class User
+ * Class User 用户相关模型
  * @package App\Models
  */
 class User extends CommonModel
@@ -33,7 +32,7 @@ class User extends CommonModel
     private $errors = array(); /*错误信息*/
 
     /**
-     * 获取所有日志列表 (已转换:身份标识文本,日志创建时间) (如有where 则加入新的sql条件) "分页"
+     * 获取所有日志列表 (已转换:身份标识文本,日志创建时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where &  [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @return mixed
      */
@@ -58,7 +57,7 @@ class User extends CommonModel
     }
 
     /**
-     * 获取所有用户列表 (已转换:身份标识文本,创建时间) (如有where 则加入新的sql条件) "分页"
+     * 获取所有用户列表 (已转换:身份标识文本,创建时间) (如有where 则加入新的sql条件) "分页" | 默认排序:用户ID
      * @param array $where
      * @return mixed
      */
@@ -236,7 +235,7 @@ class User extends CommonModel
     }
 
     /**
-     * 返回用户身份标识的文本名称
+     * 返回用户身份标识 的文本名称
      * @param $identity & 身份标识
      * @return string
      */

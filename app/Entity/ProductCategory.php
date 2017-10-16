@@ -7,6 +7,7 @@
  */
 
 namespace App\Entity;
+use App\Models\Product;
 
 /**
  * Class ProductCategory   数据库Eloquent实体模型
@@ -41,5 +42,13 @@ class ProductCategory extends CommonEntity
      * @var string
      */
     protected $dateFormat = 'U';
+
+    /**
+     * 一对多关联Products实体表
+     */
+    public function hm_products()
+    {
+        return $this->hasMany(Products::class,'category_id');
+    }
 
 }

@@ -29,6 +29,22 @@ Route::group(['group' => '用户管理'], function ()
     Route::any('user/disable', 'UserController@UserDisable')->name('禁用用户');/*禁用用户*/
 });
 
+Route::group(['group' => '商品管理'], function ()
+{
+    /*分类*/
+    Route::get('category/list', 'ProductController@CategoryList')->name('商品分类列表');/*商品分类列表*/
+    Route::get('category/view/{id?}', 'ProductController@CategoryView')->name('查看商品分类');/*查看商品分类*/
+    Route::any('category/add', 'ProductController@CategoryAdd')->name('新增商品分类');/*新增商品分类*/
+    Route::any('category/edit', 'ProductController@CategoryEdit')->name('修改商品分类');/*修改商品分类*/
+    Route::any('category/delete', 'ProductController@CategoryDelete')->name('删除商品分类');/*删除商品分类*/
+    /*商品*/
+    Route::get('product/list', 'ProductController@ProductList')->name('商品列表');/*商品列表*/
+    Route::get('product/view/{id?}', 'ProductController@ProductView')->name('查看商品');/*查看商品*/
+    Route::any('product/add', 'ProductController@ProductAdd')->name('新增商品');/*新增商品*/
+    Route::any('product/edit', 'ProductController@ProductEdit')->name('修改商品');/*修改商品*/
+    Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
+});
+
 Route::group(['group' => '用户中心'], function ()
 {
     Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码*/

@@ -54,7 +54,5 @@ class Controller extends BaseController
 //        $GLOBALS['shop_config'] = $admin_model->getSystemConfig();
 //        View::share('shop_config',$GLOBALS['shop_config']);
 //
-//        /*初始化分页大小 15条*/
-//        if(empty($_COOKIE['AdminPaginationSize']) || is_numeric($_COOKIE['AdminPaginationSize']) == false) {$_COOKIE['AdminPaginationSize'] = 15;}
     }
 }
