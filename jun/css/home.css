@@ -1,0 +1,138 @@
+html,
+body {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+body {
+	position: relative;
+}
+
+.home-header {
+	height: 42px;
+	background: #fe8d01;
+	display: flex;
+	padding-left: 200px;
+	position: relative;
+}
+
+.home-header p {
+	height: 42px;
+	line-height: 42px;
+	margin-left: 40px;
+	color: #FFFFFF;
+}
+
+.home-header .headerdiv1 {
+	height: 42px;
+	line-height: 42px;
+	margin-left: 20px;
+	color: #FFFFFF;
+}
+
+.headerdiv2 {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 42px;
+	line-height: 42px;
+	width: 120px;
+	color: #FFFFFF;
+	text-indent: 45px;
+	font-size: 16px;
+	background: url(../img/exit.png) no-repeat 0 0 #fe7e01;
+}
+
+.home-header div span {
+	display: inline-block;
+	height: 30px;
+	width: 130px;
+	line-height: 30px;
+	background: #feb501;
+	margin-left: 20px;
+	border-radius: 15px;
+	text-align: center;
+}
+
+.home-aside {
+	width: 200px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	background: url(../img/logo.png) no-repeat 0 0 #EFEFEF;
+}
+
+
+/*.bg1{
+	background-repeat:no-repeat ;
+	background-image:url(images/sprite.png)  ;
+	background-position:10px 6px ;
+	background-size:20px 20px ;
+}*/
+
+.
+/*treeview .bg1{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-repeat:no-repeat ;
+	background-image:url(images/sprite.png)  ;
+	background-position:-11px -11px ;
+	background-size:20px 20px ;
+}*/
+
+.Huifold .item {
+	position: relative
+}
+
+.Huifold .item h4 {
+	margin: 0;
+	font-weight: bold;
+	position: relative;
+	border-top: 1px solid #fff;
+	font-size: 15px;
+	line-height: 22px;
+	padding: 7px 10px;
+	background-color: #eee;
+	cursor: pointer;
+	padding-right: 30px
+}
+
+.Huifold .item h4 b {
+	position: absolute;
+	display: block;
+	cursor: pointer;
+	right: 10px;
+	top: 7px;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	color: #666
+}
+
+.Huifold .item .info {
+	display: none;
+	padding: 10px
+}
+
+#Huifold1 {
+	margin-top: 198px;
+}
+
+.home-section {
+	background: #FFFFFF;
+	margin-left: 200px;
+	display: flex;
+	/*padding-right: 190px;*/
+	width: 89.6%;
+}
+
+.sidebar-menu {
+	margin-top: 195px;
+}
+
+.gongying {
+	background: url(images/gongyingshang.png) no-repeat 15px 12px;
+}

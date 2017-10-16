@@ -1,0 +1,75 @@
+.qte-box{
+	padding-left: 40px;
+	padding-right: 40px;
+	height: 500px;
+	width: 820px;
+}
+.qte-box header{
+	font-size: 24px;
+	color: #0d96da;
+	font-weight: bolder;
+	height: 86px;
+	line-height: 86px;
+	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 29px;
+}
+.qte-box div {
+	overflow: hidden;
+	height: 60px;
+	line-height: 60px;
+	font-size: 15px;
+}
+.qte-box div input {
+	width: 283px;
+	height: 40px;
+	outline: none;
+	margin-left: 20px;
+	text-indent: 15px;
+	color: #DDDDDD;
+	font-size: 14px;
+}
+.qte-box div p:nth-child(1){
+	float: left;
+}
+.qte-box div p:nth-child(2){
+	float: right;
+}
+
+.qte-box select{
+	width: 286px;
+	height: 30px;
+	margin-left: 20px;
+}
+
+
+.qte-ope{
+	width: 500px;
+	margin:65px auto 0 auto ;
+	margin-top: 65px;
+}
+.qte-ope a{
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
+	}
+.qte-submit{
+	background: #fe8d01;
+	color: #FFFFFF;
+	margin-left: 45px;
+	
+}
+.qte-reset{
+	background: #EEEEEE;
+	color: #000000;
+	margin-left: 20px;
+}
+.qte-box .blueWord{
+	color: #0d96da;
+}
+.qte-box .orange{
+	color: #fe9f41;
+}

@@ -1,0 +1,97 @@
+section {
+	padding-top: 41px;
+	padding-left: 40px;
+}
+
+.tre-tianjia {
+	display: block;
+	width: 100px;
+	height: 36px;
+	background: url(../img/tianjia.png) no-repeat;
+	float: left;
+}
+
+section>div {
+	overflow: hidden;
+	margin-bottom: 78px;
+}
+
+.tre-shaixuan {
+	width: 627px;
+	height: 36px;
+	background: url(../img/pingtai.png) no-repeat;
+	float: left;
+	margin-left: 35px;
+	line-height: 36px;
+}
+
+.tre-state {
+	width: 151px;
+	height: 24px;
+	margin-left: 137px;
+}
+
+.tre-time {
+	width: 151px;
+	height: 24px;
+	margin-left: 116px;
+}
+
+.tre-btn {
+	display: block;
+	width: 91px;
+	height: 36px;
+	background: #f3570d;
+	text-align: center;
+	line-height: 36px;
+	float: left;
+	color: #FFFFFF;
+	font-size: 16px;
+	border-radius: 15px;
+	margin-left: 10px;
+}
+
+table {
+	border-collapse: collapse;
+	width:85%;
+}
+
+table .tr1 {
+	height: 48px;
+}
+
+table tr {
+	height: 36px;
+	background: #fef8e9;
+	border-left: 1px solid #f5f5f5;
+}
+
+table tr:nth-child(10n) {
+	border-bottom: 1px solid #f5f5f5;
+}
+
+table tr:nth-child(2n) {
+	background: #FFFFFF;
+}
+
+table tr th,
+table tr td {
+	text-align: center;
+	font-size: 15px;
+}
+
+table tr th {
+	font-size: 14px;
+	color: #FFFFFF;
+	border-right: 1px solid #9f9f9f;
+	background: #949494;
+}
+
+table tr td {
+	border-right: 1px solid #f5f5f5;
+}
+
+tr a {
+	text-decoration: underline;
+	color: #4284c5;
+}
