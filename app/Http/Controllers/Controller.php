@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 
 /**
  *
@@ -44,7 +45,7 @@ class Controller extends BaseController
 //        9000.军方已收货(交易成功)
 
 
-//        DB::enableQueryLog();//开启查询
+        DB::enableQueryLog();//开启查询
 //
 //    dd(DB::getQueryLog());//打印查询SQL
 //        $admin_model = new Admin();

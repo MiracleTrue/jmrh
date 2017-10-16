@@ -11,7 +11,7 @@ namespace App\Models;
 use App\Entity\UserLog;
 use App\Entity\Users;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -32,34 +32,106 @@ class User extends CommonModel
 
     private $errors = array(); /*错误信息*/
 
-    public function getUserList()
+    /**
+     * 获取所有日志列表 (已转换:身份标识文本,日志创建时间) (如有where 则加入新的sql条件) "分页"
+     * @param array $where &  [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
+     * @return mixed
+     */
+    public function getLogList($where = array())
+    {
+        /*预加载ORM对象*/
+        $log_list = DB::table('user_log')
+            ->join('users', 'user_log.user_id', '=', 'users.user_id')
+            ->where($where)
+            ->orderBy('user_log.create_time', 'desc')
+            ->select('user_log.*', 'users.identity', 'users.nick_name', 'users.phone')
+            ->paginate($_COOKIE['PaginationSize']);
+
+        /*数据过滤排版*/
+        $log_list->transform(function ($item)
+        {
+            $item->identity_text = User::identityTransformText($item->identity);
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
+        });
+        return $log_list->toArray();
+    }
+
+    /**
+     * 获取所有用户列表 (已转换:身份标识文本,创建时间) (如有where 则加入新的sql条件) "分页"
+     * @param array $where
+     * @return mixed
+     */
+    public function getUserList($where = array())
     {
         /*初始化*/
         $e_users = new Users();
 
         /*预加载ORM对象*/
-        $user_list = $e_users->orderBy('user_id', 'desc')->paginate($_COOKIE['PaginationSize']);
+        $user_list = $e_users->where($where)->orderBy('user_id', 'desc')->paginate($_COOKIE['PaginationSize']);
 
         /*数据过滤排版*/
         $user_list->transform(function ($item)
         {
-//            if (empty($item->ho_admin_user))
-//            {   /*如果用户不存在或已经被删除,删除其操作记录*/
-//                AdminLog::destroy($item->log_id);
-//            }
-//            else
-//            {
-//                $item->log_info = CommonModel::languageFormat($item->zh_loginfo, $item->en_loginfo);
-//                $item->created_at = Carbon::createFromTimestamp($item->created_at);
-//                $item->admin_user = $item->ho_admin_user;
-//                $item->admin_role = $item->ho_admin_user->ho_admin_role;
-//                return $item;
-//            }
+            $item->identity_text = User::identityTransformText($item->identity);
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
         });
 
-        return $user_list;
+        return $user_list->toArray();
     }
 
+    /**
+     * 获取单个用户 (已转换:身份标识文本,创建时间)
+     * @param $id
+     * @return mixed
+     */
+    public function getUser($id)
+    {
+        /*初始化*/
+        $e_users = Users::find($id);
+        /*转换身份标识文本*/
+        $e_users->identity_text = User::identityTransformText($e_users->identity);
+        $e_users->create_time = Carbon::createFromTimestamp($e_users->create_time)->toDateTimeString();
+        return $e_users->toArray();
+    }
+
+    /**
+     * 使用原密码: 修改单个用户密码
+     * @param $user_id & 用户id
+     * @param $original_password & 原密码
+     * @param $new_password & 新密码
+     * @return bool
+     */
+    public function editPasswordOriginal($user_id, $original_password, $new_password)
+    {
+        /*初始化*/
+        $e_users = Users::find($user_id);
+        $password = new Password();
+
+        if ($password->checkHashPassword($original_password, $e_users->password) === true)
+        {
+            $e_users->password = $password->makeHashPassword($new_password) or die();
+            $e_users->save();
+            User::userLog('使用原密码方式修改密码');
+
+            /*删除管理员的session*/
+            session()->forget('ManageUser');
+            return true;
+        }
+        else
+        {
+            $this->errors['code'] = 1;
+            $this->errors['messages'] = '原密码不正确';
+            return false;
+        }
+    }
+
+    /**
+     * 添加单个用户
+     * @param $arr
+     * @return bool
+     */
     public function addUser($arr)
     {
         /*初始化*/
@@ -78,6 +150,61 @@ class User extends CommonModel
         $e_users->save();
         User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
         return true;
+    }
+
+    /**
+     *
+     * 修改单个用户 (只允许修改:用户姓名,手机号码,用户密码) 密码为空时不修改
+     * @param $arr
+     * @return bool
+     */
+    public function editUser($arr)
+    {
+        /*初始化*/
+        $e_users = Users::find($arr['user_id']);
+        $password = new Password();
+
+        /*修改用户*/
+        $e_users->nick_name = $arr['nick_name'];
+        $e_users->phone = !empty($arr['phone']) ? $arr['phone'] : '';
+
+        if (!empty($arr['password']))
+        {
+            $e_users->password = $password->makeHashPassword($arr['password']) or die();
+        }
+
+        $e_users->save();
+        User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
+        return true;
+    }
+
+    /**
+     * 用户禁用启用开关
+     * @param $id
+     * @return bool
+     */
+    public function disableOrEnableUser($id)
+    {
+        /*初始化*/
+        $e_users = Users::find($id);
+
+        /*超级管理员除外*/
+        if ($e_users->identity != self::ADMINISTRATOR)
+        {
+            /*修改用户*/
+            if ($e_users->is_disable == self::IS_DISABLE)
+            {
+                $e_users->is_disable = self::NO_DISABLE;
+            }
+            else
+            {
+                $e_users->is_disable = self::IS_DISABLE;
+            }
+
+            $e_users->save();
+            User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
+            return true;
+        }
     }
 
 
