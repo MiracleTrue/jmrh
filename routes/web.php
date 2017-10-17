@@ -13,16 +13,16 @@ Route::get('test/update', 'TestController@T_update');
 Route::get('test/delete', 'TestController@T_delete');
 
 
-Route::get('login', 'IndexController@Login');/*登录页面*/
-Route::get('/', 'IndexController@Index');/*后台主框架*/
-Route::get('welcome', 'IndexController@Welcome');/*后台首页*/
+Route::get('login', 'IndexController@Login');/*登录页面 | login */
+Route::get('/', 'IndexController@Index');/*后台主框架 | index */
+Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
 
 
 Route::group(['group' => '用户管理'], function ()
 {
-    Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表*/  //user_list
-    Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表*/ //log_list
-    Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户*/
+    Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表 | user_list */
+    Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表 | log_list */
+    Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户 | user_view */
     Route::any('user/add', 'UserController@UserAdd')->name('新增用户');/*新增用户*/
     Route::any('user/edit', 'UserController@UserEdit')->name('修改用户');/*修改用户*/
     Route::any('user/enable', 'UserController@UserEnable')->name('启用用户');/*启用用户*/
@@ -32,14 +32,14 @@ Route::group(['group' => '用户管理'], function ()
 Route::group(['group' => '商品管理'], function ()
 {
     /*分类*/
-    Route::get('category/list', 'ProductController@CategoryList')->name('商品分类列表');/*商品分类列表*/
-    Route::get('category/view/{id?}', 'ProductController@CategoryView')->name('查看商品分类');/*查看商品分类*/
+    Route::get('category/list', 'ProductController@CategoryList')->name('商品分类列表');/*商品分类列表 | category_list */
+    Route::get('category/view/{id?}', 'ProductController@CategoryView')->name('查看商品分类');/*查看商品分类 | category_view */
     Route::any('category/add', 'ProductController@CategoryAdd')->name('新增商品分类');/*新增商品分类*/
     Route::any('category/edit', 'ProductController@CategoryEdit')->name('修改商品分类');/*修改商品分类*/
     Route::any('category/delete', 'ProductController@CategoryDelete')->name('删除商品分类');/*删除商品分类*/
     /*商品*/
-    Route::get('product/list', 'ProductController@ProductList')->name('商品列表');/*商品列表*/
-    Route::get('product/view/{id?}', 'ProductController@ProductView')->name('查看商品');/*查看商品*/
+    Route::get('product/list', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
+    Route::get('product/view/{id?}', 'ProductController@ProductView')->name('查看商品');/*查看商品 | product_view */
     Route::any('product/add', 'ProductController@ProductAdd')->name('新增商品');/*新增商品*/
     Route::any('product/edit', 'ProductController@ProductEdit')->name('修改商品');/*修改商品*/
     Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
@@ -47,7 +47,7 @@ Route::group(['group' => '商品管理'], function ()
 
 Route::group(['group' => '用户中心'], function ()
 {
-    Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码*/
+    Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
     Route::any('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
 });
 

@@ -121,7 +121,7 @@ class UserController extends Controller
         /*初始化*/
 
         dump($this->ViewData);
-        return view('welcome', $this->ViewData);
+        return view('password_original', $this->ViewData);
     }
 
     /**
@@ -182,7 +182,7 @@ class UserController extends Controller
             $this->ViewData['user_info'] = $user->getUser($id);
         }
         dump($this->ViewData);
-        return view('welcome', $this->ViewData);
+        return view('user_view', $this->ViewData);
     }
 
     /**
