@@ -1,0 +1,14 @@
+.gmt-add {
+	display: block;
+	width: 100px;
+	height: 36px;
+	background: url(../img/tianjia.png) no-repeat;
+	float: left;
+}
+table img{
+	width: 54px;
+	height: 54px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	
+}

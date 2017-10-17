@@ -20,6 +20,10 @@ class ProductController extends Controller
 {
     public $ViewData = array(); /*传递页面的数组*/
 
+    /**
+     * View 商品分类列表 页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function CategoryList()
     {
         /*初始化*/

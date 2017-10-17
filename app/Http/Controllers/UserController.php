@@ -58,7 +58,7 @@ class UserController extends Controller
 
         $this->ViewData['log_list'] = $user->getLogList($where);
         dump($this->ViewData);
-        return view('welcome', $this->ViewData);
+        return view('log_list', $this->ViewData);
     }
 
     /**
@@ -109,7 +109,7 @@ class UserController extends Controller
 
         $this->ViewData['user_list'] = $user->getUserList($where);
         dump($this->ViewData);
-        return view('welcome', $this->ViewData);
+        return view('user_list', $this->ViewData);
     }
 
     /**

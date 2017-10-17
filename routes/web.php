@@ -20,8 +20,8 @@ Route::get('welcome', 'IndexController@Welcome');/*后台首页*/
 
 Route::group(['group' => '用户管理'], function ()
 {
-    Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表*/
-    Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表*/
+    Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表*/  //user_list
+    Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表*/ //log_list
     Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户*/
     Route::any('user/add', 'UserController@UserAdd')->name('新增用户');/*新增用户*/
     Route::any('user/edit', 'UserController@UserEdit')->name('修改用户');/*修改用户*/
