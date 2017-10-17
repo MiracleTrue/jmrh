@@ -2,7 +2,7 @@
     <ul class="sidebar-menu">
 
         <li class="treeview">
-            <a href="#">
+            <a href="{{url('welcome')}}">
                 <i class="fa fa-home"></i> <span>首页</span>
             </a>
 
@@ -39,20 +39,27 @@
 
         </li>
         <li class="treeview">
-            <a href="#">
+            <a href="{{url('product/list')}}">
                 <i class="fa fa-bars"></i> <span>商品管理</span>
 
             </a>
 
         </li>
+         <li class="treeview">
+            <a href="{{url('category/list')}}">
+                <i class="fa fa-bars"></i> <span>分类管理</span>
+
+            </a>
+
+        </li>
         <li>
-            <a href="#">
+            <a href="{{url('password/original')}}">
                 <i class="fa fa-lock"></i> <span>密码修改</span>
                 <!--<small class="label pull-right label-danger">3</small>-->
             </a>
         </li>
-        <li>
-            <a href="#">
+        <li class="munu-caozuorizhi">
+            <a href="{{url('log/list')}}">
                 <i class="fa fa-envelope"></i> <span>操作日志</span>
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>

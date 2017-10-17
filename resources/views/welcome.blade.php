@@ -19,7 +19,7 @@
         </div>
 
         <div class="f1" id="floor1">
-            <div style="overflow: hidden;padding-left: 90px;">
+            <div class="floor_div">
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
                 <ul class="head">
                     <li>猪肉</li>
@@ -84,7 +84,7 @@
 
         </div>
         <div class="f1" id="floor2">
-            <div style="overflow: hidden;padding-left: 90px;">
+            <div class="floor_div">
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
                 <ul class="head">
                     <li>猪肉</li>
@@ -149,7 +149,7 @@
 
         </div>
         <div class="f1" id="floor3">
-            <div style="overflow: hidden;padding-left: 90px;">
+            <div class="floor_div">
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
                 <ul class="head">
                     <li>猪肉</li>
@@ -214,7 +214,7 @@
 
         </div>
         <div class="f1" id="floor4">
-            <div style="overflow: hidden;padding-left: 90px;">
+            <div class="floor_div" >
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
                 <ul class="head">
                     <li>猪肉</li>

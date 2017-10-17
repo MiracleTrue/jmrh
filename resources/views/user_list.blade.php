@@ -44,11 +44,11 @@
             </tr>
             <tr>
                 <td>1</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+                <td>张三</td>
+                <td>zhangsan</td>
+                <td>15888888888</td>
+                <td>供应商</td>
+                <td>正常</td>
                 <td class="blueWord">
                     <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
@@ -56,11 +56,11 @@
             </tr>
             <tr>
                 <td>2</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+                <td>张三三</td>
+                <td>zhangsansan</td>
+                <td>15888888888</td>
+                <td>供应商</td>
+                <td>正常</td>
                 <td class="blueWord">
                     <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
@@ -68,11 +68,11 @@
             </tr>
             <tr>
                 <td>3</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+               <td>张三</td>
+                <td>zhangsan</td>
+                <td>15888888888</td>
+                <td>军方</td>
+                <td>正常</td>
                 <td class="blueWord">
                     <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
@@ -80,11 +80,11 @@
             </tr>
             <tr>
                 <td>4</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+                <td>张三三</td>
+                <td>zhangsansan</td>
+                <td>15888888888</td>
+                <td>军方</td>
+                <td>正常</td>
                 <td class="blueWord">
                     <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
@@ -92,11 +92,11 @@
             </tr>
             <tr>
                 <td>5</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+               <td>张三</td>
+                <td>zhangsan</td>
+                <td>15888888888</td>
+                <td>军方</td>
+                <td>冻结</td>
                 <td class="blueWord">
                     <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
@@ -104,49 +104,49 @@
             </tr>
             <tr>
                 <td>6</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+               <td>张三三</td>
+                <td>zhangsansan</td>
+                <td>15888888888</td>
+                <td>平台运营者</td>
+                <td>正常</td>
                 <td class="blueWord">
-                    <a class="mly-caozuo">禁用</a>
+                    <a class="mly-caozuo">启用</a>
                     <a style="margin-left: 5%;">删除</a>
                 </td>
             </tr>
             <tr>
                 <td>7</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>已确认</td>
+               <td>张三</td>
+                <td>zhangsan</td>
+                <td>15888888888</td>
+                <td>平台运营者</td>
+                <td>正常</td>
                 <td class="blueWord">
-                    <a class="mly-caozuo">禁用</a>
+                    <a class="mly-caozuo">启用</a>
                     <a style="margin-left: 5%;">删除</a>
                 </td>
             </tr>
             <tr>
                 <td>8</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>已发货</td>
+                <td>张三三</td>
+                <td>zhangsansan</td>
+                <td>15888888888</td>
+                <td>平台运营者</td>
+                <td>正常</td>
                 <td class="blueWord">
-                    <a class="mly-caozuo">禁用</a>
+                    <a class="mly-caozuo">启用</a>
                     <a style="margin-left: 5%;">删除</a>
                 </td>
             </tr>
             <tr>
                 <td>9</td>
-                <td>20170926110753</td>
-                <td>白菜</td>
-                <td>20170928</td>
-                <td>500斤</td>
-                <td>待确认</td>
+               <td>张三</td>
+                <td>zhangsan</td>
+                <td>15888888888</td>
+                <td>平台运营者</td>
+                <td>正常</td>
                 <td class="blueWord">
-                    <a class="mly-caozuo">启用</a>
+                    <a class="mly-caozuo">禁用</a>
                     <a style="margin-left: 5%;">删除</a>
                 </td>
             </tr>
@@ -172,7 +172,7 @@
                         maxmin: false,
                         shadeClose: true, //点击遮罩关闭层
                         area: ['600px', '730px'],
-                        content: '添加账户.html'
+                        content: '{{url('user/view')}}'
                     });
                 });
             });

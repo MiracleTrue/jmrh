@@ -25,6 +25,14 @@
         var iheight = $(document).height() - 42;
         $("#Info1").height(iheight)
 
+
+	$(".sidebar-menu li").on("click",function(){
+		console.log($(this).find('a').attr('href'));
+		$("#Info1").attr("src",$(this).find('a').attr('href'));
+		return false;
+	})
+
+
     });
 </script>
 </html>
