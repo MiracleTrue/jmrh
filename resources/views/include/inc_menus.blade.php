@@ -52,8 +52,8 @@
             </a>
 
         </li>
-        <li>
-            <a href="{{url('password/original')}}">
+        <li class="password">
+            <a href="javascript:void(0)">
                 <i class="fa fa-lock"></i> <span>密码修改</span>
                 <!--<small class="label pull-right label-danger">3</small>-->
             </a>

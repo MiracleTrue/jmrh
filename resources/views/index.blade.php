@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{asset('webStatic/css/sidebar-menu.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/home.css')}}"/>
     <script type="text/javascript" src="{{asset('webStatic/library/jquery-1.11.0/jquery-1.11.0.js')}}"></script>
+    <script type="text/javascript" src="{{asset('webStatic/library/jquery-1.11.0/jquery-1.11.0.js')}}"></script>
 </head>
 <body>
     @include('include.inc_menus')
@@ -26,12 +27,14 @@
         $("#Info1").height(iheight)
 
 
-	$(".sidebar-menu li").on("click",function(){
+	$(".sidebar-menu li").not($(".password")).on("click",function(){
 		console.log($(this).find('a').attr('href'));
 		$("#Info1").attr("src",$(this).find('a').attr('href'));
 		return false;
 	})
-
+$(".password").on("click",function(){
+	
+})
 
     });
 </script>

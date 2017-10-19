@@ -8,6 +8,7 @@
 	position: relative;
 	margin: 0;
 	padding: 0;
+	border-bottom: 1px solid #dedede;
 }
 
 .sidebar-menu>li:hover {

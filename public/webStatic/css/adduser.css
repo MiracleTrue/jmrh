@@ -25,7 +25,7 @@
 	
 	
 }
-.adr-box input{
+input{
 	display: inline-block;
 	width: 440px;
 	height: 42px;
@@ -41,6 +41,12 @@
 	margin-left: 15px;
 }
 .adr-box a{
+	
+	}
+.adr-submit{
+	background: #fe8d01;
+	color: #FFFFFF;
+	margin-left: 45px;
 	width: 210px;
 	height: 64px;
 	font-size: 19px;
@@ -48,17 +54,19 @@
 	line-height: 64px;
 	text-align: center;
 	display: inline-block;
-	}
-.adr-submit{
-	background: #fe8d01;
-	color: #FFFFFF;
-	margin-left: 45px;
 	
 }
 .adr-reset{
 	background: #EEEEEE;
 	color: #000000;
 	margin-left: 20px;
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
 }
 .adr-money{
 	position: absolute;

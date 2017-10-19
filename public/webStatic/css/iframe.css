@@ -1,11 +1,9 @@
-body,html{
-	margin: 0;
-	padding: 0;
-}
+
 section {
-	/*width: 80%;*/
+	
 	/*	margin-left: 200px;*/
-	/*	padding-left: 40px;*/
+		padding-left: 20px;
+	
 }
 
 section a {
@@ -26,13 +24,20 @@ section a {
 
 .head li {
 	margin-left: 40px;
+	list-style: initial;
+	font-size: 16px;
 }
 
 .floor img {
 	width: 100%;
 	height: 100%;
 }
-
+.floor_div{
+	overflow: hidden;
+	padding-left: 90px;
+	height: 90px;
+	line-height: 90px;
+}
 .goods-list li {
 	padding-bottom: 32px;
 	list-style: none;
@@ -49,10 +54,11 @@ section a {
 }
 
 .goods-list li p {
-	height: 12%;
+	height: 16%;
 	font-size: 16px;
 	font-weight: 800;
 	text-indent: 7%;
+	padding-top:5%;
 }
 
 .goods-list {

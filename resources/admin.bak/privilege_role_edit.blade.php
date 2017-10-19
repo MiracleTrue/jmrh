@@ -128,6 +128,7 @@
                 success:"valid",
                 submitHandler:function(form){
                     var index = parent.layer.getFrameIndex(window.name);
+                    console.log($(form));
                     $(form).ajaxSubmit({
                         url: '{{action('Admin\PrivilegeController@RoleEditSubmit')}}',
                         type: 'POST',

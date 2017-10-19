@@ -45,7 +45,11 @@
 	margin:65px auto 0 auto ;
 	margin-top: 65px;
 }
-.csy-ope a{
+
+.csy-ope .csy-submit{
+	background: #fe8d01;
+	color: #FFFFFF;
+	margin-left: 45px;
 	width: 210px;
 	height: 64px;
 	font-size: 19px;
@@ -53,15 +57,17 @@
 	line-height: 64px;
 	text-align: center;
 	display: inline-block;
-	}
-.csy-submit{
-	background: #fe8d01;
-	color: #FFFFFF;
-	margin-left: 45px;
 	
 }
-.csy-reset{
+.csy-ope .csy-reset{
 	background: #EEEEEE;
 	color: #000000;
 	margin-left: 20px;
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
 }
