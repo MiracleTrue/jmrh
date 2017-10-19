@@ -17,12 +17,32 @@ Route::get('login', 'IndexController@Login');/*登录页面 | login */
 Route::get('/', 'IndexController@Index');/*后台主框架 | index */
 Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
 
+Route::group(['group' => '平台'], function ()
+{
+//    Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表 | user_list */
+//    Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表 | log_list */
+//    Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户 | user_view */
+//    Route::any('user/add', 'UserController@UserAdd')->name('新增用户');/*新增用户*/
+//    Route::any('user/edit', 'UserController@UserEdit')->name('修改用户');/*修改用户*/
+//    Route::any('user/enable', 'UserController@UserEnable')->name('启用用户');/*启用用户*/
+//    Route::any('user/disable', 'UserController@UserDisable')->name('禁用用户');/*禁用用户*/
+});
+
+Route::group(['group' => '军方'], function ()
+{
+    Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('军方需求列表');/*军方需求列表 | army_need_list */
+    Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('查看军方需求');/*查看军方需求 | army_need_view */
+    Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
+    Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
+    Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
+});
 
 Route::group(['group' => '用户管理'], function ()
 {
     Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表 | user_list */
     Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表 | log_list */
     Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户 | user_view */
+    Route::any('user/check/name', 'UserController@UserCheckName')->name('检测用户名占用');/*检测用户名占用*/
     Route::any('user/add', 'UserController@UserAdd')->name('新增用户');/*新增用户*/
     Route::any('user/edit', 'UserController@UserEdit')->name('修改用户');/*修改用户*/
     Route::any('user/enable', 'UserController@UserEnable')->name('启用用户');/*启用用户*/

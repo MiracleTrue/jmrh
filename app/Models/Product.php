@@ -9,6 +9,8 @@
 namespace App\Models;
 
 use App\Entity\ProductCategory;
+use App\Entity\Products;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -27,6 +29,47 @@ class Product extends CommonModel
 
 
     private $errors = array(); /*错误信息*/
+
+    /**
+     * 获取所有商品列表 (已关联: 分类) (如有where 则加入新的sql条件) "分页" | 默认排序:排序值
+     * @param array $where
+     * @param array $orderBy
+     * @return mixed
+     */
+    public function getProductList($where = array(), $orderBy = array(['products.sort', 'desc']))
+    {
+        /*初始化*/
+        $e_products = new Products();
+
+        /*预加载ORM对象*/
+        $e_products = $e_products->with(['ho_product_category' => function ($query)
+        {
+            $query->where('product_category.is_delete', self::CATEGORY_NO_DELETE);
+        }])
+            ->where('products.is_delete', self::PRODUCT_NO_DELETE)
+            ->where($where);
+        foreach ($orderBy as $value)
+        {
+            $e_products->orderBy($value[0], $value[1]);
+        }
+        $product_list = $e_products->paginate($_COOKIE['PaginationSize']);
+
+        /*数据过滤*/
+        $product_list->transform(function ($item)
+        {
+            if(!empty($item->ho_product_category))
+            {
+                $item->product_category = $item->ho_product_category->toArray();
+                unset($item->ho_product_category);
+                return $item;
+            }
+        });
+        $temp_arr = collect($product_list->items())->filter();
+        $product_list = $product_list->toArray();
+        $product_list['data'] = $temp_arr->toArray();
+
+        return $product_list;
+    }
 
     /**
      * 获取所有商品分类列表 (已统计: 商品数量) (如有where 则加入新的sql条件) "分页" | 默认排序:排序值
@@ -53,13 +96,27 @@ class Product extends CommonModel
         $category_list = $e_product_category->paginate($_COOKIE['PaginationSize']);
 
         /*数据过滤*/
-        $category_list->transform(function($item)
+        $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
             unset($item->hm_products_count);
             return $item;
         });
         return $category_list->toArray();
+    }
+
+    /**
+     * 获取单个商品 (已转换:缩略图路径, 原图路径)
+     * @param $id
+     * @return mixed
+     */
+    public function getProductInfo($id)
+    {
+        /*初始化*/
+        $e_products = Products::where('product_id', $id)->where('is_delete', self::PRODUCT_NO_DELETE)->first() or die();
+        $e_products->product_original = MyFile::makeUrl($e_products->product_original);
+        $e_products->product_thumb = MyFile::makeUrl($e_products->product_thumb);
+        return $e_products->toArray();
     }
 
     /**
@@ -130,6 +187,76 @@ class Product extends CommonModel
 
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
+        return true;
+    }
+
+    /**
+     * 添加单个商品
+     * @param $arr
+     * @return bool
+     */
+    public function addProduct($arr)
+    {
+        /*初始化*/
+        $e_products = new Products();
+        $my_file = new MyFile();
+
+        /*添加*/
+        $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
+        $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
+        $e_products->product_thumb = request()->hasFile('product_image') ? $my_file->uploadThumb(request('product_image')) : $arr['product_image'];
+        $e_products->product_original = request()->hasFile('product_image') ? $my_file->uploadOriginal(request('product_image')) : $arr['product_image'];
+        $e_products->product_content = !empty($arr['product_content']) ? $arr['product_content'] : '';
+        $e_products->sort = !empty($arr['sort']) ? $arr['sort'] : 0;
+        $e_products->create_time = Carbon::now()->timestamp;
+        $e_products->is_delete = self::PRODUCT_NO_DELETE;
+
+        $e_products->save();
+        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::find($e_products->category_id)->category_name . ")");
+        return true;
+    }
+
+    /**
+     * 修改单个商品
+     * @param $arr
+     * @return bool
+     */
+    public function editProduct($arr)
+    {
+        /*初始化*/
+        $e_products = Products::find($arr['product_id']);
+        $my_file = new MyFile();
+
+        /*修改*/
+        $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
+        $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
+        if (request()->hasFile('product_image'))
+        {
+            $e_products->product_thumb = $my_file->uploadThumb(request('product_image'));
+            $e_products->product_original = $my_file->uploadOriginal(request('product_image'));
+        }
+        $e_products->product_content = !empty($arr['product_content']) ? $arr['product_content'] : '';
+        $e_products->sort = !empty($arr['sort']) ? $arr['sort'] : 0;
+
+        $e_products->save();
+        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::find($e_products->category_id)->category_name . ")");
+        return true;
+    }
+
+    /**
+     * 删除单个商品 (伪删除)
+     * @param $id
+     * @return bool
+     */
+    public function deleteProduct($id)
+    {
+        /*初始化*/
+        $e_products = Products::find($id);
+        /*伪删除*/
+        $e_products->is_delete = self::PRODUCT_IS_DELETE;
+
+        $e_products->save();
+        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::find($e_products->category_id)->category_name . ")");
         return true;
     }
 

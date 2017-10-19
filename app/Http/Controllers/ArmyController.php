@@ -7,20 +7,206 @@
  */
 namespace App\Http\Controllers;
 
+use App\Models\Army;
+use App\Models\CommonModel;
 use App\Models\Product;
 use App\Tools\M3Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 /**
- * 产品控制器
- * Class ProductController
+ * 军方控制器
+ * Class ArmyController
  * @package App\Http\Controllers
  */
-class ProductController extends Controller
+class ArmyController extends Controller
 {
     public $ViewData = array(); /*传递页面的数组*/
 
+    public function NeedList($status = null, $create_time = null)
+    {
+        /*初始化*/
+        $army = new Army();
+        $this->ViewData['order_list'] = array();
+        $where = array();
+
+        /*条件搜索*/
+        switch ($status)
+        {
+            case '待确认' :
+                array_push($where, ['orders.status', '=', User::ARMY_ADMIN]);
+                break;
+            case '已确认':
+                array_push($where, ['users.identity', '=', User::PLATFORM_ADMIN]);
+                break;
+            case '已发货' :
+                array_push($where, ['users.identity', '=', User::SUPPLIER_ADMIN]);
+                break;
+            case '已到货' :
+                array_push($where, ['users.identity', '=', User::ADMINISTRATOR]);
+                break;
+        }
+        if (!empty($nick_name))
+        {
+            array_push($where, ['users.nick_name', 'like', '%' . $nick_name . '%']);
+        }
+
+        $this->ViewData['order_list'] = $army->getOrderList($where);
+
+        dd($this->ViewData);
+
+        return view('army_need_list', $this->ViewData);
+    }
+
+    /**
+     * View 军方需求添加与编辑 页面
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function NeedView($id)
+    {
+        /*初始化*/
+        $army = new Army();
+        $this->ViewData['order_info'] = array();
+        if ($id > 0)
+        {
+            $this->ViewData['order_info'] = $army->getOrderInfo($id);
+        }
+
+        dump($this->ViewData);
+        return view('army_need_view', $this->ViewData);
+    }
+
+    /**
+     * Ajax 发布军方需求 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function NeedRelease(Request $request)
+    {
+        /*初始化*/
+        $army = new Army();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'product_name' => 'required',
+            'product_number' => 'required|integer',
+            'product_unit' => 'required',
+            'army_receive_time' => 'required|date|after:now'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $army->releaseNeed($request->all()))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '军方需求发布成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['army'] = $army->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 修改军方需求 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function NeedEdit(Request $request)
+    {
+        /*初始化*/
+        $army = new Army();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'order_id' => [
+                'required',
+                'integer',
+                Rule::exists('orders')->where(function ($query)
+                {
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))
+                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                        ->where('type', Army::ORDER_TYPE_ARMY)
+                        ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
+                }),
+            ],
+            'product_name' => 'required',
+            'product_number' => 'required|integer',
+            'product_unit' => 'required',
+            'army_receive_time' => 'required|date|after:now'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $army->editNeed($request->all()))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '军方需求修改成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['army'] = $army->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 删除军方需求 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function NeedDelete(Request $request)
+    {
+        /*初始化*/
+        $army = new Army();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'order_id' => [
+                'required',
+                'integer',
+                Rule::exists('orders')->where(function ($query)
+                {
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))
+                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                        ->where('type', Army::ORDER_TYPE_ARMY)
+                        ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
+                }),
+            ],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $army->deleteNeed($request->input('order_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '军方需求删除成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['army'] = $army->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+
+    /*********************************************************************************/
     /**
      * View 商品分类列表 页面
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

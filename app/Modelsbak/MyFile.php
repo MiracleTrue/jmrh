@@ -39,10 +39,13 @@ class MyFile extends CommonModel{
 
         return $url;
     }
+
     /**
      * 上传一个原始文件到original目录 （如有可选参数 指定目录及文件名）
      * @param $file & 表单的file对象
-     * @return mixed  返回需要入数据库的文件路径
+     * @param bool $save_path
+     * @param bool $name
+     * @return mixed & 返回需要入数据库的文件路径
      */
     public function uploadOriginal($file , $save_path = false , $name = false)
     {
@@ -65,7 +68,9 @@ class MyFile extends CommonModel{
     /**
      * 上传一张缩略图到thumb目录 （缩略图尺寸根据类属性设定）（如有可选参数 指定目录及文件名）
      * @param $file & 表单的file对象
-     * @return mixed  返回需要入数据库的文件路径
+     * @param bool $save_path
+     * @param bool $name
+     * @return mixed 返回需要入数据库的文件路径
      */
     public function uploadThumb($file , $save_path = false , $name = false)
     {
@@ -93,36 +98,36 @@ class MyFile extends CommonModel{
      * @param $file & 表单的file对象
      * @return mixed  返回需要入数据库的文件路径
      */
-    public function uploadBrand($file)
-    {
-        $date = Carbon::now();
-        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-        $child_path = 'brand/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
-
-        $path = Storage::disk('local')->putFile($child_path,$file);
-
-        Image::make($prefix_path.$path)->resize($this->brand_width, $this->brand_height)->save(null,100);
-
-        return $path;
-    }
+//    public function uploadBrand($file)
+//    {
+//        $date = Carbon::now();
+//        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+//        $child_path = 'brand/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
+//
+//        $path = Storage::disk('local')->putFile($child_path,$file);
+//
+//        Image::make($prefix_path.$path)->resize($this->brand_width, $this->brand_height)->save(null,100);
+//
+//        return $path;
+//    }
 
     /**
      * 上传一张属性小图到attr目录
      * @param $file & 表单的file对象
      * @return mixed  返回需要入数据库的文件路径
      */
-    public function uploadAttr($file)
-    {
-        $date = Carbon::now();
-        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-        $child_path = 'attr/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
-
-        $path = Storage::disk('local')->putFile($child_path,$file);
-
-        Image::make($prefix_path.$path)->resize($this->attr_width, $this->attr_height)->save(null,100);
-
-        return $path;
-    }
+//    public function uploadAttr($file)
+//    {
+//        $date = Carbon::now();
+//        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+//        $child_path = 'attr/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
+//
+//        $path = Storage::disk('local')->putFile($child_path,$file);
+//
+//        Image::make($prefix_path.$path)->resize($this->attr_width, $this->attr_height)->save(null,100);
+//
+//        return $path;
+//    }
 
     /**
      * 上传一个临时文件到temp目录

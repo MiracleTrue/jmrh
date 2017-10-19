@@ -186,6 +186,36 @@ class UserController extends Controller
     }
 
     /**
+     * Ajax 检测用户名是否可用 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function UserCheckName(Request $request)
+    {
+        /*初始化*/
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'user_name' => 'required|unique:users,user_name',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->passes())
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '用户名可以使用';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '用户名被占用';
+            $m3result->data['validator'] = $validator->messages();
+        }
+        return $m3result->toJson();
+    }
+
+    /**
      * Ajax 用户启用 请求处理
      * @param Request $request
      * @return \App\Tools\json
