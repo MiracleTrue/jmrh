@@ -53,7 +53,7 @@ class User extends CommonModel
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             return $item;
         });
-        return $log_list->toArray();
+        return $log_list;
     }
 
     /**
@@ -77,7 +77,7 @@ class User extends CommonModel
             return $item;
         });
 
-        return $user_list->toArray();
+        return $user_list;
     }
 
     /**
@@ -92,7 +92,7 @@ class User extends CommonModel
         /*转换身份标识文本*/
         $e_users->identity_text = User::identityTransformText($e_users->identity);
         $e_users->create_time = Carbon::createFromTimestamp($e_users->create_time)->toDateTimeString();
-        return $e_users->toArray();
+        return $e_users;
     }
 
     /**
