@@ -15,13 +15,14 @@
 @section('content')
     <div class="adr-box">
     	<form id="userAdd" action="" method="post">
+    		{{csrf_field()}}
 			<header>添加账户</header>
 			<div class="error"></div>
-			<p><span>用户名</span><input type="" name="nick_name" id="nick_name" value="" /></p>
+			<p><span>用户名</span><input type="text" name="user_name" id="user_name" value="" placeholder=""/></p>
 
-			<p><span>手机</span><input type="" name="phone" id="phone" value="" /></p>
+			<p><span>手机</span><input type="text" name="phone" id="phone" value="" /></p>
 
-			<p><span>姓名</span><input type="" name="user_name" id="user_name" value="" /></p>
+			<p><span>姓名</span><input type="text" name="nick_name" id="nick_name" value="" /></p>
 
 			<p><span>账户分类</span>
 				<select name="identity">
@@ -56,8 +57,36 @@
   <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
   
   <script type="text/javascript">
-  $().ready(function() 
-    {
+  $().ready(function(){
+  		//用户名检测提交
+  		$("#user_name").blur(function(){
+  			if($("#user_name").val()!=""){
+				$.ajax({
+		  			url:"{{url('user/check/name')}}",
+		  			async:true,
+		  			data:{
+		  				user_name:$("#user_name").val()
+		  			},
+		  			success:function(res){
+		  				var resData=JSON.parse(res);
+		  				/*console.log(resData.code);
+		  				console.log($("#user_name").val());*/
+			  			if(resData.code==1){
+			  				$("#user_name").val("用户名已被占用!!!").css("color","red");
+			  				$("#user_name").focus(function(){
+			  					$("#user_name").val("");
+			  				})
+			  			}
+		  					
+		  				
+		  				
+		  				
+		  			}
+		  		});
+  			}
+  		
+  	
+  		})
       /**
        * 添加用户表单验证与异步提交
        */     
@@ -113,7 +142,15 @@
 	            type: 'POST',
 	            dataType: 'JSON',
 	            success: function (res) {
-	             console.log(res)
+	             console.log(res);
+	             if(res.code==0){
+	             	alert("用户添加成功");
+	             	
+		        var index=parent.layer.getFrameIndex(window.name);
+				
+				parent.layer.close(index);
+	             	layer.closeAll('')
+	             }
 	            }
 	          });
         }

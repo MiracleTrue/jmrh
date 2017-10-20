@@ -20,6 +20,7 @@
     </section>
 </body>
 <script type="text/javascript">
+	
     $(document).ready(function() {
         console.log($(document).height() - 42);
         $(".home-aside").height($(document).height());
