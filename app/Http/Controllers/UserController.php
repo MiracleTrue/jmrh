@@ -69,7 +69,7 @@ class UserController extends Controller
      * @param string $phone
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function UserList($identity = 0, $is_disable = User::NO_DISABLE, $nick_name = 'null', $phone = 'null')
+    public function UserList($identity = 0, $is_disable = 2, $nick_name = 'null', $phone = 'null')
     {
         /*初始化*/
         $user = new User();
@@ -110,6 +110,7 @@ class UserController extends Controller
             array_push($where, ['users.phone', 'like', '%' . $phone . '%']);
         }
 
+        $this->ViewData['page_search'] = array('identity'=>$identity,'is_disable'=>$is_disable,'nick_name'=>$nick_name,'phone'=>$phone);
         $this->ViewData['user_list'] = $user->getUserList($where);
         dump($this->ViewData);
         return view('user_list', $this->ViewData);
