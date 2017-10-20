@@ -12,6 +12,8 @@ use App\Models\CommonModel;
 use App\Models\Product;
 use App\Tools\M3Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -25,38 +27,52 @@ class ArmyController extends Controller
 {
     public $ViewData = array(); /*传递页面的数组*/
 
+    /**
+     * View 军方订单列表 页面 (搜索条件参数: 订单状态, 创建时间)
+     * @param null $status
+     * @param null $create_time
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function NeedList($status = null, $create_time = null)
     {
         /*初始化*/
         $army = new Army();
         $this->ViewData['order_list'] = array();
         $where = array();
+        $or_where = array();
 
         /*条件搜索*/
         switch ($status)
         {
             case '待确认' :
-                array_push($where, ['orders.status', '=', User::ARMY_ADMIN]);
+                array_push($where, ['orders.status', '=', $army::ORDER_AWAIT_ALLOCATION]);
                 break;
             case '已确认':
-                array_push($where, ['users.identity', '=', User::PLATFORM_ADMIN]);
+                array_push($where, ['orders.status', '=', $army::ORDER_AGAIN_ALLOCATION]);
+                array_push($or_where, ['orders.status', '=', $army::ORDER_ALLOCATION_SUPPLIER]);
+                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_SELECTED]);
+                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_SEND]);
+                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_RECEIVE]);
+                array_push($or_where, ['orders.status', '=', $army::ORDER_ALLOCATION_PLATFORM]);
                 break;
             case '已发货' :
-                array_push($where, ['users.identity', '=', User::SUPPLIER_ADMIN]);
+                array_push($where, ['orders.status', '=', $army::ORDER_SEND_ARMY]);
                 break;
             case '已到货' :
-                array_push($where, ['users.identity', '=', User::ADMINISTRATOR]);
+                array_push($where, ['orders.status', '=', $army::ORDER_RECEIVE_ARMY]);
                 break;
         }
-        if (!empty($nick_name))
+        if (!empty($create_time) && strtotime($create_time))
         {
-            array_push($where, ['users.nick_name', 'like', '%' . $nick_name . '%']);
+            $dt = Carbon::parse($create_time);
+            $start_dt = Carbon::create($dt->year, $dt->month, $dt->day, 0, 0, 0)->timestamp;
+            $end_dt = Carbon::create($dt->year, $dt->month, $dt->day, 0, 0, 0)->addDay()->subSecond()->timestamp;
+            array_push($where, ['orders.create_time', '>=',$start_dt]);
+            array_push($where, ['orders.create_time', '<=',$end_dt]);
         }
+        $this->ViewData['order_list'] = $army->getOrderList($where, $or_where);
 
-        $this->ViewData['order_list'] = $army->getOrderList($where);
-
-        dd($this->ViewData);
-
+        dump($this->ViewData);
         return view('army_need_list', $this->ViewData);
     }
 

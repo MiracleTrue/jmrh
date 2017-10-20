@@ -94,6 +94,9 @@ class UserController extends Controller
         }
         switch ($is_disable)
         {
+            case User::NO_DISABLE :
+                array_push($where, ['users.is_disable', '=', User::NO_DISABLE]);
+                break;
             case User::IS_DISABLE :
                 array_push($where, ['users.is_disable', '=', User::IS_DISABLE]);
                 break;

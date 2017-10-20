@@ -173,6 +173,10 @@ class ProductController extends Controller
         return $m3result->toJson();
     }
 
+    /**
+     * View 商品列表 页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function ProductList()
     {
         /*初始化*/
@@ -180,6 +184,7 @@ class ProductController extends Controller
         $this->ViewData['product_list'] = array();
 
         $this->ViewData['product_list'] = $product->getProductList();
+
         dump($this->ViewData);
         return view('product_list', $this->ViewData);
     }

@@ -25,20 +25,20 @@ class Army extends CommonModel
 
     /**
      * 获取军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
-     * @param array $where &  [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
-     * @return mixed
-     */
-    /**
-     * 获取军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
+     * @param array $orWhere
      * @param array $orderBy
      * @return mixed
      */
-    public function getOrderList($where = array(), $orderBy = array(['orders.create_time', 'desc']))
+    public function getOrderList($where = array(), $orWhere = array(), $orderBy = array(['orders.create_time', 'desc']))
     {
         /*预加载ORM对象*/
-        $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)->where('orders.type',$this::ORDER_TYPE_ARMY)
+        $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)->where('orders.type', $this::ORDER_TYPE_ARMY)
             ->where($where);
+        foreach ($orWhere as $value)
+        {
+            $e_orders->orWhere($value[0], $value[1],$value[2]);
+        }
         foreach ($orderBy as $value)
         {
             $e_orders->orderBy($value[0], $value[1]);
@@ -53,7 +53,7 @@ class Army extends CommonModel
             $item->army_receive_time = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
             return $item;
         });
-        return $order_list->toArray();
+        return $order_list;
     }
 
     /**
@@ -61,7 +61,8 @@ class Army extends CommonModel
      * @param $id
      * @return mixed
      */
-    public function getOrderInfo($id)
+    public
+    function getOrderInfo($id)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
@@ -72,7 +73,7 @@ class Army extends CommonModel
         $e_orders->status_text = self::orderStatusTransformText($e_orders->status);
         $e_orders->create_time = Carbon::createFromTimestamp($e_orders->create_time)->toDateTimeString();
         $e_orders->army_receive_time = Carbon::createFromTimestamp($e_orders->army_receive_time)->toDateTimeString();
-        return $e_orders->toArray();
+        return $e_orders;
     }
 
     /**
@@ -80,7 +81,8 @@ class Army extends CommonModel
      * @param $arr
      * @return bool
      */
-    public function releaseNeed($arr)
+    public
+    function releaseNeed($arr)
     {
         /*初始化*/
         $e_orders = new Orders();
@@ -107,7 +109,8 @@ class Army extends CommonModel
      * @param $arr
      * @return bool
      */
-    public function editNeed($arr)
+    public
+    function editNeed($arr)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $arr['order_id'])
@@ -131,7 +134,8 @@ class Army extends CommonModel
      * @param $id
      * @return bool
      */
-    public function deleteNeed($id)
+    public
+    function deleteNeed($id)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
@@ -152,7 +156,8 @@ class Army extends CommonModel
      * @param $status
      * @return string
      */
-    public function orderStatusTransformText($status)
+    public
+    function orderStatusTransformText($status)
     {
         $text = '';
         switch ($status)
@@ -192,7 +197,8 @@ class Army extends CommonModel
      * 返回 模型 发生的错误信息
      * @return mixed
      */
-    public function messages()
+    public
+    function messages()
     {
         return $this->errors;
     }

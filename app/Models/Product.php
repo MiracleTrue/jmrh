@@ -57,17 +57,20 @@ class Product extends CommonModel
         /*数据过滤*/
         $product_list->transform(function ($item)
         {
-            if(!empty($item->ho_product_category))
+            if(empty($item->ho_product_category))
+            {   /*如果是无效的分类,将产品删除*/
+                $item_delete = Products::find($item->product_id);
+                $item_delete->is_delete = Product::PRODUCT_IS_DELETE;
+                $item_delete->save();
+                header("location: ".action('ProductController@ProductList'));
+            }
+            else
             {
                 $item->product_category = $item->ho_product_category->toArray();
-                unset($item->ho_product_category);
-                return $item;
             }
+            unset($item->ho_product_category);
+            return $item;
         });
-        $temp_arr = collect($product_list->items())->filter();
-        $product_list = $product_list->toArray();
-        $product_list['data'] = $temp_arr->toArray();
-
         return $product_list;
     }
 
@@ -102,7 +105,7 @@ class Product extends CommonModel
             unset($item->hm_products_count);
             return $item;
         });
-        return $category_list->toArray();
+        return $category_list;
     }
 
     /**
@@ -116,7 +119,7 @@ class Product extends CommonModel
         $e_products = Products::where('product_id', $id)->where('is_delete', self::PRODUCT_NO_DELETE)->first() or die();
         $e_products->product_original = MyFile::makeUrl($e_products->product_original);
         $e_products->product_thumb = MyFile::makeUrl($e_products->product_thumb);
-        return $e_products->toArray();
+        return $e_products;
     }
 
     /**
@@ -129,7 +132,7 @@ class Product extends CommonModel
         /*初始化*/
         $e_product_category = ProductCategory::where('category_id', $id)->where('is_delete', self::CATEGORY_NO_DELETE)->first() or die();
 
-        return $e_product_category->toArray();
+        return $e_product_category;
     }
 
     /**
