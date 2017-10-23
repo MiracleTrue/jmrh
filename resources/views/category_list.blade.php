@@ -89,7 +89,7 @@
 
 						<td class="blueWord">
 							<a class="mly-caozuo" onclick="CategoryEdit(this,'{{$item['category_id']}}')">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
+							<a style="margin-left: 5%;" onclick="cateDelete(this,'{{$item['category_id']}}')">删除</a>
 						</td>
 					</tr>
 					 @endforeach					
@@ -102,6 +102,30 @@
 
 @section('MyJs')
 <script>
+	
+		//删除分类
+    	function cateDelete(elm,category_id){
+    		$.ajax({
+    			type:"post",
+    			url:"{{url('category/delete')}}",
+    			async:true,
+    			data:{
+    				category_id:category_id,
+    				_token:'{{csrf_token()}}'
+    			},
+    			success:function(res){
+    				console.log(res);
+    				var resData=JSON.parse(res);
+    				if(!resData.code){
+    					alert("删除成功");
+    					$(elm).parent().parent().hide();
+    				}
+    			}
+    		});
+    	}
+	
+	
+	
 	function CategoryEdit(elm,category_id){
 		
 		layer.open({
