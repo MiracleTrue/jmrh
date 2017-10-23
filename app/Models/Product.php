@@ -57,12 +57,12 @@ class Product extends CommonModel
         /*数据过滤*/
         $product_list->transform(function ($item)
         {
-            if(empty($item->ho_product_category))
+            if (empty($item->ho_product_category))
             {   /*如果是无效的分类,将产品删除*/
                 $item_delete = Products::find($item->product_id);
                 $item_delete->is_delete = Product::PRODUCT_IS_DELETE;
                 $item_delete->save();
-                header("location: ".action('ProductController@ProductList'));
+                header("location: " . action('ProductController@ProductList'));
             }
             else
             {

@@ -110,7 +110,7 @@ class UserController extends Controller
             array_push($where, ['users.phone', 'like', '%' . $phone . '%']);
         }
 
-        $this->ViewData['page_search'] = array('identity'=>$identity,'is_disable'=>$is_disable,'nick_name'=>$nick_name,'phone'=>$phone);
+        $this->ViewData['page_search'] = array('identity' => $identity, 'is_disable' => $is_disable, 'nick_name' => $nick_name, 'phone' => $phone);
         $this->ViewData['user_list'] = $user->getUserList($where);
         dump($this->ViewData);
         return view('user_list', $this->ViewData);
@@ -180,6 +180,8 @@ class UserController extends Controller
         $manage_u = session('ManageUser');
         $user = new User();
         $this->ViewData['user_info'] = array();
+
+
 
         if ($id > 0)
         {

@@ -7,6 +7,7 @@
  */
 
 namespace App\Models;
+
 use App\Entity\Orders;
 
 /**
@@ -28,7 +29,7 @@ class CommonModel
     const ORDER_SUPPLIER_RECEIVE = 130;/*供应商已到货*/
     const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应*/
     const ORDER_SEND_ARMY = 1000;/*已发货到军方*/
-    const ORDER_RECEIVE_ARMY = 9000;/*军方已收货(交易成功)*/
+    const ORDER_SUCCESSFUL = 9000;/*军方已收货 或 平台需求已到货(交易成功)*/
 
     /*报价状态:*/
     const OFFER_OVERTIME = -1;/*已超期*/
@@ -42,15 +43,15 @@ class CommonModel
      * 生成唯一订单号
      * @return string
      */
-    function makeOrderSn()
+    public function makeOrderSn()
     {
-        $time = explode ( " ", microtime () );
+        $time = explode(" ", microtime());
         $time = $time[1] . ($time[0] * 1000);
-        $time = explode ( ".", $time);
+        $time = explode(".", $time);
         $time = isset($time[1]) ? $time[1] : 0;
         $time = date('YmdHis') + $time;
 
-        return $time . str_pad(mt_rand(1, 99999),6, '0', STR_PAD_LEFT);
+        return $time . str_pad(mt_rand(1, 99999), 6, '0', STR_PAD_LEFT);
     }
 
     //        army  军方    platform  平台    supplier   供货商
@@ -63,5 +64,5 @@ class CommonModel
     //        100.已分配供应商    110.已选择供应商    120.供应商已发货   130.供应商已到货
     //        200.库存供应
     //        1000.已发货到军方
-    //        9000.军方已收货(交易成功)
+    //        9000.军方已收货 或 平台需求已到货(交易成功)
 }

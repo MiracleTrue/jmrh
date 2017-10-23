@@ -19,16 +19,23 @@ Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
 
 Route::group(['group' => '平台'], function ()
 {
+//    Route::get('platform/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('军方需求列表');/*军方需求列表 | army_need_list */
+//    Route::get('platform/need/view/{id?}', 'ArmyController@NeedView')->name('查看军方需求');/*查看军方需求 | army_need_view */
+//    Route::any('platform/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
+//    Route::any('platform/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
+//    Route::any('platform/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
+
+    Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('平台发布需求');/*平台发布需求*/
 
 });
 
 Route::group(['group' => '军方'], function ()
 {
     Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('军方需求列表');/*军方需求列表 | army_need_list */
-    Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('查看军方需求');/*查看军方需求 | army_need_view */
-    Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
-    Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
-    Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
+    Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('军方查看需求');/*军方查看需求 | army_need_view */
+    Route::any('army/need/release', 'ArmyController@NeedRelease')->name('军方发布需求');/*军方发布需求*/
+    Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('军方修改需求');/*军方修改需求*/
+    Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('军方删除需求');/*军方删除需求*/
 });
 
 Route::group(['group' => '用户管理'], function ()
