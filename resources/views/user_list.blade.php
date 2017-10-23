@@ -122,7 +122,7 @@
                 @else
                                 <a class="mly-caozuo" onclick="startuser(this,'{{$item['user_id']}}')">启用</a>            
                 @endif
-                    <a style="margin-left: 5%;"onclick="UserEdit('{{$item['user_id']}}')">修改</a>
+                    <a style="margin-left: 5%;" class="a-edit" onclick="UserEdit(this,'{{$item['user_id']}}')">修改</a>
                 </td>
             </tr>
             @endforeach
@@ -201,20 +201,45 @@
     	
     }
     
-    function UserEdit(user_id){
-    	$.ajax({
-    		url:'{{url("user/edit")}}',
-    		data:{
-    			user_id:user_id
-    		},
-    		success:function(res){
-    			
-    			var resData=JSON.parse(res);
-    			console.log(resData);
-    				
-    		}
-    		
-    	});
+//  function UserEdit(user_id){
+//  	$.ajax({
+//  		url:'{{url("user/edit")}}',
+//  		data:{
+//  			user_id:user_id
+//  		},
+//  		success:function(res){
+//  			
+//  			var resData=JSON.parse(res);
+//  			console.log(resData);
+//  				
+//  		}
+//  		
+//  	});
+//  }
+    
+    function UserEdit (elm,user_id)
+    {
+    	//页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
+    	layer.open({
+            type: 2,
+            title: false,
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['600px', '730px'],
+            content: '{{url('user/view')}}'+'/'+user_id
+        });
+
+//              $(elm).on('click', function() {
+//                  layer.open({
+//                      type: 2,
+//                      title: false,
+//                      maxmin: false,
+//                      shadeClose: true, //点击遮罩关闭层
+//                      area: ['600px', '730px'],
+//                      content: '{{url('user/view')}}'+'/'+user_id
+//                  });
+//              });
+
     }
     
     

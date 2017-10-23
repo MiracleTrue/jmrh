@@ -7,32 +7,44 @@
 	.error{
 		color: red;
 	}
+	.csy-box div p input{
+		color: #000000;
+	}
 </style>
 @endsection
 @section('content')
    <div class="csy-box">
-   	<form action="" method="post" id="categoryForm">
-   		
-   		
-   
-			<header>添加分类</header>
+   	 	@if(!empty($category_info))
+    		<form action="" method="post" id="CategoryEdit">
+			@else
+    			<form action="" method="post" id="categoryForm">
+    		@endif  	  	  	 	
+  		   	{{csrf_field()}}
+   		   	
+   		   	
+   		   	@if(!empty($category_info))
+    			<header>编辑分类</header>
+			@else
+    			<header>添加分类</header>
+    		@endif
+   		  
 			<div class="error"></div>
 			<div>
 				<p>
 					<span>名称</span>
-				 	<input  type="" name="category_name" id="category_name" value="" />
+				 	<input  type="" name="category_name" id="category_name" value="{{$category_info['category_name'] or ''}}" />
 				</p>
 				<p>
 					<span>数量单位</span>
-				 	<input  type="" name="unit" id="unit" value="" />
-				 	<a><img src="img/shizi.png" alt=""/></a>
+				 	<input  type="" name="unit" id="unit" value="{{$category_info['unit'] or ''}}" />
+				 	
 				</p>
 			</div>
 			
 			<div>
 				<p>
 					<span>排序</span>
-				 	<input type="" name="sort" id="sort" value="" />
+				 	<input type="" name="sort" id="sort" value="{{$category_info['sort'] or ''}}" />
 				</p>
 				
 				
@@ -53,14 +65,15 @@
  
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/jquery.validate.js')}}"></script>
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/validate-methods.js')}}"></script>
-  
+   <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript">
   $().ready(function() 
     {
       /**
        * 添加用户表单验证与异步提交
        */     
-     var validator = $("#categoryForm").validate({
+     var validatorAdd = $("#categoryForm").validate({
         rules: {
           category_name: {
             required: true
@@ -69,7 +82,8 @@
           	required:true,
           },
           sort:{
-           required: true
+           required: true,
+           isIntGtZero:true
           }
         },
          messages: {
@@ -85,37 +99,96 @@
 	    },
 	    errorLabelContainer:$("#categoryForm div.error"),
 	     wrapper:"li",
+	        submitHandler: function (form) {
+		          $(form).ajaxSubmit({
+		            url: '{{url("category/add")}}',
+		            type: 'POST',
+		            dataType: 'JSON',
+		            success: function (res) {
+		             console.log(res);
+		             if(res.code==0){
+		             	alert("分类添加成功");
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					
+					parent.layer.close(index);
+		             	layer.closeAll('')
+		             }
+		            }
+		          });
+	        }
+	
 	     
-	     
-	     {{-- submitHandler: function (form) {
-          var index = parent.layer.getFrameIndex(window.name);
-          $(form).ajaxSubmit({
-            url: '{{action('Admin\IndexController@LoginSubmit')}}',
-            type: 'POST',
-            dataType: 'JSON',
-            beforeSubmit: function () {
-              if (!NetStatus) return false;
-              NetStatus = false;
-            },
-            success: function (res) {
-              if (res.code == 0) {
-                NetStatus = true;
-                window.location.replace("{{action('Admin\IndexController@Index')}}");
-              }
-              else {
-                NetStatus = true;
-                layer.msg(res.messages, {icon: 2, time: 1000});
-              }
-            }
-          });
-        }--}}
 
       });
       
-     $(".adr-reset").on("click",function(){
-     	validator.resetForm();
-     }) 
       
+      
+      //编辑用户
+      
+        var validatorEd = $("#CategoryEdit").validate({
+        rules: {
+          category_name: {
+            required: true
+          },
+          unit: {
+          	required:true,
+          },
+          sort:{
+           required: true,
+           isIntGtZero:true
+          }
+        },
+         messages: {
+	      category_name: "请输入名称",
+	      unit:{
+	      	required:"请输入数量单位"
+	      	
+	      },
+	      sort: {
+	        required: "请输入排序"
+	      }
+	    
+	    },
+	    errorLabelContainer:$("#categoryForm div.error"),
+	     wrapper:"li",
+	        submitHandler: function (form) {
+		          $(form).ajaxSubmit({
+		            url: '{{url("category/edit")}}',
+		            type: 'POST',
+		            dataType: 'JSON',
+		            success: function (res) {
+		             console.log(res);
+		             if(res.code==0){
+		             	alert("分类编辑成功");
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					
+					parent.layer.close(index);
+		             	layer.closeAll('')
+		             }
+		            }
+		          });
+	        }
+	
+	     
+
+      });
+      
+      
+      
+      
+   if(validatorAdd){
+      	$(".adr-reset").on("click",function(){
+     	   validatorAdd.resetForm();
+     	
+        });
+      }else{
+      	$(".adr-reset").on("click",function(){
+     	   validatorEd.resetForm();
+     	
+        });
+      }
       
     });
   </script>

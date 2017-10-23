@@ -14,21 +14,42 @@
 @endsection
 @section('content')
     <div class="adr-box">
+    	@if(!empty($user_info))
+    	<form id="UserEdit" action="" method="post">
+    		@else
     	<form id="userAdd" action="" method="post">
+    		@endif
     		{{csrf_field()}}
-			<header>添加账户</header>
+    		@if(!empty($user_info))
+    			<header>修改用户</header>
+			@else
+    			<header>添加账户</header>
+    		@endif
 			<div class="error"></div>
-			<p><span>用户名</span><input type="text" name="user_name" id="user_name" value="" placeholder=""/></p>
+			@if(!empty($user_info))
+				<p><span>用户名</span><input type="text" name="user_name" id="user_name" value="{{$user_info['user_name'] or ''}}" placeholder="" disabled="disabled"/></p>
+			@else
+				<p><span>用户名</span><input type="text" name="user_name" id="user_name" value="{{$user_info['user_name'] or ''}}" placeholder="" /></p>
+			@endif
+			<p><span>手机</span><input type="text" name="phone" id="phone" value="{{$user_info['phone'] or ''}}" /></p>
 
-			<p><span>手机</span><input type="text" name="phone" id="phone" value="" /></p>
-
-			<p><span>姓名</span><input type="text" name="nick_name" id="nick_name" value="" /></p>
+			<p><span>姓名</span><input type="text" name="nick_name" id="nick_name" value="{{$user_info['nick_name'] or ''}}" /></p>
 
 			<p><span>账户分类</span>
-				<select name="identity">
-					<option value="2">平台运营员 </option>
-					<option value="3">供货商</option>
-					<option value="4">军方</option>
+				
+					@if(!empty($user_info))
+					<select name="identity" disabled="disabled">
+					<option value="1" @if($user_info['identity'] == '1') selected="selected" @endif >超级管理员</option>
+                    <option value="2" @if($user_info['identity'] == '2') selected="selected" @endif>平台运营员</option>
+                    <option value="3" @if($user_info['identity'] == '3') selected="selected" @endif>供货商</option>
+                    <option value="4" @if($user_info['identity'] == '4') selected="selected" @endif>军方</option>
+                    @else
+                    <select name="identity">
+                    <option value="1" >超级管理员</option>
+                    <option value="2" >平台运营员</option>
+                    <option value="3">供货商</option>
+                    <option value="4" >军方</option>
+                    @endif
 				</select>
 			</p>
 
@@ -40,8 +61,12 @@
 		
 			<div style="margin: 0 auto;">
 				<input type="submit" class="adr-submit" name="adr-submit" id="" value="提交" />
+				<input type="hidden" name="user_id" id="user_id" value="{{$user_info['user_id'] or 0}}" />
+    			<input class="adr-reset" type="reset" value="重置" />
+
 				
-				<input class="adr-reset" type="reset" name="adr-reset" id="" value="重置" />
+				
+				
 			</div>
 		
 		</form>
@@ -58,6 +83,86 @@
   
   <script type="text/javascript">
   $().ready(function(){
+  	
+  		//修改用户
+  	
+  	/**
+       * 添加用户表单验证与异步提交
+       */     
+       
+       
+       
+		var validatorEd = $("#UserEdit").validate({
+	        rules: {
+	          nick_name: {
+	            required: true
+	          },
+	          phone: {
+	          	required:true,
+	          	isMobile:true
+	          },
+	          user_name:{
+	           required: true
+	          },
+	          password: {
+	            minlength: 6
+	          },
+	          password_confirmation:{
+	          	minlength: 6,
+	          	equalTo:"#password"
+	          }
+	        },
+	         messages: {
+		      nick_name: "请输入用户名",
+		      phone:{
+		      	required:"请输入手机号",
+		      	isMobile:"请输入正确的手机号"
+		      },
+		      user_name: {
+		        required: "请输入姓名"
+		      },
+		      password: {
+		        required: "请输入密码",
+		        minlength: "密码长度不能小于 6 位"
+		      },
+		      password_confirmation: {
+		        required: "请输入确认密码",
+		        minlength: "密码长度不能小于 6 个字母",
+		        equalTo: "两次密码输入不一致"
+		      }
+		    
+		    },
+		    errorLabelContainer:$("#UserEdit div.error"),
+		    wrapper:"li",
+		     
+		     
+		    submitHandler: function (form) {
+		          $(form).ajaxSubmit({
+		            url: '{{url("user/edit")}}',
+		            type: 'POST',
+		            data:{
+		            	user_id:$('#user_id').val()
+		            },
+		            dataType: 'JSON',
+		            success: function (res) {
+		             console.log(res);
+		             if(res.code==0){
+		             	alert("用户修改成功");
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					
+					parent.layer.close(index);
+		             	layer.closeAll('')
+		             }
+		            }
+		          });
+	        }
+	
+	      });
+	  	
+  		
+  	
+  	//用户添加
   		//用户名检测提交
   		$("#user_name").blur(function(){
   			if($("#user_name").val()!=""){
@@ -87,10 +192,11 @@
   		
   	
   		})
+     
       /**
        * 添加用户表单验证与异步提交
        */     
-		var validator = $("#userAdd").validate({
+		var validatorAdd = $("#userAdd").validate({
         rules: {
           nick_name: {
             required: true
@@ -155,11 +261,22 @@
 	          });
         }
 
-      });
-      
-     $(".adr-reset").on("click",function(){
-     	validator.resetForm();
      });
+     
+    
+      
+      if(validatorAdd){
+      	$(".adr-reset").on("click",function(){
+     	   validatorAdd.resetForm();
+     	
+        });
+      }else{
+      	$(".adr-reset").on("click",function(){
+     	   validatorEd.resetForm();
+     	
+        });
+      }
+    
      
 //   $("#userAdd").validate({
 ////              rules:{
