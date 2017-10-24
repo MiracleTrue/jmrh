@@ -186,7 +186,7 @@ class Army extends CommonModel
             case $this::ORDER_SEND_ARMY:
                 $text = '已发货';
                 break;
-            case $this::ORDER_RECEIVE_ARMY:
+            case $this::ORDER_SUCCESSFUL:
                 $text = '已到货';
                 break;
         }

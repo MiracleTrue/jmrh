@@ -81,6 +81,13 @@ class IndexController extends Controller
      */
     public function LoginSubmit(Request $request)
     {
+        $arr = array(
+            'user_name' => 'walker001',
+            'password'=>'123456',
+            'nick_name'=>'N-'.now(),
+            'phone'=>'18600982820',
+        );
+        $request->merge($arr);
         /*初始化*/
         $user = new User();
         $m3result = new M3Result();
@@ -119,19 +126,6 @@ class IndexController extends Controller
 
 
     /********************************************************************************************************************/
-
-
-    /**
-     * 设置后台显示的语言（session）
-     * @param $lang
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function SetLanguage(Request $request, $lang)
-    {
-        $request->session()->put('AdminLanguage', $lang);
-
-        return back();
-    }
 
     public function NoPrivilege()
     {

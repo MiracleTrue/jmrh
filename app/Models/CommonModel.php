@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Entity\Orders;
+use App\Tools\M3Result;
 
 /**
  * Class CommonModel 基础模型
@@ -52,6 +53,31 @@ class CommonModel
         $time = date('YmdHis') + $time;
 
         return $time . str_pad(mt_rand(1, 99999), 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * 根据请求方式,返回不同的"没有"权限的信息
+     * @param $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public static function noPrivilegePrompt($request)
+    {
+        if($request->method() == 'GET')/*页面*/
+        {
+            die('没有权限访问.');
+        }
+        elseif($request->method() == 'POST')/*Json*/
+        {
+
+            $m3result = new M3Result();
+            $m3result->code     = -1;
+            $m3result->messages = '没有权限访问.';
+            die($m3result->toJson());
+        }
+        else
+        {
+            die('没有权限访问.');
+        }
     }
 
     //        army  军方    platform  平台    supplier   供货商
