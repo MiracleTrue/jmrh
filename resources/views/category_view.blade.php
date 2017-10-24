@@ -53,6 +53,7 @@
 			
 			
 			<div class="csy-ope">
+				<input type="hidden" name="category" id="category_id" value="{{$category_info['category_id'] or 0}}" />
 				<input type="submit" class="csy-submit" name="csy-submit" id="csy-submit" value="提交" />
 				<input type="reset" class="csy-reset" name="csy-reset" id="csy-reset" value="重置" />
 
@@ -70,6 +71,13 @@
   <script type="text/javascript">
   $().ready(function() 
     {
+    	
+    	
+    
+    	
+    	
+    	
+    	
       /**
        * 添加用户表单验证与异步提交
        */     
@@ -156,6 +164,9 @@
 		          $(form).ajaxSubmit({
 		            url: '{{url("category/edit")}}',
 		            type: 'POST',
+		            data:{
+		            	category_id:$('#category_id').val()
+		            },
 		            dataType: 'JSON',
 		            success: function (res) {
 		             console.log(res);
