@@ -20,9 +20,15 @@ Route::any('login/submit', 'IndexController@LoginSubmit');/*登录提交 */
 /*需要登录的请求*/
 Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 {
-    Route::get('/', 'IndexController@Index');/*后台主框架 | index */
-    Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
-    Route::any('logout', 'IndexController@Logout');/*退出登录提交 */
+    Route::group(['group' => '用户中心','identity' => [\App\Models\User::PLATFORM_ADMIN,\App\Models\User::SUPPLIER_ADMIN,\App\Models\User::ARMY_ADMIN]], function ()
+    {
+        Route::get('/', 'IndexController@Index');/*后台主框架 | index */
+        Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
+        Route::get('logout', 'IndexController@Logout');/*退出登录提交 */
+        Route::get('log/manage', 'UserController@LogManage')->name('用户操作日志');/*用户日志 | log_manage */
+        Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
+        Route::any('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
+    });
 
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
@@ -72,11 +78,6 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
     });
 
-    Route::group(['group' => '用户中心'], function ()
-    {
-        Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
-        Route::any('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
-    });
 });
 
 

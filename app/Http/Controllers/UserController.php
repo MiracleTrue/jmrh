@@ -61,6 +61,12 @@ class UserController extends Controller
         return view('log_list', $this->ViewData);
     }
 
+    public function LogManage()
+    {
+        dump($this->ViewData);
+        return view('log_manage', $this->ViewData);
+    }
+
     /**
      * View 用户管理列表 页面 (搜索条件参数: 身份标识, 禁用状态, 用户姓名, 手机号码)
      * @param int $identity

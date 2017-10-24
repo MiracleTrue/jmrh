@@ -81,13 +81,6 @@ class IndexController extends Controller
      */
     public function LoginSubmit(Request $request)
     {
-        $arr = array(
-            'user_name' => 'walker001',
-            'password'=>'123456',
-            'nick_name'=>'N-'.now(),
-            'phone'=>'18600982820',
-        );
-        $request->merge($arr);
         /*初始化*/
         $user = new User();
         $m3result = new M3Result();
@@ -120,15 +113,5 @@ class IndexController extends Controller
             $m3result->data['user'] = $user->messages();
         }
         return $m3result->toJson();
-    }
-
-
-
-
-    /********************************************************************************************************************/
-
-    public function NoPrivilege()
-    {
-        return view('admin.temp.no_privilege');
     }
 }
