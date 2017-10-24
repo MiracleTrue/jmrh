@@ -7,5 +7,5 @@
         <span>已到货订单：<b>3</b>个</span>
 
     </div>
-    <div class="headerdiv2">退出平台</div>
+   <a href="{{url('logout')}}"> <div class="headerdiv2">退出平台</div></a>
 </header>

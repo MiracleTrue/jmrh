@@ -42,8 +42,11 @@ body {
 	text-indent: 45px;
 	font-size: 16px;
 	background: url(../images/exit.png) no-repeat 0 0 #fe7e01;
+	color: #FFFFFF;
 }
-
+.headerdiv2 a{
+	color: #FFFFFF;
+}
 .home-header div span {
 	display: inline-block;
 	height: 30px;

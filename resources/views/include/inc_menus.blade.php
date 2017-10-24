@@ -8,7 +8,7 @@
 
         </li>
         <li class="treeview">
-            <a href="#">
+            <a href="{{url('army/need/list')}}">
                 <i class="glyphicon glyphicon-edit" style="width: 19px;"></i>
                 <span>军方发布需求</span>
                 <!--<span class="label label-primary pull-right">4</span>-->

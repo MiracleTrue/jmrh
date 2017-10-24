@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="{{asset('webStatic/css/sidebar-menu.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/home.css')}}"/>
     <script type="text/javascript" src="{{asset('webStatic/library/jquery-1.11.0/jquery-1.11.0.js')}}"></script>
-    <script type="text/javascript" src="{{asset('webStatic/library/jquery-1.11.0/jquery-1.11.0.js')}}"></script>
+    <script type="text/javascript" src="{{asset('webStatic/library/layer-v3.1.0/layer/layer.js')}}"></script>
+    
 </head>
 <body>
     @include('include.inc_menus')
@@ -33,10 +34,29 @@
 		$("#Info1").attr("src",$(this).find('a').attr('href'));
 		return false;
 	})
-$(".password").on("click",function(){
 	
-})
+
+
+
 
     });
+    ! function() {
+
+			//页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
+			layer.ready(function() {
+				$('.password').on('click', function() {
+					
+					layer.open({
+						type: 2,
+						title: false,
+						maxmin: false,
+						shadeClose: true, //点击遮罩关闭层
+						area: ['620px', '514px'],
+						content: '{{url('password/original/view')}}'
+					});
+				});
+			});
+
+		}();
 </script>
 </html>

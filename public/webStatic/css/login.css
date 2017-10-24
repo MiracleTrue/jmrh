@@ -1,0 +1,66 @@
+.login-box {
+				position: relative;
+				background-image: url(../images/loginbg.png);
+				background-size: cover;
+				font-family: "微软雅黑"
+			}
+			
+			.loginkuang {
+				width: 452px;
+				height: 325px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background: url(../images/loginbg2.png);
+				padding-top: 100px;
+				padding-left: 50px;
+				padding-right: 50px;
+			}
+			
+			.username {
+				width: 452px;
+				height: 50px;
+				background: url(../images/username.png) no-repeat;
+			}
+			
+			#user_name {
+				height: 48px;
+				margin-left: 52px;
+				border: none;
+				width: 400px;
+				text-indent: 20px;
+			}
+			
+			.possword {
+				width: 452px;
+				height: 50px;
+				background: url(../images/username.png) no-repeat;
+				margin-top: 22px;
+			}
+			
+			#password {
+				height: 48px;
+				margin-left: 52px;
+				border: none;
+				width: 400px;
+				text-indent: 20px;
+			}
+			.remeword{
+				text-align: right;
+				margin-top: 22px;
+			}
+			.loginbtn {
+				display: block;
+				width: 452px;
+				height: 52px;
+				/*background: url(images/loginbutton.png) no-repeat;*/
+				background-color: #ff8705;
+				text-align: center;
+				line-height: 52px;
+				color: #FFFFFF;
+				border-radius: 5px;
+				margin-top: 20px;
+				cursor: pointer;
+				border: none;
+			}
