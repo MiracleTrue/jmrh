@@ -29,7 +29,7 @@ class Controller extends BaseController
         if(empty($_COOKIE['PaginationSize']) || is_numeric($_COOKIE['PaginationSize']) == false) {$_COOKIE['PaginationSize'] = 10;}
 
         /*加入session*/
-        session(['ManageUser' => Users::find(1)]);
+//        session(['ManageUser' => Users::find(1)]);
 
 
 //        army  军方    platform  平台    supplier   供货商
