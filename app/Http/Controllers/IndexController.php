@@ -64,6 +64,17 @@ class IndexController extends Controller
     }
 
     /**
+     * 用户登出(退出)处理,跳转注册页面
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function Logout()
+    {
+        /*删除管理员的session*/
+        session()->forget('ManageUser');
+        return redirect(action('IndexController@Login'));
+    }
+
+    /**
      * Ajax 用户登录 提交处理
      * @param Request $request
      * @return \App\Tools\json
@@ -108,17 +119,6 @@ class IndexController extends Controller
 
 
     /********************************************************************************************************************/
-
-    /**
-     * 用户登出(退出)处理,跳转注册页面
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function Logout()
-    {
-        /*删除管理员的session*/
-        session()->forget('AdminUser');
-        return redirect(action('Admin\MenuController@MenusAccess'));
-    }
 
 
     /**

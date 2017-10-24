@@ -15,7 +15,9 @@ Route::get('test/delete', 'TestController@T_delete');
 
 Route::get('/', 'IndexController@Index');/*后台主框架 | index */
 Route::get('login', 'IndexController@Login');/*登录页面 | login */
-Route::get('login/submit', 'IndexController@LoginSubmit');/*登录提交 */
+Route::any('logout', 'IndexController@Logout');/*退出登录提交 */
+Route::any('login/submit', 'IndexController@LoginSubmit');/*登录提交 */
+
 Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
 
 Route::group(['group' => '平台'], function ()
