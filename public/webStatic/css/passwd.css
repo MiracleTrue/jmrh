@@ -44,14 +44,28 @@
 	text-align: center;
 	display: inline-block;
 	}
-.pass-submit{
+ .pass-box .pass-submit{
 	background: #fe8d01;
 	color: #FFFFFF;
 	margin-left: 45px;
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
 	
 }
-.pass-reset{
+ .pass-box .pass-reset{
 	background: #EEEEEE;
 	color: #000000;
 	margin-left: 20px;
+	width: 210px;
+	height: 64px;
+	font-size: 19px;
+	font-weight: bolder;
+	line-height: 64px;
+	text-align: center;
+	display: inline-block;
 }
