@@ -96,6 +96,59 @@ class User extends CommonModel
     }
 
     /**
+     * 用户登录检测与校验 (使用用户名方式登录)
+     * @param $name
+     * @param $pass
+     * @return Users | bool
+     */
+    public function userLoginFromName($name, $pass)
+    {
+        /*初始化*/
+        $password = new Password();
+        $users = Users::where('user_name', $name)->get()->first();
+
+        if (!empty($users))/*检测用户是否存在*/
+        {
+            if ($users->is_disable == User::NO_DISABLE)/*检测用户是否禁用*/
+            {
+                if ($password->checkHashPassword($pass, $users->password) === true)/*检测用户密码是否正确*/
+                {
+                    /*验证成功,返回User对象*/
+                    return $users;
+                }
+                else
+                {
+                    $this->errors['code'] = 1;
+                    $this->errors['messages'] = '用户密码错误';
+                    return false;
+                }
+            }
+            else
+            {
+                $this->errors['code'] = 2;
+                $this->errors['messages'] = '用户已禁用';
+                return false;
+            }
+        }
+        else
+        {
+            $this->errors['code'] = 3;
+            $this->errors['messages'] = '用户不存在';
+            return false;
+        }
+    }
+
+    /**
+     * 用户登录成功的处理
+     * @param $user
+     */
+    public function userLoginSuccess(Users $user)
+    {
+        /*加入session*/
+        session(['ManageUser' => $user]);
+    }
+
+    /**
      * 使用原密码: 修改单个用户密码
      * @param $user_id & 用户id
      * @param $original_password & 原密码

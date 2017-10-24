@@ -181,8 +181,6 @@ class UserController extends Controller
         $user = new User();
         $this->ViewData['user_info'] = array();
 
-
-
         if ($id > 0)
         {
             $this->ViewData['user_info'] = $user->getUser($id);
@@ -325,7 +323,7 @@ class UserController extends Controller
                 'integer',
                 Rule::in([User::ARMY_ADMIN, User::PLATFORM_ADMIN, User::SUPPLIER_ADMIN]),
             ],
-            'user_name' => 'required|unique:users,user_name',
+            'user_name' => 'required|between:4,16|unique:users,user_name',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6'
         ];

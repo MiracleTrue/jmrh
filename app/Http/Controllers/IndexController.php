@@ -7,6 +7,12 @@
  */
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Tools\M3Result;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * 首页控制器
  * Class IndexController
@@ -23,8 +29,8 @@ class IndexController extends Controller
     public function Index()
     {
         /*初始化*/
-//        $menu = new Menu();
-//        $admin_u = session('AdminUser');
+        $manage_u = session('ManageUser');
+        dump($manage_u);
 
         /*根据角色权限生成栏目菜单*/
 //        if($admin_u->admin_role->is_super_management_group == Rbac::IS_SUPER_MANAGEMENT_GROUP)
@@ -36,7 +42,7 @@ class IndexController extends Controller
 //            $this->ViewData['menu_list'] = $menu->getAdminFilterMenus();
 //
 //        }
-        return view('index',$this->ViewData);
+        return view('index', $this->ViewData);
     }
 
     /**
@@ -45,7 +51,7 @@ class IndexController extends Controller
      */
     public function Welcome()
     {
-        return view('welcome',$this->ViewData);
+        return view('welcome', $this->ViewData);
     }
 
     /**
@@ -54,13 +60,54 @@ class IndexController extends Controller
      */
     public function Login()
     {
-        return view('login',$this->ViewData);
+        return view('login', $this->ViewData);
+    }
+
+    /**
+     * Ajax 用户登录 提交处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function LoginSubmit(Request $request)
+    {
+        /*初始化*/
+        $user = new User();
+        $m3result = new M3Result();
+        $manage_u = null;
+
+        $rules = [
+            'user_name' => [
+                'required',
+                'between:4,16',
+                Rule::exists('users')->where(function ($query)
+                {
+                    $query->where('user_name', $GLOBALS['request']->input('user_name'));
+                }),
+            ],
+            'password' => 'required|min:6',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->passes() && $manage_u = $user->userLoginFromName($request->input('user_name'), $request->input('password')))
+        {   /*验证通过并且用户检测成功*/
+            $user->userLoginSuccess($manage_u);/*用户登录成功的处理*/
+            $m3result->code = 0;
+            $m3result->messages = '用户登录成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['user'] = $user->messages();
+        }
+        return $m3result->toJson();
     }
 
 
 
 
-/********************************************************************************************************************/
+    /********************************************************************************************************************/
 
     /**
      * 用户登出(退出)处理,跳转注册页面
@@ -74,65 +121,14 @@ class IndexController extends Controller
     }
 
 
-
-
-    /**
-     * 用户登录Ajax提交
-     * @param Request $request
-     * @return \App\Tools\json
-     */
-    public function LoginSubmit(Request $request)
-    {
-        $admin    = new Admin();
-        $m3result = new M3Result();
-        $user     = null;
-
-        $rules = [
-            'admin_name'     => [
-                'required',
-                'between:4,16',
-                Rule::exists('admin_user')->where(function ($query) {
-                    $query->where('admin_name',$GLOBALS['request']->input('admin_name'));
-                }),
-            ],
-            'password'   => 'required|min:6',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-        if($validator->passes() && $user = $admin->userLoginCheck($request))
-        {   /*验证通过并且用户检测成功*/
-
-            $admin->userLoginSuccess($user);/*用户登录成功的处理*/
-
-            $m3result->code    = 0;
-            $m3result->messages= __('admin.success');
-        }
-        else
-        {
-            $m3result->code    = 1;
-            $m3result->messages= __('common.passwordError');
-            $m3result->data['validator']  = $validator->messages();
-            $m3result->data['admin']      = $admin->messages();
-            if(!empty($m3result->data['admin']['userLoginCheck']['code']) && $m3result->data['admin']['userLoginCheck']['code'] == 102)
-            {   /*用户已停用*/
-                $m3result->code    = 2;
-                $m3result->messages= $m3result->data['admin']['userLoginCheck']['messages'];
-            }
-        }
-
-        return $m3result->toJson();
-
-    }
-
-
     /**
      * 设置后台显示的语言（session）
      * @param $lang
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function SetLanguage(Request $request , $lang)
+    public function SetLanguage(Request $request, $lang)
     {
-        $request->session()->put('AdminLanguage',$lang);
+        $request->session()->put('AdminLanguage', $lang);
 
         return back();
     }
