@@ -29,7 +29,7 @@
     		@endif
    		  
 			<div class="error"></div>
-			<div>
+			<div  class="productAdd_div1">
 				<p>
 					<span>名称</span>
 				 	<input  type="" name="category_name" id="category_name" value="{{$category_info['category_name'] or ''}}" />
@@ -41,7 +41,7 @@
 				</p>
 			</div>
 			
-			<div>
+			<div  class="productAdd_div1">
 				<p>
 					<span>排序</span>
 				 	<input type="" name="sort" id="sort" value="{{$category_info['sort'] or ''}}" />

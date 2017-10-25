@@ -24,8 +24,10 @@
 
 						<th><span style="">操作</span></th>
 					</tr>
+					
+					 @foreach($product_list as $item)
 					<tr>
-						<td>白菜</td>
+						<td>{{$item['product_name']}}</td>
 						<td><img src="../../public/webStatic/images/goods.png"/></td>
 						<td>蔬菜</td>
 						<td>1</td>
@@ -35,52 +37,7 @@
 							<a style="margin-left: 5%;">删除</a>
 						</td>
 					</tr>
-					<tr>
-						<td>牛肉</td>
-						<td><img src="../../public/webStatic/images/goods.png"/></td>
-						<td>肉食</td>
-						<td>2</td>
-
-						<td class="blueWord">
-							<a class="mly-caozuo">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>豆奶</td>
-						<td><img src="../../public/webStatic/images/goods.png"/></td>
-						<td>牛奶</td>
-						<td>3</td>
-
-						<td class="blueWord">
-							<a class="mly-caozuo">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>花生油</td>
-						<td><img src="../../public/webStatic/images/goods.png"/></td>
-						<td>食用油</td>
-						<td>4</td>
-
-						<td class="blueWord">
-							<a class="mly-caozuo">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
-						</td>
-					</tr>
-					<tr style="border-bottom: 1px solid #f5f5f5">
-						<td>芹菜</td>
-						<td><img src="../../public/webStatic/../../public/webStatic/images/goods.png"/></td>
-						<td>蔬菜</td>
-						<td>5</td>
-
-						<td class="blueWord">
-							<a class="mly-caozuo">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
-						</td>
-					</tr>
-					
-
+					 @endforeach
 				</tbody>
 			</table>
 
@@ -101,7 +58,7 @@
 						title: false,
 						maxmin: false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '413px'],
+						area: ['920px', '913px'],
 						content: '{{url('product/view')}}'
 					});
 				});

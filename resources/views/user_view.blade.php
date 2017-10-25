@@ -89,9 +89,6 @@
   	/**
        * 添加用户表单验证与异步提交
        */     
-       
-       
-       
 		var validatorEd = $("#UserEdit").validate({
 	        rules: {
 	          nick_name: {
