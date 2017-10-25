@@ -37,6 +37,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 //    Route::any('platform/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
 //    Route::any('platform/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
 //    Route::any('platform/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
+        Route::get('platform/need/view/{id?}', 'PlatformController@NeedView')->name('平台需求页面');/*平台需求页面 | platform_need_view */
         Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('平台发布需求');/*平台发布需求*/
     });
 
