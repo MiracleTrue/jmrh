@@ -28,9 +28,9 @@
 					 @foreach($product_list as $item)
 					<tr>
 						<td>{{$item['product_name']}}</td>
-						<td><img src="../../public/webStatic/images/goods.png"/></td>
-						<td>蔬菜</td>
-						<td>1</td>
+						<td><img src="{{\App\Models\MyFile::makeUrl($item['product_thumb'])}}" /></td>
+						<td>{{$item['product_category']['category_name']}}</td>
+						<td>{{$item['sort']}}</td>
 
 						<td class="blueWord">
 							<a class="mly-caozuo">编辑</a>

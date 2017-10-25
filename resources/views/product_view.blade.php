@@ -3,7 +3,12 @@
 @section('MyCss')
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     <link rel="stylesheet" href="{{asset('webStatic/css/addclassify.css')}}">
-
+<style>
+	.error{
+	color: red;
+	
+}
+</style>
 @endsection
 @section('content')
   <div class="csy-box">
@@ -21,12 +26,15 @@
 						</select>
 						 
 					</p>
-					<p>
+					<p style="position: relative;">
 						<span>商品图片</span>
-						<input style="display: none;" type="file"  accept="image/*" name="product_image" id="product_image" value="" />
-						<input  style="background-color: #FFFFFF;border: 1px solid #A9A9A9;" disabled="disabled" id="" value="" />
+						<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file"  accept="image/*" name="product_image" id="product_image" value="" />
+						<label for="product_image"><input  style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 13px;left: 55px;" disabled="disabled" id="" value="请选择图片" /></lable>
 						<a><label for="product_image"><img style="cursor: pointer;" src="../../public/webStatic/images/shizi.png" alt="浏览按钮" /></label></a>
 					</p>
+					<input type="hidden" name="sort" id="sort" value="{{$item['sort']}}" />
+					
+
 				</div>
 	
 				<div class="productAdd_div1">
@@ -55,16 +63,15 @@
 <script src="{{asset('webStatic/library/ueditor/1.4.3/ueditor.all.min.js')}}" type="text/javascript" charset="utf-8"></script>
 
 <script>
-	  var editor = UE.getEditor('container',{serverUrl: '{{url("product/add")}}'});
-	  
+	  var editor = UE.getEditor('container',{serverUrl: "{{env('APP_URL').'/phpPlugins/ueditor/controller.php'}}"});
 	  //表单验证
-	  	var validatorEd = $("#UserEdit").validate({
+	  	var validatorEd = $("#productAdd").validate({
 	        rules: {
 	          product_name: {
 	            required: true
 	          },
 	          product_image: {
-	          	required:true,
+	          	required:true
 	          	
 	          },
 	          product_content:{
@@ -72,13 +79,13 @@
 	          },
 	        },
 	         messages: {
-		      product_name: "请输入用户名",
+		      product_name: "请输入商品名称",
 		      product_image:{
-		      	required:"请输入手机号"
+		      	required:"请上传图片"
 		      	
 		      },
 		      product_content:{
-		      	required:"内容"
+		      	required:"请输入内容"
 		      }
 		    },
 		    errorLabelContainer:$(".error"),
@@ -87,17 +94,23 @@
 		          $(form).ajaxSubmit({
 		            url: '{{url("product/add")}}',
 		            type: 'POST',
-		           
 		            dataType: 'JSON',
+		            data:{
+		            	_token:'{{csrf_token()}}'
+		            },
 		            success: function (res) {
 		             console.log(res);
 		             if(res.code==0){
-		             	alert("用户修改成功");
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             	
 			        var index=parent.layer.getFrameIndex(window.name);
-					
-					parent.layer.close(index);
+					setTimeout(function(){
+						parent.layer.close(index);
 		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             }
 		            }
 		          });
