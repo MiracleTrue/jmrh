@@ -20,12 +20,12 @@ Route::any('login/submit', 'IndexController@LoginSubmit');/*登录提交 */
 /*需要登录的请求*/
 Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 {
-    Route::group(['group' => '用户中心','identity' => [\App\Models\User::PLATFORM_ADMIN,\App\Models\User::SUPPLIER_ADMIN,\App\Models\User::ARMY_ADMIN]], function ()
+    Route::group(['group' => '用户中心', 'identity' => [\App\Models\User::PLATFORM_ADMIN, \App\Models\User::SUPPLIER_ADMIN, \App\Models\User::ARMY_ADMIN]], function ()
     {
         Route::get('/', 'IndexController@Index');/*后台主框架 | index */
         Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
         Route::get('logout', 'IndexController@Logout');/*退出登录提交 */
-        Route::get('log/manage', 'UserController@LogManage')->name('用户操作日志');/*用户日志 | log_manage */
+        Route::get('log/manage', 'UserController@LogManage')->name('用户操作日志');/*用户操作日志 | log_manage */
         Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
         Route::any('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
     });
@@ -37,7 +37,6 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 //    Route::any('platform/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
 //    Route::any('platform/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
 //    Route::any('platform/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
-
         Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('平台发布需求');/*平台发布需求*/
     });
 
@@ -52,8 +51,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()
     {
+        Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('全部日志列表');/*全部日志列表 | log_list */
         Route::get('user/list/{identity?}/{is_disable?}/{nick_name?}/{phone?}', 'UserController@UserList')->name('用户列表');/*用户列表 | user_list */
-        Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('操作日志列表');/*操作日志列表 | log_list */
         Route::get('user/view/{id?}', 'UserController@UserView')->name('查看用户');/*查看用户 | user_view */
         Route::any('user/check/name', 'UserController@UserCheckName')->name('检测用户名占用');/*检测用户名占用*/
         Route::any('user/add', 'UserController@UserAdd')->name('新增用户');/*新增用户*/

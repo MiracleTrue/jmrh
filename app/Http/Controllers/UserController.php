@@ -23,7 +23,7 @@ class UserController extends Controller
     public $ViewData = array(); /*传递页面的数组*/
 
     /**
-     * View 用户日志列表 页面 (搜索条件参数: 身份标识, 用户姓名)
+     * View 全部用户日志列表 页面 (搜索条件参数: 身份标识, 用户姓名)
      * @param int $identity
      * @param string $nick_name
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -61,8 +61,17 @@ class UserController extends Controller
         return view('log_list', $this->ViewData);
     }
 
+    /**
+     * View 当前用户日志列表 页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function LogManage()
     {
+        /*初始化*/
+        $user = new User();
+        $this->ViewData['log_list'] = array();
+
+        $this->ViewData['log_list'] = $user->getLogManage();
         dump($this->ViewData);
         return view('log_manage', $this->ViewData);
     }

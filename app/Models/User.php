@@ -57,6 +57,24 @@ class User extends CommonModel
     }
 
     /**
+     * 获取当前用户日志列表 (日志创建时间) "分页" | 默认排序:创建时间
+     * @return mixed
+     */
+    public function getLogManage()
+    {
+        /*初始化*/
+        $manage_u = session('ManageUser');
+        $log_list = UserLog::where('user_id',$manage_u->user_id)->orderBy('create_time','desc')->paginate($_COOKIE['PaginationSize']);
+        /*数据过滤排版*/
+        $log_list->transform(function ($item)
+        {
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
+        });
+        return $log_list;
+    }
+
+    /**
      * 获取所有用户列表 (已转换:身份标识文本,创建时间) (如有where 则加入新的sql条件) "分页" | 默认排序:用户ID
      * @param array $where
      * @return mixed

@@ -200,6 +200,7 @@ class ProductController extends Controller
         /*初始化*/
         $product = new Product();
         $this->ViewData['product_info'] = array();
+        $this->ViewData['category_list'] = $product->getProductCategoryList(array(),array(['product_category.sort', 'desc']),false);
         if ($id > 0)
         {
             $this->ViewData['product_info'] = $product->getProductInfo($id);
