@@ -37,7 +37,7 @@ class Army extends CommonModel
             ->where($where);
         foreach ($orWhere as $value)
         {
-            $e_orders->orWhere($value[0], $value[1],$value[2]);
+            $e_orders->orWhere($value[0], $value[1], $value[2]);
         }
         foreach ($orderBy as $value)
         {
@@ -61,8 +61,7 @@ class Army extends CommonModel
      * @param $id
      * @return mixed
      */
-    public
-    function getOrderInfo($id)
+    public function getOrderInfo($id)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
@@ -81,8 +80,7 @@ class Army extends CommonModel
      * @param $arr
      * @return bool
      */
-    public
-    function releaseNeed($arr)
+    public function releaseNeed($arr)
     {
         /*初始化*/
         $e_orders = new Orders();
@@ -109,8 +107,7 @@ class Army extends CommonModel
      * @param $arr
      * @return bool
      */
-    public
-    function editNeed($arr)
+    public function editNeed($arr)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $arr['order_id'])
@@ -134,8 +131,7 @@ class Army extends CommonModel
      * @param $id
      * @return bool
      */
-    public
-    function deleteNeed($id)
+    public function deleteNeed($id)
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
@@ -156,8 +152,7 @@ class Army extends CommonModel
      * @param $status
      * @return string
      */
-    public
-    function orderStatusTransformText($status)
+    public function orderStatusTransformText($status)
     {
         $text = '';
         switch ($status)
@@ -187,7 +182,7 @@ class Army extends CommonModel
                 $text = '已发货';
                 break;
             case $this::ORDER_SUCCESSFUL:
-                $text = '已到货';
+                $text = '已到货(交易完成)';
                 break;
         }
         return $text;
@@ -197,8 +192,7 @@ class Army extends CommonModel
      * 返回 模型 发生的错误信息
      * @return mixed
      */
-    public
-    function messages()
+    public function messages()
     {
         return $this->errors;
     }

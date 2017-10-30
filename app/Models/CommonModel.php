@@ -27,10 +27,10 @@ class CommonModel
     const ORDER_ALLOCATION_SUPPLIER = 100;/*已分配供应商*/
     const ORDER_SUPPLIER_SELECTED = 110;/*已选择供应商*/
     const ORDER_SUPPLIER_SEND = 120;/*供应商已发货*/
-    const ORDER_SUPPLIER_RECEIVE = 130;/*供应商已到货*/
+    const ORDER_SUPPLIER_RECEIVE = 130;/*供应商货已到*/
     const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应*/
     const ORDER_SEND_ARMY = 1000;/*已发货到军方*/
-    const ORDER_SUCCESSFUL = 9000;/*军方已收货 或 平台需求已到货(交易成功)*/
+    const ORDER_SUCCESSFUL = 9000;/*军方已收货(交易成功) 或 平台已收货(交易成功)*/
 
     /*报价状态:*/
     const OFFER_OVERTIME = -1;/*已超期*/
@@ -79,16 +79,4 @@ class CommonModel
             die('没有权限访问.');
         }
     }
-
-    //        army  军方    platform  平台    supplier   供货商
-
-    //        身份标识: 1.超级管理员  2.平台运营员 3.供货商  4.军方  0.无效
-    //        报价状态:  -1.已超期   0.待报价   1.等待通过    2.未通过   3.已通过   4.已发货
-
-    //        订单状态:
-    //        0.待分配   1.重新分配
-    //        100.已分配供应商    110.已选择供应商    120.供应商已发货   130.供应商已到货
-    //        200.库存供应
-    //        1000.已发货到军方
-    //        9000.军方已收货 或 平台需求已到货(交易成功)
 }

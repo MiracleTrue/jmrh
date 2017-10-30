@@ -30,7 +30,6 @@ class IndexController extends Controller
     {
         /*初始化*/
         $manage_u = session('ManageUser');
-        dump($manage_u);
 
         /*根据角色权限生成栏目菜单*/
 //        if($admin_u->admin_role->is_super_management_group == Rbac::IS_SUPER_MANAGEMENT_GROUP)
@@ -51,6 +50,9 @@ class IndexController extends Controller
      */
     public function Welcome()
     {
+        $manage_u = session('ManageUser');
+        dump($manage_u);
+
         return view('welcome', $this->ViewData);
     }
 

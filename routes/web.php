@@ -37,17 +37,23 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 //    Route::any('platform/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
 //    Route::any('platform/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
 //    Route::any('platform/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
-        Route::get('platform/need/view/{id?}', 'PlatformController@NeedView')->name('平台需求页面');/*平台需求页面 | platform_need_view */
-        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('平台发布需求');/*平台发布需求*/
+
+        Route::get('platform/need/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_need_list */
+        Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
+
+        Route::any('platform/allocation/offer', 'PlatformController@offerAllocation')->name('供应商分配');/*平台供应商分配*/
+        Route::any('platform/selected/offer', 'PlatformController@OfferSelected')->name('供应商选择');/*平台供应商选择*/
+        Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
+        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
     });
 
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
     {
-        Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('军方需求列表');/*军方需求列表 | army_need_list */
-        Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('军方查看需求');/*军方查看需求 | army_need_view */
-        Route::any('army/need/release', 'ArmyController@NeedRelease')->name('军方发布需求');/*军方发布需求*/
-        Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('军方修改需求');/*军方修改需求*/
-        Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('军方删除需求');/*军方删除需求*/
+        Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('需求列表');/*军方需求列表 | army_need_list */
+        Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('查看需求');/*军方查看需求 | army_need_view */
+        Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布需求');/*军方发布需求*/
+        Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/
+        Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/
     });
 
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()

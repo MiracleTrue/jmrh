@@ -99,6 +99,28 @@ class User extends CommonModel
     }
 
     /**
+     * 获取所有供货商列表 (已转换:身份标识文本,创建时间)
+     * @return mixed
+     */
+    public function getSupplierList()
+    {
+        $e_users = new Users();
+
+        /*预加载ORM对象*/
+        $supplier_list = $e_users->where('users.is_disable',User::NO_DISABLE)->where('users.identity',User::SUPPLIER_ADMIN)->get();
+
+        /*数据过滤排版*/
+        $supplier_list->transform(function ($item)
+        {
+            $item->identity_text = User::identityTransformText($item->identity);
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
+        });
+
+        return $supplier_list;
+    }
+
+    /**
      * 获取单个用户 (已转换:身份标识文本,创建时间)
      * @param $id
      * @return mixed

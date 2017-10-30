@@ -67,8 +67,8 @@ class ArmyController extends Controller
             $dt = Carbon::parse($create_time);
             $start_dt = Carbon::create($dt->year, $dt->month, $dt->day, 0, 0, 0)->timestamp;
             $end_dt = Carbon::create($dt->year, $dt->month, $dt->day, 0, 0, 0)->addDay()->subSecond()->timestamp;
-            array_push($where, ['orders.create_time', '>=',$start_dt]);
-            array_push($where, ['orders.create_time', '<=',$end_dt]);
+            array_push($where, ['orders.create_time', '>=', $start_dt]);
+            array_push($where, ['orders.create_time', '<=', $end_dt]);
         }
         $this->ViewData['order_list'] = $army->getOrderList($where, $or_where);
 
@@ -81,7 +81,7 @@ class ArmyController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function NeedView($id)
+    public function NeedView($id = 0)
     {
         /*初始化*/
         $army = new Army();
@@ -96,7 +96,7 @@ class ArmyController extends Controller
     }
 
     /**
-     * Ajax 发布军方需求 请求处理
+     * Ajax 军方发布需求 请求处理
      * @param Request $request
      * @return \App\Tools\json
      */
