@@ -81,7 +81,7 @@ class Product extends CommonModel
      * @param bool $is_paginate & 是否需要分页
      * @return mixed
      */
-    public function getProductCategoryList($where = array(), $orderBy = array(['product_category.sort', 'desc']),$is_paginate = true)
+    public function getProductCategoryList($where = array(), $orderBy = array(['product_category.sort', 'desc']), $is_paginate = true)
     {
         /*初始化*/
         $e_product_category = new ProductCategory();
@@ -97,7 +97,7 @@ class Product extends CommonModel
         {
             $e_product_category->orderBy($value[0], $value[1]);
         }
-        if($is_paginate === true)
+        if ($is_paginate === true)
         {
             $category_list = $e_product_category->paginate($_COOKIE['PaginationSize']);
         }
@@ -114,6 +114,25 @@ class Product extends CommonModel
             return $item;
         });
         return $category_list;
+    }
+
+    /**
+     * 获取所有分类计量单位列表 | 默认排序:商品数量
+     * @param int $number 指定返回几条
+     * @return mixed
+     */
+    public function getProductCategoryUnitList($number = 10)
+    {
+        /*初始化*/
+        $e_product_category = new ProductCategory();
+        /*预加载ORM对象*/
+        $e_product_category = $e_product_category->withCount(['hm_products' => function ($query)
+        {
+            $query->where('products.is_delete', self::PRODUCT_NO_DELETE);
+        }])->where('product_category.is_delete', self::CATEGORY_NO_DELETE)->get();
+        /*排序,去重,限数,分割返回新集合*/
+        $unit_list = $e_product_category->sortByDesc('hm_products_count')->unique('unit')->take($number)->pluck('unit');
+        return $unit_list;
     }
 
     /**
