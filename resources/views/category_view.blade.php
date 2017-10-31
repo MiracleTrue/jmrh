@@ -101,7 +101,8 @@
 	      	
 	      },
 	      sort: {
-	        required: "请输入排序"
+	        required: "请输入排序",
+	        isIntGtZero:"请输入大于0的整数"
 	      }
 	    
 	    },

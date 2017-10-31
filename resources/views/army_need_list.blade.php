@@ -89,92 +89,26 @@
 
 						<th style="width: 19%"><span style="">操作</span></th>
 					</tr>
-					<tr>
-						<td>1</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">
-							<a class="mly-caozuo">修改</a>
-							<a style="margin-left: 5%;">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>已确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>已发货</td>
-						<td class="blueWord">
-							<a class="mly-caozuo">已到货</a>
-						</td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>20170926110753</td>
-						<td>白菜</td>
-						<td>20170928</td>
-						<td>500斤</td>
-						<td>待确认</td>
-						<td class="blueWord">详情</td>
-					</tr>
+					
+				 @foreach($order_list as $item)
+            
+            <tr>
+                <td>{{$item['order_id']}}</td>
+                <td>{{$item['order_sn']}}</td>
+                <td>{{$item['product_name']}}</td>
+                <td>{{$item['army_receive_time']}}</td>
+                <td>{{$item['product_number']}}{{$item['product_unit']}}</td>
+                <td>{{$item['status_text']}}</td>
+                <td class="blueWord">
+                	@if($item['status'] == '0')
+                               <a class="mly-caozuo" onclick="NeedEdit(this,'{{$item['order_id']}}')">修改</a>
+                                  <a class="mly-caozuo" onclick="startuser(this,'{{$item['user_id']}}')">删除</a> 
+	                @elseif($item['status'] == '1000')
+	                                     <a class="mly-caozuo">已到货</a>
+                	@endif
+                </td>
+            </tr>
+            @endforeach
 
 				</tbody>
 			</table>
@@ -184,21 +118,35 @@
 @endsection
 
 @section('MyJs')
-layer.ready(function(){ 
-  $('.mly-tianjia').on('click', function(){
-    layer.open({
-      type: 2,
-      title: false,
-      maxmin: false,
-      shadeClose: true, //点击遮罩关闭层
-      area : ['900px' , '500px'],
-      content: 'iftianjiaxuqiu.html'
-    });
-  });
-});
+<script>
+	//需求修改
+	function NeedEdit(elm,order_id){
+		layer.open({
+            type: 2,
+            title: false,
+            maxmin: false,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['900px' , '500px'],
+            content: '{{url('army/need/view')}}'+'/'+order_id
+        });
+		
+	}
+	$(function(){
+		layer.ready(function(){ 
+		  $('.mly-tianjia').on('click', function(){
+		    layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['900px' , '500px'],
+		      content: '{{url('army/need/view')}}'
+		    });
+		  });
+		});
+	})
 
 
 
-}();
 </script>
 @endsection

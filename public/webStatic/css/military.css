@@ -7,7 +7,7 @@ section {
 	display: block;
 	width: 100px;
 	height: 36px;
-	background: url(../img/tianjia.png) no-repeat;
+	background: url(../images/tianjia.png) no-repeat;
 	float: left;
 }
 
@@ -19,7 +19,7 @@ section>div {
 .mly-shaixuan {
 	width: 627px;
 	height: 36px;
-	background: url(../img/junfang2.png) no-repeat;
+	background: url(../images/junfang2.png) no-repeat;
 	float: left;
 	margin-left: 35px;
 	line-height: 36px;
@@ -163,3 +163,4 @@ tr a {
 	top: 9px;
 	right: 6px;
 }
+

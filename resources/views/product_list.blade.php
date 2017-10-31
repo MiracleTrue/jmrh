@@ -5,7 +5,62 @@
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/goods-management.css')}}">
 
-
+<style>
+	/*分页样式*/
+.userlist_pag{
+	height: 45px;
+	text-align: center;
+	margin-top: 57px;
+}
+.userlist_pag ul{
+	overflow: hidden;
+	height: 43px;
+	text-align: center;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 85%;
+  -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  
+}
+.userlist_pag ul li{
+	
+	height: 41px;
+	line-height: 41px;
+	text-align: center;
+	color: #0e99dc;
+	font-size: 15px;
+	border-left:1px solid #dddddd ;
+	border-top:1px solid #dddddd ;
+	border-bottom:1px solid #dddddd ;
+	width: 46px;
+   
+	
+	
+}
+.userlist_pag ul li a, .userlist_pag ul li span{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+.userlist_pag ul li a{
+	color:#0e99dc ;
+}
+.userlist_pag ul li:nth-child(1),.userlist_pag ul li:last-child{
+	width: 89px;
+}
+.userlist_pag .active{
+	background-color: #FE8D01;
+	color: #FFFFFF;
+}
+.userlist_pag ul li:last-child{
+	border-right:1px solid #dddddd;
+}
+</style>
 @endsection
 @section('content')
   <section>
@@ -33,19 +88,55 @@
 						<td>{{$item['sort']}}</td>
 
 						<td class="blueWord">
-							<a class="mly-caozuo">编辑</a>
-							<a style="margin-left: 5%;">删除</a>
+							<a class="mly-caozuo" onclick="ProductEdit(this,'{{$item['product_id']}}')">编辑</a>
+							<a style="margin-left: 5%;" onclick="ProductDelete(this,'{{$item['product_id']}}')">删除</a>
 						</td>
 					</tr>
 					 @endforeach
 				</tbody>
 			</table>
+        @include('include.inc_pagination',['pagination'=>$product_list])
 
 		</section>
 
 @endsection
 @section('MyJs')
 <script>
+	function ProductEdit(elm,product_id){
+		
+		layer.open({
+						type: 2,
+						title: false,
+						maxmin: false,
+						shadeClose: true, //点击遮罩关闭层
+						area: ['920px', '413px'],
+						content: '{{url('product/view')}}'+'/'+product_id
+					});
+		
+		
+		
+		
+	};
+	//删除商品
+    	function ProductDelete(elm,product_id){
+    		$.ajax({
+    			type:"post",
+    			url:"{{url('product/delete')}}",
+    			async:true,
+    			data:{
+    				product_id:product_id,
+    				_token:'{{csrf_token()}}'
+    			},
+    			success:function(res){
+    				
+    				var resData=JSON.parse(res);
+    				alert(resData.messages);
+    				if(!resData.code){
+    					$(elm).parent().parent().hide();
+    				}
+    			}
+    		});
+    	}
 	;
 		! function() {
 
@@ -65,5 +156,10 @@
 			});
 
 		}();
+		
+		
+		
+		
+		
 </script>
 @endsection
