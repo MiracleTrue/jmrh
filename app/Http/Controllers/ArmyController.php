@@ -85,7 +85,9 @@ class ArmyController extends Controller
     {
         /*初始化*/
         $army = new Army();
+        $product = new Product();
         $this->ViewData['order_info'] = array();
+        $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
         if ($id > 0)
         {
             $this->ViewData['order_info'] = $army->getOrderInfo($id);
