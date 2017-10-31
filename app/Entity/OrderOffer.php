@@ -42,4 +42,12 @@ class OrderOffer extends CommonEntity
      */
     protected $dateFormat = 'U';
 
+    /**
+     * 一对一关联Users实体表
+     */
+    public function ho_users()
+    {
+        return $this->hasOne(Users::class,'user_id','user_id');
+    }
+
 }

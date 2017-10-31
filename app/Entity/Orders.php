@@ -42,4 +42,11 @@ class Orders extends CommonEntity
      */
     protected $dateFormat = 'U';
 
+    /**
+     * 一对多关联OrderOffer实体表
+     */
+    public function hm_order_offer()
+    {
+        return $this->hasMany(OrderOffer::class,'order_id');
+    }
 }

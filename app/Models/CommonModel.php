@@ -56,6 +56,38 @@ class CommonModel
     }
 
     /**
+     * 返回 报价状态 的文本名称
+     * @param $offer_status
+     * @return string
+     */
+    public function offerStatusTransformText($offer_status)
+    {
+        $text = '';
+        switch ($offer_status)
+        {
+            case $this::OFFER_OVERTIME:
+                $text = '已超期';
+                break;
+            case $this::OFFER_AWAIT_OFFER:
+                $text = '待报价';
+                break;
+            case $this::OFFER_AWAIT_PASS:
+                $text = '等待通过';
+                break;
+            case $this::OFFER_NOT_PASS:
+                $text = '未通过';
+                break;
+            case $this::OFFER_PASSED:
+                $text = '已通过';
+                break;
+            case $this::OFFER_SEND:
+                $text = '已发货';
+                break;
+        }
+        return $text;
+    }
+
+    /**
      * 根据请求方式,返回不同的"没有"权限的信息
      * @param $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector

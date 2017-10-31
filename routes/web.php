@@ -32,19 +32,16 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
-//    Route::get('platform/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('军方需求列表');/*军方需求列表 | army_need_list */
-//    Route::get('platform/need/view/{id?}', 'ArmyController@NeedView')->name('查看军方需求');/*查看军方需求 | army_need_view */
-//    Route::any('platform/need/release', 'ArmyController@NeedRelease')->name('发布军方需求');/*发布军方需求*/
-//    Route::any('platform/need/edit', 'ArmyController@NeedEdit')->name('修改军方需求');/*修改军方需求*/
-//    Route::any('platform/need/delete', 'ArmyController@NeedDelete')->name('删除军方需求');/*删除军方需求*/
-
         Route::get('platform/need/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_need_list */
         Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
-
-        Route::any('platform/allocation/offer', 'PlatformController@offerAllocation')->name('供应商分配');/*平台供应商分配*/
-        Route::any('platform/selected/offer', 'PlatformController@OfferSelected')->name('供应商选择');/*平台供应商选择*/
-        Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
         Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
+        Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('分配供应商页面');/*分配供应商页面 | platform_allocation_view*/
+        Route::get('platform/offer/view/{order_id}', 'PlatformController@OfferInfoView')->name('查看报价页面');/*选择供应商页面 | platform_offer_view*/
+        Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('分配供应商');/*平台供应商分配*/
+        Route::any('platform/selected/offer', 'PlatformController@OfferSelected')->name('选择供应商');/*平台供应商选择*/
+        Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
+        Route::any('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('供应商确认收货');/*供应商确认收货*/
+        Route::any('platform/send/army', 'PlatformController@SendArmy')->name('发货到军方');/*发货到军方*/
     });
 
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
