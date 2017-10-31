@@ -113,7 +113,7 @@ class Army extends CommonModel
         $e_orders = Orders::where('order_id', $arr['order_id'])
             ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)
-            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
+            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first();
 
         /*修改*/
         $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
