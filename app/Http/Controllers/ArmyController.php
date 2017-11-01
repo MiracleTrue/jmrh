@@ -71,7 +71,7 @@ class ArmyController extends Controller
             array_push($where, ['orders.create_time', '<=', $end_dt]);
         }
         $this->ViewData['order_list'] = $army->getOrderList($where, $or_where);
-
+        $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
         dump($this->ViewData);
         return view('army_need_list', $this->ViewData);
     }
