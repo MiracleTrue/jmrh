@@ -57,6 +57,7 @@ class UserController extends Controller
         }
 
         $this->ViewData['log_list'] = $user->getLogList($where);
+        $this->ViewData['page_search'] = array('identity' => $identity, 'nick_name' => $nick_name);
         dump($this->ViewData);
         return view('log_list', $this->ViewData);
     }
