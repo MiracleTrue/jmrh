@@ -137,7 +137,7 @@ class Army extends CommonModel
         $e_orders = Orders::where('order_id', $id)
             ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)
-            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
+            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first();
 
         /*伪删除*/
         $e_orders->is_delete = $this::ORDER_IS_DELETE;
