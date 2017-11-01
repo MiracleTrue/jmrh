@@ -25,7 +25,7 @@
 
         </li>
         <li class="treeview">
-            <a href="#">
+            <a href="{{url('platform/need/list')}}">
                 <i class="fa fa-laptop"></i>
                 <span>平台</span>
 
@@ -61,6 +61,12 @@
         <li class="munu-caozuorizhi">
             <a href="{{url('log/list')}}">
                 <i class="fa fa-envelope"></i> <span>操作日志</span>
+                <!--<small class="label pull-right label-warning">12</small>-->
+            </a>
+        </li>
+         <li class="munu-woderizhi">
+            <a href="{{url('log/manage')}}">
+                <i class="fa fa-envelope"></i> <span>我的日志</span>
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>
