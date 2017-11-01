@@ -29,11 +29,11 @@ class ArmyController extends Controller
 
     /**
      * View 军方订单列表 页面 (搜索条件参数: 订单状态, 创建时间)
-     * @param null $status
-     * @param null $create_time
+     * @param string $status
+     * @param string $create_time
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function NeedList($status = null, $create_time = null)
+    public function NeedList($status = 'null', $create_time = 'null')
     {
         /*初始化*/
         $army = new Army();
