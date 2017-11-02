@@ -25,6 +25,8 @@ class TestController extends Controller
 
     public function T_add(Request $request)
     {
+        /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
         $arr = array(
             'identity' => '1',
             'user_name'=>'A-'.now(),
@@ -33,6 +35,30 @@ class TestController extends Controller
             'phone'=>'18600982820',
         );
         $request->merge($arr);
+
+        /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
+        $arr = array(
+            'product_name' => '蔬菜'.mt_rand(1,999),
+            'product_number' => mt_rand(8, 888),
+            'product_unit' => '个',
+            'confirm_time' => '2017-11-1',
+            'platform_receive_time' => '2017-11-6',
+            'supplier_B' => '40',
+            'supplier_A' => '42',
+            'supplier_C' => '41',
+        );
+        $request->merge($arr);
+
+        /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
+        $arr = array(
+            'order_id' => '1',
+        );
+        $request->merge($arr);
+
+        /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
 
 //        dd($request->all());
 

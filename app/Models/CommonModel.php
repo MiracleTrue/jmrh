@@ -100,7 +100,6 @@ class CommonModel
         }
         elseif($request->method() == 'POST')/*Json*/
         {
-
             $m3result = new M3Result();
             $m3result->code     = -1;
             $m3result->messages = '没有权限访问.';

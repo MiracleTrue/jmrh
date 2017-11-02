@@ -357,7 +357,7 @@ class PlatformController extends Controller
                 Rule::exists('orders')->where(function ($query)
                 {
                     $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE,CommonModel::ORDER_ALLOCATION_PLATFORM]);
+                        ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM]);
                 }),
             ]
         ];

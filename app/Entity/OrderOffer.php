@@ -50,4 +50,12 @@ class OrderOffer extends CommonEntity
         return $this->hasOne(Users::class,'user_id','user_id');
     }
 
+    /**
+     * 一对一关联Orders实体表
+     */
+    public function ho_orders()
+    {
+        return $this->hasOne(Orders::class,'order_id','order_id');
+    }
+
 }

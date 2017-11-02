@@ -8,6 +8,7 @@
 namespace App\Tools;
 
 /**
+ * Json 响应类
  * Class M3Result
  * @package App\Http\Result
  */

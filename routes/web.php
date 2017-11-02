@@ -34,9 +34,9 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     {
         Route::get('platform/need/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_need_list */
         Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
-        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
         Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('分配供应商页面');/*分配供应商页面 | platform_allocation_view*/
         Route::get('platform/offer/view/{order_id}', 'PlatformController@OfferInfoView')->name('查看报价页面');/*选择供应商页面 | platform_offer_view*/
+        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
         Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('分配供应商');/*平台供应商分配*/
         Route::any('platform/selected/offer', 'PlatformController@OfferSelected')->name('选择供应商');/*平台供应商选择*/
         Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
@@ -52,6 +52,15 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/
         Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/
     });
+
+    Route::group(['group' => '供应商', 'identity' => [\App\Models\User::SUPPLIER_ADMIN]], function ()
+    {
+        Route::get('supplier/need/list/{status?}/{create_time?}', 'SupplierController@NeedList')->name('需求列表');/*供货商需求列表 | supplier_need_list */
+        Route::get('supplier/offer/view/{offer_id}', 'SupplierController@OfferView')->name('报价页面');/*报价页面 | supplier_offer_view */
+        Route::any('supplier/offer/submit', 'SupplierController@OfferSubmit')->name('报价');/*报价提交*/
+        Route::any('supplier/send/goods', 'SupplierController@SendGoods')->name('配货');/*供应商配货*/
+    });
+
 
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()
     {
