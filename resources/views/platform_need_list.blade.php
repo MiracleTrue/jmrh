@@ -100,14 +100,14 @@
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
 							@if($item['status'] == '0' || $item['status'] == '1' )
-							<a class="tre-caozuo">分配</a>
-							<a style="margin-left: 5%;">无需分配</a>
+							<a class="tre-caozuo platfenpei" onclick="fenpei(this,'{{$item->order_id}}')">分配</a>
+							<a style="margin-left: 5%;" onclick="InventorySupply(this,'{{$item->order_id}}')">库存供应</a>
 						  @elseif($item['status'] == '100' || $item['status'] == '110' )
-								<a class="tre-caozuo">查看报价</a>
+								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >查看报价</a>
 						   @elseif($item['status'] == '120')
-						   			<a class="tre-caozuo">已到货</a>
+						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">已到货</a>
 				   			 @elseif($item['status'] == '130'|| $item['status'] == '200')
-				   			<a class="tre-caozuo">发货到军方</a>
+				   			<a class="tre-caozuo"  onclick="sendArmy(this,'{{$item->order_id}}')">发货到军方</a>
 						   	@endif		
 						</td>
 					</tr>
@@ -122,6 +122,9 @@
  
 @section('MyJs')
 <script>
+	
+		
+
 	 $('.tre-tianjia').on('click', function(){
 		    layer.open({
 		      type: 2,
@@ -132,7 +135,127 @@
 		      content: '{{url('platform/need/view')}}'
 		    });
 		  });
-	
+		  //分配
+		  
+		  function fenpei(elm,order_id){
+		  
+		    layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['900px' , '800px'],
+		      content: '{{url('platform/allocation/view')}}'+'/'+order_id
+		    });
+		  }
+		    function chakanbaojia(elm,order_id){
+		    layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['900px' , '500px'],
+		      content: '{{url('platform/offer/view')}}'+'/'+order_id
+		    });
+		  }
+		  
+		  function sendArmy(elm,order_id){
+		  	if (confirm("确认发货到军方吗？")){
+		  		$.ajax({
+		  			data:{
+		  				order_id:order_id,
+	  					_token:'{{csrf_token()}}'
+		  			},
+		  			url:'{{url('platform/send/army')}}',
+		  			async:true,
+		  			success: function (resData) {
+		  				var res=JSON.parse(resData)
+		  				console.log(res)
+		            if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	location.reload();
+		             	   });
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             }
+		            }
+		  		});
+		  	}
+		 	
+		  }
+		  
+		   function ConfirmReceive(elm,order_id){
+		  	if (confirm("确认已到货吗？")){
+		  		$.ajax({
+		  			data:{
+		  				order_id:order_id,
+	  					_token:'{{csrf_token()}}'
+		  			},
+		  			url:'{{url('platform/confirm/receive')}}',
+		  			async:true,
+		  			success: function (resData) {
+		  				var res=JSON.parse(resData)
+		            if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	location.reload();
+		             	   });
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             }
+		            }
+		  		});
+		  	}
+		 	
+		  }
+		  
+		  
+		     function InventorySupply(elm,order_id){
+		  	if (confirm("确认库存供应吗？")){
+		  		$.ajax({
+		  			data:{
+		  				order_id:order_id,
+	  					_token:'{{csrf_token()}}'
+		  			},
+		  			url:'{{url('platform/inventory/supply')}}',
+		  			async:true,
+		  			success: function (resData) {
+		  				var res=JSON.parse(resData)
+		            if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	location.reload();
+		             	   });
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             }
+		            }
+		  		});
+		  	}
+		 	
+		  }
+		  
+		  
+
 	
 </script>
 @endsection

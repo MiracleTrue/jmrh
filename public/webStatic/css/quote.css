@@ -15,7 +15,7 @@
 }
 .qte-box div {
 	overflow: hidden;
-	height: 60px;
+
 	line-height: 60px;
 	font-size: 15px;
 }
@@ -25,14 +25,13 @@
 	outline: none;
 	margin-left: 20px;
 	text-indent: 15px;
-	color: #DDDDDD;
 	font-size: 14px;
 }
-.qte-box div p:nth-child(1){
+.qte-box div p{
 	float: left;
 }
 .qte-box div p:nth-child(2){
-	float: right;
+	margin-left: 20px;
 }
 
 .qte-box select{

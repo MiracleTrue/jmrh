@@ -95,13 +95,12 @@
 				</p>
 				<p style="position: relative;">
 					<span>到货预警时间</span>
-				 	<select name="">
-				 		
-				 		<option value="">4小时</option>
-				 		<option value="">8小时</option>
-				 		<option value="">10小时</option>
-				 		<option value="">12小时</option>
-				 		<option value="">24小时</option>
+				 	<select name="warning_time">
+				 		<option value="0">无预警</option>
+				 		<option value="14400">4小时</option>
+				 		<option value="28800">8小时</option>
+				 		<option value="43200">12小时</option>
+				 		<option value="86400">24小时</option>
 
 				 		
 				 	</select>
@@ -131,8 +130,7 @@
 	laydate({elem: '#army_receive_time'});//绑定元素
 
 }();
-  $().ready(function() 
-    {	
+  $().ready(function(){	
       /**
        * 军方添加需求
        */     
