@@ -116,7 +116,7 @@ class PlatformController extends Controller
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
         dump($this->ViewData);
-        return view('platform_allocation_view', $this->ViewData);
+        return view('platform_offer_view', $this->ViewData);
     }
 
     /**
@@ -128,11 +128,9 @@ class PlatformController extends Controller
     {
         /*初始化*/
         $user = new User();
-        $product = new Product();
         $platform = new Platform();
 
         $this->ViewData['supplier_list'] = $user->getSupplierList();
-        $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
         dump($this->ViewData);
@@ -431,7 +429,6 @@ class PlatformController extends Controller
         $supplier_arr = collect([$request->input('supplier_A'), $request->input('supplier_B'), $request->input('supplier_C')])->filter()->unique()->all();
         if (!empty($supplier_arr) && $validator->passes() && $platform->releaseNeed($request->all(), $supplier_arr))
         {   /*验证通过并且处理成功*/
-
             $m3result->code = 0;
             $m3result->messages = '平台需求发布成功';
         }
