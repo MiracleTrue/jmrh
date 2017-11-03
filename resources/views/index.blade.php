@@ -34,10 +34,11 @@
 		$("#Info1").attr("src",$(this).find('a').attr('href'));
 		return false;
 	})
-	
-
-
-
+	$(".sidebar-menu li").on("click",function(){
+		$(this).css("background-color","#fe8d01").siblings().css("background-color","#EFEFEF");
+		$(this).find("a").css("color","#fff");
+		$(this).siblings().find("a").css("color","#000000");
+	})
 
     });
     ! function() {

@@ -153,7 +153,7 @@
 	      platform_receive_time:{
 	      	required:"请选择到货时间"
 	      	
-	      },
+	      },{
 	      product_number: {
 	        required: "请输入数量",
 	        isIntGtZero:"请输入大于0的整数"

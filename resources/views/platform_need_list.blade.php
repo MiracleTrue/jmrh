@@ -59,6 +59,22 @@
 .userlist_pag ul li:last-child{
 	border-right:1px solid #dddddd;
 }
+
+
+.plat_shanixuan{
+	width: 85px;height: 36px;line-height: 36px;color: #fff;font-size: 16px;text-indent: 18px;background-color: #fe8d01;float: left;
+	border-radius:20px ;
+}
+.plat_stauschoose{
+	float: left;
+	background: #DDDDDD;
+	border-radius:20px ;
+	margin-left: -28px;
+	padding-right: 20px;
+}
+.platshaixuan{
+	width: auto;
+}
 </style>
 @endsection
 @section('content')
@@ -66,13 +82,30 @@
       <section>
 			<div>
 				<a href="#" class="tre-tianjia"></a>
-				<div class="tre-shaixuan">
-					<select name="" class="tre-state">
-						<option value="">全部</option>
+				<div class="tre-shaixuan platshaixuan" style="background: none;">
+					<div class="plat_shanixuan" >筛选</div>
+					<div class="plat_stauschoose" >
+						<span style="margin-left: 24px;font-size: 16px;">类型</span>
+					<select name="" class="tre-state palt type_val" style="margin-left: 15px;">
+					 <option value="0">全部</option>
+                      <option value="1" @if($page_search['type'] == '1') selected="selected" @endif>平台运营员</option>
+                        <option value="2" @if($page_search['type'] == '2') selected="selected" @endif>军方</option>
+						
 					</select>
-					<select name="" class="tre-time">
-						<option value="">全部</option>
+					<span style="margin-left: 24px;font-size: 16px;">状态</span>
+					<select name="" class="tre-state staus_val" style="margin-left: 15px;">
+						<option value="null"  @if($page_search['status'] == 'null') selected="selected" @endif>全部</option>
+						<option value="待分配"  @if($page_search['status'] == '待分配') selected="selected" @endif>待分配</option>
+						<option value="已分配"  @if($page_search['status'] == '已分配') selected="selected" @endif>已分配</option>
+						<option value="库存供应"  @if($page_search['status'] == '库存供应') selected="selected" @endif>库存供应</option>
+						<option value="交易成功"  @if($page_search['status'] == '交易成功') selected="selected" @endif>交易成功</option>
 					</select>
+					<span style="margin-left: 24px;font-size: 16px;">分配时间</span>
+					<input style="margin-left: 15px;"value= @if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon tre-time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+					
+					
+					
+					</div>
 				</div>
 				<a class="tre-btn">搜索</a>
 			</div>
@@ -121,9 +154,38 @@
 @endsection
  
 @section('MyJs')
+  <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
+
 <script>
 	
-		
+	!function(){
+
+	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
+
+	laydate({elem: '#army_receive_time'});//绑定元素
+
+}();
+	
+	//搜索
+	
+	  $(".tre-btn").on("click",function(){
+    	
+    	 if($("#army_receive_time").val()==""){
+	    	var time=null;
+	    }else{
+	    	var time=$("#army_receive_time").val();
+	    }
+    	
+	   var staus_val = $('.type_val option:selected').val();
+    	var status_val=$(".staus_val option:selected").val();	
+    	var url="{{url('platform/need/list')}}"+"/"+staus_val+"/"+status_val+"/"+time;
+    	
+    	location.replace(url);
+    });
+	
+	
+
+
 
 	 $('.tre-tianjia').on('click', function(){
 		    layer.open({
@@ -192,6 +254,7 @@
 		  }
 		  
 		   function ConfirmReceive(elm,order_id){
+		   	alert();
 		  	if (confirm("确认已到货吗？")){
 		  		$.ajax({
 		  			data:{

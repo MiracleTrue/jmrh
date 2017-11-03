@@ -1,5 +1,17 @@
 <aside class="home-aside">
     <ul class="sidebar-menu">
+{{-- <!--
+		@if($mange_user['identity'] == '1')<!--超级管理员-->
+		
+		<!--@elseif($mange_user['identity'] == '2')平台运营员-->
+		
+	<!--	@elseif($mange_user['identity'] == '3')供货商-->
+		
+		<!--@elseif($mange_user['identity'] == '4')平台运营员-->
+		
+		
+			<!--@endif-->
+--}}
 
         <li class="treeview">
             <a href="{{url('welcome')}}">
@@ -17,7 +29,7 @@
         </li>
 
         <li class="treeview">
-            <a href="#">
+            <a href="{{url('supplier/need/list')}}">
                 <i class="fa fa-cart-arrow-down"></i>
                 <span>供应商</span>
 
