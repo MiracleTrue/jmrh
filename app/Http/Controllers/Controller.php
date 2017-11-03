@@ -13,6 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 /**
  *
@@ -27,6 +28,9 @@ class Controller extends BaseController
     {
         /*初始化分页大小 10条*/
         if(empty($_COOKIE['PaginationSize']) || is_numeric($_COOKIE['PaginationSize']) == false) {$_COOKIE['PaginationSize'] = 10;}
+
+        /*当前session用户,并共享所有视图*/
+        View::share('manage_user',session('ManageUser'));
 
         /*加入session*/
 //        session(['ManageUser' => Users::find(1)]);

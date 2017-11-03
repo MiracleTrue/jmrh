@@ -62,7 +62,7 @@ class SupplierController extends Controller
                 array_push($where, ['order_offer.status', '=', $supplier::OFFER_NOT_PASS]);
                 break;
             case '已过期' :
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_OVERTIME]);
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_OVERDUE]);
                 break;
         }
         if (!empty($create_time) && strtotime($create_time))

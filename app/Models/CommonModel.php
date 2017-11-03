@@ -8,8 +8,12 @@
 
 namespace App\Models;
 
+use App\Entity\OrderOffer;
 use App\Entity\Orders;
 use App\Tools\M3Result;
+use Illuminate\Http\File;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class CommonModel 基础模型
@@ -33,7 +37,7 @@ class CommonModel
     const ORDER_SUCCESSFUL = 9000;/*军方已收货(交易成功) 或 平台已收货(交易成功)*/
 
     /*报价状态:*/
-    const OFFER_OVERTIME = -1;/*已超期*/
+    const OFFER_OVERDUE = -1;/*已超期*/
     const OFFER_AWAIT_OFFER = 0;/*待报价*/
     const OFFER_AWAIT_PASS = 1;/*等待通过*/
     const OFFER_NOT_PASS = 2;/*未通过*/
@@ -65,7 +69,7 @@ class CommonModel
         $text = '';
         switch ($offer_status)
         {
-            case $this::OFFER_OVERTIME:
+            case $this::OFFER_OVERDUE:
                 $text = '已超期';
                 break;
             case $this::OFFER_AWAIT_OFFER:
@@ -88,20 +92,38 @@ class CommonModel
     }
 
     /**
+     * 自动处理 已过确认时间的报价,改为已超期
+     */
+    public function autoHandleOverdueOffer()
+    {
+        $now_time = now()->timestamp;
+        OrderOffer::where('status', self::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)
+            ->update(['status' => self::OFFER_OVERDUE, 'price' => 0, 'total_price' => 0]);
+    }
+
+    public function autoTest()
+    {
+        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+
+        $a = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
+        $path = Storage::disk('local')->putFileAs('temp', $a, date('H-i-s',time()) . '.jpeg');
+    }
+
+    /**
      * 根据请求方式,返回不同的"没有"权限的信息
      * @param $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public static function noPrivilegePrompt($request)
     {
-        if($request->method() == 'GET')/*页面*/
+        if ($request->method() == 'GET')/*页面*/
         {
             die('没有权限访问.');
         }
-        elseif($request->method() == 'POST')/*Json*/
+        elseif ($request->method() == 'POST')/*Json*/
         {
             $m3result = new M3Result();
-            $m3result->code     = -1;
+            $m3result->code = -1;
             $m3result->messages = '没有权限访问.';
             die($m3result->toJson());
         }
@@ -110,4 +132,5 @@ class CommonModel
             die('没有权限访问.');
         }
     }
+
 }
