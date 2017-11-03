@@ -32,12 +32,12 @@ class PlatformController extends Controller
 
     /**
      * View 平台订单列表 页面 (搜索条件参数: 订单类型, 订单状态, 创建时间)
-     * @param null $type
-     * @param null $status
-     * @param null $create_time
+     * @param int $type
+     * @param string $status
+     * @param string $create_time
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function NeedList($type = null, $status = null, $create_time = null)
+    public function NeedList($type = 0, $status = 'null', $create_time = 'null')
     {
         /*初始化*/
         $platform = new Platform();
@@ -83,6 +83,7 @@ class PlatformController extends Controller
             array_push($where, ['orders.create_time', '<=', $end_dt]);
         }
         $this->ViewData['order_list'] = $platform->getOrderList($where, $or_where);
+        $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
         dump($this->ViewData);
         return view('platform_need_list', $this->ViewData);
