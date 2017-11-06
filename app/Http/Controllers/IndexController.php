@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,16 +32,7 @@ class IndexController extends Controller
         /*初始化*/
         $manage_u = session('ManageUser');
 
-        /*根据角色权限生成栏目菜单*/
-//        if($admin_u->admin_role->is_super_management_group == Rbac::IS_SUPER_MANAGEMENT_GROUP)
-//        {
-//            $this->ViewData['menu_list'] = $menu->getAdminMenus();
-//        }
-//        else
-//        {
-//            $this->ViewData['menu_list'] = $menu->getAdminFilterMenus();
-//
-//        }
+        $this->ViewData['manage_user'] = $manage_u;
         return view('index', $this->ViewData);
     }
 
