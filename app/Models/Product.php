@@ -212,6 +212,30 @@ class Product extends CommonModel
     }
 
     /**
+     * 商品分类首页显示开关
+     * @param $id
+     * @return bool
+     */
+    public function isIndexProductCategory($id)
+    {
+        /*初始化*/
+        $e_product_category = ProductCategory::find($id);
+        /*修改*/
+        if ($e_product_category->is_index == self::CATEGORY_IS_INDEX)
+        {
+            $e_product_category->is_index = self::CATEGORY_NO_INDEX;
+        }
+        else
+        {
+            $e_product_category->is_index = self::CATEGORY_IS_INDEX;
+        }
+
+        $e_product_category->save();
+        User::userLog($e_product_category->category_name);
+        return true;
+    }
+
+    /**
      * 删除单个商品分类 (伪删除)
      * @param $id
      * @return bool

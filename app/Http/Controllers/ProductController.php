@@ -137,6 +137,84 @@ class ProductController extends Controller
     }
 
     /**
+     * Ajax 商品分类开启首页显示 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function CategoryIsIndex(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::exists('product_category')->where(function ($query)
+                {
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE)->where('is_index', Product::CATEGORY_NO_INDEX);
+                }),
+            ]
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $product->isIndexProductCategory($request->input('category_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '商品分类开启首页显示';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 商品分类取消首页显示 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function CategoryNoIndex(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::exists('product_category')->where(function ($query)
+                {
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE)->where('is_index', Product::CATEGORY_IS_INDEX);
+                }),
+            ]
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $product->isIndexProductCategory($request->input('category_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '商品分类取消首页显示';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+        return $m3result->toJson();
+    }
+
+    /**
      * Ajax 商品分类删除(伪删除) 请求处理
      * @param Request $request
      * @return \App\Tools\json
@@ -202,7 +280,7 @@ class ProductController extends Controller
         /*初始化*/
         $product = new Product();
         $this->ViewData['product_info'] = array();
-        $this->ViewData['category_list'] = $product->getProductCategoryList(array(),array(['product_category.sort', 'desc']),false);
+        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
         if ($id > 0)
         {
             $this->ViewData['product_info'] = $product->getProductInfo($id);

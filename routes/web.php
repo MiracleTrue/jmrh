@@ -82,6 +82,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('category/add', 'ProductController@CategoryAdd')->name('新增商品分类');/*新增商品分类*/
         Route::any('category/edit', 'ProductController@CategoryEdit')->name('修改商品分类');/*修改商品分类*/
         Route::any('category/delete', 'ProductController@CategoryDelete')->name('删除商品分类');/*删除商品分类*/
+        Route::any('category/is/index', 'ProductController@CategoryIsIndex')->name('分类开启首页显示');/*分类首页显示*/
+        Route::any('category/no/index', 'ProductController@CategoryNoIndex')->name('分类取消首页显示');/*分类取消首页显示*/
         /*商品*/
         Route::get('product/list', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
         Route::get('product/view/{id?}', 'ProductController@ProductView')->name('查看商品');/*查看商品 | product_view */
