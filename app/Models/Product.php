@@ -26,6 +26,9 @@ class Product extends CommonModel
     /*商品删除状态:  1.删除  0.正常*/
     const PRODUCT_IS_DELETE = 1;
     const PRODUCT_NO_DELETE = 0;
+    /*商品分类是否首页显示 1.显示  0.不显示*/
+    const  CATEGORY_IS_INDEX = 1;
+    const  CATEGORY_NO_INDEX = 0;
 
 
     private $errors = array(); /*错误信息*/
@@ -110,6 +113,7 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
+            $item->labels = explode(',',$item->labels);
             unset($item->hm_products_count);
             return $item;
         });
@@ -176,7 +180,9 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
+        $e_product_category->labels = !empty($arr['labels']) ? $arr['labels'] : '';
         $e_product_category->is_delete = self::CATEGORY_NO_DELETE;
+        $e_product_category->is_index = self::CATEGORY_NO_INDEX;
 
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
@@ -197,6 +203,8 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
+        $e_product_category->labels = !empty($arr['labels']) ? $arr['labels'] : '';
+
 
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
