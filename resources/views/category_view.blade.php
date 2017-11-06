@@ -49,7 +49,7 @@
 			
 	    			<p>
 						<span>标签</span>
-					 	<input type="text" name="labels" id="" value="" />
+					 	<input type="text" name="labels" id="" value="{{$category_info['labels'] or ''}}" />
 					 	
 					</p>
 			
@@ -115,13 +115,19 @@
 		            dataType: 'JSON',
 		            success: function (res) {
 		             console.log(res);
-		             if(res.code==0){
-		             	alert("分类添加成功");
+		            if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  parent.location.reload();
+		             	   });
 		             	
 			        var index=parent.layer.getFrameIndex(window.name);
-					
-					parent.layer.close(index);
+					setTimeout(function(){
+						parent.layer.close(index);
 		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             }
 		            }
 		          });
@@ -172,12 +178,18 @@
 		            success: function (res) {
 		             console.log(res);
 		             if(res.code==0){
-		             	alert("分类编辑成功");
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  parent.location.reload();
+		             	   });
 		             	
 			        var index=parent.layer.getFrameIndex(window.name);
-					
-					parent.layer.close(index);
+					setTimeout(function(){
+						parent.layer.close(index);
 		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             }
 		            }
 		          });

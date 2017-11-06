@@ -144,7 +144,7 @@
 		            success: function (res) {
 		             console.log(res);
 		             if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
 		             	   	  parent.location.reload();
 		             	   });
 		             	
@@ -194,7 +194,7 @@
 		            success: function (res) {
 		             console.log(res);
 		             if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
 		             	   	  parent.location.reload();
 		             	   });
 		             	
