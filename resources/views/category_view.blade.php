@@ -46,9 +46,15 @@
 					<span>排序</span>
 				 	<input type="" name="sort" id="sort" value="{{$category_info['sort'] or ''}}" />
 				</p>
-				
-				
+			
+	    			<p>
+						<span>标签</span>
+					 	<input type="text" name="labels" id="" value="" />
+					 	
+					</p>
+			
 			</div>
+			
 			
 			
 			
@@ -71,12 +77,6 @@
   <script type="text/javascript">
   $().ready(function() 
     {
-    	
-    	
-    
-    	
-    	
-    	
     	
       /**
        * 添加用户表单验证与异步提交
@@ -203,5 +203,11 @@
       }
       
     });
+    
+    
+    
+    
+    
+   
   </script>
 @endsection

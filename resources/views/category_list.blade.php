@@ -76,6 +76,8 @@
 						<th style="width: 17%;"><span>商品数量</span></th>
 						<th style="width: 16%;"><span>数量单位</span></th>
 						<th style="width: 13%;"><span>排序</span></th>
+						<th style="width: 13%;"><span>是否首页显示</span></th>
+
 
 						<th><span style="">操作</span></th>
 					</tr>
@@ -86,7 +88,10 @@
 						<td>{{$item['product_count']}}</td>
 						<td>{{$item['unit']}}</td>
 						<td>{{$item['sort']}}</td>
+						<td class="checkbox_td">
+							<label>是</label> <input @if($item['is_index']==1) checked="checked"@endif class="chinput" type="checkbox" name="Fruit" id="" value="" onclick="CategoryIndex(this,'{{$item['category_id']}}')"/>
 
+						</td>
 						<td class="blueWord">
 							<a class="mly-caozuo" onclick="CategoryEdit(this,'{{$item['category_id']}}')">编辑</a>
 							<a style="margin-left: 5%;" onclick="cateDelete(this,'{{$item['category_id']}}')">删除</a>
@@ -102,6 +107,49 @@
 
 @section('MyJs')
 <script>
+/*	$(".chinput").on("click",function(){
+	
+		$(this).attr("checked",true);
+		$(this).siblings().attr("checked",false);
+		
+		
+		
+	})*/
+	
+	function CategoryIndex(elm,category_id){
+		
+		if($(elm).is(':checked')){
+			$.ajax({
+				type:"post",
+				url:"{{url('category/is/index')}}",
+				async:true,
+				data:{
+					category_id:category_id,
+    				_token:'{{csrf_token()}}'
+				},
+				success:function(res){
+					console.log(res)
+				}
+			});
+		}else{
+			$.ajax({
+				type:"post",
+				url:"{{url('category/no/index')}}",
+				async:true,
+				data:{
+					category_id:category_id,
+    				_token:'{{csrf_token()}}'
+				},
+				success:function(res){
+					console.log(res)
+				}
+			});
+		}
+		
+		
+	}
+	
+	
 	
 		//删除分类
     	function cateDelete(elm,category_id){
@@ -159,5 +207,9 @@
 			});
 
 		}();
+		
+	/*首页显示分类*/	
+		
+		
 </script>
 @endsection
