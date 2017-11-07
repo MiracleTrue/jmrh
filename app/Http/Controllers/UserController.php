@@ -139,8 +139,6 @@ class UserController extends Controller
     public function PasswordOriginalView()
     {
         /*初始化*/
-
-        dump($this->ViewData);
         return view('password_original', $this->ViewData);
     }
 
