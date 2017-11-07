@@ -26,6 +26,8 @@
 .sidebar-menu>li>a>.fa {
 	font-size: 17px;
 	width: 20px;
+	text-align: center;
+	display: inline-block;
 }
 
 .sidebar-menu>li:hover>a,

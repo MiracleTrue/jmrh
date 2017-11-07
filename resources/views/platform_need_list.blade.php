@@ -157,7 +157,6 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
 
 <script>
-	
 	!function(){
 
 	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库

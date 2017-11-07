@@ -41,7 +41,7 @@
 				<p>
 					<span>{{$item['user_info']['nick_name']}}</span>
 					 
-				 	<input class="price_color" data-price="{{$item['total_price']}}" disabled="disabled class="blueWord" type="" name="" id="" value=@if($item['status']=="0") "待报价" @elseif($item['status']=="1")"单价{{$item['price']}}元/{{$order_info['product_unit']}}  总价{{$item['total_price']}}元" @endif  />
+				 	<input class="price_color" data-price="{{$item['total_price']}}" disabled="disabled class="blueWord" type="" name="" id="" value=@if($item['status']=="0") "待报价" @elseif($item['status']=="1")"单价{{$item['price']}}元/{{$order_info['product_unit']}}  总价{{$item['total_price']}}元"  @elseif($item['status']=="-1")"已过期" @endif  />
 				 	
 				</p>
 				@endforeach

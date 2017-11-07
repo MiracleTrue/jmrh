@@ -12,272 +12,35 @@
             {{--<a href="#floor2"><img src="img/F2.png" alt="" /></a>--}}
             {{--<a href="#floor3"><img src="img/F3.png" alt="" /></a>--}}
             {{--<a href="#floor4"><img src="img/F4.png" alt="" /></a>--}}
-            <a href="#floor1"><img src="{{asset('webStatic/images/F1.png')}}" alt="" /></a>
-            <a href="#floor2"><img src="{{asset('webStatic/images/F2.png')}}" alt="" /></a>
-            <a href="#floor3"><img src="{{asset('webStatic/images/F3.png')}}" alt="" /></a>
-            <a href="#floor4"><img src="{{asset('webStatic/images/F4.png')}}" alt="" /></a>
+           {{--  <a href="#floor1"><img src="{{asset('webStatic/images/F1.png')}}" alt="" /></a>--}}
+           
         </div>
-
-        <div class="f1" id="floor1">
+ 		@foreach($product_list as $key => $item)
+        <div class="f1" id="floor{{$key}}">
             <div class="floor_div">
-                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
+                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">{{$item['category_name']}}</span>
                 <ul class="head">
-                    <li>猪肉</li>
-                    <li>牛肉</li>
-                    <li>羊肉</li>
-                    <li>鸡肉</li>
+                	@foreach($item['labels'] as $label)
+                    <li>{{$label}}</li>
+                    @endforeach
                 </ul>
                 </p>
             </div>
 
             <ul class="goods-list">
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
+            
+            @foreach($item['products'] as $product)
+                <li onclick="ProductShow(this,'{{$product['product_id']}}')" >
+                    <p>{{$product['product_name']}}</p>
+                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" alt="商品" />
                 </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
+               @endforeach  
             </ul>
 
         </div>
-        <div class="f1" id="floor2">
-            <div class="floor_div">
-                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
-                <ul class="head">
-                    <li>猪肉</li>
-                    <li>牛肉</li>
-                    <li>羊肉</li>
-                    <li>鸡肉</li>
-                </ul>
-                </p>
-            </div>
-
-            <ul class="goods-list">
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-            </ul>
-
-        </div>
-        <div class="f1" id="floor3">
-            <div class="floor_div">
-                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
-                <ul class="head">
-                    <li>猪肉</li>
-                    <li>牛肉</li>
-                    <li>羊肉</li>
-                    <li>鸡肉</li>
-                </ul>
-                </p>
-            </div>
-
-            <ul class="goods-list">
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-            </ul>
-
-        </div>
-        <div class="f1" id="floor4">
-            <div class="floor_div" >
-                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">肉类</span>
-                <ul class="head">
-                    <li>猪肉</li>
-                    <li>牛肉</li>
-                    <li>羊肉</li>
-                    <li>鸡肉</li>
-                </ul>
-                </p>
-            </div>
-
-            <ul class="goods-list">
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-                <li>
-                    <p>商品名称</p>
-                    <img src="{{asset('webStatic/images/goods.png')}}" alt="商品" />
-
-                </li>
-            </ul>
-
-        </div>
+       
+        @endforeach 
+        
     </section>
 @endsection
 
@@ -287,4 +50,30 @@
     {{--<script type="text/javascript">--}}
         {{--/* code ...*/--}}
     {{--</script>--}}
+    
+    <script>
+    	$(function(){
+    	
+    	var spanColor=['#FF433A','#08ad00','#ffea95','#fe8d01'];	
+  
+    	
+	    	for(var i=0;i<$(".f1").length;i++){
+	    		var bcolor=spanColor[i%4];
+	    		var fNum=i+1;
+	    		$(".floor").append('<a href="#floor'+i+'" style="text-decoration:none;margin-top:6px" ><span class="floor_span" style="background:'+bcolor+'">F'+fNum+'</span></a>')
+	    		//console.log(bcolor)
+	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>')
+	    		
+	    	}
+	    	
+	    		
+    	})
+    
+    	function ProductShow(elm,product_id){
+    		var url="{{url('product/show')}}"+"/"+product_id
+    		console.log(url)
+    		location.replace(url)
+    	}
+    </script>
+    
 @endsection

@@ -143,13 +143,19 @@
 		            dataType: 'JSON',
 		            success: function (res) {
 		             console.log(res);
-		             if(res.code==0){
-		             	alert("用户修改成功");
+		            if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  parent.location.reload();
+		             	   });
 		             	
 			        var index=parent.layer.getFrameIndex(window.name);
-					
-					parent.layer.close(index);
+					setTimeout(function(){
+						parent.layer.close(index);
 		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             }
 		            }
 		          });
@@ -246,14 +252,20 @@
 	            dataType: 'JSON',
 	            success: function (res) {
 	             console.log(res);
-	             if(res.code==0){
-	             	alert("用户添加成功");
-	             	
-		        var index=parent.layer.getFrameIndex(window.name);
-				
-				parent.layer.close(index);
-	             	layer.closeAll('')
-	             }
+	              if(res.code==0){
+		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  parent.location.reload();
+		             	   });
+		             	
+			        var index=parent.layer.getFrameIndex(window.name);
+					setTimeout(function(){
+						parent.layer.close(index);
+		             	layer.closeAll('')
+					},1200)
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             }
 	            }
 	          });
         }

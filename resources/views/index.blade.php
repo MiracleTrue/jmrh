@@ -5,7 +5,7 @@
     <title>首页</title>
     <link rel="stylesheet" href="{{asset('webStatic/css/reset.css')}}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+     <link rel="stylesheet" href="{{asset('webStatic/library/font-awesome-4.7.0/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/sidebar-menu.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/home.css')}}"/>
     <script type="text/javascript" src="{{asset('webStatic/library/jquery-1.11.0/jquery-1.11.0.js')}}"></script>
@@ -22,6 +22,14 @@
 </body>
 <script type="text/javascript">
 	
+		var myDate = new Date();
+		console.log(myDate.getFullYear())
+		$(".lu_year").text(myDate.getFullYear());
+		$(".lu_month").text(myDate.getMonth()+1)
+		$(".lu_day").text(myDate.getDate())
+
+	
+	
     $(document).ready(function() {
         console.log($(document).height() - 42);
         $(".home-aside").height($(document).height());
@@ -34,11 +42,22 @@
 		$("#Info1").attr("src",$(this).find('a').attr('href'));
 		return false;
 	})
+	
+	
+	
+	$(".headerdiv1 a").on("click",function(){
+		console.log($(this).attr("href"));
+		$("#Info1").attr("src",$(this).attr("href"));
+		return false;
+	})
+	$(".sidebar-menu li").eq(0).css("background-color","#fe8d01");
+	$(".sidebar-menu li").eq(0).find("a").css("color","#fff");
 	$(".sidebar-menu li").on("click",function(){
 		$(this).css("background-color","#fe8d01").siblings().css("background-color","#EFEFEF");
 		$(this).find("a").css("color","#fff");
 		$(this).siblings().find("a").css("color","#000000");
 	})
+
 
     });
     ! function() {

@@ -10,6 +10,12 @@
     {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">--}}
     <script type="text/javascript" src="{{asset('webStatic/library/jquery/1.9.1/jquery.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('webStatic/library/layer-v3.1.0/layer/layer.js')}}"></script>
+    <script type="text/javascript">
+    	$(function(){
+    		$("tr").last().css("border-bottom","1px solid #f5f5f5")
+    	})
+    		
+    </script>
     <!--[if lt IE 9]>
 
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
