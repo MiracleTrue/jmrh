@@ -11,7 +11,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Request;
 

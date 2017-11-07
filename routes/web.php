@@ -23,9 +23,10 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     Route::group(['group' => '用户中心', 'identity' => [\App\Models\User::PLATFORM_ADMIN, \App\Models\User::SUPPLIER_ADMIN, \App\Models\User::ARMY_ADMIN]], function ()
     {
         Route::get('/', 'IndexController@Index');/*后台主框架 | index */
-        Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
         Route::get('logout', 'IndexController@Logout');/*退出登录提交 */
+        Route::get('welcome', 'IndexController@Welcome');/*后台首页 | welcome */
         Route::get('log/manage', 'UserController@LogManage')->name('用户操作日志');/*用户操作日志 | log_manage */
+        Route::get('product/show/{id}', 'ProductController@ProductShow')->name('商品详情');/*商品详情页面 | product_show */
         Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
         Route::any('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
     });

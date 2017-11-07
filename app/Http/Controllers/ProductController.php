@@ -23,6 +23,20 @@ class ProductController extends Controller
     public $ViewData = array(); /*传递页面的数组*/
 
     /**
+     * View 商品详情展示 页面
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function ProductShow($id)
+    {
+        $product = new Product();
+
+        $this->ViewData['product_info'] = $product->getProductInfo($id);
+        dump($this->ViewData);
+        return view('product_show', $this->ViewData);
+    }
+
+    /**
      * View 商品分类列表 页面
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

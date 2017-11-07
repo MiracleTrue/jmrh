@@ -169,7 +169,7 @@ class Product extends CommonModel
     }
 
     /**
-     * 获取单个商品 (已转换:缩略图路径, 原图路径)
+     * 获取单个商品 (已关联: 分类) (已转换:缩略图路径, 原图路径)
      * @param $id
      * @return mixed
      */
@@ -179,6 +179,7 @@ class Product extends CommonModel
         $e_products = Products::where('product_id', $id)->where('is_delete', self::PRODUCT_NO_DELETE)->first() or die();
         $e_products->product_original = MyFile::makeUrl($e_products->product_original);
         $e_products->product_thumb = MyFile::makeUrl($e_products->product_thumb);
+        $e_products->category_info = $e_products->ho_product_category;
         return $e_products;
     }
 
