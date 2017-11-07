@@ -72,7 +72,6 @@ class ProductController extends Controller
             'category_name' => 'required',
             'unit' => 'required',
             'sort' => 'required|integer',
-            'labels' => 'string',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -116,7 +115,6 @@ class ProductController extends Controller
             'category_name' => 'required',
             'unit' => 'required',
             'sort' => 'required|integer',
-            'labels' => 'string',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -306,7 +304,6 @@ class ProductController extends Controller
             'product_name' => 'required',
             'sort' => 'required|integer',
             'product_image' => 'required|file|image',
-            'product_content' => 'string',
             'category_id' => [
                 'required',
                 'integer',

@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Support\Facades\Validator;
@@ -42,9 +43,11 @@ class IndexController extends Controller
      */
     public function Welcome()
     {
-        $manage_u = session('ManageUser');
-        dump($manage_u);
+        /*初始化*/
+        $product = new Product();
+        $this->ViewData['product_list'] = $product->getWelcomeProductList();
 
+        dump($this->ViewData);
         return view('welcome', $this->ViewData);
     }
 

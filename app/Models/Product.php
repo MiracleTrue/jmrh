@@ -34,6 +34,35 @@ class Product extends CommonModel
     private $errors = array(); /*错误信息*/
 
     /**
+     * 获取首页商品分类楼层 (已关联: 商品) 默认排序:排序值
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getWelcomeProductList()
+    {
+        /*初始化*/
+        $e_product_category = new ProductCategory();
+
+        $list = $e_product_category->with(['hm_products' => function ($query)
+        {
+            $query->where('products.is_delete', self::CATEGORY_NO_DELETE)->orderBy('products.sort', 'desc');
+        }])
+            ->where('product_category.is_index', self::CATEGORY_IS_INDEX)
+            ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
+            ->orderBy('product_category.sort', 'desc')
+            ->get();
+
+        /*数据过滤*/
+        $list->transform(function ($item)
+        {
+            $item->products = $item->hm_products->take(10);
+            $item->labels = explode(',', $item->labels);
+            return $item;
+        });
+
+        return $list;
+    }
+
+    /**
      * 获取所有商品列表 (已关联: 分类) (如有where 则加入新的sql条件) "分页" | 默认排序:排序值
      * @param array $where
      * @param array $orderBy
@@ -113,7 +142,7 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
-            $item->labels = explode(',',$item->labels);
+            $item->labels = explode(',', $item->labels);
             unset($item->hm_products_count);
             return $item;
         });
