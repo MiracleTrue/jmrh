@@ -92,24 +92,6 @@ class CommonModel
     }
 
     /**
-     * 自动处理 已过确认时间的报价,改为已超期
-     */
-    public function autoHandleOverdueOffer()
-    {
-        $now_time = now()->timestamp;
-        OrderOffer::where('status', self::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)
-            ->update(['status' => self::OFFER_OVERDUE, 'price' => 0, 'total_price' => 0]);
-    }
-
-    public function autoTest()
-    {
-        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-
-        $a = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
-        $path = Storage::disk('local')->putFileAs('temp', $a, date('H-i-s',time()) . '.jpeg');
-    }
-
-    /**
      * 根据请求方式,返回不同的"没有"权限的信息
      * @param $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector

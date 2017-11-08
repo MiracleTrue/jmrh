@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Entity\OrderOffer;
+use App\Models\CommonModel;
 use Illuminate\Console\Command;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * 处理已过确认时间的报价,改为已超期 (Artisan 计划任务)
@@ -42,9 +42,8 @@ class HandleOverdueOffer extends Command
      */
     public function handle()
     {
-        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-
-        $a = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
-        $path = Storage::disk('local')->putFileAs('temp', $a, date('H-i-s',time()) . '.jpeg');
+        $now_time = now()->timestamp;
+        OrderOffer::where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)
+            ->update(['status' => CommonModel::OFFER_OVERDUE, 'price' => 0, 'total_price' => 0]);
     }
 }

@@ -7,7 +7,30 @@
 军方：首页、军方、密码修改、修改日志
 供应商：供应商、密码修改、操作日志
 
+项目安装:
+必须Linux系统  PHP版本7.0以上 (拥有Laravel框架的插件支持)  安装:PHP Composer , MySql数据库 , Git客户端 , crond服务
 
+1.git clone ssh://git@47.92.90.154:22/git/jmrh.git
+
+2.composer install
+
+3.修改.env全局配置文件,生成APP_KEY  (php artisan key:generate)
+
+4.还原数据库,项目根目录下的jmrh_init.sql  含测试数据的jmrh_test.sql
+
+5.将Http访问目录设置为,项目根目录下的 /public/index.php
+
+6.crontab -e 添加
+  * * * * php /var/www/jmrh/artisan schedule:run >> /dev/null 2>&1   保存
+  crontab -u root -l   查看
+
+7.
+
+备注:
+Linux问题:
+1.将项目目录所有人和所有组设置为apache 或者 storage 目录和 bootstrap/cache 目录应该允许 Web 服务器写入 (权限问题)
+2.关闭selinux
+3.防火墙问题
 
 
 项目目录结构:
@@ -75,3 +98,6 @@
 ｜–　server.php PHP内置的Web服务器将把这个文件作为入口。以public/index.php为入口的可以忽略掉该文件
 
 APP_ENV设置值:   开发: local    测试: testing    预上线: staging    正式环境: production
+
+更换APP_KEY
+php artisan key:generate
