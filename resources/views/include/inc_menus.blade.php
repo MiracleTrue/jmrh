@@ -76,7 +76,12 @@
         </li>
 		@elseif($manage_user['identity'] == '2')<!--平台运营员-->
 							
-							
+				<li class="treeview">
+            <a href="{{url('welcome')}}">
+                <i class="fa fa-home"></i> <span>首页</span>
+            </a>
+
+        </li>			
 							
 							
 							
@@ -119,7 +124,12 @@
       
 		@elseif($manage_user['identity'] == '3')<!--供货商-->
 				
-				
+			<li class="treeview">
+            <a href="{{url('welcome')}}">
+                <i class="fa fa-home"></i> <span>首页</span>
+            </a>
+
+        </li>	
 				
 		
 
@@ -138,9 +148,9 @@
                 <!--<small class="label pull-right label-danger">3</small>-->
             </a>
         </li>
-        <li class="munu-caozuorizhi">
-            <a href="{{url('log/list')}}">
-                <i class="fa fa-envelope-square"></i> <span>操作日志</span>
+          <li class="munu-woderizhi">
+            <a href="{{url('log/manage')}}">
+                <i class="fa fa-user-o fa-lg"></i> <span>我的日志</span>
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>

@@ -80,13 +80,13 @@ section a {
 }
 
 .goods-list {
-	  display: -moz-box;
-	 display: -webkit-box;
-    display: -webkit-flex;
+	display: -moz-box;
+    display: -webkit-box;
     display: -ms-flexbox;
+    display: -webkit-flex;
 	display: flex;
 	-webkit-flex-wrap:wrap;
-	 -moz--flex-wrap:wrap;
+	 -moz-flex-wrap:wrap;
 	flex-wrap: wrap;
 	height: auto;
 }

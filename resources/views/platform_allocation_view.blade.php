@@ -86,7 +86,7 @@
 			<div>
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" type="" name="platform_receive_time" id="platform_receive_time" value="" placeholder="请选择时间"/>
+				 	<input onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min:'{{$order_info['army_receive_time']}}' })" type="" name="platform_receive_time" id="platform_receive_time" value="" placeholder="请选择时间"/>
 				</p>
 				<p style="position: relative;">
 					<span>到货预警时间</span>
