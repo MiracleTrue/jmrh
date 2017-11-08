@@ -67,7 +67,7 @@ class Supplier extends CommonModel
             $item->warning_status = CommonModel::OFFER_NO_WARNING;
 
             /*判断是否达到预警条件*/
-            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) > now()->timestamp)
+            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) < now()->timestamp)
             {
                 $item->warning_status = CommonModel::OFFER_IS_WARNING;
             }
