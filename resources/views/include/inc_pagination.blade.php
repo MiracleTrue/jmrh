@@ -1,3 +1,3 @@
 <div class="userlist_pag">
-    {{ $pagination->links() }}
+    {{ $pagination->links('vendor.pagination.default') }}
 </div>
