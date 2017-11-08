@@ -52,6 +52,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布需求');/*军方发布需求*/
         Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/
         Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/
+        Route::any('army/confirm/receive', 'ArmyController@ConfirmReceive')->name('确认收货');/*军方删除需求*/
     });
 
     Route::group(['group' => '供应商', 'identity' => [\App\Models\User::SUPPLIER_ADMIN]], function ()

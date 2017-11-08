@@ -181,6 +181,46 @@ class ArmyController extends Controller
     }
 
     /**
+     * Ajax 军方确认收货 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ConfirmReceive(Request $request)
+    {
+        /*初始化*/
+        $m3result = new M3Result();
+        $army = new Army();
+
+        /*验证规则*/
+        $rules = [
+            'order_id' => [
+                'required',
+                'integer',
+                Rule::exists('orders')->where(function ($query)
+                {
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                        ->where('status', CommonModel::ORDER_SEND_ARMY);
+                }),
+            ]
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $army->armyConfirmReceive($request->input('order_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '确认收货成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['army'] = $army->messages();
+        }
+        return $m3result->toJson();
+    }
+
+    /**
      * Ajax 删除军方需求 请求处理
      * @param Request $request
      * @return \App\Tools\json

@@ -148,6 +148,21 @@ class Army extends CommonModel
     }
 
     /**
+     * 军方确认收到平台的供货
+     * @param $order_id
+     * @return bool
+     */
+    public function armyConfirmReceive($order_id)
+    {
+        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+            ->where('status', CommonModel::ORDER_SEND_ARMY)->first() or die('order missing');
+
+        $e_orders->status = CommonModel::ORDER_SUCCESSFUL;
+        $e_orders->save();
+        User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 订单号: " . $e_orders->order_sn);
+        return true;
+    }
+    /**
      * 返回军方视角 订单状态 的文本名称
      * @param $status
      * @return string
