@@ -14,6 +14,7 @@ use App\Models\Platform;
 use App\Models\Product;
 use App\Models\User;
 use App\Tools\M3Result;
+use App\Tools\MyHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -152,7 +153,6 @@ class PlatformController extends Controller
         /*验证规则*/
         $rules = [
             'warning_time' => 'required|integer',
-            'platform_receive_time' => 'required|date|after:now',
             'confirm_time' => 'required|date|after:now',
             'order_id' => [
                 'required',
@@ -162,7 +162,8 @@ class PlatformController extends Controller
                     $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
                 }),
-            ]
+            ],
+            'platform_receive_time' => 'required|date|after:' . date('YmdHis', Orders::find($request->input('order_id'))->army_receive_time),
         ];
         $validator = Validator::make($request->all(), $rules);
         /*供货商A增加规则*/

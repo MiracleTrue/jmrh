@@ -65,7 +65,6 @@ class IndexController extends Controller
         }
 
         $this->ViewData['manage_user'] = $manage_u;
-        dump($this->ViewData);
         return view('index', $this->ViewData);
     }
 

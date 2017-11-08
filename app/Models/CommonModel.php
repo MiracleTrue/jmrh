@@ -44,6 +44,10 @@ class CommonModel
     const OFFER_PASSED = 3;/*已通过*/
     const OFFER_SEND = 4;/*已发货*/
 
+    /*报价预警状态*/
+    const OFFER_IS_WARNING = 1;/*预警开启*/
+    const OFFER_NO_WARNING = 0;/*无预警*/
+
     /**
      * 生成唯一订单号
      * @return string

@@ -10,6 +10,7 @@ namespace App\Models;
 
 use App\Entity\OrderOffer;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 供应商相关模型
@@ -63,6 +64,13 @@ class Supplier extends CommonModel
                 $item->order_info = $item->ho_orders;
             }
             $item->status_text = $this->offerStatusTransformText($item->status);
+            $item->warning_status = CommonModel::OFFER_NO_WARNING;
+
+            /*判断是否达到预警条件*/
+            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) > now()->timestamp)
+            {
+                $item->warning_status = CommonModel::OFFER_IS_WARNING;
+            }
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             $item->confirm_time = Carbon::createFromTimestamp($item->confirm_time)->toDateTimeString();
             $item->order_info->status_text = self::orderStatusTransformText($item->order_info->status);
@@ -141,8 +149,14 @@ class Supplier extends CommonModel
 
         /*更新*/
         $e_order_offer->status = CommonModel::OFFER_SEND;
-        $e_order_offer->save();
-        User::userLog('订单:' . "($e_orders->order_sn $e_orders->product_name $e_orders->product_number$e_orders->product_unit) " . "配货");
+        $e_orders->status = CommonModel::ORDER_SUPPLIER_SEND;
+        /*事物*/
+        DB::transaction(function () use ($e_orders, $e_order_offer)
+        {
+            $e_orders->save();
+            $e_order_offer->save();
+            User::userLog('订单:' . "($e_orders->order_sn $e_orders->product_name $e_orders->product_number$e_orders->product_unit) " . "配货");
+        });
         return true;
     }
 
