@@ -28,15 +28,15 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('HandleOverdueOffer')->everyMinute();/*处理已过确认时间的报价,改为已超期 (Artisan 计划任务)*/
 
-        $schedule->call(function () {
-            $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
 
-            $a = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
-            $path = Storage::disk('local')->putFileAs('temp', $a, date('H-i-s',time()) . '.jpeg');
-        })->everyMinute();
-
-        
+//        $schedule->call(function () {
+//            $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+//
+//            $a = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
+//            $path = Storage::disk('local')->putFileAs('temp', $a, date('H-i-s',time()) . '.jpeg');
+//        })->everyMinute();
     }
 
     /**
