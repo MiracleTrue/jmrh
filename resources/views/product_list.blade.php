@@ -109,7 +109,7 @@
 						title: false,
 						maxmin: false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '413px'],
+						area: ['920px', '513px'],
 						content: '{{url('product/view')}}'+'/'+product_id
 					});
 		

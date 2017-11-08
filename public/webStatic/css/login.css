@@ -11,11 +11,13 @@
 				position: absolute;
 				top: 50%;
 				left: 50%;
-				transform: translate(-50%, -50%);
+				/*transform: translate(-50%, -50%);*/
 				background: url(../images/loginbg2.png);
 				padding-top: 100px;
 				padding-left: 50px;
 				padding-right: 50px;
+				margin-left: -226px;
+   				margin-top: -160px;
 			}
 			
 			.username {

@@ -110,7 +110,7 @@
                                <a class="mly-caozuo" onclick="NeedEdit(this,'{{$item['order_id']}}')">修改</a>
                                <a class="mly-caozuo" onclick="NeedDelete(this,'{{$item['order_id']}}')">删除</a> 
 	                @elseif($item['status'] == '1000')
-	                                     <a class="mly-caozuo">已到货</a>
+	                   <a class="mly-caozuo"  >已到货</a>
                 	@endif
                 </td>
             </tr>

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>首页</title>
     <link rel="stylesheet" href="{{asset('webStatic/css/reset.css')}}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
      <link rel="stylesheet" href="{{asset('webStatic/library/font-awesome-4.7.0/css/font-awesome.min.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/sidebar-menu.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/home.css')}}"/>

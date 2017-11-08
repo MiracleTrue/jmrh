@@ -98,7 +98,11 @@
 						<td>{{$item->offer_id}}</td>
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
+						@if($item->warning_status)
+						<td style="color: red;">{{$item['order_info']['army_receive_time']}}</td>
+						@else
 						<td>{{$item['order_info']['army_receive_time']}}</td>
+						@endif
 						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['product_unit']}}</td>
 						<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>
 						<td class="blueWord">
