@@ -86,7 +86,7 @@ class PlatformController extends Controller
         $this->ViewData['order_list'] = $platform->getOrderList($where, $or_where);
         $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_need_list', $this->ViewData);
     }
 
@@ -102,7 +102,7 @@ class PlatformController extends Controller
         $this->ViewData['supplier_list'] = $user->getSupplierList();
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_need_view', $this->ViewData);
     }
 
@@ -117,7 +117,7 @@ class PlatformController extends Controller
         $platform = new Platform();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_offer_view', $this->ViewData);
     }
 
@@ -135,7 +135,7 @@ class PlatformController extends Controller
         $this->ViewData['supplier_list'] = $user->getSupplierList();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_allocation_view', $this->ViewData);
     }
 

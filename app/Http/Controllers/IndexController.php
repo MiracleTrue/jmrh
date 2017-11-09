@@ -78,7 +78,7 @@ class IndexController extends Controller
         $product = new Product();
         $this->ViewData['product_list'] = $product->getWelcomeProductList();
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('welcome', $this->ViewData);
     }
 

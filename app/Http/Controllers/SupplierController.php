@@ -76,7 +76,7 @@ class SupplierController extends Controller
         $this->ViewData['offer_list'] = $supplier->getOfferList($manage_u->user_id, $where, $or_where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('supplier_need_list', $this->ViewData);
     }
 
@@ -107,7 +107,7 @@ class SupplierController extends Controller
         if ($validator->passes())
         {   /*验证通过*/
             $this->ViewData['offer_info'] = $supplier->getSupplierOfferInfo($manage_u->user_id, $offer_id);
-            dump($this->ViewData);
+//            dump($this->ViewData);
             return view('supplier_offer_view', $this->ViewData);
         }
         else

@@ -58,7 +58,7 @@ class UserController extends Controller
 
         $this->ViewData['log_list'] = $user->getLogList($where);
         $this->ViewData['page_search'] = array('identity' => $identity, 'nick_name' => $nick_name);
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('log_list', $this->ViewData);
     }
 
@@ -73,7 +73,7 @@ class UserController extends Controller
         $this->ViewData['log_list'] = array();
 
         $this->ViewData['log_list'] = $user->getLogManage();
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('log_manage', $this->ViewData);
     }
 
@@ -128,7 +128,7 @@ class UserController extends Controller
 
         $this->ViewData['page_search'] = array('identity' => $identity, 'is_disable' => $is_disable, 'nick_name' => $nick_name, 'phone' => $phone);
         $this->ViewData['user_list'] = $user->getUserList($where);
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('user_list', $this->ViewData);
     }
 
@@ -199,7 +199,7 @@ class UserController extends Controller
         {
             $this->ViewData['user_info'] = $user->getUser($id);
         }
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('user_view', $this->ViewData);
     }
 

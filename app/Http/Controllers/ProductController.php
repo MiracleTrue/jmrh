@@ -32,7 +32,7 @@ class ProductController extends Controller
         $product = new Product();
 
         $this->ViewData['product_info'] = $product->getProductInfo($id);
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_show', $this->ViewData);
     }
 
@@ -47,7 +47,7 @@ class ProductController extends Controller
         $this->ViewData['category_list'] = array();
 
         $this->ViewData['category_list'] = $product->getProductCategoryList();
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('category_list', $this->ViewData);
     }
 
@@ -66,7 +66,7 @@ class ProductController extends Controller
         {
             $this->ViewData['category_info'] = $product->getProductCategory($id);
         }
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('category_view', $this->ViewData);
     }
 
@@ -278,7 +278,7 @@ class ProductController extends Controller
 
         $this->ViewData['product_list'] = $product->getProductList();
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_list', $this->ViewData);
     }
 
@@ -298,7 +298,7 @@ class ProductController extends Controller
             $this->ViewData['product_info'] = $product->getProductInfo($id);
         }
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_view', $this->ViewData);
     }
 

@@ -7,7 +7,10 @@
  */
 namespace App\Http\Controllers;
 
+use App\Entity\Orders;
+use App\Models\CommonModel;
 use App\Models\User;
+use App\Tools\MyHelper;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -16,11 +19,24 @@ class TestController extends Controller
 
     public function Index(Request $request)
     {
+        $my_helper = new MyHelper();
+        var_dump(
+            $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis',Orders::find(83)->army_receive_time) : 'now'
+        );
+
+        var_dump(
+            date('YmdHis',Orders::find(83)->army_receive_time)
+        );
+
+
+
+        dd(date('YmdHis',1510135244));
         /*初始化*/
-
-        User::userLog();
-
-        return 'test';
+//        $a = new CommonModel();
+//
+//        $a->autoTest();
+//
+//        return 'test';
     }
 
     public function T_add(Request $request)

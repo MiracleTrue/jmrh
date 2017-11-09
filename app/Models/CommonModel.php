@@ -48,6 +48,10 @@ class CommonModel
     const OFFER_IS_WARNING = 1;/*预警开启*/
     const OFFER_NO_WARNING = 0;/*无预警*/
 
+    /*报价预警是否发送过短信*/
+    const OFFER_IS_SMS = 1;/*已发送短信*/
+    const OFFER_NO_SMS = 0;/*未发送过短信*/
+
     /**
      * 生成唯一订单号
      * @return string
