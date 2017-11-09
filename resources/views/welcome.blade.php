@@ -4,6 +4,7 @@
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     {{--<link rel="stylesheet" type="text/css" href="css/iframe.css" />--}}
     <link rel="stylesheet" type="text/css" href="{{asset('webStatic/css/iframe.css')}}" />
+ 	
 @endsection
 @section('content')
     <section style="position: relative;">

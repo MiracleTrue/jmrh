@@ -1,4 +1,4 @@
-<aside class="home-aside">
+<div class="home-aside">
     <ul class="sidebar-menu">
     	
     	
@@ -194,4 +194,4 @@
 
     </ul>
 
-</aside>
+</div>

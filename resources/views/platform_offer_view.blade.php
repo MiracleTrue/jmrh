@@ -35,13 +35,13 @@
 @section('content')
 <div class="qte-box">
 	<form  id="platformbaojiatijiao" method="post">		
-			<header>客户报价(剩余时间<span>23小时</span><span>52分</span><span>05秒</span>)</header>
+			<header>客户报价(剩余时间<span class="pf_hour"></span><span class="pl-min"></span><span class="pl_sc"></span>)</header>
 			<div class="offer_div">
 				@foreach($order_info['offer_info'] as $item)
 				<p>
 					<span>{{$item['user_info']['nick_name']}}</span>
 					 
-				 	<input class="price_color" data-price="{{$item['total_price']}}" disabled="disabled class="blueWord" type="" name="" id="" value=@if($item['status']=="0") "待报价" @elseif($item['status']=="1")"单价{{$item['price']}}元/{{$order_info['product_unit']}}  总价{{$item['total_price']}}元"  @elseif($item['status']=="-1")"已过期" @endif  />
+				 	<input class="price_color" data-price="{{$item['total_price']}}" disabled="disabled class="blueWord" type="" name="" id="" value=@if($item['status']=="0") "待报价" @elseif($item['status']=="1" || $item['status']=="3")"单价{{$item['price']}}元/{{$order_info['product_unit']}}  总价{{$item['total_price']}}元" @elseif($item['status']=="2")"(未通过)单价{{$item['price']}}元/{{$order_info['product_unit']}}  总价{{$item['total_price']}}元"  @elseif($item['status']=="-1")"已过期" @endif  />
 				 	
 				</p>
 				@endforeach
@@ -55,7 +55,7 @@
 				<p style="margin-left: 38px;">
 					<span>最终选择</span>
 						
-				 	<select name="offer_id">
+				 	<select name="offer_id" @if($order_info['status']!=100) disabled="disabled" @endif>
 				 		@foreach($order_info['offer_info'] as $item)
 				 		
 				 		<option class="op_price" data-price="{{$item['total_price']}}"  value="{{$item['offer_id']}}">{{$item['user_info']['nick_name']}}</option>
@@ -64,7 +64,7 @@
 				 	</select>
 				</p>
 			</div>
-			
+			@if($order_info['status']==100)
 			<div class="qte-ope">
 				<input type="hidden" name="order_id" value="{{$order_info['order_id']}}" />
 				
@@ -73,6 +73,7 @@
 				
 				
 			</div>
+			@endif
 			</form>
 		</div>
 		
@@ -158,9 +159,66 @@
 	     
 				
 			})
+		
+	
+   
+  
+
+  
+  
+		
 		  
 		
 	})
 	
+		
+	<!--倒计时-->	
+	   {{-- function formatSeconds(value) {
+            var theTime = parseInt(value);// 秒
+            var theTime1 = 0;// 分
+            var theTime2 = 0;// 小时
+            // alert(theTime);
+            if(theTime > 60) {
+                theTime1 = parseInt(theTime/60);
+                theTime = parseInt(theTime%60);
+                // alert(theTime1+"-"+theTime);
+                if(theTime1 > 60) {
+                    theTime2 = parseInt(theTime1/60);
+                    theTime1 = parseInt(theTime1%60);
+                }
+            }
+            var result = ""+parseInt(theTime)+"秒";
+            if(theTime1 > 0) {
+                result = ""+parseInt(theTime1)+"分"+result;
+            }
+            if(theTime2 > 0) {
+                result = ""+parseInt(theTime2)+"小时"+result;
+            }
+         console.log(result)
+            return result;
+        }
+ 
+    setInterval('formatSeconds({{$count_down}})',1000);
+	--}} 
+	
+	
+	
+	
+	
+	
+	
+	 	var EndTimeMsg = {{$count_down}};
+	    function show() {
+	     EndTimeMsg--;
+	    h = Math.floor(EndTimeMsg / 60 / 60);
+	    m = Math.floor((EndTimeMsg - h * 60 * 60) / 60);
+	    s = Math.floor((EndTimeMsg - h * 60 * 60 - m * 60));
+	  
+	    $(".pf_hour").text(h+"小时");
+	    $(".pl-min").text(m+"分钟");
+	    $(".pl_sc").text(s+"秒");
+	    
+	  }
+	  setInterval("show()", 1000)	
 </script>
 @endsection

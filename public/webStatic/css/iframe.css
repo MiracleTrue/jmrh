@@ -20,14 +20,15 @@ section a {
 }
 
 .head {
-	display: flex;
+	
 	float: right;
 	margin-right: 36px;
 }
 
 .head li {
+	float: left;
 	margin-left: 40px;
-	list-style: initial;
+	list-style: disc;
 	font-size: 16px;
 }
 
@@ -59,14 +60,17 @@ section a {
 }
 
 .goods-list li p {
-	height: 14%;
+	height:42px;
 	font-size: 16px;
 	font-weight: 800;
 	text-indent: 7%;
-	padding-top:5%;
+	line-height: 42px;
 	overflow: hidden;
 	text-overflow:ellipsis;
 	white-space: nowrap;
+	display: block;
+	
+	 
 	
 	
 }
@@ -78,17 +82,22 @@ section a {
     	margin-bottom: 12px;
     }
 }
+/*IE9+*/
+@media all and (min-width:0) {
+  .goods-list li p
+}
 
 .goods-list {
-	display: -moz-box;
+	/*display: -moz-box;
     display: -webkit-box;
     display: -ms-flexbox;
     display: -webkit-flex;
 	display: flex;
 	-webkit-flex-wrap:wrap;
 	 -moz-flex-wrap:wrap;
-	flex-wrap: wrap;
+	flex-wrap: wrap;*/
 	height: auto;
+	overflow: hidden;
 }
 .floor_span{
 	display: block;

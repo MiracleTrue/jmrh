@@ -12,7 +12,6 @@ body {
 .home-header {
 	height: 42px;
 	background: #fe8d01;
-	display: flex;
 	padding-left: 200px;
 	position: relative;
 }
@@ -22,6 +21,7 @@ body {
 	line-height: 42px;
 	margin-left: 40px;
 	color: #FFFFFF;
+	float: left;
 }
 
 .home-header .headerdiv1 {
@@ -29,6 +29,7 @@ body {
 	line-height: 42px;
 	margin-left: 20px;
 	color: #FFFFFF;
+	float: left;
 }
 
 .headerdiv2 {

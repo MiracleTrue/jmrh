@@ -1,4 +1,5 @@
-<header class="home-header">
+
+<div class="home-header">
     <p><span>当前时间：<b class="lu_year">2017</b>年<b class="lu_month">9</b>月<b class="lu_day">30</b>日</span></p>
     <div class="headerdiv1">
     @foreach($order_status as $key => $item)
@@ -12,7 +13,7 @@
 	
     </div>
    <a href="{{url('logout')}}"> <div class="headerdiv2">退出平台</div></a>
-</header>
+</div>
 @section('MyJs')
 <script type="text/javascript">
 
