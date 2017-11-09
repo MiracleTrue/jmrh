@@ -28,7 +28,7 @@
 				<h5>商品名称：{{$product_info['product_name']}}</h5>
 				<p>所属分类：{{$product_info['category_info']['category_name']}}</p>
 				<p>详情描述</p>
-				<p>{{$product_info['product_content']}}</p>
+				<p>{!!$product_info['product_content']!!}</p>
 			</div>
 		</section>
 @section('content')
