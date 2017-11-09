@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('HandleOverdueOffer')->everyMinute();/*处理已过确认时间的报价,改为已超期 (Artisan 计划任务)*/
+        $schedule->command('HandleOverdueOffer')->everyMinute();/*处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)*/
 
 
 //        $schedule->call(function () {
