@@ -54,8 +54,8 @@ class Platform extends CommonModel
         {
             $item->status_text = self::orderStatusTransformText($item->type, $item->status);
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
-            $item->platform_receive_time = Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString();
-            $item->army_receive_time = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
+            $item->platform_receive_time = $item->platform_receive_time ? Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString() : '';
+            $item->army_receive_time = $item->army_receive_time ? Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString() : '';
             return $item;
         });
         return $order_list;
@@ -249,11 +249,11 @@ class Platform extends CommonModel
         $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->whereIn('status', [CommonModel::ORDER_SUPPLIER_SEND])->first() or die('order missing');
 
-        if($e_orders->type == Platform::ORDER_TYPE_PLATFORM)
+        if ($e_orders->type == Platform::ORDER_TYPE_PLATFORM)
         {
             $e_orders->status = CommonModel::ORDER_SUCCESSFUL;
         }
-        elseif($e_orders->type == Army::ORDER_TYPE_ARMY)
+        elseif ($e_orders->type == Army::ORDER_TYPE_ARMY)
         {
             $e_orders->status = CommonModel::ORDER_SUPPLIER_RECEIVE;
         }
@@ -274,7 +274,7 @@ class Platform extends CommonModel
     public function platformSendArmy($order_id)
     {
         $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE,CommonModel::ORDER_ALLOCATION_PLATFORM])->first() or die('order missing');
+            ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM])->first() or die('order missing');
 
         $e_orders->status = CommonModel::ORDER_SEND_ARMY;
         $e_orders->save();
