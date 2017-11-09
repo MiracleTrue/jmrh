@@ -117,7 +117,7 @@ class PlatformController extends Controller
         $platform = new Platform();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('platform_offer_view', $this->ViewData);
     }
 
