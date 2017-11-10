@@ -150,12 +150,14 @@ tr a {
 	width: 305px;
 	outline: 0;
 	margin-left: 18px;
+	line-height: 43px;
 }
 .mly-more div:nth-child(2) p input {
 	height: 43px;
 	width: 305px;
 	outline: 0;
 	margin-left: 18px;
+	line-height: 43px;
 }
 
 
@@ -205,12 +207,14 @@ tr a {
 	width: 305px;
 	outline: 0;
 	margin-left: 18px;
+	line-height: 43px;
 }
 .mly-more div:first-child+div+div p input {
 	height: 43px;
 	width: 305px;
 	outline: 0;
 	margin-left: 18px;
+	line-height: 43px;
 }
 
 

@@ -24,6 +24,7 @@
 	height: 42px;
 	outline: none;
 	margin-left: 20px;
+	line-height: 42px;
 }
 
 .ade-box div p:nth-child(1){

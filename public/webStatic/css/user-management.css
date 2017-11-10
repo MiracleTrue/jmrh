@@ -29,14 +29,19 @@
 	margin-right: 3%;
 }
 
-
-
+.id_value{
+	width: 13%;
+}
+.is_disable_val{
+	width: 13%;
+}
 
 
 .umt-filtrate input{
 	height: 21px;
 	width: 13%;
 	margin-left: 1%;
+	line-height: 21px;
 }
 .umt-seek{
 	display: block;
@@ -81,3 +86,5 @@
 	height: 21px;
 	width: 26%;
 	margin-left: 1%;
+	line-height: 21px;
+	}

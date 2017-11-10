@@ -24,6 +24,7 @@
 	height: 40px;
 	outline: none;
 	margin-left: 20px;
+	line-height: 40px;
 }
 .clt-box div p:nth-child(1){
 	float: left;
