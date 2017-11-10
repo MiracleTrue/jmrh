@@ -25,12 +25,26 @@
 	outline: none;
 	margin-left: 20px;
 }
+
 .ade-box div p:nth-child(1){
 	float: left;
 }
+.ade-box div p:first-child{
+	float: left;
+}
+
+
+
+
 .ade-box div p:nth-child(2){
 	float: right;
 }
+.ade-box div p:first-child+p{
+	float: right;
+}
+
+
+
 .ade-num{
 	width: 60px;
 	height: 30px;

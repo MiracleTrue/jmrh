@@ -67,9 +67,9 @@
 
 			<div class="mly-more">
 				@if(!empty($order_info))
-    			<div class="">修改需求</div>
+    			<div class="arymy_div1">修改需求</div>
 			@else
-    		<div class="">添加需求</div>
+    		<div class="arymy_div1">添加需求</div>
     		@endif
 				
 		

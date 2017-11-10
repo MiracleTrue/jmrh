@@ -14,9 +14,21 @@
     <script type="text/javascript">
     	$(function(){
     		$("tr").last().css("border-bottom","1px solid #f5f5f5")
+    		
+    	 if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
+		{ 
+		/*alert("IE 8.0"); 
+		 */
+		$("table tr:nth-child(2n)").css("background","#ffffff")
+		} 
     	})
+    	
+    	
+    	
+    	
     		
     </script>
+   
     <!--[if lt IE 9]>
 
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

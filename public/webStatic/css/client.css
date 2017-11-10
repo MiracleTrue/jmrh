@@ -28,9 +28,19 @@
 .clt-box div p:nth-child(1){
 	float: left;
 }
+.clt-box div p:first-child{
+	float: left;
+}
+
+
 .clt-box div p:nth-child(2){
 	float: right;
 }
+.clt-box div p:first-child+p{
+	float: right;
+}
+
+
 
 .clt-box select{
 	width: 286px;

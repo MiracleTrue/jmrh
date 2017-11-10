@@ -36,7 +36,16 @@
 .csy-box div p:nth-child(1){
 	float: left;
 }
+.csy-box div p:first-child{
+	float: left;
+}
+
+
+
 .csy-box div p:nth-child(2){
+	float: right;
+}
+.csy-box div p:first-child+p{
 	float: right;
 }
 

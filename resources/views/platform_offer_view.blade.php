@@ -31,6 +31,26 @@
 			}
 			
    	</style>
+   	<!--[if IE]> <style>
+   		.qte-box{
+   			width:920px;
+   		}
+   		.plat_div2{
+   			margin-top:25px;
+   			overflow:hidden;
+   			width:900px;
+   		}
+   		.offer_div p{
+   			margin-top:20px;
+   		}
+   		.offer_div p:first-child+p{
+   			margin-left:20px;
+   		}
+   		.qte-ope{
+   		margin-left:18%;
+   			display:block;
+   		}
+   	</style> <![endif]-->
 @endsection
 @section('content')
 <div class="qte-box">
@@ -47,8 +67,8 @@
 				@endforeach
 			</div>
 
-			<div >
-				<p style="text-indent: 49px;">
+			<div class="plat_div2">
+				<p  style="text-indent: 49px;">
 					<span>品名</span>
 				 	<input type="" name="" id="" value="{{$order_info['product_name']}}" disabled="disabled"/>
 				</p>
@@ -84,7 +104,7 @@
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
 	$(function(){
-		
+		$(".offer_div p").eq(1).css("margin-left","20px");
 	
 	
 		var arr =new Array(3);
