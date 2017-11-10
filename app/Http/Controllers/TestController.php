@@ -7,11 +7,14 @@
  */
 namespace App\Http\Controllers;
 
+use App\Entity\OrderOffer;
 use App\Entity\Orders;
 use App\Models\CommonModel;
+use App\Models\Sms;
 use App\Models\User;
 use App\Tools\MyHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TestController extends Controller
 {
@@ -21,16 +24,15 @@ class TestController extends Controller
     {
         $my_helper = new MyHelper();
         var_dump(
-            $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis',Orders::find(83)->army_receive_time) : 'now'
+            $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis', Orders::find(83)->army_receive_time) : 'now'
         );
 
         var_dump(
-            date('YmdHis',Orders::find(83)->army_receive_time)
+            date('YmdHis', Orders::find(83)->army_receive_time)
         );
 
 
-
-        dd(date('YmdHis',1510135244));
+        dd(date('YmdHis', 1510135244));
         /*初始化*/
 //        $a = new CommonModel();
 //
@@ -45,17 +47,17 @@ class TestController extends Controller
 
         $arr = array(
             'identity' => '1',
-            'user_name'=>'A-'.now(),
-            'nick_name'=>'N-'.now(),
-            'password'=>'123456',
-            'phone'=>'18600982820',
+            'user_name' => 'A-' . now(),
+            'nick_name' => 'N-' . now(),
+            'password' => '123456',
+            'phone' => '18600982820',
         );
         $request->merge($arr);
 
         /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
         $arr = array(
-            'product_name' => '蔬菜'.mt_rand(1,999),
+            'product_name' => '蔬菜' . mt_rand(1, 999),
             'product_number' => mt_rand(8, 888),
             'product_unit' => '个',
             'confirm_time' => '2017-11-1',
@@ -96,14 +98,22 @@ class TestController extends Controller
 
     public function T_update()
     {
-        /*初始化*/
-
         return 'test';
     }
 
     public function T_delete()
     {
         /*初始化*/
+//        $sms = new Sms();
+//
+//        $response = $sms->sendSms(
+//            Sms::SMS_SIGNATURE_1, // 短信签名
+//            Sms::SELECT_SUPPLIER_CODE, // 短信模板编号
+//            "18600982820" // 短信接收者
+//        );
+//        if($response->Code != 'OK'){
+//            print_r($response->Message);
+//        }
 
         return 'test';
     }

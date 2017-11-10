@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Entity\OrderOffer;
+use App\Entity\Users;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -117,6 +118,7 @@ class Supplier extends CommonModel
     public function supplierSubmitOffer($supplier_id, $offer_id, $total_price)
     {
         /*初始化*/
+        $sms = new Sms();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_OFFER)->first() or die('order_offer missing');
         $e_orders = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
@@ -131,6 +133,7 @@ class Supplier extends CommonModel
         $e_order_offer->status = CommonModel::OFFER_AWAIT_PASS;
         $e_order_offer->save();
         User::userLog('订单:' . "($e_orders->order_sn $e_orders->product_name $e_orders->product_number$e_orders->product_unit) 报价: " . $e_users->nick_name . "   $calculated_price 元");
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
         return true;
     }
 

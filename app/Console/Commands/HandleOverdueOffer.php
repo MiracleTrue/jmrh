@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Entity\OrderOffer;
+use App\Entity\Orders;
 use App\Models\CommonModel;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)

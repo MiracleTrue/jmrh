@@ -101,6 +101,7 @@ class Platform extends CommonModel
     {
         /*初始化*/
         $e_order_offer = new OrderOffer();
+        $sms = new Sms();
 
         /*添加*/
         $e_order_offer->order_id = !empty($order_id) ? $order_id : die('order_id missing.');
@@ -111,8 +112,13 @@ class Platform extends CommonModel
         $e_order_offer->create_time = Carbon::now()->timestamp;
         $e_order_offer->confirm_time = MyHelper::is_timestamp($data['confirm_time']) ? $data['confirm_time'] : die('confirm_time missing');
         $e_order_offer->warning_time = !empty($data['warning_time']) ? $data['warning_time'] : 0;
-
-        return $e_order_offer->save();
+        $e_order_offer->allocation_user_id = session('ManageUser')->user_id;
+        if($e_order_offer->save())
+        {
+            $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_ALLOCATION_CODE, Users::find($e_order_offer->user_id)->phone);/*发送短信*/
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -150,7 +156,7 @@ class Platform extends CommonModel
     }
 
     /**
-     * 为订单选择一个报价
+     * 为订单 选择最终供应商
      * @param $order_id
      * @param $offer_id
      * @return bool
@@ -158,6 +164,7 @@ class Platform extends CommonModel
     public function selectedSupplier($order_id, $offer_id)
     {
         /*初始化*/
+        $sms = new Sms();
         $e_orders = Orders::where('order_id', $order_id)->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER])->first() or die('order missing');
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('order_id', $order_id)
@@ -168,7 +175,7 @@ class Platform extends CommonModel
         $e_order_offer->status = $this::OFFER_PASSED;/*报价状态改变*/
 
         /*事物*/
-        DB::transaction(function () use ($e_orders, $e_order_offer)
+        DB::transaction(function () use ($e_orders, $e_order_offer,$sms)
         {
             /*保存状态*/
             $e_orders->save();
@@ -177,7 +184,9 @@ class Platform extends CommonModel
             OrderOffer::where('order_id', '=', $e_orders->order_id)
                 ->where('offer_id', '!=', $e_order_offer->offer_id)
                 ->update(['status' => CommonModel::OFFER_NOT_PASS]);
-            User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 选择供应商: " . Users::find($e_order_offer->user_id)->nick_name);
+            $supplier = Users::find($e_order_offer->user_id);
+            User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 选择供应商: " . $supplier->nick_name);
+            $sms->sendSms(Sms::SMS_SIGNATURE_1,Sms::SELECT_SUPPLIER_CODE,$supplier->phone);/*发送短信*/
         });
         return true;
     }

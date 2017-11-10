@@ -28,6 +28,12 @@ class Controller extends BaseController
         if(empty($_COOKIE['PaginationSize']) || is_numeric($_COOKIE['PaginationSize']) == false) {$_COOKIE['PaginationSize'] = 10;}
 
 
+
+        /*阿里key*/
+        //Access Key ID      :  LTAInFbXqLFhptN0
+        //Access Key Secret  :  G0kBm2WSwpRc7VlKkI9lTR5Uln6kMY
+
+
         /*加入session*/
 //        session(['ManageUser' => Users::find(1)]);
 
