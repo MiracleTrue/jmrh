@@ -57,7 +57,7 @@
                                <a class="mly-caozuo" onclick="NeedEdit(this,'{{$item['order_id']}}')">修改</a>
                                <a class="mly-caozuo" onclick="NeedDelete(this,'{{$item['order_id']}}')">删除</a> 
 	                @elseif($item['status'] == '1000')
-	                   <a class="mly-caozuo"  >已到货</a>
+	                   <a class="mly-caozuo" onclick="ConfirmReceive(this,'{{$item['order_id']}}')">已到货</a>
                 	@endif
                 </td>
             </tr>
@@ -138,6 +138,28 @@
     			}
     		});
     	}
+    //确认收货	
+    	function ConfirmReceive(elm,order_id){
+    		$.ajax({
+    			type:"post",
+    			url:"{{url('army/confirm/receive')}}",
+    			async:true,
+    			data:{
+    				order_id:order_id,
+    				_token:'{{csrf_token()}}'
+    			},
+    			success:function(res){
+    				console.log(res);
+    				
+    				var resData=JSON.parse(res);
+    				 layer.msg(resData.messages, {icon: 1, time: 1000});
+    				
+    			}
+    		});
+    	}
+    	
+    	
+    	
 	
 	$(function(){
 		layer.ready(function(){ 
