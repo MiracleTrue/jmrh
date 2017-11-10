@@ -28,7 +28,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('HandleOverdueOffer')->everyMinute();/*处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)*/
 
-
+        $schedule->command('OfferWarningSendSms')->everyMinute();/*已通过的报价达到预警条件发送短信给供应商 (Artisan 计划任务)*/
+        
 //        $schedule->call(function () {
 //            $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
 //
