@@ -267,18 +267,28 @@ class ProductController extends Controller
     }
 
     /**
-     * View 商品列表 页面
+     * View 商品列表 页面 (搜索条件参数: 商品分类)
+     * @param int $category_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function ProductList()
+    public function ProductList($category_id = 0)
     {
         /*初始化*/
         $product = new Product();
         $this->ViewData['product_list'] = array();
+        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
-        $this->ViewData['product_list'] = $product->getProductList();
+        if($category_id > 0)
+        {
+            $this->ViewData['product_list'] = $product->getProductList([['category_id',$category_id]]);
+        }
+        else
+        {
+            $this->ViewData['product_list'] = $product->getProductList();
+        }
 
-//        dump($this->ViewData);
+        $this->ViewData['page_search'] = array('category_id' => $category_id);
+        dump($this->ViewData);
         return view('product_list', $this->ViewData);
     }
 
