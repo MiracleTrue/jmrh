@@ -288,7 +288,7 @@ class ProductController extends Controller
         }
 
         $this->ViewData['page_search'] = array('category_id' => $category_id);
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_list', $this->ViewData);
     }
 
