@@ -122,8 +122,13 @@
     			console.log(resData);
 				
     			if(!resData.code){
-    				$(elm).parent().parent().children().eq(5).text("正常")
+    				$(elm).attr("onclick","stopuser(this,"+user_id+")");
+    				$(elm).parent().parent().children().eq(5).text("正常");
     				$(elm).text("禁用");
+    				
+    				layer.msg(resData.messages, {icon: 1, time: 1000});
+    			}else{
+    				layer.msg(resData.messages, {icon: 2, time: 1000});
     			}
     		}
     		
@@ -144,10 +149,15 @@
     			
     			var resData=JSON.parse(res);
     			console.log(resData);
-    				
     			if(!resData.code){
-    				$(elm).parent().parent().children().eq(5).text("冻结")
+    				$(elm).attr("onclick","startuser(this,"+user_id+")");
+    				$(elm).parent().parent().children().eq(5).text("冻结");
     				$(elm).text("启用");
+    				layer.msg(resData.messages, {icon: 1, time: 1000});
+
+    			}
+    			else{
+    				layer.msg(resData.messages, {icon: 2, time: 1000});
     			}
     		}
     		

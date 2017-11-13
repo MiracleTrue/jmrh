@@ -4,6 +4,7 @@
     	<style type="text/css">
     		.error{
     			color: red;
+    			padding-left: 20px;
     		}
     		#ade-submit{
 				background: #fe8d01;
@@ -32,10 +33,11 @@
     	</style>
 @endsection
 @section('content')
+<div class="error"></div>
 <div class="ade-box">
 	<form id="platform" action="" method="post">
 		
-		<div class="error"></div>
+		
 	
 			<header>添加采购需求</header>
 			<div>
@@ -266,12 +268,12 @@
       
       
    if(validatorAdd){
-      	$(".ary-reset").on("click",function(){
+      	$(".ade-reset").on("click",function(){
      	   validatorAdd.resetForm();
      	
         });
       }else{
-      	$(".ary-reset").on("click",function(){
+      	$(".ade-reset").on("click",function(){
      	   validatorEd.resetForm();
      	
         });

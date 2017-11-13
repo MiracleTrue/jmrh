@@ -54,8 +54,12 @@
 @endsection
 @section('content')
 <div class="qte-box">
-	<form  id="platformbaojiatijiao" method="post">		
+	<form  id="platformbaojiatijiao" method="post">	
+			@if($order_info['status']==100)	
 			<header>客户报价(剩余时间<span class="pf_hour"></span><span class="pl-min"></span><span class="pl_sc"></span>)</header>
+			@elseif($order_info['status']==110)	
+				<header>客户报价</header>
+				@endif
 			<div class="offer_div">
 				@foreach($order_info['offer_info'] as $item)
 				<p>

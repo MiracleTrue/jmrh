@@ -4,6 +4,7 @@
 <style>
 	.error{
     			color: red;
+    			padding-left: 20px;
     		}
     		#clt-submit{
 				background: #fe8d01;
@@ -32,16 +33,18 @@
 </style>
 @endsection
 @section('content')
+<div class="error"></div>
 <div class="clt-box">
 	<form id="platallpost" action="" method="post">
 		
 		
-	<div class="error"></div>
+	
 			<header>客户分配</header>
 			<div>
 				<p>
 					<span>选择供应商1</span>
 				 	<select name="supplier_A">
+				 		<option value="0">不选择供应商</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -50,6 +53,7 @@
 				<p>
 					<span>选择供应商2</span>
 				 	<select name="supplier_B">
+				 		<option value="0">不选择供应商</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -61,6 +65,7 @@
 				<p>
 					<span>选择供应商3</span>
 				 	<select name="supplier_C">
+				 		<option value="0">不选择供应商</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -193,6 +198,11 @@
 	     
 
       });
+      
+      $(".clt-reset").on("click",function(){
+     	   validatorAdd.resetForm();
+     	
+        });
 
   </script>
 @endsection

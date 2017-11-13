@@ -13,7 +13,20 @@
   <section>
 			<div>
 				<a href="#" class="gmt-add"></a>
-
+				<div class="tre-shaixuan platshaixuan" style="background: none;">
+					<div class="plat_shanixuan">筛选</div>
+					<div class="plat_stauschoose">
+						<span style="margin-left: 24px;font-size: 16px;">类型</span>
+					<select name="" class="tre-state palt type_val" style="margin-left: 15px;">
+						 <option value="0">全部</option>
+						 @foreach($category_list as $item)
+				 		<option value="{{$item['category_id']}}" @if($page_search['category_id'] ==$item['category_id']) selected="selected" @endif>{{$item['category_name']}}</option>
+				 		@endforeach
+					</select>
+					
+					</div>
+				</div>
+			<a class="tre-btn">筛选</a>
 			</div>
 
 			<table>
@@ -49,6 +62,21 @@
 @endsection
 @section('MyJs')
 <script>
+	//筛选
+	
+	  $(".tre-btn").on("click",function(){
+    	
+    	
+	   var staus_val = $('.type_val option:selected').val();
+    	var url="{{url('product/list')}}"+"/"+staus_val;
+    	
+    	location.replace(url);
+    });
+	
+	
+	
+	
+	
 	function ProductEdit(elm,product_id){
 		
 		layer.open({

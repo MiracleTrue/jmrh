@@ -139,7 +139,7 @@
 		      title: false,
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '800px'],
+		      area : ['910px' , '600px'],
 		      content: '{{url('platform/need/view')}}'
 		    });
 		  });
@@ -152,7 +152,7 @@
 		      title: false,
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '800px'],
+		      area : ['900px' , '600px'],
 		      content: '{{url('platform/allocation/view')}}'+'/'+order_id
 		    });
 		  }
