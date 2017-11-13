@@ -179,8 +179,10 @@
 				$.ajax({
 		  			url:"{{url('user/check/name')}}",
 		  			async:true,
+		  			type:'POST',
 		  			data:{
-		  				user_name:$("#user_name").val()
+		  				user_name:$("#user_name").val(),
+		  				_token:'{{csrf_token()}}'
 		  			},
 		  			success:function(res){
 		  				var resData=JSON.parse(res);

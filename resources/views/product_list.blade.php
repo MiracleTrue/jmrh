@@ -94,7 +94,8 @@
 	};
 	//删除商品
     	function ProductDelete(elm,product_id){
-    		$.ajax({
+    		 	if (confirm("确认删除吗？")){
+    		 		$.ajax({
     			type:"post",
     			url:"{{url('product/delete')}}",
     			async:true,
@@ -105,12 +106,16 @@
     			success:function(res){
     				
     				var resData=JSON.parse(res);
-    				alert(resData.messages);
+    				/*alert(resData.messages);*/
+    				 layer.msg(resData.messages, {icon: 1, time: 1000});
     				if(!resData.code){
     					$(elm).parent().parent().hide();
     				}
     			}
     		});
+    		 		
+    		 	}
+    		
     	}
 	;
 		! function() {

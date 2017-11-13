@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('MyCss')
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/library/editable-select/jquery.editable-select.min.css')}}">
+
 <style type="text/css">
 
 #ary-submit{
@@ -49,6 +51,9 @@
     position: absolute;
     top: 9px;
     right: 6px;
+}
+input{
+border:1px solid #ccc ;	
 }
 </style>
 @endsection
@@ -112,6 +117,8 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/validate-methods.js')}}"></script>
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/webStatic/library/editable-select/jquery.editable-select.min.js')}}"></script>
+
 
   <script type="text/javascript">
   	
@@ -122,6 +129,12 @@
 	laydate({elem: '#army_receive_time'});//绑定元素
 
 }();
+$('#product_unit').editableSelect({
+	effects: 'slide'
+});
+$(".es-input").attr("placeholder","请选择单位");
+
+
   $().ready(function() 
     {	
       /**

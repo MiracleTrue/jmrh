@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('MyCss')
     <link rel="stylesheet" href="{{asset('webStatic/css/addcompile.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/library/editable-select/jquery.editable-select.min.css')}}">
+
     	<style type="text/css">
     		.error{
     			color: red;
@@ -30,6 +32,18 @@
 			    text-align: center;
 			    display: inline-block;
 			}
+			#product_unit{
+				height: 30px;
+			    width: 60px;
+			    outline: 0;
+			    position: absolute;
+			    top: 15px;
+			    right: 6px;
+			}
+			.es-input{
+				border:1px solid #ddd ;	
+
+			}
     	</style>
 @endsection
 @section('content')
@@ -55,7 +69,7 @@
 				<p style="position: relative;">
 					<span>数量</span>
 				 	<input type="" name="product_number" id="product_number" value="" />
-				 	<select name="product_unit" class="product_unit ade-num">
+				 	<select id="product_unit" name="product_unit" class="product_unit ade-num">
 				 		 @foreach($unit_list as $item)
 				 		<option value="{{$item}}">{{$item}}</option>
 				 		@endforeach
@@ -124,6 +138,8 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/validate-methods.js')}}"></script>
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
+      <script type="text/javascript" src="{{asset('/webStatic/library/editable-select/jquery.editable-select.min.js')}}"></script>
+
 <script type="text/javascript">
   	!function(){
 
@@ -132,6 +148,12 @@
 	laydate({elem: '#army_receive_time'});//绑定元素
 
 }();
+
+$('#product_unit').editableSelect({
+	effects: 'slide'
+});
+$(".es-input").attr("placeholder","请选择单位");
+
   $().ready(function(){	
       /**
        * 军方添加需求
