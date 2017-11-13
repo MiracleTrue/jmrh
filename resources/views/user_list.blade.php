@@ -109,10 +109,13 @@
     {
     	
     		$.ajax({
+    		type: 'POST',
     		url:'{{url("user/enable")}}',
     		data:{
-    			user_id:user_id
+    			user_id:user_id,
+    			_token:'{{csrf_token()}}'
     		},
+    		
     		success:function(res){
     			
     			var resData=JSON.parse(res);
@@ -130,10 +133,13 @@
     {
     
     	$.ajax({
+    		type: 'POST',
     		url:'{{url("user/disable")}}',
     		data:{
-    			user_id:user_id
+    			user_id:user_id,
+    			_token:'{{csrf_token()}}'
     		},
+    		
     		success:function(res){
     			
     			var resData=JSON.parse(res);
