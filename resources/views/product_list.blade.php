@@ -54,9 +54,9 @@
 		layer.open({
 						type: 2,
 						title: false,
-						maxmin: false,
+						maxmin: true,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '513px'],
+						area: ['920px', '650px'],
 						content: '{{url('product/view')}}'+'/'+product_id
 					});
 		

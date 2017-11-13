@@ -22,7 +22,7 @@
 
 			</div>
 			<div class="goodsimg">
-				<img style="width: 100%;height: 100%;" src="{{$product_info['product_thumb']}}"/>
+				<img style="width: 100%;height: 100%;" src="{{$product_info['product_original']}}"/>
 			</div>
 			<div class="detalsdata">
 				<h5>商品名称：{{$product_info['product_name']}}</h5>
