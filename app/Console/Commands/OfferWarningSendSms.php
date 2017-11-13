@@ -76,7 +76,7 @@ class OfferWarningSendSms extends Command
                 OrderOffer::where('offer_id', $item->offer_id)->update(['warning_is_sms' => CommonModel::OFFER_IS_SMS]);
 
                 //测试log
-                Log::info('已通过的报价达到预警条件发送短信给供应商  ID:' . $item->offer_id);
+                Log::info('已通过的报价达到预警条件发送短信给供应商  offer ID:' . $item->offer_id);
             }
         });
 

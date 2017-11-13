@@ -7,6 +7,7 @@ use App\Entity\Orders;
 use App\Models\CommonModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)
@@ -69,11 +70,17 @@ class HandleOverdueOffer extends Command
                         Orders::where('order_id', $e_orders->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);//将order设置为"重新分配"
                         OrderOffer::where('order_id', $e_orders->order_id)->update(['status' => CommonModel::OFFER_OVERDUE]);//将offer设置为"已过期"
                     });
+
+                    //测试log
+                    Log::info('处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)  order ID:' . $item->order_id);
                 }
                 else
                 {
                     //条件不成立 order的状态不变 将"待报价"的offer设置为"已过期"
                     OrderOffer::where('order_id', $e_orders->order_id)->where('status',CommonModel::OFFER_AWAIT_OFFER)->update(['status' => CommonModel::OFFER_OVERDUE]);
+
+                    //测试log
+                    Log::info('处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)  order ID:' . $item->order_id);
                 }
             }
         });
