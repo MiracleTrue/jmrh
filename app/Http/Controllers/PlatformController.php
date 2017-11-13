@@ -119,7 +119,7 @@ class PlatformController extends Controller
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
         $this->ViewData['count_down'] = $this->ViewData['order_info']['status'] == 100 ? bcsub($this->ViewData['order_info']['offer_info'][0]['confirm_time'], now()->timestamp) : 0;
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_offer_view', $this->ViewData);
     }
 
