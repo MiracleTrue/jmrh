@@ -36,6 +36,7 @@ class ArmyController extends Controller
     public function NeedList($status = 'null', $create_time = 'null')
     {
         /*初始化*/
+        $manage_u = session('ManageUser');
         $army = new Army();
         $this->ViewData['order_list'] = array();
         $where = array();

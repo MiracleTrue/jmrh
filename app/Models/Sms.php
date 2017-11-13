@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Log;
  */
 class Sms extends CommonModel
 {
+    /*短信是否可用   true   false*/
+    const SEND_STATUS = false;
+
     /*短信签名_1*/
     const SMS_SIGNATURE_1 = '青岛军民融合生活保障中心';
 
@@ -109,6 +112,7 @@ class Sms extends CommonModel
      */
     public function sendSms($signName, $templateCode, $phoneNumbers, $templateParam = null, $outId = null, $smsUpExtendCode = null)
     {
+        if(self::SEND_STATUS == false){ return false; }
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();
 

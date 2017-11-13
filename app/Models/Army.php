@@ -96,6 +96,7 @@ class Army extends CommonModel
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
         $e_orders->create_time = Carbon::now()->timestamp;
         $e_orders->is_delete = $this::ORDER_NO_DELETE;
+        $e_orders->army_id = session('ManageUser')->user_id;
 
         $e_orders->save();
         User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
