@@ -12,6 +12,7 @@
     <script type="text/javascript" src="{{asset('webStatic/library/layer-v3.1.0/layer/layer.js')}}"></script>
     
     <script type="text/javascript">
+    	 window.networkState=true;
     	$(function(){
     		$("tr").last().css("border-bottom","1px solid #f5f5f5")
     		

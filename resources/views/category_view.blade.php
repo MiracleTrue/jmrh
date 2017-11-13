@@ -113,10 +113,17 @@
 		            url: '{{url("category/add")}}',
 		            type: 'POST',
 		            dataType: 'JSON',
+		              beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		            },
 		            success: function (res) {
 		             console.log(res);
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  networkState=true;
 		             	   	  parent.location.reload();
 		             	   });
 		             	

@@ -118,13 +118,12 @@
 			//页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
 			layer.ready(function() {
 				$('.gmt-add').on('click', function() {
-					
 					layer.open({
 						type: 2,
 						title: false,
 						maxmin: false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '913px'],
+						area: ['920px', '650px'],
 						content: '{{url('product/view')}}'
 					});
 				});

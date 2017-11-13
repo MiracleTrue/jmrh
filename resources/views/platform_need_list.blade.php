@@ -35,8 +35,8 @@
 						<span style="margin-left: 24px;font-size: 16px;">类型</span>
 					<select name="" class="tre-state palt type_val" style="margin-left: 15px;">
 					 <option value="0">全部</option>
-                      <option value="1" @if($page_search['type'] == '1') selected="selected" @endif>平台运营员</option>
-                        <option value="2" @if($page_search['type'] == '2') selected="selected" @endif>军方</option>
+                      <option value="2" @if($page_search['type'] == '2') selected="selected" @endif>平台</option>
+                        <option value="1" @if($page_search['type'] == '1') selected="selected" @endif>军方</option>
 						
 					</select>
 					<span style="margin-left: 24px;font-size: 16px;">状态</span>

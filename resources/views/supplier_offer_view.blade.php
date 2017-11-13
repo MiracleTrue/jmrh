@@ -138,9 +138,16 @@
 				            data:{
 				            	_token:'{{csrf_token()}}'
 				            },
+				             beforeSend:function(res){
+				            	if(!networkState){
+				            		return false;
+				            	}
+				            	networkState=false;
+				            },
 				            success: function (res) {
 				            if(res.code==0){
 				             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+				             	   		networkState=true;
 				             	   	  parent.location.reload();
 				             	   });
 				             	

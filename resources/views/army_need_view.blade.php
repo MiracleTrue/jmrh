@@ -114,6 +114,7 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
 
   <script type="text/javascript">
+  	
   	!function(){
 
 	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
@@ -167,9 +168,16 @@
 		            data:{
 		            	_token:'{{csrf_token()}}'
 		            },
+		            beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		            },
 		            success: function (res) {
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	networkState=true;
 		             	   	  parent.location.reload();
 		             	   });
 		             	
@@ -182,7 +190,7 @@
 		             }else{
 		             	   layer.msg(res.messages, {icon: 2, time: 1000});
 		             }
-		            }
+		          }
 		          });
 	        }
 	
@@ -234,9 +242,16 @@
 		            data:{
 		            	_token:'{{csrf_token()}}'
 		            },
+		             beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		            },
 		            success: function (res) {
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  	networkState=true;
 		             	   	  parent.location.reload();
 		             	   });
 		             	
