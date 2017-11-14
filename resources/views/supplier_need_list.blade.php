@@ -33,23 +33,30 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
+							@if($manage_user['identity'] == '1')
+							<th style="width: 10%;"><span>供应商名称</span></th>
+							@endif
 						<th style="width: 18%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
 						<th style="width: 6%;"><span>到货时间</span></th>
 						<th style="width: 14%;"><span style="">数量</span></th>
 						<th style="width: 14%;"><span style="">报价</span></th>
 
-						<th style="width: 19%"><span style="">操作</span></th>
+						<th style=""><span style="">操作</span></th>
 					</tr>
 					  @foreach($offer_list as $item)
 					<tr>
 						<td>{{$item->offer_id}}</td>
+							@if($manage_user['identity'] == '1')
+							
+						<td>{{$item['user_info']['nick_name']}}</td>
+							@endif
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
 						@if($item->warning_status)
-						<td style="color: red;">{{$item['order_info']['army_receive_time']}}</td>
+						<td style="color: red;">{{$item['order_info']['platform_receive_time']}}</td>
 						@else
-						<td>{{$item['order_info']['army_receive_time']}}</td>
+						<td>{{$item['order_info']['platform_receive_time']}}</td>
 						@endif
 						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['product_unit']}}</td>
 						<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>
@@ -106,17 +113,25 @@
   	  function SendGoods(elm,offer_id){
 		  	if (confirm("确认配货吗？")){
 		  		$.ajax({
+		  			type:'post',
 		  			data:{
 		  				offer_id:offer_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
 		  			url:'{{url('supplier/send/goods')}}',
 		  			async:true,
+		  			 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		       		 },
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		  				console.log(res)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	

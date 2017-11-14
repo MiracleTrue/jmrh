@@ -74,7 +74,7 @@
 				
 				<p>
 					<span>确认时间</span>
-				 	<input onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" value="" />
+				 	<input onClick="laydate({elem: '#confirm_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" value="" />
 				</p>
 			</div>
 			
@@ -91,7 +91,7 @@
 			<div>
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->addSecond()->toDateTimeString()}}' })" type="" name="platform_receive_time" id="platform_receive_time" value="" placeholder="请选择时间"/>
+				 	<input onClick="laydate({elem: '#platform_receive_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}' })" type="" name="platform_receive_time" id="platform_receive_time" value="" placeholder="请选择时间"/>
 				</p>
 				<p style="position: relative;">
 					<span>到货预警时间</span>
@@ -125,7 +125,7 @@
 
 	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
 
-	laydate({elem: '#army_receive_time'});//绑定元素
+	
 
 }();
 

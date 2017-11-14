@@ -104,10 +104,18 @@
             dataType: 'JSON',
              type: 'POST',
              data:{_token:'{{csrf_token()}}'},
+              beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
             success: function (res) {
             	console.log(res);
-              if (res.code == 0) {
+              if (res.code == 0) { 
+              	 networkState=true;
                 window.location.replace("{{url('/')}}");
+              
               }
               else {
                 layer.msg(res.messages, {icon: 2, time: 1000});

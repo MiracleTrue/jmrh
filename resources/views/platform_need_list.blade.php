@@ -170,17 +170,25 @@
 		  function sendArmy(elm,order_id){
 		  	if (confirm("确认发货到军方吗？")){
 		  		$.ajax({
+		  			type:'post',
 		  			data:{
 		  				order_id:order_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
 		  			url:'{{url('platform/send/army')}}',
 		  			async:true,
+		  			 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        	},
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		  				console.log(res)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	
@@ -203,16 +211,24 @@
 		   	alert();
 		  	if (confirm("确认已到货吗？")){
 		  		$.ajax({
+		  			type:'post',
 		  			data:{
 		  				order_id:order_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
 		  			url:'{{url('platform/confirm/receive')}}',
 		  			async:true,
+		  			 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		       		},
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	
@@ -235,16 +251,24 @@
 		     function InventorySupply(elm,order_id){
 		  	if (confirm("确认库存供应吗？")){
 		  		$.ajax({
+		  			type:'post',
 		  			data:{
 		  				order_id:order_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
 		  			url:'{{url('platform/inventory/supply')}}',
 		  			async:true,
+		  			 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	

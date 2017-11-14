@@ -61,7 +61,7 @@
 				</p>
 				<p>
 					<span>到货时间</span>
-				 	<input  name="platform_receive_time" id="platform_receive_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input  name="platform_receive_time" id="platform_receive_time" onClick="laydate({elem: '#platform_receive_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"   value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
 				</p>
 			</div>
 			
@@ -77,7 +77,7 @@
 				</p>
 				<p>
 					<span>确认时间</span>
-				 	<input name="confirm_time" id="confirm_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input name="confirm_time" id="confirm_time" onClick="laydate({elem: '#confirm_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
 				</p>
 				
 			</div>
@@ -145,7 +145,7 @@
 
 	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
 
-	laydate({elem: '#army_receive_time'});//绑定元素
+	
 
 }();
 
@@ -267,9 +267,16 @@ $(".es-input").attr("placeholder","请选择单位");
 		            data:{
 		            	_token:'{{csrf_token()}}'
 		            },
+		            beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        	},
 		            success: function (res) {
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
+		             	   	  networkState=true;
 		             	   	  parent.location.reload();
 		             	   });
 		             	

@@ -81,18 +81,26 @@
 	            data:{
     				_token:'{{csrf_token()}}'
 	            },
+	             beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
 	            success: function (res) {
 	             console.log(res);
 	             if(res.code==0){
 	             	
-	             	 layer.msg(res.messages, {icon: 2, time: 1000});
+	             	 layer.msg(res.messages, {icon: 1, time: 1000},function(){
+	             	 	networkState=true;
+	             	 });
 	             	
 		        var index=parent.layer.getFrameIndex(window.name);
-				setTimeout(function(){
-					parent.layer.close(index);
-		             	layer.closeAll('');
-		             	
-				},1000);
+					setTimeout(function(){
+						parent.layer.close(index);
+			             	layer.closeAll('');
+			             	
+					},1200);
 				
 				       parent.location.replace("{{url('/')}}");        
 

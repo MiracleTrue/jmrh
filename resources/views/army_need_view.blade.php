@@ -133,7 +133,7 @@ $('#product_unit').editableSelect({
 	effects: 'slide'
 });
 $(".es-input").attr("placeholder","请选择单位");
-
+$(".es-input").val("{{$order_info['product_unit'] or ''}}");
 
   $().ready(function() 
     {	

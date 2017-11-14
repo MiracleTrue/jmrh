@@ -115,16 +115,6 @@
         </li>
       
 		@elseif($manage_user['identity'] == '3')<!--供货商-->
-				
-			<li class="treeview">
-            <a href="{{url('welcome')}}">
-                <i class="fa fa-home"></i> <span>首页</span>
-            </a>
-
-        </li>	
-				
-		
-
         <li class="treeview">
             <a href="{{url('supplier/need/list')}}">
                 <i class="fa fa-cart-arrow-down"></i>

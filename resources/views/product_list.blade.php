@@ -103,13 +103,29 @@
     				product_id:product_id,
     				_token:'{{csrf_token()}}'
     			},
+    			 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
     			success:function(res){
     				
+    				console.log(res);
+    				
     				var resData=JSON.parse(res);
-    				/*alert(resData.messages);*/
-    				 layer.msg(resData.messages, {icon: 1, time: 1000});
-    				if(!resData.code){
-    					$(elm).parent().parent().hide();
+    				if(resData.code==0){
+    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+    					 		networkState=true;
+    					 });
+    					 
+	    				 setTimeout(function(){
+	    				 	if(!resData.code){
+	    						$(elm).parent().parent().hide();
+	    					}
+	    				 },1200)
+    				}else{
+    					 layer.msg(resData.messages, {icon: 2, time: 1000});
     				}
     			}
     		});

@@ -115,7 +115,12 @@
     			user_id:user_id,
     			_token:'{{csrf_token()}}'
     		},
-    		
+    		 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
     		success:function(res){
     			
     			var resData=JSON.parse(res);
@@ -126,7 +131,9 @@
     				$(elm).parent().parent().children().eq(5).text("正常");
     				$(elm).text("禁用");
     				
-    				layer.msg(resData.messages, {icon: 1, time: 1000});
+    				layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+    					networkState=true;
+    				});
     			}else{
     				layer.msg(resData.messages, {icon: 2, time: 1000});
     			}
@@ -144,7 +151,12 @@
     			user_id:user_id,
     			_token:'{{csrf_token()}}'
     		},
-    		
+    		 beforeSend:function(res){
+		            	if(!networkState){
+		            		return false;
+		            	}
+		            	networkState=false;
+		        },
     		success:function(res){
     			
     			var resData=JSON.parse(res);
@@ -153,7 +165,10 @@
     				$(elm).attr("onclick","startuser(this,"+user_id+")");
     				$(elm).parent().parent().children().eq(5).text("冻结");
     				$(elm).text("启用");
-    				layer.msg(resData.messages, {icon: 1, time: 1000});
+    				layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+    					  networkState=true;
+
+    				});
 
     			}
     			else{
