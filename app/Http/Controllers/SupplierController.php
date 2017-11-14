@@ -81,6 +81,7 @@ class SupplierController extends Controller
             array_push($where, ['order_offer.create_time', '<=', $end_dt]);
         }
 
+        $this->ViewData['manage_user'] = $manage_u;
         $this->ViewData['offer_list'] = $supplier->getOfferList($where, $or_where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
 
