@@ -23,14 +23,13 @@ class Supplier extends CommonModel
     private $errors = array(); /*错误信息*/
 
     /**
-     * 获取单个供应商订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
-     * @param $supplier_id & 供应商id
+     * 获取所有供应商订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orWhere
      * @param array $orderBy
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getOfferList($supplier_id, $where = array(), $orWhere = array(), $orderBy = array(['order_offer.create_time', 'desc']))
+    public function getOfferList($where = array(), $orWhere = array(), $orderBy = array(['order_offer.create_time', 'desc']))
     {
         /*初始化*/
         $e_order_offer = new OrderOffer();
@@ -39,7 +38,11 @@ class Supplier extends CommonModel
         $e_order_offer = $e_order_offer->with(['ho_orders' => function ($query)
         {
             $query->where('is_delete', '=', CommonModel::ORDER_NO_DELETE);
-        }])->where('order_offer.user_id', $supplier_id)->where($where);
+        }, 'ho_users' => function ($query)
+        {
+
+        }
+        ])->where($where);
 
         foreach ($orWhere as $value)
         {
@@ -54,32 +57,36 @@ class Supplier extends CommonModel
         /*数据过滤*/
         $offer_list->transform(function ($item)
         {
+            $item->order_info = clone $item->ho_orders;
+            $item->user_info = clone $item->ho_users;
+            /*如果是已删除的订单,将报价删除*/
             if (empty($item->ho_orders))
-            {   /*如果是已删除的订单,将报价删除*/
+            {
                 $item_delete = OrderOffer::find($item->offer_id);
                 $item_delete->delete();
                 header("location: " . action('SupplierController@NeedList'));
             }
-            else
-            {
-                $item->order_info = $item->ho_orders;
-            }
+
             $item->status_text = $this->offerStatusTransformText($item->status);
             $item->warning_status = CommonModel::OFFER_NO_WARNING;
-
             /*判断是否达到预警条件*/
-            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) < now()->timestamp)
+            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info['platform_receive_time'], $item->warning_time) < now()->timestamp)
             {
                 $item->warning_status = CommonModel::OFFER_IS_WARNING;
             }
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             $item->confirm_time = Carbon::createFromTimestamp($item->confirm_time)->toDateTimeString();
+            /*order_info*/
             $item->order_info->status_text = self::orderStatusTransformText($item->order_info->status);
             $item->order_info->create_time = Carbon::createFromTimestamp($item->order_info->create_time)->toDateTimeString();
             $item->order_info->platform_receive_time = Carbon::createFromTimestamp($item->order_info->platform_receive_time)->toDateTimeString();
             $item->order_info->army_receive_time = Carbon::createFromTimestamp($item->order_info->army_receive_time)->toDateTimeString();
+            /*user_info*/
+            $item->user_info->identity_text = User::identityTransformText($item->user_info->identity);
+
             return $item;
         });
+
         return $offer_list;
     }
 

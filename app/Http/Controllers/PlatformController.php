@@ -164,8 +164,9 @@ class PlatformController extends Controller
                         ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
                 }),
             ],
-            'platform_receive_time' => 'required|date|after:' . date('YmdHis', Orders::find($request->input('order_id'))->army_receive_time),
+            'platform_receive_time' => 'required|date|before:' . date('YmdHis', Orders::find($request->input('order_id'))->army_receive_time),
         ];
+
         $validator = Validator::make($request->all(), $rules);
         /*供货商A增加规则*/
         $validator->sometimes('supplier_A', [
@@ -194,7 +195,6 @@ class PlatformController extends Controller
         {
             return !empty($input->supplier_C);/*return true时才增加验证规则!*/
         });
-
         $supplier_arr = collect([$request->input('supplier_A'), $request->input('supplier_B'), $request->input('supplier_C')])->filter()->unique()->all();
         if (!empty($supplier_arr) && $validator->passes() && $platform->allocationSupplier($request->all(), $supplier_arr))
         {   /*验证通过并且处理成功*/
@@ -207,6 +207,11 @@ class PlatformController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['platform'] = $platform->messages();
+            if ($m3result->data['platform']['code'] == 2)
+            {
+                $m3result->code = 2;
+                $m3result->messages = $m3result->data['platform']['messages'];
+            }
         }
         return $m3result->toJson();
     }

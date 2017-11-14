@@ -11,6 +11,7 @@ use App\Models\Army;
 use App\Models\CommonModel;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -43,6 +44,12 @@ class SupplierController extends Controller
         $or_where = array();
         $this->ViewData['offer_list'] = array();
 
+        /*加入sql条件供货商id*/
+        if ($manage_u->identity == User::SUPPLIER_ADMIN)
+        {
+            array_push($where, ['order_offer.user_id', '=', $manage_u->user_id]);
+        }
+
         /*条件搜索*/
         switch ($status)
         {
@@ -73,10 +80,11 @@ class SupplierController extends Controller
             array_push($where, ['order_offer.create_time', '>=', $start_dt]);
             array_push($where, ['order_offer.create_time', '<=', $end_dt]);
         }
-        $this->ViewData['offer_list'] = $supplier->getOfferList($manage_u->user_id, $where, $or_where);
+
+        $this->ViewData['offer_list'] = $supplier->getOfferList($where, $or_where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
 
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('supplier_need_list', $this->ViewData);
     }
 

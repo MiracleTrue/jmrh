@@ -14,6 +14,7 @@ use App\Entity\Users;
 use App\Tools\MyHelper;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 平台相关模型
@@ -25,7 +26,7 @@ class Platform extends CommonModel
     /*平台发布的订单*/
     const ORDER_TYPE_PLATFORM = 2;
 
-    private $errors = array(); /*错误信息*/
+    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
      * 获取所有订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
@@ -113,7 +114,7 @@ class Platform extends CommonModel
         $e_order_offer->confirm_time = MyHelper::is_timestamp($data['confirm_time']) ? $data['confirm_time'] : die('confirm_time missing');
         $e_order_offer->warning_time = !empty($data['warning_time']) ? $data['warning_time'] : 0;
         $e_order_offer->allocation_user_id = session('ManageUser')->user_id;
-        if($e_order_offer->save())
+        if ($e_order_offer->save())
         {
             $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_ALLOCATION_CODE, Users::find($e_order_offer->user_id)->phone);/*发送短信*/
             return true;
@@ -135,23 +136,34 @@ class Platform extends CommonModel
             $this->errors['messages'] = '供应商不能为空';
             return false;
         }
-        /*初始化*/
-        $e_orders = Orders::where('order_id', $arr['order_id'])->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->first() or die('order missing');
-
-        /*更新*/
-        $e_orders->status = $this::ORDER_ALLOCATION_SUPPLIER;/*已分配*/
-        $e_orders->platform_receive_time = !empty($arr['platform_receive_time']) ? strtotime($arr['platform_receive_time']) : 0;/*2017-10-18 08:45:12*/;
         /*事物*/
-        DB::transaction(function () use ($e_orders, $arr, $supplier_arr)
+        try
         {
-            $e_orders->save();
-            foreach ($supplier_arr as $item)
+            DB::transaction(function () use ($arr, $supplier_arr)
             {
-                $this->allocationOfferToSupplier($e_orders->order_id, $item, array('confirm_time' => strtotime($arr['confirm_time']), 'warning_time' => $arr['warning_time']));
-            }
-            User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 供应商: " . implode(',', Users::whereIn('user_id', $supplier_arr)->get()->pluck('nick_name')->all()));
-        });
+                /*初始化*/
+                $e_orders = Orders::where('order_id', $arr['order_id'])->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                    ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->lockForUpdate()->first();
+                if ($e_orders == false)
+                {
+                    throw new \Exception('Transaction Exception');
+                }
+                /*更新*/
+                $e_orders->status = $this::ORDER_ALLOCATION_SUPPLIER;/*已分配*/
+                $e_orders->platform_receive_time = !empty($arr['platform_receive_time']) ? strtotime($arr['platform_receive_time']) : 0;/*2017-10-18 08:45:12*/;
+                $e_orders->save();
+                foreach ($supplier_arr as $item)
+                {
+                    $this->allocationOfferToSupplier($e_orders->order_id, $item, array('confirm_time' => strtotime($arr['confirm_time']), 'warning_time' => $arr['warning_time']));
+                }
+                User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 供应商: " . implode(',', Users::whereIn('user_id', $supplier_arr)->get()->pluck('nick_name')->all()));
+            });
+        } catch (\Exception $e)
+        {
+            $this->errors['code'] = 2;
+            $this->errors['messages'] = '网络繁忙';
+            return false;
+        }
         return true;
     }
 
@@ -175,7 +187,7 @@ class Platform extends CommonModel
         $e_order_offer->status = $this::OFFER_PASSED;/*报价状态改变*/
 
         /*事物*/
-        DB::transaction(function () use ($e_orders, $e_order_offer,$sms)
+        DB::transaction(function () use ($e_orders, $e_order_offer, $sms)
         {
             /*保存状态*/
             $e_orders->save();
@@ -186,7 +198,7 @@ class Platform extends CommonModel
                 ->update(['status' => CommonModel::OFFER_NOT_PASS]);
             $supplier = Users::find($e_order_offer->user_id);
             User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 选择供应商: " . $supplier->nick_name);
-            $sms->sendSms(Sms::SMS_SIGNATURE_1,Sms::SELECT_SUPPLIER_CODE,$supplier->phone);/*发送短信*/
+            $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SELECT_SUPPLIER_CODE, $supplier->phone);/*发送短信*/
         });
         return true;
     }
@@ -207,7 +219,6 @@ class Platform extends CommonModel
         }
         /*初始化*/
         $e_orders = new Orders();
-
         /*添加*/
         $e_orders->type = self::ORDER_TYPE_PLATFORM;
         $e_orders->status = $this::ORDER_ALLOCATION_SUPPLIER;/*已分配*/
