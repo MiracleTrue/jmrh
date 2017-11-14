@@ -178,6 +178,12 @@ class UserController extends Controller
                 $m3result->code = 2;
                 $m3result->messages = $m3result->data['user']['messages'];
             }
+
+            if ($m3result->data['user']['code'] == 2)
+            {
+                $m3result->code = 3;
+                $m3result->messages = $m3result->data['user']['messages'];
+            }
         }
 
         return $m3result->toJson();

@@ -37,7 +37,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('分配供应商页面');/*分配供应商页面 | platform_allocation_view*/
         Route::get('platform/offer/view/{order_id}', 'PlatformController@OfferInfoView')->name('查看报价页面');/*选择供应商页面 | platform_offer_view*/
         Route::post('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
-        Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('分配供应商');/*平台供应商分配*/
+        Route::post('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('分配供应商');/*平台供应商分配*/
         Route::post('platform/selected/offer', 'PlatformController@OfferSelected')->name('选择供应商');/*平台供应商选择*/
         Route::post('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
         Route::post('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('供应商确认收货');/*供应商确认收货*/

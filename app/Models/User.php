@@ -29,7 +29,7 @@ class User extends CommonModel
     const SUPPLIER_ADMIN = 3;
     const ARMY_ADMIN = 4;
 
-    private $errors = array(); /*错误信息*/
+    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
      * 获取所有日志列表 (已转换:身份标识文本,日志创建时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
@@ -200,6 +200,13 @@ class User extends CommonModel
         /*初始化*/
         $e_users = Users::find($user_id);
         $password = new Password();
+
+        if ($password->checkHashPassword($new_password, $e_users->password) === true)
+        {
+            $this->errors['code'] = 2;
+            $this->errors['messages'] = '新密码不能和原密码相同';
+            return false;
+        }
 
         if ($password->checkHashPassword($original_password, $e_users->password) === true)
         {
