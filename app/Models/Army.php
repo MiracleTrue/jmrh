@@ -24,7 +24,7 @@ class Army extends CommonModel
     private $errors = array(); /*错误信息*/
 
     /**
-     * 获取军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
+     * 获取所有军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orWhere
      * @param array $orderBy
@@ -32,8 +32,10 @@ class Army extends CommonModel
      */
     public function getOrderList($where = array(), $orWhere = array(), $orderBy = array(['orders.create_time', 'desc']))
     {
+        /*初始化*/
+        $e_orders = new Orders();
         /*预加载ORM对象*/
-        $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)->where('orders.type', $this::ORDER_TYPE_ARMY)
+        $e_orders = $e_orders->with('ho_users')->where('orders.is_delete', $this::ORDER_NO_DELETE)->where('orders.type', $this::ORDER_TYPE_ARMY)
             ->where($where);
         foreach ($orWhere as $value)
         {
@@ -48,9 +50,11 @@ class Army extends CommonModel
         /*数据过滤*/
         $order_list->transform(function ($item)
         {
+            $item->army_info = clone $item->ho_users;
             $item->status_text = self::orderStatusTransformText($item->status);
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             $item->army_receive_time = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
+            $item->army_info->identity_text = User::identityTransformText($item->army_info->identity);
             return $item;
         });
         return $order_list;
@@ -114,7 +118,7 @@ class Army extends CommonModel
         $e_orders = Orders::where('order_id', $arr['order_id'])
             ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)
-            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first();
+            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first() or die();
 
         /*修改*/
         $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
@@ -163,6 +167,7 @@ class Army extends CommonModel
         User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 订单号: " . $e_orders->order_sn);
         return true;
     }
+
     /**
      * 返回军方视角 订单状态 的文本名称
      * @param $status

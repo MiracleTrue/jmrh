@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Models\Army;
 use App\Models\CommonModel;
 use App\Models\Product;
+use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -38,9 +39,15 @@ class ArmyController extends Controller
         /*初始化*/
         $manage_u = session('ManageUser');
         $army = new Army();
-        $this->ViewData['order_list'] = array();
         $where = array();
         $or_where = array();
+        $this->ViewData['order_list'] = array();
+
+        /*加入sql条件军方id*/
+        if ($manage_u->identity == User::ARMY_ADMIN)
+        {
+            array_push($where, ['order.army_id', '=', $manage_u->user_id]);
+        }
 
         /*条件搜索*/
         switch ($status)
@@ -73,7 +80,7 @@ class ArmyController extends Controller
         }
         $this->ViewData['order_list'] = $army->getOrderList($where, $or_where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('army_need_list', $this->ViewData);
     }
 
@@ -85,13 +92,39 @@ class ArmyController extends Controller
     public function NeedView($id = 0)
     {
         /*初始化*/
+        $manage_u = session('ManageUser');
         $army = new Army();
         $product = new Product();
         $this->ViewData['order_info'] = array();
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
+
+        /*是否修改需求*/
         if ($id > 0)
         {
-            $this->ViewData['order_info'] = $army->getOrderInfo($id);
+            /*验证规则*/
+            $rules = [
+                'order_id' => [
+                    'required',
+                    'integer',
+                    Rule::exists('orders')->where(function ($query) use ($id, $manage_u)
+                    {
+                        $query->where('order_id', $id)->where('army_id', $manage_u->user_id)
+                            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
+                            ->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                            ->where('type', Army::ORDER_TYPE_ARMY);
+                    }),
+                ]
+            ];
+            $validator = Validator::make(array('order_id' => $id), $rules);
+
+            if ($validator->passes() || $manage_u->identity = User::ADMINISTRATOR)
+            {   /*验证通过*/
+                $this->ViewData['order_info'] = $army->getOrderInfo($id);
+            }
+            else
+            {
+                return CommonModel::noPrivilegePrompt(request());/*没有权限*/
+            }
         }
 
 //        dump($this->ViewData);
@@ -142,6 +175,7 @@ class ArmyController extends Controller
     public function NeedEdit(Request $request)
     {
         /*初始化*/
+        $manage_u = session('ManageUser');
         $army = new Army();
         $m3result = new M3Result();
 
@@ -150,12 +184,12 @@ class ArmyController extends Controller
             'order_id' => [
                 'required',
                 'integer',
-                Rule::exists('orders')->where(function ($query)
+                Rule::exists('orders')->where(function ($query) use ($manage_u)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
+                        ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
                         ->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->where('type', Army::ORDER_TYPE_ARMY)
-                        ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
+                        ->where('type', Army::ORDER_TYPE_ARMY);
                 }),
             ],
             'product_name' => 'required',
@@ -189,6 +223,7 @@ class ArmyController extends Controller
     public function ConfirmReceive(Request $request)
     {
         /*初始化*/
+        $manage_u = session('ManageUser');
         $m3result = new M3Result();
         $army = new Army();
 
@@ -197,9 +232,10 @@ class ArmyController extends Controller
             'order_id' => [
                 'required',
                 'integer',
-                Rule::exists('orders')->where(function ($query)
+                Rule::exists('orders')->where(function ($query) use ($manage_u)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
+                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->where('status', CommonModel::ORDER_SEND_ARMY);
                 }),
             ]
@@ -229,6 +265,7 @@ class ArmyController extends Controller
     public function NeedDelete(Request $request)
     {
         /*初始化*/
+        $manage_u = session('ManageUser');
         $army = new Army();
         $m3result = new M3Result();
 
@@ -237,9 +274,9 @@ class ArmyController extends Controller
             'order_id' => [
                 'required',
                 'integer',
-                Rule::exists('orders')->where(function ($query)
+                Rule::exists('orders')->where(function ($query) use ($manage_u)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
                         ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->where('type', Army::ORDER_TYPE_ARMY)
                         ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);

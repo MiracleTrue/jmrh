@@ -49,4 +49,13 @@ class Orders extends CommonEntity
     {
         return $this->hasMany(OrderOffer::class,'order_id');
     }
+
+    /**
+     * 一对一关联Users实体表
+     */
+    public function ho_users()
+    {
+        return $this->hasOne(Users::class,'user_id','army_id');
+    }
+
 }
