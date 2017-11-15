@@ -45,10 +45,10 @@ class IndexController extends Controller
         switch ($manage_u->identity)
         {
             case User::ARMY_ADMIN :/*军方*/
-                $this->ViewData['order_status']['待确认'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AWAIT_ALLOCATION])->count();
-                $this->ViewData['order_status']['已确认'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AGAIN_ALLOCATION, Army::ORDER_ALLOCATION_SUPPLIER, Army::ORDER_SUPPLIER_SELECTED, Army::ORDER_SUPPLIER_SEND, Army::ORDER_SUPPLIER_RECEIVE, Army::ORDER_ALLOCATION_PLATFORM])->count();
-                $this->ViewData['order_status']['已发货'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SEND_ARMY])->count();
-                $this->ViewData['order_status']['已到货'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SUCCESSFUL])->count();
+                $this->ViewData['order_status']['待确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AWAIT_ALLOCATION])->count();
+                $this->ViewData['order_status']['已确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AGAIN_ALLOCATION, Army::ORDER_ALLOCATION_SUPPLIER, Army::ORDER_SUPPLIER_SELECTED, Army::ORDER_SUPPLIER_SEND, Army::ORDER_SUPPLIER_RECEIVE, Army::ORDER_ALLOCATION_PLATFORM])->count();
+                $this->ViewData['order_status']['已发货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SEND_ARMY])->count();
+                $this->ViewData['order_status']['已到货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SUCCESSFUL])->count();
                 break;
             case User::SUPPLIER_ADMIN :/*供应商*/
                 $this->ViewData['order_status']['待报价'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_AWAIT_OFFER)->count();
