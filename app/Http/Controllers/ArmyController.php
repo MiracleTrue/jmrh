@@ -40,13 +40,12 @@ class ArmyController extends Controller
         $manage_u = session('ManageUser');
         $army = new Army();
         $where = array();
-        $or_where = array();
         $this->ViewData['order_list'] = array();
 
         /*加入sql条件军方id*/
         if ($manage_u->identity == User::ARMY_ADMIN)
         {
-            array_push($where, ['order.army_id', '=', $manage_u->user_id]);
+            array_push($where, ['orders.army_id', '=', $manage_u->user_id]);
         }
 
         /*条件搜索*/
@@ -56,12 +55,9 @@ class ArmyController extends Controller
                 array_push($where, ['orders.status', '=', $army::ORDER_AWAIT_ALLOCATION]);
                 break;
             case '已确认':
-                array_push($where, ['orders.status', '=', $army::ORDER_AGAIN_ALLOCATION]);
-                array_push($or_where, ['orders.status', '=', $army::ORDER_ALLOCATION_SUPPLIER]);
-                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_SELECTED]);
-                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_SEND]);
-                array_push($or_where, ['orders.status', '=', $army::ORDER_SUPPLIER_RECEIVE]);
-                array_push($or_where, ['orders.status', '=', $army::ORDER_ALLOCATION_PLATFORM]);
+                array_push($where, ['orders.status', '!=', $army::ORDER_AWAIT_ALLOCATION]);
+                array_push($where, ['orders.status', '!=', $army::ORDER_SEND_ARMY]);
+                array_push($where, ['orders.status', '!=', $army::ORDER_SUCCESSFUL]);
                 break;
             case '已发货' :
                 array_push($where, ['orders.status', '=', $army::ORDER_SEND_ARMY]);
@@ -78,7 +74,7 @@ class ArmyController extends Controller
             array_push($where, ['orders.create_time', '>=', $start_dt]);
             array_push($where, ['orders.create_time', '<=', $end_dt]);
         }
-        $this->ViewData['order_list'] = $army->getOrderList($where, $or_where);
+        $this->ViewData['order_list'] = $army->getOrderList($where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
         dump($this->ViewData);
         return view('army_need_list', $this->ViewData);
