@@ -65,9 +65,9 @@ class Sms extends CommonModel
         $domain = "dysmsapi.aliyuncs.com";
 
         // TODO 此处需要替换成开发者自己的AK (https://ak-console.aliyun.com/)
-        $accessKeyId = env('ALI_ACCESS_KEY_ID', "yourAccessKeyId"); // AccessKeyId
+        $accessKeyId = env('ALI_ACCESS_KEY_ID', ""); // AccessKeyId
 
-        $accessKeySecret = env('ALI_ACCESS_KEY_SECRET', "yourAccessKeySecret"); // AccessKeySecret
+        $accessKeySecret = env('ALI_ACCESS_KEY_SECRET', ""); // AccessKeySecret
 
 
         // 暂时不支持多Region
@@ -112,7 +112,11 @@ class Sms extends CommonModel
      */
     public function sendSms($signName, $templateCode, $phoneNumbers, $templateParam = null, $outId = null, $smsUpExtendCode = null)
     {
-        if(self::SEND_STATUS == false){ return false; }
+        if (self::SEND_STATUS == false || empty(env('ALI_ACCESS_KEY_ID')) || empty(env('ALI_ACCESS_KEY_SECRET')))
+        {
+            return false;
+        }
+
         // 初始化SendSmsRequest实例用于设置发送短信的参数
         $request = new SendSmsRequest();
 

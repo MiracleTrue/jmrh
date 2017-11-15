@@ -41,6 +41,7 @@ class ArmyController extends Controller
         $army = new Army();
         $where = array();
         $this->ViewData['order_list'] = array();
+        $this->ViewData['manage_user'] = $manage_u;
 
         /*加入sql条件军方id*/
         if ($manage_u->identity == User::ARMY_ADMIN)
