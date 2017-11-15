@@ -25,11 +25,10 @@ class Supplier extends CommonModel
     /**
      * 获取所有供应商订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
-     * @param array $orWhere
      * @param array $orderBy
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getOfferList($where = array(), $orWhere = array(), $orderBy = array(['order_offer.create_time', 'desc']))
+    public function getOfferList($where = array(), $orderBy = array(['order_offer.create_time', 'desc']))
     {
         /*初始化*/
         $e_order_offer = new OrderOffer();
@@ -44,10 +43,6 @@ class Supplier extends CommonModel
         }
         ])->where($where);
 
-        foreach ($orWhere as $value)
-        {
-            $e_order_offer->orWhere($value[0], $value[1], $value[2]);
-        }
         foreach ($orderBy as $value)
         {
             $e_order_offer->orderBy($value[0], $value[1]);

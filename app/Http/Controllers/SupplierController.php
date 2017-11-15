@@ -41,7 +41,6 @@ class SupplierController extends Controller
         $supplier = new Supplier();
         $manage_u = session('ManageUser');
         $where = array();
-        $or_where = array();
         $this->ViewData['offer_list'] = array();
 
         /*加入sql条件供货商id*/
@@ -82,7 +81,7 @@ class SupplierController extends Controller
         }
 
         $this->ViewData['manage_user'] = $manage_u;
-        $this->ViewData['offer_list'] = $supplier->getOfferList($where, $or_where);
+        $this->ViewData['offer_list'] = $supplier->getOfferList($where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
 
         dump($this->ViewData);
