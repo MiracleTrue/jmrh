@@ -112,16 +112,16 @@ class SupplierController extends Controller
         ];
         $validator = Validator::make(array('offer_id' => $offer_id), $rules);
 
-        if ($validator->passes())
+        if ($validator->passes() || $manage_u->identity = User::ADMINISTRATOR)
         {   /*验证通过*/
-            $this->ViewData['offer_info'] = $supplier->getSupplierOfferInfo($manage_u->user_id, $offer_id);
-//            dump($this->ViewData);
-            return view('supplier_offer_view', $this->ViewData);
+            $this->ViewData['offer_info'] = $supplier->getSupplierOfferInfo($offer_id);
         }
         else
         {
             return CommonModel::noPrivilegePrompt(request());/*没有权限*/
         }
+        //            dump($this->ViewData);
+        return view('supplier_offer_view', $this->ViewData);
     }
 
     /**

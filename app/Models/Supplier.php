@@ -86,15 +86,14 @@ class Supplier extends CommonModel
     }
 
     /**
-     * 获取 单个供应商 单个报价信息 关联供应商信息 关联订单信息  (已转换:状态文本, 创建时间, 军方接收时间)
-     * @param $supplier_id
+     * 获取 单个报价信息 关联供应商信息 关联订单信息  (已转换:状态文本, 创建时间, 军方接收时间)
      * @param $offer_id
      * @return mixed
      */
-    public function getSupplierOfferInfo($supplier_id, $offer_id)
+    public function getSupplierOfferInfo($offer_id)
     {
         /*初始化*/
-        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->first() or die('order_offer missing');
+        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->first() or die('order_offer missing');
 
         $e_order_offer->order_info = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
         $e_order_offer->user_info = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
