@@ -38,6 +38,8 @@ class IndexController extends Controller
         /*初始化*/
         $manage_u = session('ManageUser');
         $this->ViewData['order_status'] = array();
+        $this->ViewData['iframe_url'] = action('IndexController@Welcome');
+        $this->ViewData['manage_user'] = $manage_u;
 
         /*订单统计*/
         switch ($manage_u->identity)
@@ -64,7 +66,14 @@ class IndexController extends Controller
                 break;
         }
 
-        $this->ViewData['manage_user'] = $manage_u;
+        /*iframe_url*/
+        switch($manage_u->identity)
+        {
+            case User::SUPPLIER_ADMIN :
+                $this->ViewData['iframe_url'] = action('SupplierController@NeedList');
+                break;
+        }
+
         return view('index', $this->ViewData);
     }
 
