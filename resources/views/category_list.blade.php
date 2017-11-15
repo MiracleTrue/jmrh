@@ -101,38 +101,33 @@
 	
 		//删除分类
     	function cateDelete(elm,category_id){
-    		$.ajax({
-    			type:"post",
-    			url:"{{url('category/delete')}}",
-    			async:true,
-    			data:{
-    				category_id:category_id,
-    				_token:'{{csrf_token()}}'
-    			},
-    			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        },
-    			success:function(res){
-    				console.log(res);
-    				var resData=JSON.parse(res);
-    				if(resData.code==0){
-    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
-    					 		networkState=true;
-    					 });
-    					 
-	    				 setTimeout(function(){
-	    				 	if(!resData.code){
-	    						$(elm).parent().parent().hide();
-	    					}
-	    				 },1200)
-    				}else{
-    					 layer.msg(resData.messages, {icon: 2, time: 1000});
-    				}
-    			}
-    		});
+    		if (confirm("确认删除吗？")){
+	    		$.ajax({
+	    			type:"post",
+	    			url:"{{url('category/delete')}}",
+	    			async:true,
+	    			data:{
+	    				category_id:category_id,
+	    				_token:'{{csrf_token()}}'
+	    			},
+	    			success:function(res){
+	    				console.log(res);
+	    				var resData=JSON.parse(res);
+	    				if(resData.code==0){
+	    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+	    					 });
+	    					 
+		    				 setTimeout(function(){
+		    				 	if(!resData.code){
+		    						$(elm).parent().parent().hide();
+		    					}
+		    				 },1200)
+	    				}else{
+	    					 layer.msg(resData.messages, {icon: 2, time: 1000});
+	    				}
+	    			}
+	    		});
+    		}
     	}
 	
 	

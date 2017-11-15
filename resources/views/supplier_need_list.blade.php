@@ -64,13 +64,13 @@
 							@if($item['status'] == '0')
 							<a class="pvr-caozuo" onclick="supplierView(this,{{$item->offer_id}})">报价</a>
 							  @elseif($item['status'] == '1')
-							  	<a class="pvr-caozuo" style="color: #000000;">等待通过</a>
+							  	<a class="pvr-caozuo" style="color: #333;">等待通过</a>
 							  	  @elseif($item['status'] == '2')
-							  	  	<a class="pvr-caozuo" style="color: #000000;">未通过</a>
+							  	  	<a class="pvr-caozuo" style="color: #333;">未通过</a>
 							  	  	  @elseif($item['status'] == '3')
 							  	  	  <a class="pvr-caozuo" onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
 							  	  	  @elseif($item['status'] == '4')
-							  	  	  <a class="pvr-caozuo"style="color: #000000;">已配货</a>
+							  	  	  <a class="pvr-caozuo"style="color: #333;">已配货</a>
 							 	@endif		
 						</td>
 					</tr>
@@ -104,7 +104,7 @@
 		      title: false,
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '800px'],
+		      area : ['680px' , '730px'],
 		      content: '{{url('supplier/offer/view')}}'+"/"+offer_id
 		    });
   	}
@@ -120,18 +120,11 @@
 		  			},
 		  			url:'{{url('supplier/send/goods')}}',
 		  			async:true,
-		  			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		       		 },
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		  				console.log(res)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	

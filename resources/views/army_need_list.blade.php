@@ -33,19 +33,26 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
-						<th style="width: 18%;"><span>订单号</span></th>
+							@if($manage_user['identity'] == '1')
+							<th style="width: 10%;"><span>军方名称</span></th>
+							@endif
+						<th style="width: 10%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
 						<th style="width: 8%;"><span>下单时间</span></th>
 						<th style="width: 8%;"><span>到货时间</span></th>
 						<th style="width: 14%;"><span style="">数量</span></th>
 						<th style="width: 14%;"><span style="">状态</span></th>
-						<th style="width: 15%"><span style="">操作</span></th>
+						<th ><span style="">操作</span></th>
 					</tr>
 					
 				 @foreach($order_list as $item)
             
             <tr>
                 <td>{{$item['order_id']}}</td>
+                @if($manage_user['identity'] == '1')
+							
+						<td>{{$item['army_info']['nick_name']}}</td>
+							@endif
                 <td>{{$item['order_sn']}}</td>
                 <td>{{$item['product_name']}}</td>
                 <td>{{$item['create_time']}}</td>
@@ -116,77 +123,64 @@
 	}
 	//删除需求
 	function NeedDelete(elm,order_id){
-    		$.ajax({
-    			type:"post",
-    			url:"{{url('army/need/delete')}}",
-    			async:true,
-    			data:{
-    				order_id:order_id,
-    				_token:'{{csrf_token()}}'
-    			},
-    			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        },
-    			success:function(res){
-    				console.log(res);
-    				
-    				var resData=JSON.parse(res);
-    				if(resData.code==0){
-    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
-    					 		networkState=true;
-    					 });
-    					 
-	    				 setTimeout(function(){
-	    				 	if(!resData.code){
-	    						$(elm).parent().parent().hide();
-	    					}
-	    				 },1200)
-    				}else{
-    					 layer.msg(resData.messages, {icon: 2, time: 1000});
-    				}
-    				
-    				
-    			}
-    		});
+		 	if (confirm("确认删除吗？")){
+	    		$.ajax({
+	    			type:"post",
+	    			url:"{{url('army/need/delete')}}",
+	    			async:true,
+	    			data:{
+	    				order_id:order_id,
+	    				_token:'{{csrf_token()}}'
+	    			},
+	    			success:function(res){
+	    				console.log(res);
+	    				
+	    				var resData=JSON.parse(res);
+	    				if(resData.code==0){
+	    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+	    					 		
+	    					 });
+	    					 
+		    				 setTimeout(function(){
+		    				 	if(!resData.code){
+		    						$(elm).parent().parent().hide();
+		    					}
+		    				 },1200)
+	    				}else{
+	    					 layer.msg(resData.messages, {icon: 2, time: 1000});
+	    				}
+	    				
+	    				
+	    			}
+	    		});
+    		}
     	}
     //确认收货	
     	function ConfirmReceive(elm,order_id){
-    		$.ajax({
-    			type:"post",
-    			url:"{{url('army/confirm/receive')}}",
-    			async:true,
-    			data:{
-    				order_id:order_id,
-    				_token:'{{csrf_token()}}'
-    			},
-    			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        },
-    			success:function(res){
-    				console.log(res);
-    				
-    				var resData=JSON.parse(res);
-    				if(resData.code==0){
-    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
-    					 		networkState=true;
-    					 });
-    				}else{
-    					 layer.msg(resData.messages, {icon: 2, time: 1000});
-    				}
-    				
-    			}
-    		});
-    	}
-    	
-    	
-    	
-	
+    	  if (confirm("确认收货吗？")){
+	    		$.ajax({
+	    			type:"post",
+	    			url:"{{url('army/confirm/receive')}}",
+	    			async:true,
+	    			data:{
+	    				order_id:order_id,
+	    				_token:'{{csrf_token()}}'
+	    			},
+	    			success:function(res){
+	    				console.log(res);
+	    				var resData=JSON.parse(res);
+	    				if(resData.code==0){
+	    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
+	    					 		location.reload();
+	    					 });
+	    				}else{
+	    					 layer.msg(resData.messages, {icon: 2, time: 1000});
+	    				}
+	    				
+	    			}
+	    		}); 
+    		}
+    	}    	
 	$(function(){
 		layer.ready(function(){ 
 		  $('.mly-tianjia').on('click', function(){

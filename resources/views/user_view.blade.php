@@ -45,8 +45,8 @@
                     <option value="4" @if($user_info['identity'] == '4') selected="selected" @endif>军方</option>
                     @else
                     <select name="identity">
-                    <option value="1" >超级管理员</option>
-                    <option value="2" >平台运营员</option>
+                    <option value="1">超级管理员</option>
+                    <option value="2">平台运营员</option>
                     <option value="3">供货商</option>
                     <option value="4" >军方</option>
                     @endif
@@ -63,10 +63,6 @@
 				<input type="submit" class="adr-submit" name="adr-submit" id="" value="提交" />
 				<input type="hidden" name="user_id" id="user_id" value="{{$user_info['user_id'] or 0}}" />
     			<input class="adr-reset" type="reset" value="重置" />
-
-				
-				
-				
 			</div>
 		
 		</form>
@@ -131,38 +127,31 @@
 		    },
 		    errorLabelContainer:$("#UserEdit div.error"),
 		    wrapper:"li",
-		     
-		     
 		    submitHandler: function (form) {
 		          $(form).ajaxSubmit({
 		            url: '{{url("user/edit")}}',
 		            type: 'POST',
 		            data:{
-		            	user_id:$('#user_id').val()
+		            	user_id:$('#user_id').val(),
+		            	_token:'{{csrf_token()}}'
 		            },
 		            dataType: 'JSON',
-		             beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
+		            beforeSend:function(res){
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		            },
 		            success: function (res) {
 		             console.log(res);
 		            if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	 	networkState=true;
-		             	   	  parent.location.reload();
+		            	   layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             	  layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   });
 		             }
 		            }
 		          });
@@ -260,27 +249,21 @@
 	            type: 'POST',
 	            dataType: 'JSON',
 	             beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		        },
 	            success: function (res) {
 	             console.log(res);
 	              if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
-		             	   	  parent.location.reload();
+		             	 layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   });
 		             }
 	            }
 	          });
@@ -301,47 +284,6 @@
      	
         });
       }
-    
-     
-//   $("#userAdd").validate({
-////              rules:{
-////                  role_name:"required",
-////                  is_super_management_group : "required"
-////              },
-//              onkeyup:false,
-//              focusCleanup:true,
-//              success:"valid",
-//              submitHandler:function(form){
-////                  var index = parent.layer.getFrameIndex(window.name);
-//
-//					alert(1);
-//                  $(form).ajaxSubmit({
-//                      url: '111',
-//                      type: 'POST',
-//                      dataType: 'JSON',
-//                      success:function(res){
-//                          if(res.code == 0)
-//                          {
-//                              layer.msg(res.messages,{icon:1,time:1000},function()
-//                              {
-//                                  NetStatus = true;
-//                                  parent.location.replace(parent.location.href);
-//                                  parent.layer.close(index);
-//                              });
-//                          }
-//                          else
-//                          {
-//                              NetStatus = true;
-//                              layer.msg(res.messages,{icon:2,time:1000});
-//                          }
-//                      }
-//                  });
-//                  //parent.$('.btn-refresh').click();
-//                  //parent.layer.close(index);
-//              }
-//          });
-      
-      
     });
   </script>
 @endsection

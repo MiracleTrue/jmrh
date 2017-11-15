@@ -208,7 +208,6 @@
 		  }
 		  
 		   function ConfirmReceive(elm,order_id){
-		   	alert();
 		  	if (confirm("确认已到货吗？")){
 		  		$.ajax({
 		  			type:'post',

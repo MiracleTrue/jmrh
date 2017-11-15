@@ -16,7 +16,7 @@
     <div id="index_right">
     @include('include.inc_header')
 	    <div class="home-section">
-	        <iframe name="Info1" id="Info1" frameborder="0" src="{{url('welcome')}}" width="100%" scrolling="yes" frameborder="0">
+	        <iframe name="Info1" id="Info1" frameborder="0" src="{{$iframe_url}}" width="100%" scrolling="yes" frameborder="0">
 	        </iframe>
 	    </div>
     </div>

@@ -176,27 +176,21 @@
 		            data:{
 		            	_token:'{{csrf_token()}}'
 		            },
-		             beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
+		            beforeSend:function(res){
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		            },
 		            success: function (res) {
 		            if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   		networkState=true;
-		             	   	  parent.location.reload();
+		            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   });
 		             }
 		            }
 		          });

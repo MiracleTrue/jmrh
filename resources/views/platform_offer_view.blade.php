@@ -29,7 +29,10 @@
 			    text-align: center;
 			    display: inline-block;
 			}
-			
+			.qte-box p{
+				width: 390px;
+				text-align: right;
+			}
    	</style>
    	<!--[if IE]> <style>
    		.qte-box{
@@ -72,11 +75,11 @@
 			</div>
 
 			<div class="plat_div2">
-				<p  style="text-indent: 49px;">
+				<p>
 					<span>品名</span>
 				 	<input type="" name="" id="" value="{{$order_info['product_name']}}" disabled="disabled"/>
 				</p>
-				<p style="margin-left: 38px;">
+				<p>
 					<span>最终选择</span>
 						
 				 	<select name="offer_id" @if($order_info['status']!=100) disabled="disabled" @endif>
@@ -108,7 +111,7 @@
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
 	$(function(){
-		$(".offer_div p").eq(1).css("margin-left","20px");
+		{{--$(".offer_div p").eq(1).css("margin-left","20px"); --}}
 	
 	
 		var arr =new Array(3);
@@ -162,28 +165,22 @@
 		            data:{
 		            	_token:'{{csrf_token()}}'
 		            },
-		             beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
+		              beforeSend:function(res){
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		            },
 		            success: function (res) {
 		            	console.log(res)
 		            if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	 	networkState=true;
-		             	   	  parent.location.reload();
+		             layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   });
 		             }
 		            }
 		          });

@@ -39,18 +39,18 @@
 .qte-box div p{
 	float: left;
 }
-.qte-box div p:nth-child(2){
+/*.qte-box div p:nth-child(2){
 	margin-left: 20px;
 }
 .qte-box div p:first-child+p{
 	margin-left: 20px;
-}
+}*/
 
 
 
 
 .qte-box select{
-	width: 286px;
+	width: 283px;
 	height: 30px;
 	margin-left: 20px;
 }

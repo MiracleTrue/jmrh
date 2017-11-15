@@ -86,6 +86,7 @@
 				<p style="position: relative;">
 					<span>选择供应商1</span>
 				 	<select name="supplier_A">
+				 		<option value="0">无</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -94,6 +95,7 @@
 				<p>
 					<span>选择供应商2</span>
 				 	<select name="supplier_B">
+				 		<option value="0">无</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -104,6 +106,7 @@
 				<p style="position: relative;">
 					<span>选择供应商3</span>
 				 	<select name="supplier_C">
+				 		<option value="0">无</option>
 				 		 @foreach($supplier_list as $item)
 				 		<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 				 		@endforeach
@@ -186,6 +189,7 @@ $(".es-input").attr("placeholder","请选择单位");
 	    errorLabelContainer:$("div.error"),
 	     wrapper:"li",
 	        submitHandler: function (form) {
+	        	var loading = null;
 		          $(form).ajaxSubmit({
 		            url: '{{url("platform/need/release")}}',
 		            type: 'POST',
@@ -194,28 +198,23 @@ $(".es-input").attr("placeholder","请选择单位");
 		            	_token:'{{csrf_token()}}'
 		            },
 		             beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		            },
 		            success: function (res) {
+		            
 		            if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
-		             	   	  parent.location.reload();
+		            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   });
 		             }
-		            }
+		          }
 		          });
 	        }
 	
@@ -268,26 +267,20 @@ $(".es-input").attr("placeholder","请选择单位");
 		            	_token:'{{csrf_token()}}'
 		            },
 		            beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        	},
+		            	$("input[type='submit']").attr("disabled","true");
+		            	
+		            },
 		            success: function (res) {
 		            if(res.code==0){
-		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	  networkState=true;
-		             	   	  parent.location.reload();
+		            	 layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	   parent.location.reload();	 
+		             	   	  layer.closeAll('');
 		             	   });
-		             	
-			        var index=parent.layer.getFrameIndex(window.name);
-					setTimeout(function(){
-						parent.layer.close(index);
-		             	layer.closeAll('')
-					},1200)
 						
 		             }else{
-		             	   layer.msg(res.messages, {icon: 2, time: 1000});
+		             		 layer.msg(res.messages, {icon: 2, time: 1000},function(){
+			             	   $("input[type='submit']").removeAttr("disabled");
+			             	   });
 		             }
 		            }
 		          });
