@@ -154,7 +154,6 @@ class PlatformController extends Controller
         /*验证规则*/
         $rules = [
             'warning_time' => 'required|integer',
-            'confirm_time' => 'required|date|after:now',
             'order_id' => [
                 'required',
                 'integer',
@@ -165,6 +164,7 @@ class PlatformController extends Controller
                 }),
             ],
             'platform_receive_time' => 'required|date|before:' . date('YmdHis', Orders::find($request->input('order_id'))->army_receive_time),
+            'confirm_time' => 'required|date|before:' . $request->input('platform_receive_time'),
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -403,7 +403,7 @@ class PlatformController extends Controller
             'product_number' => 'required|integer',
             'product_unit' => 'required',
             'platform_receive_time' => 'required|date|after:now',
-            'confirm_time' => 'required|date|after:now'
+            'confirm_time' => 'required|date|before:' . $request->input('platform_receive_time')
         ];
         $validator = Validator::make($request->all(), $rules);
         /*供货商A增加规则*/

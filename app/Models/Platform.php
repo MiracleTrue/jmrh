@@ -348,6 +348,9 @@ class Platform extends CommonModel
         {
             switch ($status)
             {
+                case $this::ORDER_AGAIN_ALLOCATION:
+                    $text = '重新分配';
+                    break;
                 case $this::ORDER_ALLOCATION_SUPPLIER:
                     $text = '已分配';
                     break;
