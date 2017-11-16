@@ -148,6 +148,18 @@ class IndexController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['user'] = $user->messages();
+
+            if($m3result->data['user']['code'] == 1)
+            {
+                $m3result->code = 2;
+                $m3result->messages = '用户密码错误';
+            }
+
+            if($m3result->data['user']['code'] == 2)
+            {
+                $m3result->code = 3;
+                $m3result->messages = '用户已禁用';
+            }
         }
         return $m3result->toJson();
     }
