@@ -147,11 +147,11 @@ class SupplierController extends Controller
                         ->where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '>=', now()->timestamp);
                 }),
             ],
-            'total_price' => 'required|numeric',
+            'price' => 'required|numeric',
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $supplier->supplierSubmitOffer($manage_u->user_id, $request->input('offer_id'), $request->input('total_price')))
+        if ($validator->passes() && $supplier->supplierSubmitOffer($manage_u->user_id, $request->input('offer_id'), $request->input('price')))
         {   /*验证通过并且处理成功*/
             $m3result->code = 0;
             $m3result->messages = '供应商报价成功';

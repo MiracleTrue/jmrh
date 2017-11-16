@@ -113,10 +113,10 @@ class Supplier extends CommonModel
      * 单个供应商提交一份报价
      * @param $supplier_id
      * @param $offer_id
-     * @param $total_price
+     * @param $price
      * @return bool
      */
-    public function supplierSubmitOffer($supplier_id, $offer_id, $total_price)
+    public function supplierSubmitOffer($supplier_id, $offer_id, $price)
     {
         /*初始化*/
         $sms = new Sms();
@@ -124,9 +124,13 @@ class Supplier extends CommonModel
         $e_orders = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
 
+        /*单价方式*/
+        $calculated_price = floatval(sprintf("%.4f", $price));;/*保留4位小数的单价(舍去法 取4位浮点数)*/
+        $calculated_total = bcmul($calculated_price, $e_orders->product_number, 2);/*保留2位小数的总价(舍去法 取2位浮点数)*/
 
-        $calculated_total = round($total_price, 2);/*保留2位小数的总价(小数第3位四舍五入)*/
-        $calculated_price = bcdiv($total_price, $e_orders->product_number, 4);/*保留4位小数的单价(舍去法 取4位浮点数)*/
+        /*总价方式*/
+//        $calculated_total = round($total_price, 2);/*保留2位小数的总价(小数第3位四舍五入)*/
+//        $calculated_price = bcdiv($total_price, $e_orders->product_number, 4);/*保留4位小数的单价(舍去法 取4位浮点数)*/
 
         /*更新*/
         $e_order_offer->total_price = $calculated_total;
