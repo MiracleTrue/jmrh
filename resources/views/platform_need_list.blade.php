@@ -48,7 +48,7 @@
 						<option value="交易成功"  @if($page_search['status'] == '交易成功') selected="selected" @endif>交易成功</option>
 					</select>
 					<span style="margin-left: 24px;font-size: 16px;">分配时间</span>
-					<input style="margin-left: 15px;"value= @if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon tre-time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+					<input  autocomplete="off" style="margin-left: 15px;"value= @if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon tre-time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
 					
 					
 					
@@ -61,17 +61,26 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 6%;"><span>序号</span></th>
+						<th style="width: 10%;"><span>军方名称</span></th>
 						<th style="width: 15%;"><span>订单号</span></th>
 						<th style="width: 7%;"><span>品名</span></th>
 						<th style="width: 12%;"><span>军方到货时间</span></th>
 						<th style="width: 12%;"><span style="">平台到货时间</span></th>
 						<th style="width: 12%;"><span style="">数量</span></th>
 						<th style="width: 12%;"><span style="">状态</span></th>
-						<th style="width: 18%;""><span style="">操作</span></th>
+						<th style=""><span style="">操作</span></th>
 					</tr>
 					  @foreach($order_list as $item)
 					<tr>
 						<td>{{$item->order_id}}</td>
+						@if(!empty($item['army_info']))
+						<td>{{$item['army_info']['nick_name']}}</td>
+						
+						@else
+						<td><span style="color:red;">平台</span></td>
+						
+						@endif
+
 						<td>{{$item->order_sn}}</td>
 						<td>{{$item->product_name}}</td>
 						<td>{{$item->army_receive_time}}</td>
@@ -138,6 +147,7 @@
 		      type: 2,
 		      title: false,
 		      maxmin: false,
+		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['910px' , '600px'],
 		      content: '{{url('platform/need/view')}}'
@@ -151,6 +161,7 @@
 		      type: 2,
 		      title: false,
 		      maxmin: false,
+		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['900px' , '600px'],
 		      content: '{{url('platform/allocation/view')}}'+'/'+order_id
@@ -161,6 +172,7 @@
 		      type: 2,
 		      title: false,
 		      maxmin: false,
+		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['900px' , '500px'],
 		      content: '{{url('platform/offer/view')}}'+'/'+order_id

@@ -38,8 +38,8 @@ h3{margin:10px 0;}
 	<div class="demo3">
 		<h3>演示三（日期范围限制）</h3>
 		<ul class="inline" id="demo">
-		开始日：<input class="laydate-icon" value="2014-6-25更新">
-		结束日：<input class="laydate-icon"  value="2014-6-25更新">
+		开始日：<input id="start" class="laydate-icon" value="">
+		结束日：<input id="end" class="laydate-icon"  value="">
 		</ul>
 	</div>
 
@@ -87,7 +87,7 @@ var end = {
     min: laydate.now(),
     max: '2099-06-16',
     istime: true,
-    istoday: false,
+    istoday: true,
     choose: function(datas){
         start.max = datas; //结束日选好后，充值开始日的最大日期
     }
@@ -101,7 +101,7 @@ laydate({
     format: 'YYYY年MM月DD日',
     festival: true, //显示节日
     choose: function(datas){ //选择日期完毕的回调
-        alert('得到：'+datas);
+        alert('得到：'+datas);        console.log(datas)
     }
 });
 

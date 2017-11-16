@@ -24,7 +24,7 @@
 					<!--<select name="" class="mly-time">
 						<option value="">全部</option>
 					</select>-->
-					<input  onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon mly-time"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time'] != 'null') "{{$page_search['create_time']}}" @else "" @endif placeholder="请选择日期"/>
+					<input  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon mly-time"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time'] != 'null') "{{$page_search['create_time']}}" @else "" @endif placeholder="请选择日期"/>
 				</div>
 				<a class="mly-btn">搜索</a>
 			</div>
@@ -115,6 +115,7 @@
             type: 2,
             title: false,
             maxmin: false,
+            fixed :false,
             shadeClose: true, //点击遮罩关闭层
             area: ['900px' , '500px'],
             content: '{{url('army/need/view')}}'+'/'+order_id
@@ -188,6 +189,7 @@
 		      type: 2,
 		      title: false,
 		      maxmin: false,
+		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['900px' , '500px'],
 		      content: '{{url('army/need/view')}}'

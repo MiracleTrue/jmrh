@@ -36,6 +36,10 @@
 }
 .error{
 	color: red;
+	
+}
+.error li{
+	margin-left: 20px;
 }
 #product_number{
 	position: relative;
@@ -81,7 +85,7 @@ border:1px solid #ccc ;
 				<div class="">
 
 					<p><span>品名</span><input type="text" name="product_name" id="product_name" value="{{$order_info['product_name'] or ''}}" /></p>
-					<p><span>到货时间</span><input  onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/></p>
+					<p><span>到货时间</span><input  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/></p>
 				</div>
 				<div class="">
 					<p><span>数量</span><input type="text" name="product_number" id="product_number" value="{{$order_info['product_number'] or ''}}" />

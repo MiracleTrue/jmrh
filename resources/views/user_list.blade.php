@@ -203,6 +203,7 @@
             type: 2,
             title: false,
             maxmin: false,
+             fixed :false,
             shadeClose: true, //点击遮罩关闭层
             area: ['600px', '730px'],
             content: '{{url('user/view')}}'+'/'+user_id
@@ -231,6 +232,7 @@
                         type: 2,
                         title: false,
                         maxmin: false,
+                         fixed :false,
                         shadeClose: true, //点击遮罩关闭层
                         area: ['600px', '730px'],
                         content: '{{url('user/view')}}'

@@ -71,6 +71,7 @@
 						type: 2,
 						title: false,
 						maxmin: false,
+						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['620px', '514px'],
 						content: '{{url('password/original/view')}}'

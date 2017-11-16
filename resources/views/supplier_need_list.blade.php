@@ -14,7 +14,7 @@
 				<div class="pvr-shaixuan">
 					<select name="" class="pvr-state">
 						<option value="null" >全部</option>
-						<option value="待报价"  @if($page_search['status'] == '待报价') selected="selected" @endif>待报价</option>
+						<option value="待报价"   @if($page_search['status'] == '待报价') selected="selected" @endif>待报价</option>
 						<option value="等待确认" @if($page_search['status'] == '等待确认') selected="selected" @endif>等待确认</option>
 						<option value="待发货" @if($page_search['status'] == '待发货') selected="selected" @endif>待发货</option>
 						<option value="已发货" @if($page_search['status'] == '已发货') selected="selected" @endif>已发货</option>
@@ -24,7 +24,7 @@
 
 					</select>
 					
-				 	<input class="pvr-time" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
+				 	<input  autocomplete="off" class="pvr-time" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
 				</div>
 				<a class="pvr-btn">搜索</a>
 			</div>
@@ -105,6 +105,7 @@
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['680px' , '730px'],
+		      fixed :false,
 		      content: '{{url('supplier/offer/view')}}'+"/"+offer_id
 		    });
   	}

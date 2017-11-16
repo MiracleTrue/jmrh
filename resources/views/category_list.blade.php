@@ -138,6 +138,7 @@
 						type: 2,
 						title: false,
 						maxmin: false,
+						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['920px', '413px'],
 						content: '{{url('category/view')}}'+'/'+category_id
@@ -157,6 +158,7 @@
 						type: 2,
 						title: false,
 						maxmin: false,
+						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['920px', '413px'],
 						content: '{{url('category/view')}}'

@@ -72,9 +72,16 @@
 				 	</select>
 				</p>
 				
-				<p>
-					<span>确认时间</span>
-				 	<input onClick="laydate({elem: '#confirm_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" value="" />
+				
+				<p style="position: relative;">
+					<span>到货预警时间</span>
+				 	<select name="warning_time">
+				 		<option value="0">无预警</option>
+				 		<option value="14400">4小时</option>
+				 		<option value="28800">8小时</option>
+				 		<option value="43200">12小时</option>
+				 		<option value="86400">24小时</option>
+				 	</select>
 				</p>
 			</div>
 			
@@ -91,17 +98,11 @@
 			<div>
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input onClick="laydate({elem: '#platform_receive_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}' })" type="" name="platform_receive_time" id="platform_receive_time" value="" placeholder="请选择时间"/>
+				 	<input  style="width: 268px;" autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 				</p>
-				<p style="position: relative;">
-					<span>到货预警时间</span>
-				 	<select name="warning_time">
-				 		<option value="0">无预警</option>
-				 		<option value="14400">4小时</option>
-				 		<option value="28800">8小时</option>
-				 		<option value="43200">12小时</option>
-				 		<option value="86400">24小时</option>
-				 	</select>
+				<p>
+					<span>确认时间</span>
+				 	<input style="width: 268px;" autocomplete="off"  placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" class="laydate-icon" value="" />
 				</p>
 				
 			</div>
@@ -128,6 +129,45 @@
 	
 
 }();
+
+/*确认时间到货时间限制*/
+var confirmTime={
+	elem: '#confirm_time',
+	format: 'YYYY-MM-DD hh:mm:ss',
+	max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}',
+	choose: function(datas){
+        receiveTime.max = datas; //开始日选好后，重置结束日的最小日期
+        receiveTime.start = datas //将结束日的初始值设定为开始日
+		
+    }
+};
+/*到货时间*/
+var receiveTime={
+	elem: '#platform_receive_time',
+	format: 'YYYY-MM-DD hh:mm:ss',
+	max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}',
+	choose: function(datas){
+
+        confirmTime.max = datas; //结束日选好后，充值开始日的最大日期
+		
+		$("#confirm_time").focus(function(){
+			laydate(confirmTime);
+		})
+    }
+}
+
+
+laydate(receiveTime);
+$("#confirm_time").click(function(){
+	if($("#platform_receive_time").val()==""){
+		//alert("请先选择到货时间");
+		  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
+		
+	}
+})
+	
+	
+
 
 
   /**
@@ -169,31 +209,37 @@
 	    errorLabelContainer:$("div.error"),
 	     wrapper:"li",
 	        submitHandler: function (form) {
-		          $(form).ajaxSubmit({
-		            url: '{{url("platform/allocation/offer")}}',
-		            type: 'POST',
-		            dataType: 'JSON',
-		            data:{
-		            	_token:'{{csrf_token()}}'
-		            },
-		            beforeSend:function(res){
-		            	$("input[type='submit']").attr("disabled","true");
-		            	
-		            },
-		            success: function (res) {
-		            if(res.code==0){
-		            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
-		             	   parent.location.reload();	 
-		             	   	  layer.closeAll('');
-		             	   });
-						
-		             }else{
-		             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
-		             	   $("input[type='submit']").removeAttr("disabled");
-		             	   });
-		             }
-		            }
-		          });
+	        	if($("select[name='supplier_A']").val()=="0" && $("select[name='supplier_B']").val()=="0" &&$("select[name='supplier_C']").val()=="0" ){
+		            	 layer.msg("请先选择一个供应商",{icon: 2, time: 1000})
+
+		        }else{
+		         	$(form).ajaxSubmit({
+			            url: '{{url("platform/allocation/offer")}}',
+			            type: 'POST',
+			            dataType: 'JSON',
+			            data:{
+			            	_token:'{{csrf_token()}}'
+			            },
+			            beforeSend:function(res){
+			            	$("input[type='submit']").attr("disabled","true");
+			            	
+			            },
+			            success: function (res) {
+			            if(res.code==0){
+			            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+			             	   parent.location.reload();	 
+			             	   	  layer.closeAll('');
+			             	   });
+							
+			             }else{
+			             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
+			             	   $("input[type='submit']").removeAttr("disabled");
+			             	 });
+			             }
+			            }
+			        });
+		         }
+		         
 	        }
 	
 	     

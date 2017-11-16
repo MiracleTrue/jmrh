@@ -50,7 +50,7 @@
 
 			<p style="position: relative;">
 				<span>单价</span>
-				<input class="price" type="text" name="" id="" value="0.00" disabled="disabled" />
+				<input class="price" type="text" name="price" id="" value=""  />
 				<span class="adr-money">元/{{$offer_info['order_info']['product_unit']}}</span>
 			</p>
 
@@ -62,7 +62,7 @@
 
 			<p style="position: relative;">
 				<span>总价</span>
-				<input class="total_pride" type="number" name="total_price" id="total_price" value="" />
+				<input class="total_pride" type="number" name="total_price" id="total_price" value="" disabled="disabled" />
 				<span class="adr-money">元</span>
 			</p>
 
@@ -106,16 +106,16 @@
                 });
             }
             
-            $(".total_pride").watch(function(value) { 
+            $(".price").watch(function(value) { 
      
-            	var val=Number(value/$(".product_number").val());
-			$(".price").val(Math.floor(val * 10000) / 10000)
+            	var val=Number(value*$(".product_number").val());
+			$(".total_pride").val(Math.floor(val * 10000) / 10000)
 		}); 
 		
 		  var validatorEd = $("#supp_form").validate({
 		        rules: {
 		          
-		          total_price:{
+		          price:{
 		           required: true,
 		           isIntGtZero:true
 		          }
@@ -123,8 +123,8 @@
 		        },
 		         messages: {
 			     
-			      total_price: {
-			        required: "请输入数量",
+			     price: {
+			        required: "请输入单价",
 			        isIntGtZero:"请输入大于0的整数"
 			      }
 			    },
@@ -162,7 +162,10 @@
 
       });
       
-      
+    	$(".adr-reset").on("click",function(){
+     	   validatorEd.resetForm();
+     	
+        });  
 		
 		
 		

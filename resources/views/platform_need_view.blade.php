@@ -6,7 +6,10 @@
     	<style type="text/css">
     		.error{
     			color: red;
-    			padding-left: 20px;
+    			
+    		}
+    		.error li{
+    			margin-left: 20px;
     		}
     		#ade-submit{
 				background: #fe8d01;
@@ -49,7 +52,7 @@
 @section('content')
 <div class="error"></div>
 <div class="ade-box">
-	<form id="platform" action="" method="post">
+	<form id="platform" action="" method="post" >
 		
 		
 	
@@ -61,7 +64,7 @@
 				</p>
 				<p>
 					<span>到货时间</span>
-				 	<input  name="platform_receive_time" id="platform_receive_time" onClick="laydate({elem: '#platform_receive_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"   value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input autocomplete="off" name="platform_receive_time" id="platform_receive_time" class="laydate-icon"   value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
 				</p>
 			</div>
 			
@@ -77,7 +80,7 @@
 				</p>
 				<p>
 					<span>确认时间</span>
-				 	<input name="confirm_time" id="confirm_time" onClick="laydate({elem: '#confirm_time',istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon"  value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input autocomplete="off" name="confirm_time" id="confirm_time"  class="laydate-icon"  value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
 				</p>
 				
 			</div>
@@ -151,6 +154,39 @@
 	
 
 }();
+	
+	/*确认时间到货时间限制*/
+	var confirmTime={
+		elem: '#confirm_time',
+		format: 'YYYY-MM-DD hh:mm:ss',
+		min: laydate.now(),
+		choose: function(datas){
+	        receiveTime.max = datas; //开始日选好后，重置结束日的最小日期
+	        receiveTime.start = datas //将结束日的初始值设定为开始日
+	    }
+};
+/*到货时间*/
+var receiveTime={
+	elem: '#platform_receive_time',
+	format: 'YYYY-MM-DD hh:mm:ss',
+	min: laydate.now(),
+	choose: function(datas){
+
+        confirmTime.max = datas; //结束日选好后，充值开始日的最大日期
+		
+		$("#confirm_time").focus(function(){
+			laydate(confirmTime);
+		})
+    }
+};
+laydate(receiveTime);
+$("#confirm_time").click(function(){
+	if($("#platform_receive_time").val()==""){
+		//alert("请先选择到货时间");
+		  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
+		
+	}
+});
 
 $('#product_unit').editableSelect({
 	effects: 'slide'
@@ -173,6 +209,9 @@ $(".es-input").attr("placeholder","请选择单位");
            required: true,
            isIntGtZero:true
           },
+          product_unit:{
+          	required: true,
+          },
          
         },
          messages: {
@@ -184,13 +223,20 @@ $(".es-input").attr("placeholder","请选择单位");
 	      product_number: {
 	        required: "请输入数量",
 	        isIntGtZero:"请输入大于0的整数"
-	      }
+	      },
+	        product_unit:{
+	        	required: "请选择单位",
+	        }
 	    },
 	    errorLabelContainer:$("div.error"),
 	     wrapper:"li",
 	        submitHandler: function (form) {
 	        	var loading = null;
-		          $(form).ajaxSubmit({
+	        	if($("select[name='supplier_A']").val()=="0" && $("select[name='supplier_B']").val()=="0" &&$("select[name='supplier_C']").val()=="0" ){
+		            	 layer.msg("请先选择一个供应商",{icon: 2, time: 1000})
+
+		         }else{
+		         	$(form).ajaxSubmit({
 		            url: '{{url("platform/need/release")}}',
 		            type: 'POST',
 		            dataType: 'JSON',
@@ -199,6 +245,7 @@ $(".es-input").attr("placeholder","请选择单位");
 		            },
 		             beforeSend:function(res){
 		            	$("input[type='submit']").attr("disabled","true");
+		            	
 		            	
 		            },
 		            success: function (res) {
@@ -216,6 +263,8 @@ $(".es-input").attr("placeholder","请选择单位");
 		             }
 		          }
 		          });
+		         }
+		          
 	        }
 	
 	     

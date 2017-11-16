@@ -39,16 +39,14 @@
 				
 					@if(!empty($user_info))
 					<select name="identity" disabled="disabled">
-					<option value="1" @if($user_info['identity'] == '1') selected="selected" @endif >超级管理员</option>
-                    <option value="2" @if($user_info['identity'] == '2') selected="selected" @endif>平台运营员</option>
-                    <option value="3" @if($user_info['identity'] == '3') selected="selected" @endif>供货商</option>
-                    <option value="4" @if($user_info['identity'] == '4') selected="selected" @endif>军方</option>
+	                    <option value="2" @if($user_info['identity'] == '2') selected="selected" @endif>平台运营员</option>
+	                    <option value="3" @if($user_info['identity'] == '3') selected="selected" @endif>供货商</option>
+	                    <option value="4" @if($user_info['identity'] == '4') selected="selected" @endif>军方</option>
                     @else
                     <select name="identity">
-                    <option value="1">超级管理员</option>
-                    <option value="2">平台运营员</option>
-                    <option value="3">供货商</option>
-                    <option value="4" >军方</option>
+	                    <option value="2">平台运营员</option>
+	                    <option value="3">供货商</option>
+	                    <option value="4" >军方</option>
                     @endif
 				</select>
 			</p>
@@ -87,6 +85,11 @@
        */     
 		var validatorEd = $("#UserEdit").validate({
 	        rules: {
+	          user_name:{
+	            required: true,
+	           	minlength: 4,
+	           	maxlength:16
+	          },
 	          nick_name: {
 	            required: true
 	          },
@@ -94,9 +97,7 @@
 	          	required:true,
 	          	isMobile:true
 	          },
-	          user_name:{
-	           required: true
-	          },
+	         
 	          password: {
 	            minlength: 6
 	          },
@@ -106,13 +107,17 @@
 	          }
 	        },
 	         messages: {
-		      nick_name: "请输入用户名",
+		      nick_name:{
+		      	required:"请输入姓名"
+		      } ,
 		      phone:{
 		      	required:"请输入手机号",
 		      	isMobile:"请输入正确的手机号"
 		      },
 		      user_name: {
-		        required: "请输入姓名"
+		        required: "请输入用户名",
+		      	minlength:"用户名不得少于4位",
+		      	maxlength:"用户名不得多于16位"
 		      },
 		      password: {
 		        required: "请输入密码",
@@ -207,8 +212,10 @@
           	isMobile:true
           },
           user_name:{
-           required: true
-          },
+	            required: true,
+	           	minlength: 4,
+	           	maxlength:16
+	          },
           password: {
             required: true,
             minlength: 6
@@ -225,9 +232,11 @@
 	      	required:"请输入手机号",
 	      	isMobile:"请输入正确的手机号"
 	      },
-	      user_name: {
-	        required: "请输入姓名"
-	      },
+	    	user_name: {
+		        required: "请输入用户名",
+		      	minlength:"用户名不得少于4位",
+		      	maxlength:"用户名不得多于16位"
+		      },
 	      password: {
 	        required: "请输入密码",
 	        minlength: "密码长度不能小于 6 位"

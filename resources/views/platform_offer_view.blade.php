@@ -92,14 +92,16 @@
 				</p>
 			</div>
 			@if($order_info['status']==100)
-			<div class="qte-ope">
-				<input type="hidden" name="order_id" value="{{$order_info['order_id']}}" />
+			
+				<div class="qte-ope">
+					<input type="hidden" name="order_id" value="{{$order_info['order_id']}}" />
+					
+					<a class="qte-submit" type="submit" name="" id="qte-submit" value="提交" >提交</a>
+					<input class="qte-reset" type="reset" name="" id="qte-reset" value="重置" />
+					
+					
+				</div>
 				
-				<a class="qte-submit" type="submit" name="" id="qte-submit" value="提交" >提交</a>
-				<input class="qte-reset" type="reset" name="" id="qte-reset" value="重置" />
-				
-				
-			</div>
 			@endif
 			</form>
 		</div>
@@ -112,7 +114,7 @@
 <script>
 	$(function(){
 		{{--$(".offer_div p").eq(1).css("margin-left","20px"); --}}
-	
+	$('.qte-ope').hide();
 	
 		var arr =new Array(3);
 		for(var i=0;i<$(".price_color").length;i++ ){
@@ -133,16 +135,22 @@
 						$(".price_color").eq(i).css("color","#dddddd");
 				}
 				else if($(".price_color").eq(i).attr("data-price")==small && $(".price_color").eq(i).attr("data-price")!=0){
-					
-				$(".price_color").eq(i).css("color","green");
-				
+					$(".price_color").eq(i).css("color","green");
 				}
 				else if($(".price_color").eq(i).attr("data-price")==midd){
 					$(".price_color").eq(i).css("color","blue")
 				}else{
+				
 					$(".price_color").eq(i).css("color","red")
 				}
 			}
+			
+			for(var i=0;i<$(".price_color").length;i++ ){
+				if($(".price_color").eq(i).attr("data-price")!="0.00"){
+					$('.qte-ope').show();
+				}
+			}
+			
 			
 //			console.log($(".price_color").eq(i).attr("data-price") !=0)
 //			console.log($(".price_color").eq(i).attr("data-price") !=0)
@@ -187,18 +195,11 @@
 	     
 				
 			})
-		
 	
-   
-  
-
-  
-  
-		
-		  
+	
 		
 	})
-	
+		
 		
 	<!--倒计时-->	
 	   {{-- function formatSeconds(value) {
