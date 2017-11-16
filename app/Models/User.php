@@ -64,7 +64,7 @@ class User extends CommonModel
     {
         /*初始化*/
         $manage_u = session('ManageUser');
-        $log_list = UserLog::where('user_id',$manage_u->user_id)->orderBy('create_time','desc')->paginate($_COOKIE['PaginationSize']);
+        $log_list = UserLog::where('user_id', $manage_u->user_id)->orderBy('create_time', 'desc')->paginate($_COOKIE['PaginationSize']);
         /*数据过滤排版*/
         $log_list->transform(function ($item)
         {
@@ -107,7 +107,7 @@ class User extends CommonModel
         $e_users = new Users();
 
         /*预加载ORM对象*/
-        $supplier_list = $e_users->where('users.is_disable',User::NO_DISABLE)->where('users.identity',User::SUPPLIER_ADMIN)->get();
+        $supplier_list = $e_users->where('users.is_disable', User::NO_DISABLE)->where('users.identity', User::SUPPLIER_ADMIN)->get();
 
         /*数据过滤排版*/
         $supplier_list->transform(function ($item)
@@ -170,12 +170,8 @@ class User extends CommonModel
                 return false;
             }
         }
-        else
-        {
-            $this->errors['code'] = 3;
-            $this->errors['messages'] = '用户不存在';
-            return false;
-        }
+
+        return false;
     }
 
     /**

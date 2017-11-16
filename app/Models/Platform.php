@@ -29,7 +29,7 @@ class Platform extends CommonModel
     private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
-     * 获取所有订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
+     * 获取所有订单列表 关联军方信息 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orWhere
      * @param array $orderBy
@@ -39,7 +39,7 @@ class Platform extends CommonModel
     {
         /*预加载ORM对象*/
         $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)
-            ->where($where);
+            ->where($where)->with('ho_users');
         foreach ($orWhere as $value)
         {
             $e_orders->orWhere($value[0], $value[1], $value[2]);
@@ -53,6 +53,14 @@ class Platform extends CommonModel
         /*数据过滤*/
         $order_list->transform(function ($item)
         {
+            if(!empty($item->ho_users))
+            {
+                $item->army_info = clone $item->ho_users;
+            }
+            else
+            {
+                $item->army_info = null;
+            }
             $item->status_text = self::orderStatusTransformText($item->type, $item->status);
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             $item->platform_receive_time = $item->platform_receive_time ? Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString() : '';
