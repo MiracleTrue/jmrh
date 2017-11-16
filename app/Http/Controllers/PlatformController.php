@@ -234,7 +234,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER]);
                 }),
             ],

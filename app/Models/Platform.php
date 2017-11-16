@@ -177,7 +177,7 @@ class Platform extends CommonModel
     {
         /*初始化*/
         $sms = new Sms();
-        $e_orders = Orders::where('order_id', $order_id)->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER])->first() or die('order missing');
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('order_id', $order_id)
             ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('confirm_time', '>=', now()->timestamp)->first() or die('order_offer missing');
