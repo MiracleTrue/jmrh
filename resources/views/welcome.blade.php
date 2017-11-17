@@ -33,7 +33,7 @@
             @foreach($item['products'] as $product)
                 <li onclick="ProductShow(this,'{{$product['product_id']}}')" >
                     <p>{{$product['product_name']}}</p>
-                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" alt="商品" />
+                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" alt="商品"  onerror="imgError(this);"/>
                 </li>
                @endforeach  
             </ul>
@@ -53,6 +53,12 @@
     {{--</script>--}}
     
     <script>
+    	function imgError(image){  
+		 $(image).hide();  
+		     $(this).attr("src", "{{asset('webStatic/images/noimg.png')}}");  
+		}  
+    	
+    	
     	$(function(){
     	
     	var spanColor=['#FF433A','#08ad00','#ffea95','#fe8d01'];	

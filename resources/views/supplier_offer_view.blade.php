@@ -50,13 +50,13 @@
 
 			<p style="position: relative;">
 				<span>单价</span>
-				<input class="price" type="text" name="price" id="" value=""  />
+				<input class="price" type="number" name="price" id="price" value="" onkeyup="test(this.value)"  />
 				<span class="adr-money">元/{{$offer_info['order_info']['product_unit']}}</span>
 			</p>
 
 			<p style="position: relative;">
 				<span>数量</span>
-				<input class="product_number" type="" name="" id="text" value="{{$offer_info['order_info']['product_number']}}" disabled="disabled" />
+				<input class="product_number" type="text" name="" id="text" value="{{$offer_info['order_info']['product_number']}}" disabled="disabled" />
 				<span class="adr-money">{{$offer_info['order_info']['product_unit']}}</span>
 			</p>
 
@@ -109,8 +109,31 @@
             $(".price").watch(function(value) { 
      
             	var val=Number(value*$(".product_number").val());
-			$(".total_pride").val(Math.floor(val * 10000) / 10000)
+			$(".total_pride").val(Math.floor(val * 100) / 100)
 		}); 
+		
+		
+		//单价输入保留2位小数
+		function test(str){
+		    var pos;
+		    var fst
+		    var lst;
+		    if (str == "") return;
+		    pos = str.indexOf(".");
+		    if (pos != -1){
+		        fst = str.substring(0,pos);
+		        lst = str.substring(pos+1,pos.length);
+		        if (lst.length > 4){             
+		             var sub = lst.substring(0,4);
+		          document.getElementById("price").value=fst+"."+sub;
+		        }
+		    }    
+		}
+			
+		
+		
+		
+		
 		
 		  var validatorEd = $("#supp_form").validate({
 		        rules: {

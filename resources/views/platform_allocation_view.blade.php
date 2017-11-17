@@ -133,7 +133,8 @@
 /*确认时间到货时间限制*/
 var confirmTime={
 	elem: '#confirm_time',
-	format: 'YYYY-MM-DD hh:mm:ss',
+	format:'YYYY-MM-DD hh:mm:ss',
+	 istime: true,
 	max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}',
 	choose: function(datas){
         receiveTime.max = datas; //开始日选好后，重置结束日的最小日期
@@ -144,7 +145,8 @@ var confirmTime={
 /*到货时间*/
 var receiveTime={
 	elem: '#platform_receive_time',
-	format: 'YYYY-MM-DD hh:mm:ss',
+	format:  'YYYY-MM-DD hh:mm:ss',
+	 istime: true,
 	max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}',
 	choose: function(datas){
 

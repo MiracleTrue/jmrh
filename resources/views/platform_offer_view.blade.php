@@ -59,7 +59,7 @@
 <div class="qte-box">
 	<form  id="platformbaojiatijiao" method="post">	
 			@if($order_info['status']==100)	
-			<header>客户报价(剩余时间<span class="pf_hour"></span><span class="pl-min"></span><span class="pl_sc"></span>)</header>
+			<header>客户报价<span class="header_span">(剩余时间<span class="pf_day"></span><span class="pf_hour"></span><span class="pl-min"></span><span class="pl_sc"></span>)</span></header>
 			@elseif($order_info['status']==110)	
 				<header>客户报价</header>
 				@endif
@@ -112,10 +112,38 @@
 <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/jquery.validate.js')}}"></script>
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
+	
+	<!--倒计时-->
+	var qteSub=true;
+		var EndTimeMsg = {{$count_down}};
+	 	if(EndTimeMsg>0){
+			    function show() {
+			     EndTimeMsg--;
+			    h = Math.floor(EndTimeMsg / 60 / 60);
+			    if(h>24){
+			    	var day=h%24;
+			    	  $(".pf_day").text(day+"天");
+			    }
+			    m = Math.floor((EndTimeMsg - h * 60 * 60) / 60);
+			    s = Math.floor((EndTimeMsg - h * 60 * 60 - m * 60));
+			  
+			    $(".pf_hour").text(h+"小时");
+			    $(".pl-min").text(m+"分钟");
+			    $(".pl_sc").text(s+"秒");
+			    
+			  }
+			  setInterval("show()", 1000)	
+		}else{
+			$(".header_span").css("color","red").text('(确认时间已过)');
+		 qteSub=false;
+		}
+	
+	
+	
 	$(function(){
 		{{--$(".offer_div p").eq(1).css("margin-left","20px"); --}}
-	$('.qte-ope').hide();
-	
+		$('.qte-ope').hide();
+		
 		var arr =new Array(3);
 		for(var i=0;i<$(".price_color").length;i++ ){
 			arr[i]=$(".price_color").eq(i).attr("data-price");
@@ -149,7 +177,12 @@
 				if($(".price_color").eq(i).attr("data-price")!="0.00"){
 					$('.qte-ope').show();
 				}
+			
 			}
+			if(qteSub==false){
+					console.log(qteSub)
+					$('.qte-ope').hide();
+		}
 			
 			
 //			console.log($(".price_color").eq(i).attr("data-price") !=0)
@@ -236,18 +269,6 @@
 	
 	
 	
-	 	var EndTimeMsg = {{$count_down}};
-	    function show() {
-	     EndTimeMsg--;
-	    h = Math.floor(EndTimeMsg / 60 / 60);
-	    m = Math.floor((EndTimeMsg - h * 60 * 60) / 60);
-	    s = Math.floor((EndTimeMsg - h * 60 * 60 - m * 60));
-	  
-	    $(".pf_hour").text(h+"小时");
-	    $(".pl-min").text(m+"分钟");
-	    $(".pl_sc").text(s+"秒");
-	    
-	  }
-	  setInterval("show()", 1000)	
+	 
 </script>
 @endsection

@@ -136,7 +136,7 @@
 					layer.open({
 						type: 2,
 						title: false,
-						maxmin: false,
+						maxmin: true,
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['920px', '650px'],

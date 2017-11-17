@@ -189,18 +189,12 @@
 		  			},
 		  			url:'{{url('platform/send/army')}}',
 		  			async:true,
-		  			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        	},
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		  				console.log(res)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
+		             	  
 		             	   	location.reload();
 		             	   });
 		             	
@@ -229,17 +223,10 @@
 		  			},
 		  			url:'{{url('platform/confirm/receive')}}',
 		  			async:true,
-		  			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		       		},
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
 		             	   	location.reload();
 		             	   });
 		             	
@@ -269,17 +256,12 @@
 		  			},
 		  			url:'{{url('platform/inventory/supply')}}',
 		  			async:true,
-		  			 beforeSend:function(res){
-		            	if(!networkState){
-		            		return false;
-		            	}
-		            	networkState=false;
-		        },
+		  			
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
-		             	   	networkState=true;
+		             	   	
 		             	   	location.reload();
 		             	   });
 		             	

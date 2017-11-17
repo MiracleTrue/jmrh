@@ -159,6 +159,7 @@
 	var confirmTime={
 		elem: '#confirm_time',
 		format: 'YYYY-MM-DD hh:mm:ss',
+		istime: true,
 		min: laydate.now(),
 		choose: function(datas){
 	        receiveTime.max = datas; //开始日选好后，重置结束日的最小日期
@@ -169,6 +170,7 @@
 var receiveTime={
 	elem: '#platform_receive_time',
 	format: 'YYYY-MM-DD hh:mm:ss',
+	istime: true,
 	min: laydate.now(),
 	choose: function(datas){
 
