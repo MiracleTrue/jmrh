@@ -94,7 +94,7 @@
                     $.data(this, 'originVal', $(this).val());
 
                     //event  
-                    $(this).on('keyup paste', function () {
+                    $(this).on('keyup paste click', function () {
                         var originVal = $.data(this, 'originVal');
                         var currentVal = $(this).val();
 
@@ -103,6 +103,7 @@
                             callback(currentVal);
                         }
                     });
+                    
                 });
             }
             

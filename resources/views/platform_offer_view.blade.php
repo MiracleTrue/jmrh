@@ -115,29 +115,36 @@
 	
 	<!--倒计时-->
 	var qteSub=true;
-		var EndTimeMsg = {{$count_down}};
+var EndTimeMsg = {{$count_down}};
+	
 	 	if(EndTimeMsg>0){
 			    function show() {
 			     EndTimeMsg--;
-			    h = Math.floor(EndTimeMsg / 60 / 60);
-			    if(h>24){
-			    	var day=h%24;
+			    h = parseInt(EndTimeMsg%(24*3600)/3600);
+			 
+			   
+			    	day=parseInt((EndTimeMsg)/(24*3600));
 			    	  $(".pf_day").text(day+"天");
-			    }
-			    m = Math.floor((EndTimeMsg - h * 60 * 60) / 60);
-			    s = Math.floor((EndTimeMsg - h * 60 * 60 - m * 60));
+			      
+			    m = parseInt((EndTimeMsg)%3600/60);
+			    s = parseInt((EndTimeMsg)%60);
 			  
 			    $(".pf_hour").text(h+"小时");
 			    $(".pl-min").text(m+"分钟");
 			    $(".pl_sc").text(s+"秒");
-			    
+			    	if(s<0){
+		
+					$(".header_span").css("color","red").text('(确认时间已过)');
+				}
 			  }
 			  setInterval("show()", 1000)	
+			  
 		}else{
 			$(".header_span").css("color","red").text('(确认时间已过)');
 		 qteSub=false;
 		}
-	
+		
+
 	
 	
 	$(function(){

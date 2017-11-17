@@ -33,7 +33,7 @@
             @foreach($item['products'] as $product)
                 <li onclick="ProductShow(this,'{{$product['product_id']}}')" >
                     <p>{{$product['product_name']}}</p>
-                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/>
+                    <img class="proudut_img" src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/>
                 </li>
                @endforeach  
             </ul>
@@ -53,10 +53,6 @@
     {{--</script>--}}
     
     <script>
-    	function imgError(image){  
-		 $(image).hide();  
-		     $(this).attr("src", "{{asset('webStatic/images/noimg.png')}}");  
-		}  
     	
     	
     	$(function(){
@@ -72,7 +68,9 @@
 	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>')
 	    		
 	    	}
-	    	
+	    /*控制图片大小*/
+	   	var imgWidth=$(".proudut_img").width();
+	   	$(".proudut_img").height(imgWidth);
 	    		
     	})
     
