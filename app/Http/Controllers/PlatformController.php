@@ -44,7 +44,6 @@ class PlatformController extends Controller
         /*初始化*/
         $platform = new Platform();
         $where = array();
-        $or_where = array();
         $this->ViewData['order_list'] = array();
 
         /*条件搜索*/
@@ -60,14 +59,20 @@ class PlatformController extends Controller
         switch ($status)
         {
             case '待分配' :
-                array_push($where, ['orders.status', '=', $platform::ORDER_AWAIT_ALLOCATION]);
-                array_push($or_where, ['orders.status', '=', $platform::ORDER_AGAIN_ALLOCATION]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_SUPPLIER]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_SELECTED]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_SEND]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_RECEIVE]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_PLATFORM]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SEND_ARMY]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SUCCESSFUL]);
                 break;
             case '已分配':
-                array_push($where, ['orders.status', '=', $platform::ORDER_ALLOCATION_SUPPLIER]);
-                array_push($or_where, ['orders.status', '=', $platform::ORDER_SUPPLIER_SELECTED]);
-                array_push($or_where, ['orders.status', '=', $platform::ORDER_SUPPLIER_SEND]);
-                array_push($or_where, ['orders.status', '=', $platform::ORDER_SUPPLIER_RECEIVE]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_PLATFORM]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SEND_ARMY]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_SUCCESSFUL]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_AWAIT_ALLOCATION]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_AGAIN_ALLOCATION]);
                 break;
             case '库存供应' :
                 array_push($where, ['orders.status', '=', $platform::ORDER_ALLOCATION_PLATFORM]);
@@ -84,7 +89,7 @@ class PlatformController extends Controller
             array_push($where, ['orders.create_time', '>=', $start_dt]);
             array_push($where, ['orders.create_time', '<=', $end_dt]);
         }
-        $this->ViewData['order_list'] = $platform->getOrderList($where, $or_where);
+        $this->ViewData['order_list'] = $platform->getOrderList($where);
         $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
         dump($this->ViewData);

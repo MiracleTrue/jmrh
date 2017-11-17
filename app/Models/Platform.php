@@ -31,19 +31,14 @@ class Platform extends CommonModel
     /**
      * 获取所有订单列表 关联军方信息 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
-     * @param array $orWhere
      * @param array $orderBy
      * @return mixed
      */
-    public function getOrderList($where = array(), $orWhere = array(), $orderBy = array(['orders.create_time', 'desc']))
+    public function getOrderList($where = array(), $orderBy = array(['orders.create_time', 'desc']))
     {
         /*预加载ORM对象*/
         $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)
             ->where($where)->with('ho_users');
-        foreach ($orWhere as $value)
-        {
-            $e_orders->orWhere($value[0], $value[1], $value[2]);
-        }
         foreach ($orderBy as $value)
         {
             $e_orders->orderBy($value[0], $value[1]);
