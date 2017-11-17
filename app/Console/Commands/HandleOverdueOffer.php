@@ -61,8 +61,8 @@ class HandleOverdueOffer extends Command
                 $e_orders = Orders::where('order_id', $item->order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->first();
                 $e_orders->offer_info = $e_orders->hm_order_offer;
 
-                //判断order下的所有offer是否都"待报价" ture为都是待报价
-                if ($e_orders->offer_info->whereNotIn('status', CommonModel::OFFER_AWAIT_OFFER)->isEmpty())
+                //判断order下的所有offer是否是"待报价 或 已过期" ture为条件成立
+                if ($e_orders->offer_info->whereNotIn('status', [CommonModel::OFFER_AWAIT_OFFER,CommonModel::OFFER_OVERDUE])->isEmpty())
                 {
                     //条件成立 将order设置为"重新分配" 将offer设置为"已过期"
                     DB::transaction(function () use ($e_orders)
