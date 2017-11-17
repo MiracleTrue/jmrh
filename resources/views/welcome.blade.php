@@ -33,7 +33,7 @@
             @foreach($item['products'] as $product)
                 <li onclick="ProductShow(this,'{{$product['product_id']}}')" >
                     <p>{{$product['product_name']}}</p>
-                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" alt="商品"  onerror="imgError(this);"/>
+                    <img src="{{\App\Models\MyFile::makeUrl($product['product_thumb'])}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/>
                 </li>
                @endforeach  
             </ul>
