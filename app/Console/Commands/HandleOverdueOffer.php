@@ -62,12 +62,12 @@ class HandleOverdueOffer extends Command
                 $e_orders->offer_info = $e_orders->hm_order_offer;
 
                 //判断order下的所有offer是否是"待报价 或 已过期" ture为条件成立
-                if ($e_orders->offer_info->whereNotIn('status', [CommonModel::OFFER_AWAIT_OFFER,CommonModel::OFFER_OVERDUE])->isEmpty())
+                if ($e_orders->offer_info->whereNotIn('status', [CommonModel::OFFER_AWAIT_OFFER, CommonModel::OFFER_OVERDUE])->isEmpty())
                 {
                     //条件成立 将order设置为"重新分配" 将offer设置为"已过期"
                     DB::transaction(function () use ($e_orders)
                     {
-                        Orders::where('order_id', $e_orders->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);//将order设置为"重新分配"
+                        Orders::where('order_id', $e_orders->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION, 'platform_receive_time' => 0]);//将order设置为"重新分配"
                         OrderOffer::where('order_id', $e_orders->order_id)->update(['status' => CommonModel::OFFER_OVERDUE]);//将offer设置为"已过期"
                     });
 
@@ -77,7 +77,7 @@ class HandleOverdueOffer extends Command
                 else
                 {
                     //条件不成立 order的状态不变 将"待报价"的offer设置为"已过期"
-                    OrderOffer::where('order_id', $e_orders->order_id)->where('status',CommonModel::OFFER_AWAIT_OFFER)->update(['status' => CommonModel::OFFER_OVERDUE]);
+                    OrderOffer::where('order_id', $e_orders->order_id)->where('status', CommonModel::OFFER_AWAIT_OFFER)->update(['status' => CommonModel::OFFER_OVERDUE]);
 
                     //测试log
                     Log::info('处理已过确认时间的报价,改为已超期,订单状态改为重新分配 (Artisan 计划任务)  order ID:' . $item->order_id);
