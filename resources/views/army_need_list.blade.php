@@ -117,7 +117,7 @@
             maxmin: false,
             fixed :false,
             shadeClose: true, //点击遮罩关闭层
-            area: ['900px' , '500px'],
+            area: ['920px' , '500px'],
             content: '{{url('army/need/view')}}'+'/'+order_id
         });
 		
@@ -191,7 +191,7 @@
 		      maxmin: false,
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '500px'],
+		      area : ['919px' , '500px'],
 		      content: '{{url('army/need/view')}}'
 		    });
 		  });

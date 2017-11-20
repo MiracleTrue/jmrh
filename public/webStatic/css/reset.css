@@ -47,3 +47,6 @@ input[type="submit"],input[type="reset"]{
 	border: none;
 }
 
+input[type="text"]{
+	text-indent: 1px;
+}

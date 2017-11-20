@@ -64,7 +64,7 @@
 				</p>
 				<p>
 					<span>到货时间</span>
-				 	<input autocomplete="off" name="platform_receive_time" id="platform_receive_time" class="laydate-icon"   value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input autocomplete="off" name="platform_receive_time" id="platform_receive_time" class="laydate-icon"   value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期(必须大于现在时间)"/>
 				</p>
 			</div>
 			
@@ -207,6 +207,9 @@ $(".es-input").attr("placeholder","请选择单位");
           platform_receive_time: {
           	required:true,
           },
+          confirm_time:{
+          		required:true
+          },
           product_number:{
            required: true,
            isIntGtZero:true
@@ -221,6 +224,9 @@ $(".es-input").attr("placeholder","请选择单位");
 	      platform_receive_time:{
 	      	required:"请选择到货时间"
 	      	
+	      },
+	      confirm_time:{
+	      	required:"请选择确认时间"
 	      },
 	      product_number: {
 	        required: "请输入数量",

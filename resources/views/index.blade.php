@@ -58,7 +58,14 @@
 		$(this).find("a").css("color","#fff");
 		$(this).siblings().find("a").css("color","#000000");
 	})
-
+$(".sidebar-menu li").hover(function(){
+	$(this).addClass("hoverli");
+		$(this).find("a").addClass("hovera");
+	console.log('il')
+},function(){
+	  $(this).removeClass("hoverli");
+	  	$(this).find("a").removeClass("hovera");
+})
 
     });
     ! function() {
