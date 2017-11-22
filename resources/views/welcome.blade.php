@@ -20,11 +20,11 @@
         <div class="f1" id="floor{{$key}}">
             <div class="floor_div">
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">{{$item['category_name']}}</span>
-                <ul class="head">
+               <!-- <ul class="head">
                 	@foreach($item['labels'] as $label)
                     <li>{{$label}}</li>
                     @endforeach
-                </ul>
+                </ul>-->
                 </p>
             </div>
 

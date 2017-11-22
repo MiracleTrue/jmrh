@@ -22,7 +22,7 @@
     </div>
 </body>
 <script type="text/javascript">
-	
+	var that;
 		var myDate = new Date();
 		console.log(myDate.getFullYear())
 		$(".lu_year").text(myDate.getFullYear());
@@ -53,19 +53,25 @@
 	})
 	$(".sidebar-menu li").eq(0).css("background-color","#fe8d01");
 	$(".sidebar-menu li").eq(0).find("a").css("color","#fff");
+	
 	$(".sidebar-menu li").on("click",function(){
 		$(this).css("background-color","#fe8d01").siblings().css("background-color","#EFEFEF");
 		$(this).find("a").css("color","#fff");
 		$(this).siblings().find("a").css("color","#000000");
+		 that= $(this);
+		/*console.log(that)*/
 	})
-$(".sidebar-menu li").hover(function(){
-	$(this).addClass("hoverli");
-		$(this).find("a").addClass("hovera");
-	console.log('il')
-},function(){
-	  $(this).removeClass("hoverli");
-	  	$(this).find("a").removeClass("hovera");
-})
+	$(".sidebar-menu li").hover(function(){
+		
+		$(this).not(that).addClass("hoverli");
+		$(this).not(that).find("a").addClass("hovera");
+	
+	/*	console.log(that)*/
+		
+	},function(){
+		  $(this).removeClass("hoverli");
+		  	$(this).find("a").removeClass("hovera");
+	})
 
     });
     ! function() {

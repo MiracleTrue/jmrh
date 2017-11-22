@@ -47,11 +47,11 @@
 				 	<input type="" name="sort" id="sort" value="{{$category_info['sort'] or ''}}" />
 				</p>
 			
-	    			<p>
+	    			<!--<p>
 						<span>标签</span>
-					 	<input type="text" name="labels" id="" value="{{$category_info['labels'] or ''}}" />
+					 	<input type="text" name="labels" id="" value="{{$category_info['labels'] or ''}}" placeholder="标签用英文逗号隔开" />
 					 	
-					</p>
+					</p>-->
 			
 			</div>
 			
