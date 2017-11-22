@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Supplier extends CommonModel
 {
-    private $errors = array(); /*错误信息*/
+    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
      * 获取所有供应商订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间

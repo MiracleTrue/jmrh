@@ -84,7 +84,7 @@ class SupplierController extends Controller
         $this->ViewData['offer_list'] = $supplier->getOfferList($where);
         $this->ViewData['page_search'] = array('status' => $status, 'create_time' => $create_time);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('supplier_need_list', $this->ViewData);
     }
 

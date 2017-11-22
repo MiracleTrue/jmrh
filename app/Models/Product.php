@@ -31,7 +31,7 @@ class Product extends CommonModel
     const  CATEGORY_NO_INDEX = 0;
 
 
-    private $errors = array(); /*错误信息*/
+    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
      * 获取首页商品分类楼层 (已关联: 商品) 默认排序:排序值

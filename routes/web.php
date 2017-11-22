@@ -6,11 +6,11 @@
  * Time  : 11:17
  */
 
-Route::get('test', 'TestController@Index');
-Route::get('test/add', 'TestController@T_add');
-Route::get('test/list', 'TestController@T_list');
-Route::get('test/update', 'TestController@T_update');
-Route::get('test/delete', 'TestController@T_delete');
+//Route::get('test', 'TestController@Index');
+//Route::get('test/add', 'TestController@T_add');
+//Route::get('test/list', 'TestController@T_list');
+//Route::get('test/update', 'TestController@T_update');
+//Route::get('test/delete', 'TestController@T_delete');
 
 /*不需要登录的请求*/
 Route::get('login', 'IndexController@Login');/*登录页面 | login */
