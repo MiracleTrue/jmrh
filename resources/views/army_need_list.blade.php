@@ -10,8 +10,11 @@
 
 @endsection
 @section('content')
-  <section>
-			<div>
+  <section style="position: relative;">
+  	<div class="refresh">
+  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+  	</div>
+			<div style="margin-bottom: 78px;">
 				<a href="#" class="mly-tianjia"></a>
 				<div class="mly-shaixuan">
 					<select name="status" class="mly-state">
@@ -89,6 +92,10 @@
 	laydate({elem: '#army_receive_time'});//绑定元素
 
 }();
+/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 
 /*搜索*/
 	

@@ -18,6 +18,7 @@
 	border-radius:20px ;
 	margin-left: -28px;
 	padding-right: 20px;
+	
 }
 .platshaixuan{
 	width: auto;
@@ -27,6 +28,9 @@
 @section('content')
 
       <section>
+      		<div class="refresh">
+		  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+		  	</div>
 			<div>
 				<a href="#" class="tre-tianjia"></a>
 				<div class="tre-shaixuan platshaixuan" style="background: none;">
@@ -120,7 +124,10 @@
 	laydate({elem: '#army_receive_time'});//绑定元素
 
 }();
-	
+	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 	//搜索
 	
 	  $(".tre-btn").on("click",function(){

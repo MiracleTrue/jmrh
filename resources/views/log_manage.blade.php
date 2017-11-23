@@ -63,9 +63,11 @@
 @endsection
 @section('content')
 <section>
-			
+				<div class="refresh" style="top: 39px;">
+			  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+			  	</div>
 
-			<table>
+			<table style="margin-top: 50px;">
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
@@ -87,6 +89,10 @@
 @endsection
 @section('MyJs')
 <script>
+	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 	/*搜索*/
 	
 	$(".umt-seek").on("click",function(){

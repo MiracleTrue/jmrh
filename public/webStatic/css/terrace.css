@@ -103,3 +103,16 @@ tr a {
 	text-decoration: underline;
 	color: #4284c5;
 }
+@media (max-width: 1366px) {
+
+.plat_stauschoose input{
+	width: 98px;
+}
+.plat_stauschoose select{
+	width: 98px;
+}
+.tre-shaixuan{
+	margin-left: 8px;
+}
+
+}  

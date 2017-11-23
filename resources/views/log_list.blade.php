@@ -11,7 +11,10 @@
 @endsection
 @section('content')
 <section>
-			<div>
+		<div class="refresh">
+	  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+	  	</div>
+			<div style="margin-bottom: 78px;">
 
 				<div class="czi-filtrate">
 					<span style="margin-left: 3%;">账户分类</span>
@@ -24,7 +27,7 @@
 					</select>
 
 					<span>账号</span>
-					<input type="text" name="log_ser" id="log_ser" value=@if($page_search['nick_name'] != 'null') "{{$page_search['nick_name']}}" @else "" @endif />
+					<input style="width: 22%;" type="text" name="log_ser" id="log_ser" value=@if($page_search['nick_name'] != 'null') "{{$page_search['nick_name']}}" @else "" @endif />
 
 				</div>
 				<a class="umt-seek">搜索</a>
@@ -58,6 +61,10 @@
 @endsection
 @section('MyJs')
 <script>
+	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 	/*搜索*/
 	
 	$(".umt-seek").on("click",function(){

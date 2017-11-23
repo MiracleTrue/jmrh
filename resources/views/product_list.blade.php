@@ -11,7 +11,10 @@
 @endsection
 @section('content')
   <section>
-			<div>
+  		<div class="refresh">
+	  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+	  	</div>
+			<div style="margin-bottom: 78px;">
 				<a href="#" class="gmt-add"></a>
 				<div class="tre-shaixuan platshaixuan" style="background: none;">
 					<div class="plat_shanixuan">筛选</div>
@@ -73,7 +76,10 @@
     	location.replace(url);
     });
 	
-	
+/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})	
 	
 	
 	

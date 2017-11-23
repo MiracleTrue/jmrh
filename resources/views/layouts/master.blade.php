@@ -18,8 +18,7 @@
     		
     	 if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
 		{ 
-		/*alert("IE 8.0"); 
-		 */
+	
 		$("table tr:nth-child(2n)").css("background","#ffffff")
 		} 
     	})

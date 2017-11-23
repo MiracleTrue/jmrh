@@ -12,7 +12,10 @@
 @endsection
 @section('content')
    <section>
-			<div>
+   		<div class="refresh">
+	  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+	  	</div>
+			<div style="margin-bottom: 78px;">
 				<a href="#" class="gmt-add"></a>
 
 			</div>
@@ -55,6 +58,10 @@
 
 @section('MyJs')
 <script>
+	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 /*	$(".chinput").on("click",function(){
 	
 		$(this).attr("checked",true);

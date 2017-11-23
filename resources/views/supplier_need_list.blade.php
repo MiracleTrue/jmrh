@@ -9,6 +9,9 @@
 @endsection
 @section('content')
 <section>
+		<div class="refresh">
+  			<img src="{{asset('webStatic/images/refresh.png')}}" />
+  		</div>
 			<div>
 				
 				<div class="pvr-shaixuan">
@@ -24,7 +27,7 @@
 
 					</select>
 					
-				 	<input  autocomplete="off" class="pvr-time" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" class="laydate-icon"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
+				 	<input  autocomplete="off" class="pvr-time laydate-icon" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"   name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
 				</div>
 				<a class="pvr-btn">搜索</a>
 			</div>
@@ -94,7 +97,10 @@
 			laydate({elem: '#army_receive_time'});//绑定元素
 		
 		}();
-		
+	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})	
 		
 		
 		

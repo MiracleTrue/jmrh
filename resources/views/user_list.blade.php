@@ -11,10 +11,13 @@
 @endsection
 @section('content')
     <section>
-        <div>
+    		<div class="refresh">
+		  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+		  	</div>
+        <div style="margin-bottom: 78px;">
             <a href="#" class="umt-add"></a>
             <div class="umt-filtrate">
-                <span style="margin-left: 3%;">账户分类</span>
+                <span style="margin-left: 2%;">账户分类</span>
                 <select class="id_value" name="identity">
                     <option value="0">全部</option>
                      <option value="1" @if($page_search['identity'] == '1') selected="selected" @endif >超级管理员</option>
@@ -84,6 +87,10 @@
 
 @section('MyJs')
     <script>
+    	/*刷新*/
+$(".refresh").on("click",function(){
+	location.reload();
+})
 	var identity_value=0;
 	var is_disable_val=2;
     	

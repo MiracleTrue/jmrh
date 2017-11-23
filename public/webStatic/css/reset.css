@@ -50,3 +50,17 @@ input[type="submit"],input[type="reset"]{
 input[type="text"]{
 	text-indent: 1px;
 }
+.refresh{
+	position: absolute;
+	top: 99px;
+	left: 64px;
+	cursor: pointer;
+}
+.refresh img{
+	width: 28px;
+	height: 28px;
+	
+}
+.refresh:hover{
+	top: 98px;
+}
