@@ -22,6 +22,8 @@ class TestController extends Controller
 
     public function Index(Request $request)
     {
+
+        dd($_COOKIE);
         $my_helper = new MyHelper();
         var_dump(
             $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis', Orders::find(83)->army_receive_time) : 'now'
@@ -60,13 +62,13 @@ class TestController extends Controller
             'product_name' => '蔬菜' . mt_rand(1, 999),
             'product_number' => mt_rand(8, 888),
             'product_unit' => '个',
-            'confirm_time' => '2017-11-1',
-            'platform_receive_time' => '2017-11-6',
+            'confirm_time' => '2017-12-1',
+            'platform_receive_time' => '2017-12-6',
             'supplier_B' => '40',
-            'supplier_A' => '42',
-            'supplier_C' => '41',
+            'supplier_A' => '41',
         );
         $request->merge($arr);
+
 
         /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
@@ -114,6 +116,10 @@ class TestController extends Controller
 //        if($response->Code != 'OK'){
 //            print_r($response->Message);
 //        }
+
+        OrderOffer::where('order_id',108)->delete();
+        Orders::where('order_id', 108)->update(['status' => 1]);
+
 
         return 'test';
     }

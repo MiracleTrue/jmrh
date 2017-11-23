@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Log;
 class Sms extends CommonModel
 {
     /*短信是否可用   true   false*/
-    const SEND_STATUS = false;
+    const SEND_STATUS = true;
 
     /*短信签名_1*/
     const SMS_SIGNATURE_1 = '青岛军民融合生活保障中心';
