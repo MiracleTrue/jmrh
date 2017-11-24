@@ -21,7 +21,7 @@
 5.将Http访问目录设置为,项目根目录下的 /public/index.php
 
 6.crontab -e 添加
-  * * * * php /var/www/jmrh/artisan schedule:run >> /dev/null 2>&1   保存
+  * * * * * php /var/www/jmrh/artisan schedule:run >> /dev/null 2>&1    保存
   crontab -u root -l   查看
 
 7.
