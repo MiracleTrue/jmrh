@@ -74,8 +74,8 @@ class Supplier extends CommonModel
             /*order_info*/
             $item->order_info->status_text = self::orderStatusTransformText($item->order_info->status);
             $item->order_info->create_time = Carbon::createFromTimestamp($item->order_info->create_time)->toDateTimeString();
-            $item->order_info->platform_receive_time = Carbon::createFromTimestamp($item->order_info->platform_receive_time)->toDateTimeString();
-            $item->order_info->army_receive_time = Carbon::createFromTimestamp($item->order_info->army_receive_time)->toDateTimeString();
+            $item->order_info->platform_receive_time = $item->order_info->platform_receive_time ? Carbon::createFromTimestamp($item->order_info->platform_receive_time)->toDateTimeString() : '';
+            $item->order_info->army_receive_time = $item->order_info->army_receive_time ? Carbon::createFromTimestamp($item->order_info->army_receive_time)->toDateTimeString() : '';
             /*user_info*/
             $item->user_info->identity_text = User::identityTransformText($item->user_info->identity);
 
