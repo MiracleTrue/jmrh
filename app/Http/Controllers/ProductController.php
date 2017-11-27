@@ -29,10 +29,14 @@ class ProductController extends Controller
      */
     public function ProductShow($id)
     {
+        /*初始化*/
         $product = new Product();
+        $manage_u = session('ManageUser');
 
         $this->ViewData['product_info'] = $product->getProductInfo($id);
-//        dump($this->ViewData);
+        $this->ViewData['manage_user'] = $manage_u;
+
+        dump($this->ViewData);
         return view('product_show', $this->ViewData);
     }
 

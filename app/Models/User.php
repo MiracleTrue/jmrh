@@ -121,6 +121,28 @@ class User extends CommonModel
     }
 
     /**
+     * 获取所有平台运营员列表 (已转换:身份标识文本,创建时间)
+     * @return mixed
+     */
+    public function getPlatformUserList()
+    {
+        $e_users = new Users();
+
+        /*预加载ORM对象*/
+        $user_list = $e_users->where('users.is_disable', User::NO_DISABLE)->where('users.identity', User::PLATFORM_ADMIN)->get();
+
+        /*数据过滤排版*/
+        $user_list->transform(function ($item)
+        {
+            $item->identity_text = User::identityTransformText($item->identity);
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
+        });
+
+        return $user_list;
+    }
+
+    /**
      * 获取单个用户 (已转换:身份标识文本,创建时间)
      * @param $id
      * @return mixed

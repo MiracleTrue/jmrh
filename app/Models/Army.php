@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Entity\Orders;
+use App\Entity\Users;
 use Illuminate\Support\Carbon;
 
 /**
@@ -82,6 +83,8 @@ class Army extends CommonModel
     public function releaseNeed($arr)
     {
         /*初始化*/
+        $user = new User();
+        $sms = new Sms();
         $e_orders = new Orders();
 
         /*添加*/
@@ -98,6 +101,12 @@ class Army extends CommonModel
         $e_orders->army_id = session('ManageUser')->user_id;
 
         $e_orders->save();
+
+        /*发送短信给所有平台运营员*/
+        $platform_users = $user->getPlatformUserList();
+        $platform_users_numbers_arr = $platform_users->pluck('phone')->all();
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, implode(',',$platform_users_numbers_arr));
+
         User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
         return true;
     }

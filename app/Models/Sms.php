@@ -27,6 +27,9 @@ class Sms extends CommonModel
     /*短信签名_1*/
     const SMS_SIGNATURE_1 = '青岛军民融合生活保障中心';
 
+    /*军方发布提醒的模板Code*/
+    const ARMY_RELEASE_CODE = 'SMS_113461381';
+
     /*选择供应商的模板Code*/
     const SELECT_SUPPLIER_CODE = 'SMS_109410246';
 
