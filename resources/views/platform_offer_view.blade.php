@@ -159,12 +159,12 @@ var EndTimeMsg = {{$count_down}};
 		{
 		return a - b
 		}
-		console.log(arr.sort(sortNumber));
+		
 		
 			var small=arr.sort(sortNumber)[0];
 			var midd=arr.sort(sortNumber)[1];
 			var mast=arr.sort(sortNumber)[2];
-			console.log(small);
+			
 			for(var i=0;i<$(".price_color").length;i++ ){
 				if($(".price_color").eq(i).attr("data-price")==0){
 						$(".price_color").eq(i).css("color","#dddddd");
@@ -187,13 +187,12 @@ var EndTimeMsg = {{$count_down}};
 			
 			}
 			if(qteSub==false){
-					console.log(qteSub)
+					
 					$('.qte-ope').hide();
 		}
 			
 			
-//			console.log($(".price_color").eq(i).attr("data-price") !=0)
-//			console.log($(".price_color").eq(i).attr("data-price") !=0)
+
 
 			var c = small == 0 ? midd == 0 ? mast == 0 ? 0 : mast : midd : small;		
 			for(var i=0;i<$(".op_price").length;i++ ){

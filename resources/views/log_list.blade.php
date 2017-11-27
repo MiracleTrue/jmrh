@@ -4,7 +4,7 @@
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/css/user-management.css')}}">
-    	<link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
 <style>
 	
 </style>
@@ -78,7 +78,7 @@ $(".refresh").on("click",function(){
 	    }
 	    
 	var url="{{url('log/list')}}"+"/"+mlystate_val+"/"+cre_time;
-	console.log(url)
+	
 	location.replace(url);
 	})
 </script>

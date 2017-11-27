@@ -60,13 +60,17 @@ i{
 	height: 40px;
 	line-height: 40px;
 }
-.detalsdata p:nth-child(2){
+.productshow_p1{
 	font-size: 16px;
 	height: 35px;
 	line-height: 35px;
 	
 }
-.detalsdata p:nth-child(3){
+.productshow_price{
+	font-size: 16px;
+}
+.productshow_pspan1,.productshow_pspan2{
+	display: inline-block;
 	font-size: 14px;
 	height: 32px;
 	width: 86px;
@@ -79,7 +83,12 @@ i{
 	margin-bottom: 25px;
 	cursor: auto;
 }
-.detalsdata p:nth-child(4){
+.productshow_pspan2{
+	background: #0E99DC;
+	margin-left: 20px;
+	cursor: pointer;
+}
+.productshow_p3{
 	font-size: 16px;
 	
 }

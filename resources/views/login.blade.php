@@ -66,9 +66,8 @@
 		}else{
 		    $("#remember_password").attr("checked",true)
 		}
-		
-		
-		
+})
+	
       /**
        * 登录表单验证与异步提交
        */
@@ -110,7 +109,7 @@
 		         $("input[type='submit']").attr("disabled","true");
 		     },
             success: function (res) {
-            	console.log(res);
+            
               if (res.code == 0) { 
               	
                 window.location.replace("{{url('/')}}");
@@ -132,11 +131,6 @@
       
       
       
-      
-      
-
-
-})
   
   </script>
 @endsection

@@ -83,7 +83,7 @@ $(".refresh").on("click",function(){
     				_token:'{{csrf_token()}}'
 				},
 				success:function(res){
-					console.log(res)
+					
 				}
 			});
 		}else{
@@ -96,7 +96,7 @@ $(".refresh").on("click",function(){
     				_token:'{{csrf_token()}}'
 				},
 				success:function(res){
-					console.log(res)
+				
 				}
 			});
 		}
@@ -118,7 +118,7 @@ $(".refresh").on("click",function(){
 	    				_token:'{{csrf_token()}}'
 	    			},
 	    			success:function(res){
-	    				console.log(res);
+	    				
 	    				var resData=JSON.parse(res);
 	    				if(resData.code==0){
 	    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){

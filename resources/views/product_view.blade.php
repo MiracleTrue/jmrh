@@ -63,6 +63,13 @@
 						<input type="text" name="sort" id="sort" value="{{$product_info['sort'] or ''}}" />
 					</p>
 				</div>
+					<div class="productAdd_div1">
+					<p style="text-indent: 30px;">
+						<span>价格</span>
+						<input type="" name="product_price" id="product_price" value="" />
+					</p>
+					
+				</div>
 				<script id="container" name="product_content" type="text/plain">
          	   		
         </script>
@@ -112,9 +119,13 @@
 	          product_content:{
 	          	 required: true
 	          },
-	            sort:{
+	           sort:{
 	           required: true,
 	           isIntGtZero:true
+	          },
+	           product_price:{
+	          	 required: true,
+	          	  isIntGtZero:true
 	          }
 	        },
 	         messages: {
@@ -128,6 +139,10 @@
 		      },
 		      sort:{
 		      	required: "请输入排序",
+	        	isIntGtZero:"请输入大于0的整数"
+		      },
+		      product_price:{
+		      	required: "请输入价格",
 	        	isIntGtZero:"请输入大于0的整数"
 		      }
 		    },
@@ -146,7 +161,7 @@
 		            	
 		            },
 		            success: function (res) {
-		             console.log(res);
+		     
 		             if(res.code==0){
 		            	layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 		             	   parent.location.reload();	 
@@ -197,7 +212,7 @@
 		            	
 		            },
 		            success: function (res) {
-		             console.log(res);
+		        
 		             if(res.code==0){
 		             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 		             	   parent.location.reload();	 

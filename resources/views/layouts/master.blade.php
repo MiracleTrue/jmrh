@@ -16,11 +16,10 @@
     	$(function(){
     		$("tr").last().css("border-bottom","1px solid #f5f5f5")
     		
-    	 if(navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion .split(";")[1].replace(/[ ]/g,"")=="MSIE8.0") 
-		{ 
+    	
 	
 		$("table tr:nth-child(2n)").css("background","#ffffff")
-		} 
+		
     	})
     	
     	
@@ -31,11 +30,11 @@
    
     <!--[if lt IE 9]>
 
-  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-
-  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-
-<![endif]-->
+	  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	
+	  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	
+	<![endif]-->
 @section('MyCss')
     @show
 </head>

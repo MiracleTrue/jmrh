@@ -24,7 +24,7 @@
 <script type="text/javascript">
 	var that;
 		var myDate = new Date();
-		console.log(myDate.getFullYear())
+	
 		$(".lu_year").text(myDate.getFullYear());
 		$(".lu_month").text(myDate.getMonth()+1)
 		$(".lu_day").text(myDate.getDate())
@@ -32,14 +32,14 @@
 	
 	
     $(document).ready(function() {
-        console.log($(document).height() - 42);
+      
         $(".home-aside").height($(document).height());
         var iheight = $(document).height() - 42;
         $("#Info1").height(iheight)
 
 
 	$(".sidebar-menu li").not($(".password")).on("click",function(){
-		console.log($(this).find('a').attr('href'));
+		
 		$("#Info1").attr("src",$(this).find('a').attr('href'));
 		return false;
 	})
@@ -47,7 +47,7 @@
 	
 	
 	$(".headerdiv1 a").on("click",function(){
-		console.log($(this).attr("href"));
+		
 		$("#Info1").attr("src",$(this).attr("href"));
 		return false;
 	})
@@ -59,14 +59,14 @@
 		$(this).find("a").css("color","#fff");
 		$(this).siblings().find("a").css("color","#000000");
 		 that= $(this);
-		/*console.log(that)*/
+		
 	})
 	$(".sidebar-menu li").hover(function(){
 		
 		$(this).not(that).addClass("hoverli");
 		$(this).not(that).find("a").addClass("hovera");
 	
-	/*	console.log(that)*/
+	
 		
 	},function(){
 		  $(this).removeClass("hoverli");

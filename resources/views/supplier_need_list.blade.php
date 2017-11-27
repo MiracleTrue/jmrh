@@ -129,7 +129,7 @@ $(".refresh").on("click",function(){
 		  			async:true,
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
-		  				console.log(res)
+		  			
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
 		             	   	location.reload();

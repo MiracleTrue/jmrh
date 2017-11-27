@@ -110,7 +110,7 @@ $(".refresh").on("click",function(){
 	    }
 	    
 	var url="{{url('army/need/list')}}"+"/"+mlystate_val+"/"+cre_time;
-	console.log(url)
+	
 	location.replace(url);
 	})
 
@@ -141,7 +141,7 @@ $(".refresh").on("click",function(){
 	    				_token:'{{csrf_token()}}'
 	    			},
 	    			success:function(res){
-	    				console.log(res);
+	    				
 	    				
 	    				var resData=JSON.parse(res);
 	    				if(resData.code==0){
@@ -175,7 +175,7 @@ $(".refresh").on("click",function(){
 	    				_token:'{{csrf_token()}}'
 	    			},
 	    			success:function(res){
-	    				console.log(res);
+	    				
 	    				var resData=JSON.parse(res);
 	    				if(resData.code==0){
 	    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){

@@ -64,7 +64,7 @@
 	    		var bcolor=spanColor[i%4];
 	    		var fNum=i+1;
 	    		$(".floor").append('<a href="#floor'+i+'" style="text-decoration:none;margin-top:6px" ><span class="floor_span" style="background:'+bcolor+'">F'+fNum+'</span></a>')
-	    		//console.log(bcolor)
+	    		
 	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>')
 	    		
 	    	}
@@ -76,7 +76,7 @@
     
     	function ProductShow(elm,product_id){
     		var url="{{url('product/show')}}"+"/"+product_id
-    		console.log(url)
+    		
     		location.replace(url)
     	}
     </script>

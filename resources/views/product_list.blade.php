@@ -91,7 +91,7 @@ $(".refresh").on("click",function(){
 						maxmin: true,
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '650px'],
+						area: ['920px', '700px'],
 						content: '{{url('product/view')}}'+'/'+product_id
 					});
 		
@@ -112,7 +112,7 @@ $(".refresh").on("click",function(){
 		    			},
 		    			success:function(res){
 		    				
-		    				console.log(res);
+		    				
 		    				
 		    				var resData=JSON.parse(res);
 		    				if(resData.code==0){
@@ -145,7 +145,7 @@ $(".refresh").on("click",function(){
 						maxmin: true,
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '650px'],
+						area: ['920px', '700px'],
 						content: '{{url('product/view')}}'
 					});
 				});

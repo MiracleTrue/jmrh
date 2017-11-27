@@ -125,7 +125,7 @@ $(".refresh").on("click",function(){
     		success:function(res){
     			
     			var resData=JSON.parse(res);
-    			console.log(resData);
+    		
 				
     			if(!resData.code){
     				$(elm).attr("onclick","stopuser(this,"+user_id+")");
@@ -161,7 +161,7 @@ $(".refresh").on("click",function(){
     		success:function(res){
     			
     			var resData=JSON.parse(res);
-    			console.log(resData);
+    			
     			if(!resData.code){
     				$(elm).attr("onclick","startuser(this,"+user_id+")");
     				$(elm).parent().parent().children().eq(5).text("冻结");

@@ -65,11 +65,12 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 6%;"><span>序号</span></th>
-						<th style="width: 10%;"><span>军方名称</span></th>
+						<th style="width: 8%;"><span>军方名称</span></th>
 						<th style="width: 15%;"><span>订单号</span></th>
 						<th style="width: 7%;"><span>品名</span></th>
 						<th style="width: 12%;"><span>军方到货时间</span></th>
 						<th style="width: 12%;"><span style="">平台到货时间</span></th>
+						<th style="width: 6%;"><span style="">价格</span></th>
 						<th style="width: 12%;"><span style="">数量</span></th>
 						<th style="width: 12%;"><span style="">状态</span></th>
 						<th style=""><span style="">操作</span></th>
@@ -89,6 +90,7 @@
 						<td>{{$item->product_name}}</td>
 						<td>{{$item->army_receive_time}}</td>
 						<td>{{$item->platform_receive_time}}</td>
+							<td>{{$item->platform_receive_time}}</td>
 						<td>{{$item->product_number}}{{$item->product_unit}}</td>
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
@@ -198,7 +200,7 @@ $(".refresh").on("click",function(){
 		  			async:true,
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
-		  				console.log(res)
+		  				
 		            if(res.code==0){
 		             	   layer.msg(res.messages, {icon: 1, time: 1000},function(){
 		             	  
