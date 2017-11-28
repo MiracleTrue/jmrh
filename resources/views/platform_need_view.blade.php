@@ -133,7 +133,8 @@
 				 		
 				 	</select>
 				</p>
-				
+	<input type="hidden" name="product_price" id="product_price" value="0" />
+
 			</div>
 			<div class="ade-ope">
 				

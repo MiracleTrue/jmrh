@@ -58,7 +58,7 @@
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['925px' , '600px'],
+		      area : ['965px' , '600px'],
 		      content: '{{url('platform/need/view')}}'
 		    });
 		}else if(identity == '4'){
@@ -68,7 +68,7 @@
 		      maxmin: false,
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['919px' , '500px'],
+		      area : ['965px' , '550px'],
 		      content: '{{url('army/need/view')}}'
 		    });
 		}
