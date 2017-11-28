@@ -67,7 +67,7 @@
                 <td class="blueWord">
                 	@if($item['status'] == '0')
                                <a class="mly-caozuo" onclick="NeedEdit(this,'{{$item['order_id']}}')">修改</a>
-                               <a class="mly-caozuo" onclick="NeedDelete(this,'{{$item['order_id']}}')">删除</a> 
+                               <a style="margin-left: 20px;" class="mly-caozuo" onclick="NeedDelete(this,'{{$item['order_id']}}')">删除</a> 
 	                @elseif($item['status'] == '1000')
 	                   <a class="mly-caozuo" onclick="ConfirmReceive(this,'{{$item['order_id']}}')">已到货</a>
                 	@endif

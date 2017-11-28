@@ -49,7 +49,7 @@
 						<td>{{$item['product_name']}}</td>
 						<td><img src="{{\App\Models\MyFile::makeUrl($item['product_thumb'])}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/></td>
 						<td>{{$item['product_category']['category_name']}}</td>
-						<td>{{$item['product_price']}}</td>
+						<td>{{$item['product_price']}}元</td>
 						<td>{{$item['sort']}}</td>
 
 						<td class="blueWord">
