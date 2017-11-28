@@ -90,7 +90,11 @@
 						<td>{{$item->product_name}}</td>
 						<td>{{$item->army_receive_time}}</td>
 						<td>{{$item->platform_receive_time}}</td>
-						<td>{{$item->product_price}}元</td>
+						@if($item->product_price==0)
+							<td></td>
+						@else
+							<td>{{$item->product_price}}元</td>
+						@endif
 						<td>{{$item->product_number}}{{$item->product_unit}}</td>
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
