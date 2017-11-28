@@ -282,9 +282,9 @@ class ProductController extends Controller
         $this->ViewData['product_list'] = array();
         $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
-        if($category_id > 0)
+        if ($category_id > 0)
         {
-            $this->ViewData['product_list'] = $product->getProductList([['category_id',$category_id]]);
+            $this->ViewData['product_list'] = $product->getProductList([['category_id', $category_id]]);
         }
         else
         {
@@ -332,6 +332,7 @@ class ProductController extends Controller
             'product_name' => 'required',
             'sort' => 'required|integer',
             'product_image' => 'required|file|image',
+            'product_price' => 'required|numeric',
             'category_id' => [
                 'required',
                 'integer',
@@ -381,6 +382,7 @@ class ProductController extends Controller
                 }),
             ],
             'product_name' => 'required',
+            'product_price' => 'required|numeric',
             'sort' => 'required|integer',
             'product_content' => 'string',
             'category_id' => [
