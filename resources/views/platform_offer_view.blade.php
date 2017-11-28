@@ -217,7 +217,7 @@ var EndTimeMsg = {{$count_down}};
 		            	
 		            },
 		            success: function (res) {
-		            	console.log(res)
+		            	<!--console.log(res)-->
 		            if(res.code==0){
 		             layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 		             	   parent.location.reload();	 
@@ -262,7 +262,7 @@ var EndTimeMsg = {{$count_down}};
             if(theTime2 > 0) {
                 result = ""+parseInt(theTime2)+"小时"+result;
             }
-         console.log(result)
+        <!-- console.log(result)-->
             return result;
         }
  

@@ -37,14 +37,15 @@
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
 							@if($manage_user['identity'] == '1')
-							<th style="width: 10%;"><span>军方名称</span></th>
+							<th style="width: 8%;"><span>军方名称</span></th>
 							@endif
 						<th style="width: 10%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
 						<th style="width: 8%;"><span>下单时间</span></th>
 						<th style="width: 8%;"><span>到货时间</span></th>
-						<th style="width: 14%;"><span style="">数量</span></th>
-						<th style="width: 14%;"><span style="">状态</span></th>
+						<!--<th style="width: 8%;"><span style="">价格</span></th>-->
+						<th style="width: 12%;"><span style="">数量</span></th>
+						<th style="width: 13%;"><span style="">状态</span></th>
 						<th ><span style="">操作</span></th>
 					</tr>
 					
@@ -60,6 +61,7 @@
                 <td>{{$item['product_name']}}</td>
                 <td>{{$item['create_time']}}</td>
                 <td>{{$item['army_receive_time']}}</td>
+                <!-- <td>{{$item['product_price']}}元</td>-->
                 <td>{{$item['product_number']}}{{$item['product_unit']}}</td>
                 <td>{{$item['status_text']}}</td>
                 <td class="blueWord">
@@ -124,7 +126,7 @@ $(".refresh").on("click",function(){
             maxmin: false,
             fixed :false,
             shadeClose: true, //点击遮罩关闭层
-            area: ['920px' , '500px'],
+            area: ['965px' , '550px'],
             content: '{{url('army/need/view')}}'+'/'+order_id
         });
 		
@@ -198,7 +200,7 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['919px' , '500px'],
+		      area : ['965px' , '550px'],
 		      content: '{{url('army/need/view')}}'
 		    });
 		  });

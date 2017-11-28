@@ -90,7 +90,7 @@
 						<td>{{$item->product_name}}</td>
 						<td>{{$item->army_receive_time}}</td>
 						<td>{{$item->platform_receive_time}}</td>
-							<td>{{$item->platform_receive_time}}</td>
+						<td>{{$item->product_price}}元</td>
 						<td>{{$item->product_number}}{{$item->product_unit}}</td>
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
@@ -158,7 +158,7 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['925px' , '600px'],
+		      area : ['965px' , '600px'],
 		      content: '{{url('platform/need/view')}}'
 		    });
 		  });

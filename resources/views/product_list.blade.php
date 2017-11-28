@@ -38,6 +38,7 @@
 						<th style="width: 20%;"><span>商品名称</span></th>
 						<th style="width: 17%;"><span>商品图片</span></th>
 						<th style="width: 16%;"><span>所属分类</span></th>
+						<th style="width: 16%;"><span>价格</span></th>
 						<th style="width: 13%;"><span>排序</span></th>
 
 						<th><span style="">操作</span></th>
@@ -48,6 +49,7 @@
 						<td>{{$item['product_name']}}</td>
 						<td><img src="{{\App\Models\MyFile::makeUrl($item['product_thumb'])}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/></td>
 						<td>{{$item['product_category']['category_name']}}</td>
+						<td>{{$item['product_price']}}</td>
 						<td>{{$item['sort']}}</td>
 
 						<td class="blueWord">

@@ -2,6 +2,7 @@
 @section('MyCss')
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/library/editable-select/jquery.editable-select.min.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/css/choosename.css')}}">
 
 <style type="text/css">
 
@@ -59,6 +60,10 @@
 input{
 border:1px solid #ccc ;	
 }
+
+
+
+
 </style>
 @endsection
 @section('content')
@@ -109,6 +114,7 @@ border:1px solid #ccc ;
 					</p>
 				</div>
 				<input type="hidden" name="order_id" id="order_id" value="{{$order_info['order_id'] or ''}}" />
+				<input type="hidden" name="product_price" id="product_price" value="0" />
 			<div class="ary-ope" style="">
 				<input type="submit" class="ary-submit" name="ary-submit" id="ary-submit" value="提交" />
 				<input type="reset" class="ary-reset" name="ary-reset" id="ary-reset" value="重置" />
@@ -307,16 +313,84 @@ $(".es-input").val("{{$order_info['product_unit'] or ''}}");
       /*选择品名*/
      $(".moreName").on("click",function(){
      	layer.open({
-		  type: 1,
-		  skin: 'layui-layer-rim', //加上边框
-		  area:"auto", //宽高
-		  content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">内容<br>内容</div>'
+		   fixed :false,
+		  title: false,
+		  area:['919px' , '500px'], //宽高
+		  content: '<div class="box"><div class="head">添加品名</div><div class="className"><span category_id="0">全部</span>	 @foreach($product_category as $item)<span category_id="{{$item['category_id']}}">{{$item['category_name']}}</span>@endforeach</div><div class="productinfo"><div class="imgposition"><img src="{{asset('webStatic/images/moreclass.png')}}"/></div><ul class="nameul"></ul></div></div>'
+		  ,success:function(){
+		  	$(".className span").eq(0).addClass("actived");
+		 	$(".nameul").eq(0).show().siblings().not(".imgposition").hide();
+			$(".className span").on("click",function(){
+				$(this).addClass("actived").siblings().removeClass("actived");
+				var getdata=$(this).attr("data");
+			/*	console.log(getdata)*/
+					$(".nameul").eq(getdata).show().siblings().not(".imgposition").hide();
+					
+				getprocuct($(this),$(this).attr("category_id"));
+			})
+			var heightauto=true;
+				
+			var productname;
+			var productprice;
+			$(".imgposition").on("click",function(){
+			
+				if(heightauto){
+					heightauto=false;
+				}else{
+					heightauto=true;
+				}	
+				if(heightauto){
+					$(".className").css("height","55px");
+				}else{
+					$(".className").css("height","auto")
+				}
+			})
+		
+			 getprocuct("elm",0);
+				/*根据分类获取品名*/
+				function getprocuct(elm,id){
+					$.ajax({
+	    			type:"post",
+	    			url:"{{url('product/ajax/list')}}",
+	    			async:true,
+	    			data:{
+	    				category_id:id,
+	    				_token:'{{csrf_token()}}'
+	    			},
+	    			success:function(res){
+	    				var resData=JSON.parse(res)
+	    				/*console.log(resData);*/
+	    				var myData=resData.data;
+	    				/*console.log(myData);*/
+	    				$(".nameul").empty();
+	    				for(var i in myData){
+	    					$(".nameul").append('<li pricedata="'+myData[i].product_price+'"><img src="/uploads/'+myData[i].product_thumb+'"  onerror="this.src=`{{asset('webStatic/images/noimg.png')}}`"/><span id="">'+myData[i].product_name+'</span></li>')
+	    				}
+	    				
+	    					$(".productinfo li").on("click",function(){
+	    						$(this).css("border","1px solid #fe8d01").siblings().css("border","1px solid #dddddd")
+								 productname=$(this).find("span").text();
+								 productprice=$(this).attr("pricedata");
+							/*	 console.log(productname)*/
+							})
+		    				$(".layui-layer-btn0").on("click",function(){
+		    					$("#product_name").val(productname);
+		    					$("#product_price").val(productprice);
+		    				})
+	    			},complete:function(){
+	    				
+	    			}
+	    		});
+				}
+			
+		  }
 		});
      })
       
       
       
     });
+    	
   </script>
 @endsection
 

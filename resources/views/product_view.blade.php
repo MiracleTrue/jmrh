@@ -66,7 +66,7 @@
 					<div class="productAdd_div1">
 					<p style="text-indent: 30px;">
 						<span>价格</span>
-						<input type="" name="product_price" id="product_price" value="" />
+						<input type="" name="product_price" id="product_price" value="{{$product_info['product_price'] or ''}}" onkeyup="test(this.value)"/>
 					</p>
 					
 				</div>
@@ -94,6 +94,44 @@
 <script src="{{asset('webStatic/library/ueditor/1.4.3/ueditor.config.js')}}" type="text/javascript" charset="utf-8"></script>
 <script src="{{asset('webStatic/library/ueditor/1.4.3/ueditor.all.min.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
+	//自定义validate验证输入的数字小数点位数不能大于两位
+        jQuery.validator.addMethod("minNumber",function(value, element){
+            var returnVal = true;
+            inputZ=value;
+            var ArrMen= inputZ.split(".");    //截取字符串
+            if(ArrMen.length==2){
+                if(ArrMen[1].length>2){    //判断小数点后面的字符串长度
+                    returnVal = false;
+                    return false;
+                }
+            }
+            return returnVal;
+        },"小数点后最多为两位");         //验证错误信息
+
+	
+		//单价输入保留4位小数
+		function test(str){
+		    var pos;
+		    var fst
+		    var lst;
+		    if (str == "") return;
+		    pos = str.indexOf(".");
+		    if (pos != -1){
+		        fst = str.substring(0,pos);
+		        lst = str.substring(pos+1,pos.length);
+		        if (lst.length > 2){             
+		             var sub = lst.substring(0,2);
+		          document.getElementById("product_price").value=fst+"."+sub;
+		        }
+		    }    
+		}
+	
+	
+	
+	
+	
+	
+	
 	//获取上传图片名称
 	var imgName;
 	$("#product_image").change(function(){
@@ -125,7 +163,8 @@
 	          },
 	           product_price:{
 	          	 required: true,
-	          	  isIntGtZero:true
+	          	  isIntGtZero:true,
+	          	  number: true
 	          }
 	        },
 	         messages: {
@@ -143,7 +182,8 @@
 		      },
 		      product_price:{
 		      	required: "请输入价格",
-	        	isIntGtZero:"请输入大于0的整数"
+	        	isIntGtZero:"请输入大于0的整数",
+	        	number:"请输入一个数字"
 		      }
 		    },
 		    errorLabelContainer:$(".error"),

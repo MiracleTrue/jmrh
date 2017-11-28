@@ -114,7 +114,7 @@
 		}); 
 		
 		
-		//单价输入保留2位小数
+		//单价输入保留4位小数
 		function test(str){
 		    var pos;
 		    var fst
