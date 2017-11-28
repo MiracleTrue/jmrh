@@ -303,6 +303,19 @@ $(".es-input").val("{{$order_info['product_unit'] or ''}}");
         });
       }
       
+      
+      /*选择品名*/
+     $(".moreName").on("click",function(){
+     	layer.open({
+		  type: 1,
+		  skin: 'layui-layer-rim', //加上边框
+		  area:"auto", //宽高
+		  content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">内容<br>内容</div>'
+		});
+     })
+      
+      
+      
     });
   </script>
 @endsection

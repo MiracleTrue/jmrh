@@ -188,12 +188,20 @@
 	            sort:{
 	           required: true,
 	           isIntGtZero:true
+	          },
+	            product_price:{
+	          	 required: true,
+	          	  isIntGtZero:true
 	          }
 	        },
 	         messages: {
 		      product_name: "请输入商品名称",
 		      sort:{
 		      	required: "请输入排序",
+	        	isIntGtZero:"请输入大于0的整数"
+		      },
+		       product_price:{
+		      	required: "请输入价格",
 	        	isIntGtZero:"请输入大于0的整数"
 		      }
 		    },
