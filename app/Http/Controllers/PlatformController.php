@@ -107,8 +107,9 @@ class PlatformController extends Controller
         $product = new Product();
         $this->ViewData['supplier_list'] = $user->getSupplierList();
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
+        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('platform_need_view', $this->ViewData);
     }
 
