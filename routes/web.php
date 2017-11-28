@@ -28,6 +28,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::get('product/show/{id}', 'ProductController@ProductShow')->name('商品详情');/*商品详情页面 | product_show */
         Route::get('password/original/view', 'UserController@PasswordOriginalView')->name('查看修改密码');/*查看修改密码 | password_original */
         Route::post('password/original/edit', 'UserController@PasswordOriginalEdit')->name('修改密码');/*修改密码*/
+        Route::post('product/ajax/list', 'ProductController@ProductList')->name('获取商品列表');/*获取商品列表*/
     });
 
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()

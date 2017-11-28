@@ -94,7 +94,7 @@ class ArmyController extends Controller
         $product = new Product();
         $this->ViewData['order_info'] = array();
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
-        $this->ViewData['product_list'] = $product->getProductList(array(), array(['products.sort', 'desc']), false);
+        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
         /*是否修改需求*/
         if ($id > 0)

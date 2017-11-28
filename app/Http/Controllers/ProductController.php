@@ -317,6 +317,53 @@ class ProductController extends Controller
     }
 
     /**
+     * Ajax 获取全部或单个分类商品列表
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductAjaxList(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+        /*验证规则*/
+        $rules = [
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::exists('product_category')->where(function ($query) use ($request)
+                {
+                    $query->where('category_id', $request->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE);
+                }),
+            ],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() || $request->input('category_id') == 0)
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '获取商品列表成功';
+            if ($request->input('category_id') > 0)
+            {
+                $m3result->data = $product->getProductList(array(['category_id', $request->input('category_id')]), array(['products.sort', 'desc']), false);
+            }
+            else
+            {
+                $m3result->data = $product->getProductList(array(), array(['products.sort', 'desc']), false);
+            }
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
      * Ajax 商品新增 请求处理
      * @param Request $request
      * @return \App\Tools\json
