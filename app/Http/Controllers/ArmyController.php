@@ -125,7 +125,7 @@ class ArmyController extends Controller
             }
         }
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('army_need_view', $this->ViewData);
     }
 

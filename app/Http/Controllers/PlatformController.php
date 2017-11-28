@@ -92,7 +92,7 @@ class PlatformController extends Controller
         $this->ViewData['order_list'] = $platform->getOrderList($where);
         $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_need_list', $this->ViewData);
     }
 
@@ -109,7 +109,7 @@ class PlatformController extends Controller
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
         $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_need_view', $this->ViewData);
     }
 

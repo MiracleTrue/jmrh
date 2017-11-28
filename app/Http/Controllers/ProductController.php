@@ -36,7 +36,7 @@ class ProductController extends Controller
         $this->ViewData['product_info'] = $product->getProductInfo($id);
         $this->ViewData['manage_user'] = $manage_u;
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_show', $this->ViewData);
     }
 
