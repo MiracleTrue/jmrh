@@ -107,7 +107,7 @@ class Army extends CommonModel
         /*发送短信给所有平台运营员*/
         $platform_users = $user->getPlatformUserList();
         $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, implode(',', $platform_users_numbers_str));
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $platform_users_numbers_str);
         //测试log
         Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
 
