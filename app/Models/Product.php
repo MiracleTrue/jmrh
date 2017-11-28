@@ -66,9 +66,10 @@ class Product extends CommonModel
      * 获取所有商品列表 (已关联: 分类) (如有where 则加入新的sql条件) "分页" | 默认排序:排序值
      * @param array $where
      * @param array $orderBy
+     * @param bool $is_paginate & 是否需要分页
      * @return mixed
      */
-    public function getProductList($where = array(), $orderBy = array(['products.sort', 'desc']))
+    public function getProductList($where = array(), $orderBy = array(['products.sort', 'desc']), $is_paginate = true)
     {
         /*初始化*/
         $e_products = new Products();
@@ -84,7 +85,14 @@ class Product extends CommonModel
         {
             $e_products->orderBy($value[0], $value[1]);
         }
-        $product_list = $e_products->paginate($_COOKIE['PaginationSize']);
+        if ($is_paginate === true)
+        {
+            $product_list = $e_products->paginate($_COOKIE['PaginationSize']);
+        }
+        else
+        {
+            $product_list = $e_products->get();
+        }
 
         /*数据过滤*/
         $product_list->transform(function ($item)

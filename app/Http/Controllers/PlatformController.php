@@ -92,7 +92,7 @@ class PlatformController extends Controller
         $this->ViewData['order_list'] = $platform->getOrderList($where);
         $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('platform_need_list', $this->ViewData);
     }
 
@@ -406,6 +406,7 @@ class PlatformController extends Controller
         $rules = [
             'product_name' => 'required',
             'product_number' => 'required|integer',
+            'product_price' => 'numeric',
             'product_unit' => 'required',
             'platform_receive_time' => 'required|date|after:now',
             'confirm_time' => 'required|date|before_or_equal:' . $request->input('platform_receive_time')

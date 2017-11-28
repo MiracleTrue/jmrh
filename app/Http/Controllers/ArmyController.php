@@ -94,6 +94,7 @@ class ArmyController extends Controller
         $product = new Product();
         $this->ViewData['order_info'] = array();
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
+        $this->ViewData['product_list'] = $product->getProductList(array(), array(['products.sort', 'desc']), false);
 
         /*是否修改需求*/
         if ($id > 0)
@@ -124,7 +125,7 @@ class ArmyController extends Controller
             }
         }
 
-//        dump($this->ViewData);
+        dump($this->ViewData);
         return view('army_need_view', $this->ViewData);
     }
 
@@ -144,6 +145,7 @@ class ArmyController extends Controller
             'product_name' => 'required',
             'product_number' => 'required|integer',
             'product_unit' => 'required',
+            'product_price' => 'numeric',
             'army_receive_time' => 'required|date|after:now'
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -192,6 +194,7 @@ class ArmyController extends Controller
             'product_name' => 'required',
             'product_number' => 'required|integer',
             'product_unit' => 'required',
+            'product_price' => 'numeric',
             'army_receive_time' => 'required|date|after:now'
         ];
         $validator = Validator::make($request->all(), $rules);

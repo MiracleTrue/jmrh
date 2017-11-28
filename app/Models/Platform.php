@@ -228,6 +228,7 @@ class Platform extends CommonModel
         $e_orders->order_sn = $this->makeOrderSn();
         $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
+        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
         $e_orders->platform_receive_time = !empty($arr['platform_receive_time']) ? strtotime($arr['platform_receive_time']) : 0;/*2017-10-18 08:45:12*/;
         $e_orders->army_receive_time = 0;

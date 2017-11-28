@@ -11,6 +11,7 @@ namespace App\Models;
 use App\Entity\Orders;
 use App\Entity\Users;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 /**
  * 军方相关模型
@@ -92,6 +93,7 @@ class Army extends CommonModel
         $e_orders->status = $this::ORDER_AWAIT_ALLOCATION;
         $e_orders->order_sn = $this->makeOrderSn();
         $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
+        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
         $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
         $e_orders->platform_receive_time = 0;
@@ -104,8 +106,11 @@ class Army extends CommonModel
 
         /*发送短信给所有平台运营员*/
         $platform_users = $user->getPlatformUserList();
-        $platform_users_numbers_arr = $platform_users->pluck('phone')->all();
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, implode(',',$platform_users_numbers_arr));
+        $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, implode(',', $platform_users_numbers_str));
+        //测试log
+        Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
+
 
         User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
         return true;
@@ -126,6 +131,7 @@ class Army extends CommonModel
 
         /*修改*/
         $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
+        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
         $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
