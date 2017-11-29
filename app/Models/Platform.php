@@ -48,7 +48,7 @@ class Platform extends CommonModel
         /*数据过滤*/
         $order_list->transform(function ($item)
         {
-            if(!empty($item->ho_users))
+            if (!empty($item->ho_users))
             {
                 $item->army_info = clone $item->ho_users;
             }
@@ -77,7 +77,7 @@ class Platform extends CommonModel
             ->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
 
         /*数据过滤*/
-        $e_orders->offer_info = $e_orders->hm_order_offer;/*关联报价信息*/
+        $e_orders->offer_info = $e_orders->hm_order_offer()->where('create_time', '>=', $e_orders->create_time)->get();/*关联报价信息*/
         if ($e_orders->offer_info->isNotEmpty())/*关联用户信息*/
         {
             $e_orders->offer_info->transform(function ($item)
@@ -126,7 +126,7 @@ class Platform extends CommonModel
     }
 
     /**
-     * 分配军方需求
+     * 分配军方或平台需求到供应商
      * @param $arr
      * @param $supplier_arr
      * @return bool
@@ -145,7 +145,7 @@ class Platform extends CommonModel
             DB::transaction(function () use ($arr, $supplier_arr)
             {
                 /*初始化*/
-                $e_orders = Orders::where('order_id', $arr['order_id'])->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                $e_orders = Orders::where('order_id', $arr['order_id'])->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])->where('is_delete', CommonModel::ORDER_NO_DELETE)
                     ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->lockForUpdate()->first();
                 if ($e_orders == false)
                 {
@@ -154,6 +154,7 @@ class Platform extends CommonModel
                 /*更新*/
                 $e_orders->status = $this::ORDER_ALLOCATION_SUPPLIER;/*已分配*/
                 $e_orders->platform_receive_time = !empty($arr['platform_receive_time']) ? strtotime($arr['platform_receive_time']) : 0;/*2017-10-18 08:45:12*/;
+                $e_orders->create_time = Carbon::now()->timestamp;/*更新下单时间*/
                 $e_orders->save();
                 foreach ($supplier_arr as $item)
                 {

@@ -404,6 +404,11 @@ class ProductController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['product'] = $product->messages();
+            if ($validator->errors()->has('product_image'))
+            {
+                $m3result->code = 2;
+                $m3result->messages = '图片格式不正确';
+            }
         }
 
         return $m3result->toJson();
@@ -462,7 +467,7 @@ class ProductController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['product'] = $product->messages();
-            if($validator->errors()->has('product_image'))
+            if ($validator->errors()->has('product_image'))
             {
                 $m3result->code = 2;
                 $m3result->messages = '图片格式不正确';

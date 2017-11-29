@@ -165,42 +165,59 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
                 }),
             ],
-            'platform_receive_time' => 'required|date|before:' . date('YmdHis', Orders::find($request->input('order_id'))->army_receive_time),
-            'confirm_time' => 'required|date|before_or_equal:' . $request->input('platform_receive_time'),
+            'platform_receive_time' => 'required',
+            'confirm_time' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
+        $order_info = Orders::find($request->input('order_id'));
+
+        /*平台订单 平台到货时间 增加规则*/
+        $validator->sometimes('platform_receive_time', ['date', 'after:now'], function ($input) use ($order_info)
+        {
+            return $order_info->type === Platform::ORDER_TYPE_PLATFORM;
+        });
+
+        /*军方订单 平台到货时间 增加规则*/
+        $validator->sometimes('platform_receive_time', ['date', 'after:now', 'before:' . date('YmdHis', $order_info->army_receive_time)], function ($input) use ($order_info)
+        {
+            return $order_info->type === Army::ORDER_TYPE_ARMY;
+        });
+
+        /*订单确认时间 增加规则*/
+        $validator->sometimes('confirm_time', ['date', 'before_or_equal:' . $request->input('platform_receive_time')], function ($input) use ($order_info)
+        {
+            return !empty($input->platform_receive_time);
+        });
+
         /*供货商A增加规则*/
-        $validator->sometimes('supplier_A', [
-            'required',
-            'integer',
+        $validator->sometimes('supplier_A', ['required', 'integer',
             Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_A'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
         ], function ($input)
         {
-            return !empty($input->supplier_A);/*return true时才增加验证规则!*/
+            return !empty($input->supplier_A);
         });
+
         /*供货商B增加规则*/
-        $validator->sometimes('supplier_B', [
-            'required',
-            'integer',
+        $validator->sometimes('supplier_B', ['required', 'integer',
             Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_B'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
         ], function ($input)
         {
-            return !empty($input->supplier_B);/*return true时才增加验证规则!*/
+            return !empty($input->supplier_B);
         });
+
         /*供货商C增加规则*/
-        $validator->sometimes('supplier_C', [
-            'required',
-            'integer',
+        $validator->sometimes('supplier_C', ['required', 'integer',
             Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_C'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
         ], function ($input)
         {
-            return !empty($input->supplier_C);/*return true时才增加验证规则!*/
+            return !empty($input->supplier_C);
         });
+
         $supplier_arr = collect([$request->input('supplier_A'), $request->input('supplier_B'), $request->input('supplier_C')])->filter()->unique()->all();
         if (!empty($supplier_arr) && $validator->passes() && $platform->allocationSupplier($request->all(), $supplier_arr))
         {   /*验证通过并且处理成功*/
