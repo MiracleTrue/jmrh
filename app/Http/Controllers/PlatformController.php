@@ -143,6 +143,7 @@ class PlatformController extends Controller
         $this->ViewData['supplier_list'] = $user->getSupplierList();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
+        dump($this->ViewData);
         return view('platform_allocation_view', $this->ViewData);
     }
 
@@ -267,7 +268,7 @@ class PlatformController extends Controller
                 Rule::exists('order_offer')->where(function ($query)
                 {
                     $query->where('offer_id', $GLOBALS['request']->input('offer_id'))->where('order_id', $GLOBALS['request']->input('order_id'))
-                        ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('confirm_time', '>=', now()->timestamp);
+                        ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('create_time', '>=', Orders::find($GLOBALS['request']->input('order_id'))->create_time);
                 }),
             ]
         ];

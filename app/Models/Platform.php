@@ -184,7 +184,7 @@ class Platform extends CommonModel
         $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER])->first() or die('order missing');
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('order_id', $order_id)
-            ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('confirm_time', '>=', now()->timestamp)->first() or die('order_offer missing');
+            ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('create_time', '>=', $e_orders->create_time)->first() or die('order_offer missing');
 
         /*更新*/
         $e_orders->status = $this::ORDER_SUPPLIER_SELECTED;/*订单状态改变*/
