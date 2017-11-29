@@ -82,10 +82,10 @@
     	}
     	$(function(){
     		var floora= $(".floor a").width();
-    	console.log(floora);
+    	/*console.log(floora);*/
     	$(".floor a").height(floora);
     		$(".floor a span").height(floora);
-    		console.log(floora+"px")
+    	/*	console.log(floora+"px")*/
     		$(".floor a span").css("line-height",floora+"px");
     		$(".floor a span").css("font-size",floora/2+"px")
     	})

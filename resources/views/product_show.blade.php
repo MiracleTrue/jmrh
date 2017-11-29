@@ -28,6 +28,7 @@
 				<h5>商品名称：{{$product_info['product_name']}}</h5>
 				<p class="productshow_p1">所属分类：{{$product_info['category_info']['category_name']}}</p>
 				<p class="productshow_price">价格：<span style="font-weight: bolder;">{{$product_info['product_price']}}</span><span>元</span></p>
+				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span style="font-weight: bolder;">{{$product_info['product_unit']}}</span></p>
 				<p class="productshow_p2"><span class="productshow_pspan1">详情描述</span><span class="productshow_pspan2">下单</span></p>
 				<p  class="productshow_p3">{!!$product_info['product_content']!!}</p>
 			</div>

@@ -38,6 +38,15 @@
         $("#Info1").height(iheight)
 
 
+/*判断是否为ie*/
+if (window.ActiveXObject || "ActiveXObject" in window){
+	  $(".home-aside").height($(document).height()-5);
+        var iheight = $(document).height() - 42;
+        $("#Info1").height(iheight-10)
+}
+
+
+
 	$(".sidebar-menu li").not($(".password")).on("click",function(){
 		
 		$("#Info1").attr("src",$(this).find('a').attr('href'));

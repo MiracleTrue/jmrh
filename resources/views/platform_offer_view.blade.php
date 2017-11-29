@@ -141,7 +141,7 @@ var EndTimeMsg = {{$count_down}};
 			  
 		}else{
 			$(".header_span").css("color","red").text('(确认时间已过)');
-		 qteSub=false;
+		<!-- qteSub=false;-->
 		}
 		
 

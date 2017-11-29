@@ -3,6 +3,8 @@
 @section('MyCss')
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     <link rel="stylesheet" href="{{asset('webStatic/css/addclassify.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/library/editable-select/jquery.editable-select.min.css')}}">
+
 <style>
 	.error{
 	color: red;
@@ -44,7 +46,7 @@
 					</p>
 					<p style="position: relative;">
 						<span>商品图片</span>
-						<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file"  accept="image/*" name="product_image" id="product_image" value="" />
+						<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="product_image" id="product_image" value="" />
 						<label for="product_image"><input  style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 13px;left: 55px;" disabled="disabled" id="faker" value="点击右边上传按钮" /></lable>
 						<a><label for="product_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
 					</p>
@@ -67,6 +69,23 @@
 					<p style="text-indent: 30px;">
 						<span>价格</span>
 						<input type="" name="product_price" id="product_price" value="{{$product_info['product_price'] or ''}}" onkeyup="test(this.value)"/>
+					</p>
+					<p style="padding-right: 49px;">
+						<span >单位</span>
+							<select id="product_unit" name="product_unit">
+								<!--@foreach($unit_list as $item)
+								 <option value="{{$item}}" >{{$item}}</option>
+								@endforeach-->
+									@if(!empty($product_info))
+										@foreach($unit_list as $item)
+										 <option value="{{$item}}" @if($item == $product_info['product_unit']) selected="selected" @endif >{{$item}}</option>
+										@endforeach
+									@else
+									@foreach($unit_list as $item)
+									 <option value="{{$item}}" >{{$item}}</option>
+									@endforeach
+								@endif
+							</select>					
 					</p>
 					
 				</div>
@@ -93,7 +112,23 @@
 <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script src="{{asset('webStatic/library/ueditor/1.4.3/ueditor.config.js')}}" type="text/javascript" charset="utf-8"></script>
 <script src="{{asset('webStatic/library/ueditor/1.4.3/ueditor.all.min.js')}}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="{{asset('/webStatic/library/editable-select/jquery.editable-select.min.js')}}"></script>
+
 <script>
+	
+	$('#product_unit').editableSelect({
+	effects: 'slide'
+});
+$(".es-input").css("border","1px solid #AAAAAA")
+$(".es-input").attr("placeholder","请选择单位");
+$(".es-input").val("{{$product_info['product_unit'] or ''}}");
+	
+	
+	
+	
+	
+	
+	
 	//自定义validate验证输入的数字小数点位数不能大于两位
         jQuery.validator.addMethod("minNumber",function(value, element){
             var returnVal = true;
@@ -165,6 +200,9 @@
 	          	 required: true,
 	          	  isIntGtZero:true,
 	          	  number: true
+	          },
+	           product_unit:{
+	          	required: true
 	          }
 	        },
 	         messages: {
@@ -184,6 +222,9 @@
 		      	required: "请输入价格",
 	        	isIntGtZero:"请输入大于0的整数",
 	        	number:"请输入一个数字"
+		      },
+		       product_unit:{
+		      	required: "请输入单位"
 		      }
 		    },
 		    errorLabelContainer:$(".error"),
@@ -231,7 +272,12 @@
 	          },
 	            product_price:{
 	          	 required: true,
-	          	  isIntGtZero:true
+	          	  isIntGtZero:true,
+	          	   number: true
+	          	  
+	          },
+	          product_unit:{
+	          	required: true
 	          }
 	        },
 	         messages: {
@@ -242,7 +288,11 @@
 		      },
 		       product_price:{
 		      	required: "请输入价格",
-	        	isIntGtZero:"请输入大于0的整数"
+	        	isIntGtZero:"请输入大于0的整数",
+	        	number:"请输入一个数字"
+		      },
+		      product_unit:{
+		      	required: "请输入单位"
 		      }
 		    },
 		    errorLabelContainer:$(".error"),
