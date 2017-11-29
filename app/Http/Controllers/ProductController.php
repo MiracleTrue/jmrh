@@ -378,7 +378,7 @@ class ProductController extends Controller
         $rules = [
             'product_name' => 'required',
             'sort' => 'required|integer',
-            'product_image' => 'required|file|image',
+            'product_image' => 'required|image',
             'product_price' => 'required|numeric',
             'category_id' => [
                 'required',
