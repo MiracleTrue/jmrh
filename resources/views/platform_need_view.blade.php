@@ -197,7 +197,7 @@ $("#confirm_time").click(function(){
 	}
 });
 $("#platform_receive_time").click(function(){
-	alert()
+	/*alert()*/
 	$("#confirm_time").val("")
 })
 
