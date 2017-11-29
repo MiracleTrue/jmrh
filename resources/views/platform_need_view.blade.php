@@ -196,6 +196,10 @@ $("#confirm_time").click(function(){
 		
 	}
 });
+$("#platform_receive_time").click(function(){
+	alert()
+	$("#confirm_time").val("")
+})
 
 $('#product_unit').editableSelect({
 	effects: 'slide'
