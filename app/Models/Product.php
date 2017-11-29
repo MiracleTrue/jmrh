@@ -305,6 +305,7 @@ class Product extends CommonModel
         $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
         $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
         $e_products->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        $e_products->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
         $e_products->product_thumb = request()->hasFile('product_image') ? $my_file->uploadThumb(request('product_image')) : $arr['product_image'];
         $e_products->product_original = request()->hasFile('product_image') ? $my_file->uploadOriginal(request('product_image')) : $arr['product_image'];
         $e_products->product_content = !empty($arr['product_content']) ? $arr['product_content'] : '';
@@ -332,6 +333,7 @@ class Product extends CommonModel
         $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
         $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
         $e_products->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        $e_products->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
         if (request()->hasFile('product_image'))
         {
             $e_products->product_thumb = $my_file->uploadThumb(request('product_image'));

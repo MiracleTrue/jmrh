@@ -17,7 +17,7 @@ class MyHelper
     {
         if (strtotime(date('YmdHis', intval($timestamp))) === $timestamp)
         {
-            return $timestamp;
+            return true;
         }
         else return false;
     }

@@ -378,8 +378,9 @@ class ProductController extends Controller
         $rules = [
             'product_name' => 'required',
             'sort' => 'required|integer',
-            'product_image' => 'required|image',
+            'product_image' => 'required|image|mimes:jpeg,gif,png',
             'product_price' => 'required|numeric',
+            'product_unit' => 'required',
             'category_id' => [
                 'required',
                 'integer',
@@ -430,6 +431,7 @@ class ProductController extends Controller
             ],
             'product_name' => 'required',
             'product_price' => 'required|numeric',
+            'product_unit' => 'required',
             'sort' => 'required|integer',
             'product_content' => 'string',
             'category_id' => [
@@ -443,7 +445,7 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         /*缩略图增加规则*/
-        $validator->sometimes('product_image', 'file|image', function ($input) use ($request)
+        $validator->sometimes('product_image', 'image|mimes:jpeg,gif,png', function ($input) use ($request)
         {
             return $request->hasFile('product_image');/*return true时才增加验证规则!*/
         });
@@ -459,6 +461,11 @@ class ProductController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['product'] = $product->messages();
+            if($validator->errors()->has('product_image'))
+            {
+                $m3result->code = 2;
+                $m3result->messages = '图片格式不正确';
+            }
         }
 
         return $m3result->toJson();
