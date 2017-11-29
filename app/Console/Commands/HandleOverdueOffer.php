@@ -50,7 +50,7 @@ class HandleOverdueOffer extends Command
         static $o_id = 0;
         //查询出所有 "待报价" 的offer 并且已经再过期时间的
         $e_order_offer = OrderOffer::where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)->get();
-        
+
         //循环每个offer
         $e_order_offer->each(function ($item) use (&$o_id)
         {
