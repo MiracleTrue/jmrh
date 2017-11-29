@@ -11,7 +11,7 @@
     <script type="text/javascript" src="{{asset('webStatic/library/layer-v3.1.0/layer/layer.js')}}"></script>
     
 </head>
-<body style="overflow: hidden;">
+<body>
     @include('include.inc_menus')
     <div id="index_right">
     @include('include.inc_header')

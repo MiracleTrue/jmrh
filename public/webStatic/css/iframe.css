@@ -101,15 +101,16 @@ section a {
 }
 .floor_span{
 	display: block;
-	width: 84px;
-	height: 84px;
+	/*width: 84px;
+	height: 84px;*/
 	color: #fff;
 	font-weight: bolder;
 	font-size: 35px;
 	border-radius: 50%;
 	background: #03ccbb;
-	line-height: 84px;
+	/*line-height: 84px;*/
 	text-align: center;
+	width: 100%;
 }
 .floor_spansmall{
 	display: inline-block;
@@ -127,4 +128,8 @@ section a {
     margin-left: 21px;
     margin-right: 5px;
     
+}
+.floor a{
+	width: 100%;
+	display: block;
 }

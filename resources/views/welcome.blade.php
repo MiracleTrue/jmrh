@@ -8,7 +8,7 @@
 @endsection
 @section('content')
     <section style="position: relative;">
-        <div class="floor" style="position: fixed;right: 6%;top: 35%;width: 5%;">
+        <div class="floor" style="position: fixed;right: 6%;top: 14%;width: 5%;height: 80%;">
             {{--<a href="#floor1"><img src="img/F1.png" alt="" /></a>--}}
             {{--<a href="#floor2"><img src="img/F2.png" alt="" /></a>--}}
             {{--<a href="#floor3"><img src="img/F3.png" alt="" /></a>--}}
@@ -65,7 +65,7 @@
 	    		var fNum=i+1;
 	    		$(".floor").append('<a href="#floor'+i+'" style="text-decoration:none;margin-top:6px" ><span class="floor_span" style="background:'+bcolor+'">F'+fNum+'</span></a>')
 	    		
-	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>')
+	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>');
 	    		
 	    	}
 	    /*控制图片大小*/
@@ -73,12 +73,22 @@
 	   	$(".proudut_img").height(imgWidth);
 	    		
     	})
-    
+    	 $(".floor a").css("width","100%");
+    	
     	function ProductShow(elm,product_id){
     		var url="{{url('product/show')}}"+"/"+product_id
     		
-    		location.replace(url)
+    		location.replace(url);
     	}
+    	$(function(){
+    		var floora= $(".floor a").width();
+    	console.log(floora);
+    	$(".floor a").height(floora);
+    		$(".floor a span").height(floora);
+    		console.log(floora+"px")
+    		$(".floor a span").css("line-height",floora+"px");
+    		$(".floor a span").css("font-size",floora/2+"px")
+    	})
     </script>
     
 @endsection
