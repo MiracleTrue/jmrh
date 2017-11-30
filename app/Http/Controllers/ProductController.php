@@ -380,7 +380,7 @@ class ProductController extends Controller
             'product_name' => 'required',
             'sort' => 'required|integer',
             'product_image' => 'required|image|mimes:jpeg,gif,png',
-            'product_price' => 'required|numeric',
+            'product_price' => 'required|numeric|min:0',
             'product_unit' => 'required',
             'category_id' => [
                 'required',
@@ -436,7 +436,7 @@ class ProductController extends Controller
                 }),
             ],
             'product_name' => 'required',
-            'product_price' => 'required|numeric',
+            'product_price' => 'required|numeric|min:0',
             'product_unit' => 'required',
             'sort' => 'required|integer',
             'product_content' => 'string',

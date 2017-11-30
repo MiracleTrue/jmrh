@@ -120,7 +120,7 @@ class SupplierController extends Controller
         {
             return CommonModel::noPrivilegePrompt(request());/*没有权限*/
         }
-        //            dump($this->ViewData);
+//        dump($this->ViewData);
         return view('supplier_offer_view', $this->ViewData);
     }
 
@@ -147,7 +147,7 @@ class SupplierController extends Controller
                         ->where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '>=', now()->timestamp);
                 }),
             ],
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
         ];
         $validator = Validator::make($request->all(), $rules);
 
