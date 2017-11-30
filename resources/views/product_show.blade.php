@@ -28,7 +28,8 @@
 				<h5>商品名称：<span class="product_name">{{$product_info['product_name']}}</span></h5>
 				<p class="productshow_p1">所属分类：{{$product_info['category_info']['category_name']}}</p>
 				<p class="productshow_price">价格：<span style="font-weight: bolder;" class="product_price">{{$product_info['product_price']}}</span><span>元</span></p>
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;">数量：<input class="product_number" style="height: 24px;display: inline-block;" type="number" value=""placeholder="请填入商品数量"/></p>
+				<p class="productnumber" style="font-size: 16px;margin-top: 5px;">数量：<input class="product_number" style="height: 24px;display: inline-block;" type="text" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  
+    onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" value=""placeholder="请填入商品数量"/></p>
 				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span class="product_unit" style="font-weight: bolder;">{{$product_info['product_unit']}}</span></p>
 				
 				<p class="productshow_p2"><span class="productshow_pspan1">详情描述</span><span class="productshow_pspan2">下单</span></p>
