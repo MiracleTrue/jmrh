@@ -110,7 +110,7 @@ $(".refresh").on("click",function(){
 		      title: false,
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['680px' , '730px'],
+		      area : ['660px' , '690px'],
 		      fixed :false,
 		      content: '{{url('supplier/offer/view')}}'+"/"+offer_id
 		    });

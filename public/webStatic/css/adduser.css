@@ -1,6 +1,6 @@
 .adr-box{
 	width: 520px;
-	height: 730px;
+	height: 690px;
 	padding-left: 40px;
 	padding-right: 40px;
 }
@@ -17,7 +17,7 @@
 	line-height: 66px;
 	height: 66px;
 	position: relative;
-	margin-bottom: 20px;
+	margin-bottom: 3%;
 	
 }
 .adr-box span{
@@ -47,7 +47,7 @@ input{
 .adr-submit{
 	background: #fe8d01;
 	color: #FFFFFF;
-	margin-left: 45px;
+	margin-left: 55px;
 	width: 210px;
 	height: 64px;
 	font-size: 19px;

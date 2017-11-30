@@ -98,11 +98,11 @@
 			<div>
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input  style="width: 268px;" autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 282px;" autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 				</p>
 				<p>
 					<span>确认时间</span>
-				 	<input style="width: 268px;" autocomplete="off"  placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" class="laydate-icon" value="" />
+				 	<input style="width: 282px;" autocomplete="off"  placeholder="请选择时间" type="" name="confirm_time" id="confirm_time" class="laydate-icon" value="" />
 				</p>
 				
 			</div>
@@ -176,6 +176,7 @@ var timeType={{$order_info['type']}};
 /*console.log(timeType)*/
 if(timeType==2){
 		$("#platform_receive_time").click(function(){
+			 dateCompare=false;
 		if($("#confirm_time").val()==""){
 			laydate({
 					elem: '#platform_receive_time',
@@ -203,6 +204,7 @@ if(timeType==2){
 
 
 	$("#confirm_time").click(function(){
+		 dateCompare=false;
 		if($("#platform_receive_time").val()==""){
 			//alert("请先选择到货时间");
 			  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
@@ -224,6 +226,7 @@ if(timeType==2){
 	});
 }else if(timeType==1){
 	$("#platform_receive_time").click(function(){
+		 dateCompare=false;
 		if($("#confirm_time").val()==""){
 			laydate({
 					elem: '#platform_receive_time',
@@ -253,6 +256,7 @@ if(timeType==2){
 
 
 	$("#confirm_time").click(function(){
+		 dateCompare=false;
 		if($("#platform_receive_time").val()==""){
 			//alert("请先选择到货时间");
 			  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
@@ -274,7 +278,25 @@ if(timeType==2){
 	});
 }
 
-
+	$("#clt-submit").click(function(){
+			    var reg = /^\s*|\s*$/g;
+			    var t1 = document.getElementById("platform_receive_time").value.replace(reg, "");
+			    var t2 = document.getElementById("confirm_time").value.replace(reg, "");
+			    reg = /^(\d+)\-(\d+)\-(\d+)\s+(\d+)\:(\d+)\:(\d*)$/;
+			   /* if (!reg.test(t1) || !reg.test(t2)) {
+			         throw new Error("Date Format is Error !");
+			         return;
+			    }*/
+			    var d1 = new Date(t1.replace(reg, "$1"), parseInt(t1.replace(reg, "$2")) - 1, t1.replace(reg, "$3"));
+			    d1.setHours(t1.replace(reg, "$4"), t1.replace(reg, "$5"), t1.replace(reg, "$6"));
+			    var d2 = new Date(t2.replace(reg, "$1"), parseInt(t2.replace(reg, "$2")) - 1, t2.replace(reg, "$3"));
+			    d2.setHours(t2.replace(reg, "$4"), t2.replace(reg, "$5"), t2.replace(reg, "$6"));
+			    if (d1 > d2) {
+			       /* alert("true");*/
+			        dateCompare=true;
+			    }
+			
+			})
 	
 	
 
@@ -320,9 +342,12 @@ if(timeType==2){
 	     wrapper:"li",
 	        submitHandler: function (form) {
 	        	if($("select[name='supplier_A']").val()=="0" && $("select[name='supplier_B']").val()=="0" &&$("select[name='supplier_C']").val()=="0" ){
-		            	 layer.msg("请先选择一个供应商",{icon: 2, time: 1000})
+		            	 layer.msg("请先选择一个供应商",{icon: 2, time: 1300})
 
-		        }else{
+		        }else if(dateCompare==false){
+					$("#confirm_time").val("");
+		         	 layer.msg("确认时间应该小于到货时间",{icon: 2, time: 1300})
+		         }else{
 		         	$(form).ajaxSubmit({
 			            url: '{{url("platform/allocation/offer")}}',
 			            type: 'POST',

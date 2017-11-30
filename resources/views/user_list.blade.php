@@ -206,7 +206,7 @@ $(".refresh").on("click",function(){
             maxmin: false,
              fixed :false,
             shadeClose: true, //点击遮罩关闭层
-            area: ['600px', '730px'],
+            area: ['600px', '690px'],
             content: '{{url('user/view')}}'+'/'+user_id
         });
 
@@ -235,7 +235,7 @@ $(".refresh").on("click",function(){
                         maxmin: false,
                          fixed :false,
                         shadeClose: true, //点击遮罩关闭层
-                        area: ['600px', '730px'],
+                        area: ['600px', '690px'],
                         content: '{{url('user/view')}}'
                     });
                 });
