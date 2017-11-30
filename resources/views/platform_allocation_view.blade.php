@@ -131,7 +131,7 @@
 }();
 
 /*确认时间到货时间限制*/
-var confirmTime={
+/*var confirmTime={
 	elem: '#confirm_time',
 	format:'YYYY-MM-DD hh:mm:ss',
 	 istime: true,
@@ -141,9 +141,9 @@ var confirmTime={
         receiveTime.start = datas //将结束日的初始值设定为开始日
 		
     }
-};
+};*/
 /*到货时间*/
-var receiveTime={
+/*var receiveTime={
 	elem: '#platform_receive_time',
 	format:  'YYYY-MM-DD hh:mm:ss',
 	 istime: true,
@@ -160,13 +160,121 @@ var receiveTime={
 
 
 laydate(receiveTime);
+$("#platform_receive_time").click(function(){
+	$("#confirm_time").val("");
+	
+})
 $("#confirm_time").click(function(){
 	if($("#platform_receive_time").val()==""){
 		//alert("请先选择到货时间");
 		  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
 		
 	}
+})*/
+var timeType={{$order_info['type']}};
+
+/*console.log(timeType)*/
+if(timeType==2){
+		$("#platform_receive_time").click(function(){
+		if($("#confirm_time").val()==""){
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now()
+					
+				
+				});
+		
+		}else{
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					
+				
+				})
+			$("#confirm_time").val("")
+			
+		}
+		
 })
+
+
+	$("#confirm_time").click(function(){
+		if($("#platform_receive_time").val()==""){
+			//alert("请先选择到货时间");
+			  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
+			
+		}else{
+			var mymaxtime=$("#platform_receive_time").val().substring(0,10);
+			
+			/*console.log(mymaxtime)*/
+			
+			laydate({
+					elem: '#confirm_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					max: mymaxtime
+					
+			});
+		}
+	});
+}else if(timeType==1){
+	$("#platform_receive_time").click(function(){
+		if($("#confirm_time").val()==""){
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}'
+					
+				
+				});
+		
+		}else{
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_time'])->subSecond()->toDateTimeString()}}'
+					
+				
+				})
+			$("#confirm_time").val("")
+			
+		}
+		
+})
+
+
+	$("#confirm_time").click(function(){
+		if($("#platform_receive_time").val()==""){
+			//alert("请先选择到货时间");
+			  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
+			
+		}else{
+			var mymaxtime=$("#platform_receive_time").val().substring(0,10);
+			
+			/*console.log(mymaxtime)*/
+			
+			laydate({
+					elem: '#confirm_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					max: mymaxtime
+					
+			});
+		}
+	});
+}
+
+
 	
 	
 

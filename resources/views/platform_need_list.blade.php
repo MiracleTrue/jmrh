@@ -100,7 +100,9 @@
 						<td class="blueWord">
 							@if($item['status'] == '0' || $item['status'] == '1' )
 							<a class="tre-caozuo platfenpei" onclick="fenpei(this,'{{$item->order_id}}')">分配</a>
-							<a style="margin-left: 5%;" onclick="InventorySupply(this,'{{$item->order_id}}')">库存供应</a>
+							@if(!empty($item['army_info']))
+								<a style="margin-left: 5%;" onclick="InventorySupply(this,'{{$item->order_id}}')">库存供应</a>
+							@endif
 						  @elseif($item['status'] == '100' || $item['status'] == '110' )
 								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >查看报价</a>
 						   @elseif($item['status'] == '120')

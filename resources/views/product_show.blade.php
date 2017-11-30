@@ -25,10 +25,12 @@
 				<img style="width: 100%;height: 100%;" src="{{$product_info['product_original']}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'"/>
 			</div>
 			<div class="detalsdata">
-				<h5>商品名称：{{$product_info['product_name']}}</h5>
+				<h5>商品名称：<span class="product_name">{{$product_info['product_name']}}</span></h5>
 				<p class="productshow_p1">所属分类：{{$product_info['category_info']['category_name']}}</p>
-				<p class="productshow_price">价格：<span style="font-weight: bolder;">{{$product_info['product_price']}}</span><span>元</span></p>
-				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span style="font-weight: bolder;">{{$product_info['product_unit']}}</span></p>
+				<p class="productshow_price">价格：<span style="font-weight: bolder;" class="product_price">{{$product_info['product_price']}}</span><span>元</span></p>
+				<p class="productnumber" style="font-size: 16px;margin-top: 5px;">数量：<input class="product_number" style="height: 24px;display: inline-block;" type="number" value=""placeholder="请填入商品数量"/></p>
+				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span class="product_unit" style="font-weight: bolder;">{{$product_info['product_unit']}}</span></p>
+				
 				<p class="productshow_p2"><span class="productshow_pspan1">详情描述</span><span class="productshow_pspan2">下单</span></p>
 				<p  class="productshow_p3">{!!$product_info['product_content']!!}</p>
 			</div>
@@ -40,8 +42,11 @@
 	var identity={{$manage_user['identity']}};
 	$(".goodsimg").height($(".goodsimg").width());
 	$(".backgo").click(function(){
-		var url="{{url('welcome')}}"
-		location.replace(url);
+		/*var url="{{url('welcome')}}"
+		location.replace(url);*/
+		
+		
+		parent.layer.closeAll();
 		
 	})
 	if(identity == '2' || identity == '4'){
@@ -50,7 +55,10 @@
 			$(".productshow_pspan2").hide();
 	}
 	$(".productshow_pspan2").on("click",function(){
-	
+		product_name=$(".product_name").text();
+		product_unit=$(".product_unit").text();
+		product_number=$(".product_number").val();
+	/*	console.log(product_unit)*/
 		if(identity == '2'){
 			/*平台*/
 			  layer.open({
@@ -60,7 +68,7 @@
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['965px' , '600px'],
-		      content: '{{url('platform/need/view')}}'
+		      content: '{{url('platform/need/view')}}'+'?product_name='+product_name+'&product_unit='+product_unit+'&product_number='+product_number
 		    });
 		}else if(identity == '4'){
 			layer.open({
@@ -70,7 +78,7 @@
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['965px' , '550px'],
-		      content: '{{url('army/need/view')}}'
+		      content: '{{url('army/need/view')}}'+'?product_name='+product_name+'&product_unit='+product_unit+'&product_number='+product_number
 		    });
 		}
 	});

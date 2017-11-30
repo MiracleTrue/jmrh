@@ -65,7 +65,7 @@
 			<div>
 				<p style="position: relative;">
 					<span>品名</span>
-				 	<input type="" name="product_name" id="product_name" value="" />
+				 	<input type="" name="product_name" id="product_name" value="{{\Illuminate\Support\Facades\Input::get('product_name')}}" />
 				 	<img class="moreName" style="position: absolute;right: 5px;top:14px;"  src="{{asset('webStatic/images/shizi.png')}}" alt="选择品名" />
 				</p>
 				<p>
@@ -77,7 +77,7 @@
 			<div>
 				<p style="position: relative;">
 					<span>数量</span>
-				 	<input type="" name="product_number" id="product_number" value="" />
+				 	<input type="" name="product_number" id="product_number" value="{{\Illuminate\Support\Facades\Input::get('product_number')}}" />
 				 	<select id="product_unit" name="product_unit" class="product_unit ade-num">
 				 		 @foreach($unit_list as $item)
 				 		<option value="{{$item}}">{{$item}}</option>
@@ -86,7 +86,7 @@
 				</p>
 				<p>
 					<span>确认时间</span>
-				 	<input autocomplete="off" name="confirm_time" id="confirm_time"  class="laydate-icon"  value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期"/>
+				 	<input autocomplete="off" name="confirm_time" id="confirm_time"  class="laydate-icon"  value="{{$order_info['army_receive_time'] or ''}}" placeholder="请选择日期(必须小于到货时间)"/>
 				</p>
 				
 			</div>
@@ -163,7 +163,7 @@
 }();
 	
 	/*确认时间到货时间限制*/
-	var confirmTime={
+	/*var confirmTime={
 		elem: '#confirm_time',
 		format: 'YYYY-MM-DD hh:mm:ss',
 		istime: true,
@@ -172,9 +172,9 @@
 	        receiveTime.max = datas; //开始日选好后，重置结束日的最小日期
 	        receiveTime.start = datas //将结束日的初始值设定为开始日
 	    }
-};
+};*/
 /*到货时间*/
-var receiveTime={
+/*var receiveTime={
 	elem: '#platform_receive_time',
 	format: 'YYYY-MM-DD hh:mm:ss',
 	istime: true,
@@ -187,23 +187,68 @@ var receiveTime={
 			laydate(confirmTime);
 		})
     }
-};
-laydate(receiveTime);
+};*/
+/*laydate({
+			elem: '#platform_receive_time',
+			format: 'YYYY-MM-DD hh:mm:ss',
+			istime: true,
+			min: laydate.now()
+		
+			
+			});*/
+$("#platform_receive_time").click(function(){
+		if($("#confirm_time").val()==""){
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now()
+					
+				
+				});
+		
+		}else{
+			laydate({
+					elem: '#platform_receive_time',
+					format: 'YYYY-MM-DD hh:mm:ss',
+					istime: true,
+					min: laydate.now(),
+					
+				
+				})
+			$("#confirm_time").val("")
+			
+		}
+		
+})
+
+
 $("#confirm_time").click(function(){
 	if($("#platform_receive_time").val()==""){
 		//alert("请先选择到货时间");
 		  layer.msg("请先选择到货时间",{icon: 2, time: 1000})
 		
+	}else{
+		var mymaxtime=$("#platform_receive_time").val().substring(0,10);
+		
+		/*console.log(mymaxtime)*/
+		
+		laydate({
+				elem: '#confirm_time',
+				format: 'YYYY-MM-DD hh:mm:ss',
+				istime: true,
+				min: laydate.now(),
+				max: mymaxtime
+				
+		});
 	}
 });
-$("#platform_receive_time").click(function(){
-	/*alert()*/
-	$("#confirm_time").val("")
-})
+
 
 $('#product_unit').editableSelect({
 	effects: 'slide'
 });
+$('#product_unit').val('{{\Illuminate\Support\Facades\Input::get('product_unit')}}');
 $(".es-input").attr("placeholder","请选择单位");
 
   $().ready(function(){	
