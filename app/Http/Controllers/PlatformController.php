@@ -143,7 +143,7 @@ class PlatformController extends Controller
         $this->ViewData['supplier_list'] = $user->getSupplierList();
         $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('platform_allocation_view', $this->ViewData);
     }
 
@@ -424,8 +424,7 @@ class PlatformController extends Controller
         /*验证规则*/
         $rules = [
             'product_name' => 'required',
-            'product_number' => 'required|integer',
-            'product_price' => 'numeric',
+            'product_number' => 'required|integer|min:1',
             'product_unit' => 'required',
             'platform_receive_time' => 'required|date|after:now',
             'confirm_time' => 'required|date|before_or_equal:' . $request->input('platform_receive_time')

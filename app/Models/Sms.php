@@ -53,7 +53,6 @@ class Sms extends CommonModel
         require_once app_path() . '/Plugins/aliyun-dysms-php-sdk/api_sdk/vendor/autoload.php';
         // 加载区域结点配置
         Config::load();
-        header('Content-Type: text/plain; charset=utf-8');
     }
 
     /**

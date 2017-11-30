@@ -313,7 +313,7 @@ class ProductController extends Controller
             $this->ViewData['product_info'] = $product->getProductInfo($id);
         }
 
-        dump($this->ViewData);
+//        dump($this->ViewData);
         return view('product_view', $this->ViewData);
     }
 

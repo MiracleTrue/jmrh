@@ -143,9 +143,8 @@ class ArmyController extends Controller
         /*验证规则*/
         $rules = [
             'product_name' => 'required',
-            'product_number' => 'required|integer',
+            'product_number' => 'required|integer|min:1',
             'product_unit' => 'required',
-            'product_price' => 'numeric',
             'army_receive_time' => 'required|date|after:now'
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -192,9 +191,8 @@ class ArmyController extends Controller
                 }),
             ],
             'product_name' => 'required',
-            'product_number' => 'required|integer',
+            'product_number' => 'required|integer|min:1',
             'product_unit' => 'required',
-            'product_price' => 'numeric',
             'army_receive_time' => 'required|date|after:now'
         ];
         $validator = Validator::make($request->all(), $rules);
