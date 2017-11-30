@@ -22,10 +22,13 @@ use Illuminate\Support\Facades\Log;
 class Sms extends CommonModel
 {
     /*短信是否可用   true   false*/
-    const SEND_STATUS = true;
+    const SEND_STATUS = false;
 
     /*短信签名_1*/
     const SMS_SIGNATURE_1 = '青岛军民融合生活保障中心';
+
+    /*重新分配提醒的模板Code*/
+    const AGAIN_ALLOCATION_CODE = 'SMS_114385358';
 
     /*军方发布提醒的模板Code*/
     const ARMY_RELEASE_CODE = 'SMS_113461381';
