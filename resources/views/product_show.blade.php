@@ -41,6 +41,7 @@
 <script type="text/javascript">
 	$(function(){
 		$(".goodsimg").height($(".goodsimg").width());
+		
 	})
 	var identity={{$manage_user['identity']}};
 

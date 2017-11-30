@@ -76,20 +76,21 @@
     	 $(".floor a").css("width","100%");
     	
     	function ProductShow(elm,product_id){
-    	var indexlayer=layer.open({
-            type: 2,
-            title: false,
-            maxmin: false,
-             fixed :false,
-            shadeClose: true, //点击遮罩关闭层
-            closeBtn: 0,
-             isOutAnim: false,
-             anim: -1,
-            content: "{{url('product/show')}}"+"/"+product_id,
-          
-           
-        });
-    		layer.full(indexlayer);
+	    	var indexlayer=layer.open({
+	            type: 2,
+	            title: false,
+	            maxmin: false,
+	             fixed :false,
+	            shadeClose: true, //点击遮罩关闭层
+	            closeBtn: 0,
+	             isOutAnim: false,
+	             anim: -1,
+	             area: ['100%', '100%'],
+	            content: "{{url('product/show')}}"+"/"+product_id,
+	          
+	           
+	        });
+	    		layer.full(indexlayer);
     		
             
            
