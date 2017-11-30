@@ -39,8 +39,11 @@
 @endsection
 @section('MyJs')
 <script type="text/javascript">
+	$(function(){
+		$(".goodsimg").height($(".goodsimg").width());
+	})
 	var identity={{$manage_user['identity']}};
-	$(".goodsimg").height($(".goodsimg").width());
+
 	$(".backgo").click(function(){
 		/*var url="{{url('welcome')}}"
 		location.replace(url);*/
