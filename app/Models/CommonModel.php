@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Storage;
  */
 class CommonModel
 {
+    protected $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
+
     /*订单删除状态:   1.删除  0.正常*/
     const ORDER_IS_DELETE = 1;
     const ORDER_NO_DELETE = 0;
@@ -122,4 +124,15 @@ class CommonModel
             die('没有权限访问');
         }
     }
+
+    /**
+     * 返回 模型 发生的错误信息
+     * @return mixed
+     */
+    public function messages()
+    {
+        return $this->errors;
+    }
+
+
 }
