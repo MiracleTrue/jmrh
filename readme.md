@@ -16,7 +16,7 @@
 
 3.修改.env全局配置文件,生成APP_KEY  (php artisan key:generate)
 
-4.还原数据库,项目根目录下的jmrh_init.sql  含测试数据的jmrh_test.sql
+4.还原数据库,项目根目录下的sql_model.mwb
 
 5.将Http访问目录设置为,项目根目录下的 /public/index.php
 

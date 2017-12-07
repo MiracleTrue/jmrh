@@ -94,6 +94,12 @@ class TestController extends Controller
     public function T_list()
     {
         /*初始化*/
+        $now_time = now()->timestamp;
+        static $o_id = 0;
+        //查询出所有 "待报价" 的offer 并且已经再过期时间的
+        $e_order_offer = OrderOffer::where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)->get();
+
+        dd($now_time,$e_order_offer);
 
         return 'test';
     }

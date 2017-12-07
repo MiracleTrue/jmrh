@@ -33,11 +33,6 @@ class Controller extends BaseController
         //Access Key ID      :  LTAInFbXqLFhptN0
         //Access Key Secret  :  G0kBm2WSwpRc7VlKkI9lTR5Uln6kMY
 
-
-        /*加入session*/
-//        session(['ManageUser' => Users::find(1)]);
-
-
 //        army  军方    platform  平台    supplier   供货商
 
 //        身份标识: 1.超级管理员  2.平台运营员 3.供货商  4.军方  0.无效
@@ -60,7 +55,6 @@ class Controller extends BaseController
         DB::enableQueryLog();//开启查询
 //
 //    dd(DB::getQueryLog());//打印查询SQL
-//        $admin_model = new Admin();
 
         /*全局config配置,并共享所有视图*/
 //        $GLOBALS['shop_config'] = $admin_model->getSystemConfig();
