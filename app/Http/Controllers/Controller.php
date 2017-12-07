@@ -12,6 +12,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 /**
  *
@@ -25,8 +26,10 @@ class Controller extends BaseController
     public function __construct()
     {
         /*初始化分页大小 10条*/
-        if(empty($_COOKIE['PaginationSize']) || is_numeric($_COOKIE['PaginationSize']) == false) {$_COOKIE['PaginationSize'] = 10;}
-
+        if (empty($_COOKIE['PaginationSize']) || is_numeric($_COOKIE['PaginationSize']) == false)
+        {
+            $_COOKIE['PaginationSize'] = 10;
+        }
 
 
         /*阿里key*/
@@ -60,5 +63,25 @@ class Controller extends BaseController
 //        $GLOBALS['shop_config'] = $admin_model->getSystemConfig();
 //        View::share('shop_config',$GLOBALS['shop_config']);
 //
+    }
+
+    public function __destruct()
+    {
+
+        /*根据.env文件判断是否需要返回 每个页面的 ViewData*/
+        if (env('VIEW_DATA_DEBUG', false) == 'true')
+        {
+            $route = Route::current();/*当前路由对象*/
+            $filter_str = str_replace_first($route->action['namespace'] . '\\', '', $route->action['controller']);
+            /*不需要返回ViewDate的控制器*/
+            $filterable = [
+                'IndexController@Index',
+            ];
+            if (!in_array($filter_str, $filterable) || empty($route->action['identity']))
+            {
+                dump($route->controller->ViewData);
+            }
+        }
+
     }
 }

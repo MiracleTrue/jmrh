@@ -23,8 +23,6 @@ class Army extends CommonModel
     /*军方发布的订单*/
     const ORDER_TYPE_ARMY = 1;
 
-    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
-
     /**
      * 获取所有军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
@@ -217,14 +215,5 @@ class Army extends CommonModel
                 break;
         }
         return $text;
-    }
-
-    /**
-     * 返回 模型 发生的错误信息
-     * @return mixed
-     */
-    public function messages()
-    {
-        return $this->errors;
     }
 }

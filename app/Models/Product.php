@@ -10,6 +10,8 @@ namespace App\Models;
 
 use App\Entity\ProductCategory;
 use App\Entity\Products;
+use App\Entity\ProductSpec;
+use App\Entity\SupplierPrice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -29,9 +31,6 @@ class Product extends CommonModel
     /*商品分类是否首页显示 1.显示  0.不显示*/
     const  CATEGORY_IS_INDEX = 1;
     const  CATEGORY_NO_INDEX = 0;
-
-
-    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
 
     /**
      * 获取首页商品分类楼层 (已关联: 商品) 默认排序:排序值
@@ -365,6 +364,153 @@ class Product extends CommonModel
     }
 
     /**
+     * 新增一个商品规格
+     * @param $product_id
+     * @return mixed & 规格信息
+     */
+    public function addSpec($product_id)
+    {
+        /*初始化*/
+        $e_product_spec = new ProductSpec();
+        $my_file = new MyFile();
+        /*新增*/
+        $e_product_spec->product_id = $product_id;
+        $e_product_spec->spec_name = !empty($arr['spec_name']) ? $arr['spec_name'] : '';
+        $e_product_spec->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        $e_product_spec->image_thumb = $my_file->uploadThumb(request('spec_image'));
+        $e_product_spec->image_original = $my_file->uploadOriginal(request('spec_image'));
+
+        $e_product_spec->save();
+        User::userLog($e_product_spec->spec_name);
+        return $e_product_spec;
+    }
+
+    /**
+     * 修改单个商品规格
+     * @param $arr
+     * @return bool
+     */
+    public function editSpec($arr)
+    {
+        /*初始化*/
+        $e_product_spec = ProductSpec::find($arr['spec_id']);
+        $my_file = new MyFile();
+
+        /*修改*/
+        $e_product_spec->spec_name = !empty($arr['spec_name']) ? $arr['spec_name'] : '';
+        $e_product_spec->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        if (request()->hasFile('spec_image'))
+        {
+            $e_product_spec->image_thumb = $my_file->uploadThumb(request('spec_image'));
+            $e_product_spec->image_original = $my_file->uploadOriginal(request('spec_image'));
+        }
+        $e_product_spec->save();
+        User::userLog($e_product_spec->spec_name);
+        return true;
+    }
+
+    /**
+     * 删除单个商品规格
+     * @param $spec_id
+     * @return bool
+     */
+    public function deleteSpec($spec_id)
+    {
+        /*初始化*/
+        $e_product_spec = ProductSpec::find($spec_id);
+        $my_file = new MyFile();
+
+        /*删除图片文件 并且 删除数据*/
+        $my_file->deleteFile($e_product_spec->image_thumb);
+        $my_file->deleteFile($e_product_spec->image_original);
+        $e_product_spec->delete();
+        User::userLog($e_product_spec->spec_name);
+        return true;
+    }
+
+    /**
+     * 获取单个规格的所有供货商协议价
+     * @param $spec_id
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getSpecSupplierPrice($spec_id)
+    {
+        /*初始化*/
+        $e_supplier_price = new SupplierPrice();
+
+        $list = $e_supplier_price->with(['ho_users' => function ($query)
+        {
+            $query->where('users.is_disable', User::NO_DISABLE);
+        }])
+            ->where('supplier_price.price_id', $spec_id)
+            ->get();
+
+        /*数据过滤*/
+//        $list->transform(function ($item)
+//        {
+//            $item->products = $item->hm_products->take(10);
+//            $item->labels = explode(',', $item->labels);
+//            return $item;
+//        });
+
+        return $list;
+    }
+
+    /**
+     * 新增一个供应商协议价
+     * @param $arr
+     * @return bool
+     */
+    public function addSupplierPrice($arr)
+    {
+        /*初始化*/
+        $e_supplier_price = new SupplierPrice();
+
+        /*新增*/
+        $e_supplier_price->user_id = $arr['user_id'];
+        $e_supplier_price->spec_id = $arr['spec_id'];
+        $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
+        $e_supplier_price->save();
+        User::userLog("供应商ID:".$e_supplier_price->user_id." 规格ID:".$e_supplier_price->spec_id);
+
+        return true;
+    }
+
+    /**
+     * 修改一个供应商协议价
+     * @param $arr
+     * @return bool
+     */
+    public function editSupplierPrice($arr)
+    {
+        /*初始化*/
+        $e_supplier_price = SupplierPrice::find($arr['price_id']);
+
+        /*修改*/
+        $e_supplier_price->user_id = $arr['user_id'];
+        $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
+        $e_supplier_price->save();
+        User::userLog("供应商ID:".$e_supplier_price->user_id." 规格ID:".$e_supplier_price->spec_id);
+
+        return true;
+    }
+
+    /**
+     * 删除一个供应商协议价
+     * @param $price_id
+     * @return bool
+     */
+    public function deleteSupplierPrice($price_id)
+    {
+        /*初始化*/
+        $e_supplier_price = SupplierPrice::find($price_id);
+        $e_supplier_price->delete();
+        User::userLog("供应商协议价ID:".$e_supplier_price->price_id);
+
+        return true;
+    }
+
+    /**
      * 返回 商品分类 删除状态的文本名称
      * @param $status
      * @return string
@@ -402,15 +548,5 @@ class Product extends CommonModel
                 break;
         }
         return $text;
-    }
-
-
-    /**
-     * 返回 模型 发生的错误信息
-     * @return mixed
-     */
-    public function messages()
-    {
-        return $this->errors;
     }
 }

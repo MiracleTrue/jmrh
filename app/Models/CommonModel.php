@@ -122,5 +122,4 @@ class CommonModel
             die('没有权限访问');
         }
     }
-
 }

@@ -7,7 +7,10 @@
  */
 namespace App\Http\Controllers;
 
+use App\Entity\SupplierPrice;
 use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\User;
 use App\Tools\M3Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -297,24 +300,24 @@ class ProductController extends Controller
     }
 
     /**
-     * View 商品添加与编辑 页面
-     * @param int $id
+     * View 商品添加 页面
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function ProductView($id = 0)
+    public function ProductAddPage()
     {
         /*初始化*/
         $product = new Product();
-        $this->ViewData['product_info'] = array();
         $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
-        if ($id > 0)
-        {
-            $this->ViewData['product_info'] = $product->getProductInfo($id);
-        }
+
+
+//        if ($id > 0)
+//        {
+//            $this->ViewData['product_info'] = $product->getProductInfo($id);
+//        }
 
 //        dump($this->ViewData);
-        return view('product_view', $this->ViewData);
+        return view('product_add', $this->ViewData);
     }
 
     /**
@@ -369,7 +372,7 @@ class ProductController extends Controller
      * @param Request $request
      * @return \App\Tools\json
      */
-    public function ProductAdd(Request $request)
+    public function ProductAddSubmit(Request $request)
     {
         /*初始化*/
         $product = new Product();
@@ -379,7 +382,7 @@ class ProductController extends Controller
         $rules = [
             'product_name' => 'required',
             'sort' => 'required|integer',
-            'product_image' => 'required|image|mimes:jpeg,gif,png',
+            'product_image' => 'required|image|mimes:jpeg,gif,png|size:300',
             'product_price' => 'required|numeric|min:0',
             'product_unit' => 'required',
             'category_id' => [
@@ -407,7 +410,7 @@ class ProductController extends Controller
             if ($validator->errors()->has('product_image'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确';
+                $m3result->messages = '图片格式不正确或大小超出限制';
             }
         }
 
@@ -419,7 +422,7 @@ class ProductController extends Controller
      * @param Request $request
      * @return \App\Tools\json
      */
-    public function ProductEdit(Request $request)
+    public function ProductEditSubmit(Request $request)
     {
         /*初始化*/
         $product = new Product();
@@ -451,7 +454,7 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         /*缩略图增加规则*/
-        $validator->sometimes('product_image', 'image|mimes:jpeg,gif,png', function ($input) use ($request)
+        $validator->sometimes('product_image', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
         {
             return $request->hasFile('product_image');/*return true时才增加验证规则!*/
         });
@@ -470,7 +473,7 @@ class ProductController extends Controller
             if ($validator->errors()->has('product_image'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确';
+                $m3result->messages = '图片格式不正确或大小超出限制';
             }
         }
 
@@ -505,6 +508,307 @@ class ProductController extends Controller
         {   /*验证通过并且处理成功*/
             $m3result->code = 0;
             $m3result->messages = '商品删除成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 新增商品规格 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSpecAdd(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'product_id' => [
+                'required',
+                'integer',
+                Rule::exists('products')->where(function ($query)
+                {
+                    $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
+                }),
+            ],
+            'spec_name' => 'required',
+            'product_price' => 'required|numeric|min:0',
+            'spec_image' => 'required|image|mimes:jpeg,gif,png|size:300',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $spec_info = $product->addSpec($request->all()))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '商品规格新增成功';
+            $m3result->data['spec_info'] = $spec_info;
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+            if ($validator->errors()->has('spec_image'))
+            {
+                $m3result->code = 2;
+                $m3result->messages = '图片格式不正确或大小超出限制';
+            }
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 编辑商品规格 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSpecEdit(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'spec_id' => ['required', 'integer',
+                Rule::exists('product_spec')->where(function ($query)
+                {
+                    $query->where('spec_id', $GLOBALS['request']->input('spec_id'));
+                }),
+            ],
+            'spec_name' => 'required',
+            'product_price' => 'required|numeric|min:0',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        /*规格图片增加规则*/
+        $validator->sometimes('spec_image', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
+        {
+            return $request->hasFile('spec_image');/*return true时才增加验证规则!*/
+        });
+
+        if ($validator->passes() && $product->editSpec($request->all()))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '商品规格编辑成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+            if ($validator->errors()->has('spec_image'))
+            {
+                $m3result->code = 2;
+                $m3result->messages = '图片格式不正确或大小超出限制';
+            }
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 删除商品规格 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSpecDelete(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'spec_id' => ['required', 'integer',
+                Rule::exists('product_spec')->where(function ($query)
+                {
+                    $query->where('spec_id', $GLOBALS['request']->input('spec_id'));
+                }),
+            ],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $product->deleteSpec($request->input('spec_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '商品规格删除成功';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * View 规格协议价列表 页面
+     * @param $spec_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function ProductSupplierPriceView($spec_id)
+    {
+        /*初始化*/
+        $product = new Product();
+        $user = new User();
+        $this->ViewData['price_list'] = $product->getSpecSupplierPrice($spec_id);
+        $this->ViewData['supplier_list'] = $user->getSupplierList();
+
+        return view('product_supplier_price', $this->ViewData);
+    }
+
+    /**
+     * Ajax 新增供应商协议价 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSupplierPriceAdd(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'user_id' => ['required', 'integer',
+                Rule::exists('users')->where(function ($query)
+                {
+                    $query->where('user_id', $GLOBALS['request']->input('user_id'))->where('identity', User::SUPPLIER_ADMIN)->where('is_disable', User::NO_DISABLE);
+                }),
+            ],
+            'spec_id' => ['required', 'integer',
+                Rule::exists('product_spec')->where(function ($query)
+                {
+                    $query->where('spec_id', $GLOBALS['request']->input('spec_id'));
+                }),
+            ],
+            'price' => 'required|numeric|min:0',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes())
+        {   /*验证通过*/
+            if(SupplierPrice::where('user_id',$request->input('user_id'))->where('spec_id',$request->input('spec_id'))->first() == false )
+            {
+                $product->addSupplierPrice($request->all());
+                $m3result->code = 0;
+                $m3result->messages = '供应商协议价新增成功';
+            }
+            else
+            {
+                $m3result->code = 2;
+                $m3result->messages = '供应商已有协议价,请查询修改';
+            }
+
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 编辑供应商协议价 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSupplierPriceEdit(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'user_id' => ['required', 'integer',
+                Rule::exists('users')->where(function ($query)
+                {
+                    $query->where('user_id', $GLOBALS['request']->input('user_id'))->where('identity', User::SUPPLIER_ADMIN)->where('is_disable', User::NO_DISABLE);
+                }),
+            ],
+            'price_id' => ['required', 'integer',
+                Rule::exists('supplier_price')->where(function ($query)
+                {
+                    $query->where('price_id', $GLOBALS['request']->input('price_id'));
+                }),
+            ],
+            'price' => 'required|numeric|min:0',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes())
+        {   /*验证通过*/
+            if(SupplierPrice::where('user_id',$request->input('user_id'))->where('spec_id',$request->input('spec_id'))->first() == false )
+            {
+                $product->editSupplierPrice($request->all());
+                $m3result->code = 0;
+                $m3result->messages = '供应商协议价编辑成功';
+            }
+            else
+            {
+                $m3result->code = 2;
+                $m3result->messages = '供应商已有协议价,请查询修改';
+            }
+
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['product'] = $product->messages();
+        }
+
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 删除供应商协议价 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function ProductSupplierPriceDelete(Request $request)
+    {
+        /*初始化*/
+        $product = new Product();
+        $m3result = new M3Result();
+
+        /*验证规则*/
+        $rules = [
+            'price_id' => ['required', 'integer',
+                Rule::exists('supplier_price')->where(function ($query)
+                {
+                    $query->where('price_id', $GLOBALS['request']->input('price_id'));
+                }),
+            ],
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $product->deleteSupplierPrice($request->input('price_id')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '供应商协议价删除成功';
         }
         else
         {

@@ -29,8 +29,6 @@ class User extends CommonModel
     const SUPPLIER_ADMIN = 3;
     const ARMY_ADMIN = 4;
 
-    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
-
     /**
      * 获取所有日志列表 (已转换:身份标识文本,日志创建时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where &  [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
@@ -378,12 +376,4 @@ class User extends CommonModel
         return $text;
     }
 
-    /**
-     * 返回 模型 发生的错误信息
-     * @return mixed
-     */
-    public function messages()
-    {
-        return $this->errors;
-    }
 }

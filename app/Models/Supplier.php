@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\DB;
  */
 class Supplier extends CommonModel
 {
-    private $errors = array('code' => 0, 'messages' => 'OK'); /*错误信息*/
-
     /**
      * 获取所有供应商订单列表 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
@@ -200,12 +198,4 @@ class Supplier extends CommonModel
         return $text;
     }
 
-    /**
-     * 返回 模型 发生的错误信息
-     * @return mixed
-     */
-    public function messages()
-    {
-        return $this->errors;
-    }
 }
