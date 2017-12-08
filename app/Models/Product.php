@@ -358,16 +358,16 @@ class Product extends CommonModel
 
     /**
      * 新增一个商品规格
-     * @param $product_id
-     * @return mixed & 规格信息
+     * @param $arr
+     * @return ProductSpec
      */
-    public function addSpec($product_id)
+    public function addSpec($arr)
     {
         /*初始化*/
         $e_product_spec = new ProductSpec();
         $my_file = new MyFile();
         /*新增*/
-        $e_product_spec->product_id = $product_id;
+        $e_product_spec->product_id = $arr['product_id'];
         $e_product_spec->spec_name = !empty($arr['spec_name']) ? $arr['spec_name'] : '';
         $e_product_spec->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_product_spec->image_thumb = $my_file->uploadThumb(request('spec_image'));
