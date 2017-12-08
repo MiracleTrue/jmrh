@@ -409,10 +409,10 @@ class ProductController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['product'] = $product->messages();
-            if ($validator->errors()->has('product_image'))
+            if ($validator->errors()->has('product_thumb'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确或大小超出限制';
+                $m3result->messages = '图片格式不正确或大小超过300KB';
             }
             if ($validator->errors()->has('product_name'))
             {
@@ -476,10 +476,10 @@ class ProductController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['product'] = $product->messages();
-            if ($validator->errors()->has('product_image'))
+            if ($validator->errors()->has('product_thumb'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确或大小超出限制';
+                $m3result->messages = '图片格式不正确或大小超过300KB';
             }
             if ($validator->errors()->has('product_name'))
             {
@@ -573,7 +573,7 @@ class ProductController extends Controller
             if ($validator->errors()->has('spec_image'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确或大小超出限制';
+                $m3result->messages = '图片格式不正确或大小超过300KB';
             }
         }
 
@@ -623,7 +623,7 @@ class ProductController extends Controller
             if ($validator->errors()->has('spec_image'))
             {
                 $m3result->code = 2;
-                $m3result->messages = '图片格式不正确或大小超出限制';
+                $m3result->messages = '图片格式不正确或大小超过300KB';
             }
         }
 
