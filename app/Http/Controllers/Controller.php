@@ -77,10 +77,11 @@ class Controller extends BaseController
             $filterable = [
                 'IndexController@Index',
             ];
-            if (!in_array($filter_str, $filterable) || empty($route->action['identity']))
+            if (!in_array($filter_str, $filterable) && request()->method() == 'GET')
             {
                 dump($route->controller->ViewData);
             }
+            
         }
 
     }

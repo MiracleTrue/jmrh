@@ -54,7 +54,6 @@ class Product extends CommonModel
         $list->transform(function ($item)
         {
             $item->products = $item->hm_products->take(10);
-            $item->labels = explode(',', $item->labels);
             return $item;
         });
 
@@ -149,7 +148,6 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
-            $item->labels = explode(',', $item->labels);
             unset($item->hm_products_count);
             return $item;
         });
@@ -217,7 +215,6 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
-        $e_product_category->labels = !empty($arr['labels']) ? $arr['labels'] : '';
         $e_product_category->is_delete = self::CATEGORY_NO_DELETE;
         $e_product_category->is_index = self::CATEGORY_NO_INDEX;
 
@@ -240,8 +237,6 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
-        $e_product_category->labels = !empty($arr['labels']) ? $arr['labels'] : '';
-
 
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
@@ -303,10 +298,8 @@ class Product extends CommonModel
         /*添加*/
         $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
         $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
-        $e_products->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_products->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
-        $e_products->product_thumb = request()->hasFile('product_image') ? $my_file->uploadThumb(request('product_image')) : $arr['product_image'];
-        $e_products->product_original = request()->hasFile('product_image') ? $my_file->uploadOriginal(request('product_image')) : $arr['product_image'];
+        $e_products->product_thumb = request()->hasFile('product_thumb') ? $my_file->uploadThumb(request('product_thumb')) : $arr['product_thumb'];
         $e_products->product_content = !empty($arr['product_content']) ? $arr['product_content'] : '';
         $e_products->sort = !empty($arr['sort']) ? $arr['sort'] : 0;
         $e_products->create_time = Carbon::now()->timestamp;
@@ -314,7 +307,7 @@ class Product extends CommonModel
 
         $e_products->save();
         User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::find($e_products->category_id)->category_name . ")");
-        return true;
+        return $e_products;
     }
 
     /**

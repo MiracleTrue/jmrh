@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Entity\ProductSpec;
 use App\Entity\SupplierPrice;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -380,11 +381,11 @@ class ProductController extends Controller
 
         /*验证规则*/
         $rules = [
-            'product_name' => 'required',
             'sort' => 'required|integer',
-            'product_image' => 'required|image|mimes:jpeg,gif,png|size:300',
-            'product_price' => 'required|numeric|min:0',
+            'product_thumb' => 'required|image|mimes:jpeg,gif,png|size:300',
             'product_unit' => 'required',
+            'product_content' => 'string',
+            'product_name' => 'required|unique:products,product_name',
             'category_id' => [
                 'required',
                 'integer',
@@ -396,10 +397,11 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $product->addProduct($request->all()))
-        {   /*验证通过并且处理成功*/
+        if ($validator->passes() && $product_info = $product->addProduct($request->all()))
+        {   /*验证通过*/
             $m3result->code = 0;
             $m3result->messages = '商品添加成功';
+            $m3result->data['product_info'] = $product_info;
         }
         else
         {
@@ -411,6 +413,11 @@ class ProductController extends Controller
             {
                 $m3result->code = 2;
                 $m3result->messages = '图片格式不正确或大小超出限制';
+            }
+            if ($validator->errors()->has('product_name'))
+            {
+                $m3result->code = 3;
+                $m3result->messages = '商品已存在,请更换名称';
             }
         }
 
@@ -438,8 +445,7 @@ class ProductController extends Controller
                     $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
                 }),
             ],
-            'product_name' => 'required',
-            'product_price' => 'required|numeric|min:0',
+            'product_name' => 'required|unique:products,product_name',
             'product_unit' => 'required',
             'sort' => 'required|integer',
             'product_content' => 'string',
@@ -454,9 +460,9 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         /*缩略图增加规则*/
-        $validator->sometimes('product_image', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
+        $validator->sometimes('product_thumb', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
         {
-            return $request->hasFile('product_image');/*return true时才增加验证规则!*/
+            return $request->hasFile('product_thumb');/*return true时才增加验证规则!*/
         });
 
         if ($validator->passes() && $product->editProduct($request->all()))
@@ -474,6 +480,11 @@ class ProductController extends Controller
             {
                 $m3result->code = 2;
                 $m3result->messages = '图片格式不正确或大小超出限制';
+            }
+            if ($validator->errors()->has('product_name'))
+            {
+                $m3result->code = 3;
+                $m3result->messages = '商品已存在,请更换名称';
             }
         }
 
@@ -704,7 +715,7 @@ class ProductController extends Controller
 
         if ($validator->passes())
         {   /*验证通过*/
-            if(SupplierPrice::where('user_id',$request->input('user_id'))->where('spec_id',$request->input('spec_id'))->first() == false )
+            if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', $request->input('spec_id'))->first() == false)
             {
                 $product->addSupplierPrice($request->all());
                 $m3result->code = 0;
@@ -759,7 +770,7 @@ class ProductController extends Controller
 
         if ($validator->passes())
         {   /*验证通过*/
-            if(SupplierPrice::where('user_id',$request->input('user_id'))->where('spec_id',$request->input('spec_id'))->first() == false )
+            if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', $request->input('spec_id'))->first() == false)
             {
                 $product->editSupplierPrice($request->all());
                 $m3result->code = 0;
