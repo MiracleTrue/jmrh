@@ -382,7 +382,7 @@ class ProductController extends Controller
         /*验证规则*/
         $rules = [
             'sort' => 'required|integer',
-            'product_thumb' => 'required|image|mimes:jpeg,gif,png|size:300',
+            'product_thumb' => 'required|image|mimes:jpeg,gif,png|max:300',
             'product_unit' => 'required',
             'product_content' => 'string',
             'product_name' => 'required|unique:products,product_name',
@@ -460,15 +460,25 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         /*缩略图增加规则*/
-        $validator->sometimes('product_thumb', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
+        $validator->sometimes('product_thumb', 'image|mimes:jpeg,gif,png|max:300', function ($input) use ($request)
         {
             return $request->hasFile('product_thumb');/*return true时才增加验证规则!*/
         });
 
-        if ($validator->passes() && $product->editProduct($request->all()))
-        {   /*验证通过并且处理成功*/
-            $m3result->code = 0;
-            $m3result->messages = '商品修改成功';
+        if ($validator->passes())
+        {   /*验证通过*/
+            if(ProductSpec::where('product_id',$request->input('product_id'))->first()->isNotEmpty())
+            {
+                $product->editProduct($request->all());
+                $m3result->code = 0;
+                $m3result->messages = '商品修改成功';
+            }
+            else
+            {
+                $m3result->code = 4;
+                $m3result->messages = '商品规格不能为空';
+            }
+
         }
         else
         {
@@ -554,7 +564,7 @@ class ProductController extends Controller
             ],
             'spec_name' => 'required',
             'product_price' => 'required|numeric|min:0',
-            'spec_image' => 'required|image|mimes:jpeg,gif,png|size:300',
+            'spec_image' => 'required|image|mimes:jpeg,gif,png|max:300',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -604,7 +614,7 @@ class ProductController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
         /*规格图片增加规则*/
-        $validator->sometimes('spec_image', 'image|mimes:jpeg,gif,png|size:300', function ($input) use ($request)
+        $validator->sometimes('spec_image', 'image|mimes:jpeg,gif,png|max:300', function ($input) use ($request)
         {
             return $request->hasFile('spec_image');/*return true时才增加验证规则!*/
         });
