@@ -1,0 +1,20 @@
+html,body{
+	height: 100%;
+}
+.seccendstep{
+	
+	height: 100%;
+}
+.seccendstep_div1{
+	padding-top: 10px;	
+	padding-bottom: 10px;
+	line-height: 30px;
+}
+.seccendstep_div1 p{
+	display: inline-block;
+}
+.netxstep2{
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+}

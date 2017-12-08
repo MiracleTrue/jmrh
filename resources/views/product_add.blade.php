@@ -4,6 +4,7 @@
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     <link rel="stylesheet" href="{{asset('webStatic/css/addclassify.css')}}">
     <link rel="stylesheet" href="{{asset('webStatic/library/editable-select/jquery.editable-select.min.css')}}">
+    <link rel="stylesheet" href="{{asset('webStatic/css/product_view.css')}}">
 
 <style>
 	.error{
@@ -13,18 +14,15 @@
 </style>
 @endsection
 @section('content')
-  <div class="csy-box">
-  	@if(!empty($product_info))
-			<header>修改商品</header>
-			@else
+  <div class="csy-box firststep">
+  
 			<header>添加商品</header>
-			@endif
+		
 			
-				@if(!empty($product_info))
-		<form id="productEdit" action="" method="post">
-			@else
+			
+	
 		<form id="productAdd" action="" method="post">
-			@endif
+		
 			
 				<div class="error"></div>
 				<div class="productAdd_div1">
@@ -32,21 +30,15 @@
 						<span>所属分类</span>
 						  
 						<select name="category_id">
-							@if(!empty($product_info))
-								@foreach($category_list as $item)
-								 <option value="{{$item['category_id']}}" @if($product_info['category_id'] == $item['category_id']) selected="selected" @endif >{{$item['category_name']}}</option>
-								@endforeach
-							@else
 								@foreach($category_list as $item)
 								 <option value="{{$item['category_id']}}">{{$item['category_name']}}</option>
 								@endforeach
-							@endif
 						</select>
 						 
 					</p>
 					<p style="position: relative;">
 						<span>商品图片</span>
-						<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="product_image" id="product_image" value="" />
+						<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="product_thumb" id="product_image" value="" />
 						<label for="product_image"><input  style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 13px;left: 55px;" disabled="disabled" id="faker" value="点击右边上传按钮" /></lable>
 						<a><label for="product_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
 					</p>
@@ -66,10 +58,10 @@
 					</p>
 				</div>
 					<div class="productAdd_div1">
-					<p style="text-indent: 30px;">
+					<!--<p style="text-indent: 30px;">
 						<span>价格</span>
 						<input type="" name="product_price" id="product_price" value="{{$product_info['product_price'] or ''}}" onkeyup="test(this.value)"/>
-					</p>
+					</p>-->
 					<p style="padding-right: 49px;">
 						<span >单位</span>
 							<select id="product_unit" name="product_unit">
@@ -93,8 +85,9 @@
          	   		
         </script>
 				<div class="csy-ope" >
-					<input class="csy-submit" type="submit" name="" id="" value="提交" />
+					<input class="csy-submit" type="submit" name="" id="" value="下一步" />
 					<input class="csy-reset" type="reset" name="" id="" value="重置" />
+				
 				</div>
 				
 					@if(!empty($product_info))
@@ -103,6 +96,28 @@
 				<input type="hidden" name="product_content1" id="product_content1" value="{{$product_info['product_content']}}" />
 				@endif
 			</form>
+		</div>
+		<div class="seccendstep">
+			<div class="addguige">
+					增加
+				</div>
+				<div class="seccendstep_div1">
+					<p>
+						<span>规格名</span>
+						<input type="text" name="" id="" value="" />
+					</p>
+					<p>
+						<span >公开价</span>
+						<input type="text" name="" id="" value="" />
+						<input type="button"  class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)"/>
+					</p>
+					<span class="deleguige">删除</span>
+					<span onclick="productSpecAdd(this)">确认</span>
+				</div>
+				
+		<div class="netxstep2">
+			下一步
+		</div>
 		</div>
 	
 @endsection
@@ -119,12 +134,68 @@
 	$('#product_unit').editableSelect({
 	effects: 'slide'
 });
-$(".es-input").css("border","1px solid #AAAAAA")
+$(".es-input").css("border","1px solid #AAAAAA");
+$(".es-input").css("margin-left","48px");
+$(".es-input").css("width","268px");
+
+
 $(".es-input").attr("placeholder","请选择单位");
 $(".es-input").val("{{$product_info['product_unit'] or ''}}");
+
+
+	$(".firststep").show().siblings().hide();
 	
+	$("#nextbutn").click(function(){
+		$(".firststep").hide();
+		$(".seccendstep").show();
+	});
 	
+	$(".deleguige").click(function(){
+			$(this).parent().remove();
+	})
 	
+	$(".addguige").click(function(){
+		$(".seccendstep").append('<div class="seccendstep_div1"><p><span>规格名</span><input type="text" name="" id="" value="" /></p><p><span >公开价</span><input type="text" name="" id="" value="" /><input type="button" class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)" /></p><span class="deleguige">删除</span><span>确认</span></div>');
+		console.log($(".deleguige").length);
+		$(".deleguige").on("click",function(){
+			$(this).parent().remove();
+		})
+	})	
+
+
+
+
+
+
+
+
+
+
+
+
+function xieyiguanli(elm){
+	 layer.open({
+			      type: 1,
+			      title: false,
+			      maxmin: false,
+			       fixed :false,
+			      shadeClose: true, //点击遮罩关闭层
+			      area : ['800px' , '500px'],
+			      content: '<div class="layer3"><div class="addguige">增加</div><div class="seccendstep_div1"><p><span>供货价</span><select></select></p><p><span >公开价</span><input type="text" name="" id="" value="" /></p></div></div>'
+			      ,success:function(){
+			      	$(".addguige").click(function(){
+			      		$(".layer3").append('<div class="seccendstep_div1"><p><span>供货价</span><select></select></p><p><span >公开价</span><input type="text" name="" id="" value="" /></p><span class="deleguige">删除</span><span>确认</span></div>')
+			      	
+			      	$(".deleguige").on("click",function(){
+						$(this).parent().remove();
+					})
+			      	
+			      	})
+			      }
+			    });
+}
+	
+
 	
 	
 	
@@ -179,6 +250,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 	
 	var editor = UE.getEditor('container',{serverUrl: "{{env('APP_URL').'/phpPlugins/ueditor/controller.php'}}"});
 	$("#container").text($("#product_content1").val())
+	
 	  //添加商品表单验证
 	  	var validatorAdd = $("#productAdd").validate({
 	        rules: {
@@ -195,11 +267,6 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 	           sort:{
 	           required: true,
 	           isIntGtZero:true
-	          },
-	           product_price:{
-	          	 required: true,
-	          	  isIntGtZero:true,
-	          	  number: true
 	          },
 	           product_unit:{
 	          	required: true
@@ -218,11 +285,6 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 		      	required: "请输入排序",
 	        	isIntGtZero:"请输入大于0的整数"
 		      },
-		      product_price:{
-		      	required: "请输入价格",
-	        	isIntGtZero:"请输入大于0的整数",
-	        	number:"请输入一个数字"
-		      },
 		       product_unit:{
 		      	required: "请输入单位"
 		      }
@@ -231,7 +293,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 		    wrapper:"li",		     
 		    submitHandler: function (form) {
 		          $(form).ajaxSubmit({
-		            url: '{{url("product/add")}}',
+		            url: '{{url("product/add/submit")}}',
 		            type: 'POST',
 		            dataType: 'JSON',
 		            data:{
@@ -242,7 +304,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 		            	
 		            },
 		            success: function (res) {
-		     
+		     console.log(res);
 		             if(res.code==0){
 		            	layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 		             	   parent.location.reload();	 
