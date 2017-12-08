@@ -101,20 +101,28 @@
 			<div class="addguige">
 					增加
 				</div>
+				<form class="addspec" action="" method="post">
+					
+				
+				
 				<div class="seccendstep_div1">
 					<p>
 						<span>规格名</span>
-						<input type="text" name="" id="" value="" />
+						<input type="text" name="spec_name" id="" value="" />
+					</p>
+					<p>
+						<span>规格图片</span>
+					<input type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
 					</p>
 					<p>
 						<span >公开价</span>
-						<input type="text" name="" id="" value="" />
-						<input type="button"  class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)"/>
+						<input type="text" name="product_price" id="" value="" />
+						<input type="button"  class="xieyiguanli" name="" id="" value="协议价管理" />
 					</p>
-					<span class="deleguige">删除</span>
-					<span onclick="productSpecAdd(this)">确认</span>
+					<span class="deleguige" onclick="ProductSpecDelete(this)">删除</span>
+					<input type="submit" name="" id="" value="确认" onclick="myform(this,formclass)"/>
 				</div>
-				
+			</form>
 		<div class="netxstep2">
 			下一步
 		</div>
@@ -145,23 +153,119 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 
 	$(".firststep").show().siblings().hide();
 	
-	$("#nextbutn").click(function(){
-		$(".firststep").hide();
-		$(".seccendstep").show();
-	});
+	
 	
 	$(".deleguige").click(function(){
 			$(this).parent().remove();
 	})
-	
+	var specnum=0;
+	var formclass
 	$(".addguige").click(function(){
-		$(".seccendstep").append('<div class="seccendstep_div1"><p><span>规格名</span><input type="text" name="" id="" value="" /></p><p><span >公开价</span><input type="text" name="" id="" value="" /><input type="button" class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)" /></p><span class="deleguige">删除</span><span>确认</span></div>');
+		specnum++;
+		 formclass="addspec"+specnum;
+		 console.log(formclass)
+		$(".seccendstep").append('<form class=formclass><div class="seccendstep_div1"><p><span>规格名</span><input type="text" name="spec_name" id="" value="" /></p><p><span>规格图片</span><input type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" /></p><p><span >公开价</span><input type="text" name="product_price" id="" value="" /><input type="button"  class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)"/></p><span class="deleguige" onclick="ProductSpecDelete(this)">删除</span><input type="submit" name="" id="" value="确认" onclick="myform(this,formclass)"/></div></form>');
 		console.log($(".deleguige").length);
 		$(".deleguige").on("click",function(){
 			$(this).parent().remove();
-		})
+		});
+		
+		   
 	})	
 
+   /*删除商品规格*/
+  
+  	function ProductSpecDelete(elm){
+  		$.ajax({
+  			  url: '{{url("product/spec/delete")}}',
+		      type: 'POST',
+		      dataType: 'JSON',
+		      data:{
+		        spec_id:that.spec_id,
+		        _token:'{{csrf_token()}}'
+		      },
+		      success:function(res){
+		      	console.log(res);
+		      	 layer.msg(res.messages, {icon: 1, time: 1000});
+		      }
+  		});
+  	}
+  
+  	
+var spec_id;
+var that;
+   //新增商品规格验证
+	   function myform(elm,formclass){
+	   	console.log($(elm).parent().parent());
+	  	that=$(elm);
+	   	var addspec= $(elm).parent().parent().validate({
+	        rules: {
+	          spec_name: {
+	            required: true
+	          },
+	            product_price:{
+		           required: true,
+		           isIntGtZero:true,
+	               number: true
+	          },
+	            spec_image:{
+	          	 required: true
+	          }
+	        
+	        },
+	         messages: {
+		      spec_name: "请输入商品名称",
+		       product_price:{
+		      	required: "请输入价格",
+	        	isIntGtZero:"请输入大于0的整数",
+	        	number:"请输入一个数字"
+		      },
+		       spec_image:{
+		       	 required: "请上传图片",
+		       }
+		      
+		    }, 
+		    submitHandler: function (form) {
+		    	console.log(product_id);
+		          $(form).ajaxSubmit({
+		            url: '{{url("product/spec/add")}}',
+		            type: 'POST',
+		            dataType: 'JSON',
+		            data:{
+		            	product_id:product_id,
+		            	_token:'{{csrf_token()}}'
+		            },
+		            beforeSend:function(res){
+		            	
+		            	/* $("input[type='submit']").removeAttr("disabled");
+		            	 * 
+		            	 */
+		            	
+		            },
+		            success: function (res) {
+		        	console.log(res);
+		        	spec_id=res.data.spec_info.spec_id;
+		        that.parent().parent().attr("spec_id",spec_id);
+		             if(res.code==0){
+		             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+		             	/*  $("input[type='submit']").attr("disabled","true");*/
+		             	
+		             	   });
+						
+		             }else{
+		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+		             	  /* $("input[type='submit']").removeAttr("disabled");*/
+		             	   });
+		             }
+		            }
+		          });
+	        }
+	
+	      });
+	    
+
+	   }
+	      	  
 
 
 
@@ -171,9 +275,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 
 
 
-
-
-function xieyiguanli(elm){
+/*function xieyiguanli(elm){
 	 layer.open({
 			      type: 1,
 			      title: false,
@@ -193,7 +295,7 @@ function xieyiguanli(elm){
 			      	})
 			      }
 			    });
-}
+}*/
 	
 
 	
@@ -251,6 +353,8 @@ function xieyiguanli(elm){
 	var editor = UE.getEditor('container',{serverUrl: "{{env('APP_URL').'/phpPlugins/ueditor/controller.php'}}"});
 	$("#container").text($("#product_content1").val())
 	
+	
+	var product_id;
 	  //添加商品表单验证
 	  	var validatorAdd = $("#productAdd").validate({
 	        rules: {
@@ -300,27 +404,39 @@ function xieyiguanli(elm){
 		            	_token:'{{csrf_token()}}'
 		            },
 		            beforeSend:function(res){
-		            	$("input[type='submit']").attr("disabled","true");
+		            	$(".csy-submit").attr("disabled","true");
 		            	
 		            },
 		            success: function (res) {
-		     console.log(res);
+		    		 console.log(res);
 		             if(res.code==0){
-		            	layer.msg(res.messages, {icon: 1, time: 1000},function(){  
-		             	   parent.location.reload();	 
-		             	   	  layer.closeAll('');
+		            	layer.msg(res.messages, {icon: 1, time: 1000},function(){
+								
+							 product_id=res.data.product_info.product_id;
+								console.log(product_id);
+								$(".firststep").hide();
+								$(".seccendstep").show();
+							 
+		             	/*   parent.location.reload();*/	 
+		             	   	 /* layer.closeAll('');*/
 		             	   });
 						
 		             }else{
 		             	    layer.msg(res.messages, {icon: 2, time: 1000},function(){
-		             	   $("input[type='submit']").removeAttr("disabled");
+		             	   $(".csy-submit").removeAttr("disabled");
 		             	   });
 		             }
-		            }
+		            }/*,
+		            complete:function(){
+		            	 $("input[type='submit']").removeAttr("disabled");
+		            }*/
 		          });
 	        }
 	
 	      });
+	        
+	   
+	    
 	      
 	      //修改商品表单验证
 	      var validatorEd = $("#productEdit").validate({
