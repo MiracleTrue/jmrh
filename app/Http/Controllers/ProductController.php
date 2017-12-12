@@ -690,6 +690,7 @@ class ProductController extends Controller
         $user = new User();
         $this->ViewData['price_list'] = $product->getSpecSupplierPrice($spec_id);
         $this->ViewData['supplier_list'] = $user->getSupplierList();
+        $this->ViewData['spec_id'] = $spec_id;
 
         return view('product_supplier_price', $this->ViewData);
     }
