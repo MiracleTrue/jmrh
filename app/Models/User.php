@@ -141,7 +141,7 @@ class User extends CommonModel
     }
 
     /**
-     * 获取单个用户 (已转换:身份标识文本,创建时间)
+     * 获取单个用户 (已关联:平台运营员负责分类) (已转换:身份标识文本,创建时间)
      * @param $id
      * @return mixed
      */
@@ -152,6 +152,8 @@ class User extends CommonModel
         /*转换身份标识文本*/
         $e_users->identity_text = User::identityTransformText($e_users->identity);
         $e_users->create_time = Carbon::createFromTimestamp($e_users->create_time)->toDateTimeString();
+        /*平台运营员关联负责的分类*/
+        $e_users->category_manage = $e_users->hm_product_category_manage;
         return $e_users;
     }
 
@@ -245,7 +247,7 @@ class User extends CommonModel
     /**
      * 添加单个用户
      * @param $arr
-     * @return bool
+     * @return Users
      */
     public function addUser($arr)
     {
@@ -264,7 +266,7 @@ class User extends CommonModel
 
         $e_users->save();
         User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
-        return true;
+        return $e_users;
     }
 
     /**
@@ -290,7 +292,7 @@ class User extends CommonModel
 
         $e_users->save();
         User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
-        return true;
+        return $e_users;
     }
 
     /**
@@ -320,6 +322,7 @@ class User extends CommonModel
             User::userLog(User::identityTransformText($e_users->identity) . ': ' . $e_users->nick_name . "($e_users->user_name)");
             return true;
         }
+        return false;
     }
 
 

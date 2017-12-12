@@ -10,6 +10,7 @@ namespace App\Models;
 
 use App\Entity\ProductCategory;
 use App\Entity\Products;
+use App\Entity\ProductsCategoryManage;
 use App\Entity\ProductSpec;
 use App\Entity\SupplierPrice;
 use Carbon\Carbon;
@@ -128,7 +129,7 @@ class Product extends CommonModel
         $e_product_category = $e_product_category->withCount(['hm_products' => function ($query)
         {
             $query->where('products.is_delete', self::PRODUCT_NO_DELETE);
-        }])
+        }])->with('hmt_users')
             ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
             ->where($where);
         foreach ($orderBy as $value)
@@ -148,7 +149,9 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
+            $item->manage_user = $item->hmt_users->first();
             unset($item->hm_products_count);
+            unset($item->hmt_users);
             return $item;
         });
         return $category_list;
@@ -241,6 +244,44 @@ class Product extends CommonModel
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
         return true;
+    }
+
+    /**
+     * 平台运营员分配分类的负责人
+     * @param $user_id
+     * @param $category_arr [1,8,15]
+     * @return bool
+     * @throws \Exception
+     */
+    public function platformAdminShareProductCategory($user_id, $category_arr)
+    {
+        $category_arr = array_flatten($category_arr);
+        /*事物*/
+        try
+        {
+            DB::transaction(function () use ($user_id, $category_arr)
+            {
+                ProductsCategoryManage::where('user_id', $user_id)->delete();
+                if (ProductsCategoryManage::whereIn('category_id', $category_arr)->get()->isNotEmpty())
+                {
+                    throw new \Exception(1);/*已有负责人*/
+                }
+                foreach ($category_arr as $value)
+                {
+                    $item = new ProductsCategoryManage();
+                    $item->user_id = $user_id;
+                    $item->category_id = $value;
+                    $item->save();
+                }
+                return true;
+            });
+        } catch (\Exception $e)
+        {
+            $this->errors['code'] = 1;
+            $this->errors['messages'] = '负责分类分配不正确或已有负责人';
+            throw new \Exception(1);/*已有负责人*/
+        }
+        return false;
     }
 
     /**
@@ -464,7 +505,7 @@ class Product extends CommonModel
         $e_supplier_price->spec_id = $arr['spec_id'];
         $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
         $e_supplier_price->save();
-        User::userLog("供应商ID:".$e_supplier_price->user_id." 规格ID:".$e_supplier_price->spec_id);
+        User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
         return true;
     }
@@ -483,7 +524,7 @@ class Product extends CommonModel
         $e_supplier_price->user_id = $arr['user_id'];
         $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
         $e_supplier_price->save();
-        User::userLog("供应商ID:".$e_supplier_price->user_id." 规格ID:".$e_supplier_price->spec_id);
+        User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
         return true;
     }
@@ -498,7 +539,7 @@ class Product extends CommonModel
         /*初始化*/
         $e_supplier_price = SupplierPrice::find($price_id);
         $e_supplier_price->delete();
-        User::userLog("供应商协议价ID:".$e_supplier_price->price_id);
+        User::userLog("供应商协议价ID:" . $e_supplier_price->price_id);
 
         return true;
     }

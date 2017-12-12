@@ -9,24 +9,24 @@
 namespace App\Entity;
 
 /**
- * Class Users   数据库Eloquent实体模型
- * Table 用户表
+ * Class ProductsCategoryManage   数据库Eloquent实体模型
+ * Table 产品分类运营负责人表(单个分类只有一个负责人)
  * @package App\Entity
  */
-class Users extends CommonEntity
+class ProductsCategoryManage extends CommonEntity
 {
     /**
      * 与模型关联的数据表
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'product_category_manage';
 
     /**
      * 可以通过 $primaryKey 属性，重新定义主键字段
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
 
     /**
      * 默认情况下，Eloquent预计数据表中有 "created_at" & "updated_at" 字段。
@@ -43,11 +43,12 @@ class Users extends CommonEntity
     protected $dateFormat = 'U';
 
     /**
-     * 一对多关联ProductsCategoryManage实体表
+     * 一对一关联ProductCategory实体表
      */
-    public function hm_product_category_manage()
+    public function ho_product_category()
     {
-        return $this->hasMany(ProductsCategoryManage::class, 'user_id');
+        return $this->hasOne(ProductCategory::class,'category_id','category_id');
     }
+
 
 }

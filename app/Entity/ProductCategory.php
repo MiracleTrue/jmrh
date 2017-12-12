@@ -7,6 +7,7 @@
  */
 
 namespace App\Entity;
+
 use App\Models\Product;
 
 /**
@@ -48,7 +49,15 @@ class ProductCategory extends CommonEntity
      */
     public function hm_products()
     {
-        return $this->hasMany(Products::class,'category_id');
+        return $this->hasMany(Products::class, 'category_id');
+    }
+
+    /**
+     * 远程一对多关联Users实体表,中间模型ProductsCategoryManage
+     */
+    public function hmt_users()
+    {
+        return $this->hasManyThrough(Users::class, ProductsCategoryManage::class, 'category_id', 'user_id', 'category_id', 'user_id');
     }
 
 }
