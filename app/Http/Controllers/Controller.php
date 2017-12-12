@@ -55,7 +55,7 @@ class Controller extends BaseController
 //        供应商：供应商、密码修改、操作日志
 
 
-        DB::enableQueryLog();//开启查询
+//        DB::enableQueryLog();//开启查询
 //
 //    dd(DB::getQueryLog());//打印查询SQL
 
@@ -67,13 +67,12 @@ class Controller extends BaseController
 
     public function __destruct()
     {
-
         /*根据.env文件判断是否需要返回 每个页面的 ViewData*/
         if (env('VIEW_DATA_DEBUG', false) == 'true')
         {
             $route = Route::current();/*当前路由对象*/
             $filter_str = str_replace_first($route->action['namespace'] . '\\', '', $route->action['controller']);
-            /*不需要返回ViewDate的控制器*/
+            /*不需要返回ViewData的控制器*/
             $filterable = [
                 'IndexController@Index',
             ];
@@ -81,8 +80,6 @@ class Controller extends BaseController
             {
                 dump($route->controller->ViewData);
             }
-            
         }
-
     }
 }
