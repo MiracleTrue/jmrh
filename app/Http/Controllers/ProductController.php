@@ -467,7 +467,7 @@ class ProductController extends Controller
 
         if ($validator->passes())
         {   /*验证通过*/
-            if(ProductSpec::where('product_id',$request->input('product_id'))->first()->isNotEmpty())
+            if (ProductSpec::where('product_id', $request->input('product_id'))->first()->isNotEmpty())
             {
                 $product->editProduct($request->all());
                 $m3result->code = 0;
@@ -728,9 +728,10 @@ class ProductController extends Controller
         {   /*验证通过*/
             if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', $request->input('spec_id'))->first() == false)
             {
-                $product->addSupplierPrice($request->all());
+                $price_info = $product->addSupplierPrice($request->all());
                 $m3result->code = 0;
                 $m3result->messages = '供应商协议价新增成功';
+                $m3result->data['price_info'] = $price_info;
             }
             else
             {
@@ -783,9 +784,10 @@ class ProductController extends Controller
         {   /*验证通过*/
             if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', $request->input('spec_id'))->first() == false)
             {
-                $product->editSupplierPrice($request->all());
+                $price_info = $product->editSupplierPrice($request->all());
                 $m3result->code = 0;
                 $m3result->messages = '供应商协议价编辑成功';
+                $m3result->data['price_info'] = $price_info;
             }
             else
             {

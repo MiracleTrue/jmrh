@@ -507,7 +507,7 @@ class Product extends CommonModel
         $e_supplier_price->save();
         User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
-        return true;
+        return $e_supplier_price;
     }
 
     /**
@@ -526,7 +526,7 @@ class Product extends CommonModel
         $e_supplier_price->save();
         User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
-        return true;
+        return $e_supplier_price;
     }
 
     /**
