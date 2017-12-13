@@ -503,7 +503,7 @@ class Product extends CommonModel
         /*新增*/
         $e_supplier_price->user_id = $arr['user_id'];
         $e_supplier_price->spec_id = $arr['spec_id'];
-        $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
+        $e_supplier_price->price = !empty($arr['price']) ? $arr['price'] : 0;
         $e_supplier_price->save();
         User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
@@ -522,7 +522,7 @@ class Product extends CommonModel
 
         /*修改*/
         $e_supplier_price->user_id = $arr['user_id'];
-        $e_supplier_price->product_price = !empty($arr['price']) ? $arr['price'] : 0;
+        $e_supplier_price->price = !empty($arr['price']) ? $arr['price'] : 0;
         $e_supplier_price->save();
         User::userLog("供应商ID:" . $e_supplier_price->user_id . " 规格ID:" . $e_supplier_price->spec_id);
 
