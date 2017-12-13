@@ -311,14 +311,25 @@ class ProductController extends Controller
         $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
 
+        return view('product_add', $this->ViewData);
+    }
 
-//        if ($id > 0)
-//        {
-//            $this->ViewData['product_info'] = $product->getProductInfo($id);
-//        }
+    /**
+     * View 商品编辑 页面
+     * @param $product_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function ProductEditPage($product_id)
+    {
+        /*初始化*/
+        $product = new Product();
+        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
+        $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
+
+        $this->ViewData['product_info'] = $product->getProductInfo($product_id);
 
 //        dump($this->ViewData);
-        return view('product_add', $this->ViewData);
+        return view('product_edit', $this->ViewData);
     }
 
     /**
