@@ -50,4 +50,12 @@ class Products extends CommonEntity
         return $this->hasOne(ProductCategory::class,'category_id','category_id');
     }
 
+    /**
+     * 一对多关联ProductSpec实体表
+     */
+    public function hm_product_spec()
+    {
+        return $this->hasMany(ProductSpec::class, 'product_id');
+    }
+
 }
