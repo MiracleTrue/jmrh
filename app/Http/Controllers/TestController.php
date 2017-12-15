@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Tools\MyHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TestController extends Controller
 {
@@ -79,15 +80,6 @@ class TestController extends Controller
 
         /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 
-
-//        dd($request->all());
-
-        /*初始化*/
-        $a = new User();
-
-        $a->addUser($request);
-
-
         return 'test';
     }
 
@@ -99,13 +91,14 @@ class TestController extends Controller
         //查询出所有 "待报价" 的offer 并且已经再过期时间的
         $e_order_offer = OrderOffer::where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '<', $now_time)->get();
 
-        dd($now_time,$e_order_offer);
+        dd($now_time, $e_order_offer);
 
         return 'test';
     }
 
     public function T_update()
     {
+
         return 'test';
     }
 
@@ -123,11 +116,98 @@ class TestController extends Controller
 //            print_r($response->Message);
 //        }
 
-        OrderOffer::where('order_id',108)->delete();
+        OrderOffer::where('order_id', 108)->delete();
         Orders::where('order_id', 108)->update(['status' => 1]);
 
 
         return 'test';
+    }
+
+    public function T_table()
+    {
+        $cellData = [
+            ['学号', '姓名', '成绩'],
+            ['10001', 'AAAAA', '99'],
+            ['10002', 'BBBBB', '92'],
+            ['10003', 'CCCCC', '95553'],
+            ['10004', 'DDDDD', '89321'],
+            ['10005', 'EEEEE', '96'],
+        ];
+        Excel::create('学生成绩', function ($excel) use ($cellData)
+        {
+            $excel->getDefaultStyle()
+                ->getAlignment()
+                ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $excel->sheet('score', function ($sheet) use ($cellData)
+            {
+                $sheet->setStyle(array(
+                    'width' => '500',
+                    'font' => array(
+                        'name' => 'Calibri',
+                        'size' => 18,
+                        'bold' => true,
+                        'text-align' => 'center'
+                    )
+                ));
+                $sheet->rows($cellData);
+                $sheet->cells('A1:C1', function ($cells)
+                {
+
+                    // manipulate the range of cells
+                    $cells->setBackground('#ff2832');
+                    $cells->setFont(array(
+                        'size' => '16',
+                        'bold' => true
+                    ));
+                });
+            });
+        })->export('xls');
+
+
+        /*改变所有行*/
+//        Excel::create('Users Report', function ($excel) use ($arrUsers)
+//        {
+//
+//
+//            $excel->sheet('Users', function ($sheet) use ($arrUsers)
+//            {
+//
+//                // Set all margins
+//                $sheet->fromArray($arrUsers, null, 'A1', true);
+//
+//                for ($intRowNumber = 1; $intRowNumber <= count($arrUsers) + 1; $intRowNumber++)
+//                {
+//                    $sheet->setSize('A' . $intRowNumber, 25, 18);
+//                    $sheet->setSize('B' . $intRowNumber, 25, 18);
+//                    $sheet->setSize('C' . $intRowNumber, 25, 18);
+//                    $sheet->setSize('D' . $intRowNumber, 25, 18);
+//                    $sheet->setSize('E' . $intRowNumber, 25, 18);
+//                    $sheet->setSize('F' . $intRowNumber, 25, 18);
+//                }
+//
+//                $sheet->row(1, array(
+//                    'Name', 'Username', 'Contact', 'Email', 'Verified', 'Inactivity'
+//                ));
+//
+//                // Freeze first row
+//                $sheet->freezeFirstRow();
+//
+//                $sheet->cell('A1:F1', function ($cell)
+//                {
+//
+//                    // Set font
+//                    $cell->setFont(array(
+//                        'family' => 'Calibri',
+//                        'size' => '12',
+//                        'bold' => true
+//                    ));
+//
+//                });
+//
+//            });
+//        })->store('xls')->download('xls');
+
+        return 'table';
     }
 
 }

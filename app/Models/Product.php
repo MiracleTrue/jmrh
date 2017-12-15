@@ -44,7 +44,7 @@ class Product extends CommonModel
 
         $list = $e_product_category->with(['hm_products' => function ($query)
         {
-            $query->where('products.is_delete', self::CATEGORY_NO_DELETE)->orderBy('products.sort', 'desc');
+            $query->where('products.is_delete', self::PRODUCT_NO_DELETE)->orderBy('products.sort', 'desc');
         }])
             ->where('product_category.is_index', self::CATEGORY_IS_INDEX)
             ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
@@ -54,7 +54,7 @@ class Product extends CommonModel
         /*数据过滤*/
         $list->transform(function ($item)
         {
-            $item->products = $item->hm_products->take(10);
+            $item->products = $item->hm_products;
             return $item;
         });
 
