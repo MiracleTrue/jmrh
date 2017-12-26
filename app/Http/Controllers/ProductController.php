@@ -456,7 +456,10 @@ class ProductController extends Controller
                     $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
                 }),
             ],
-            'product_name' => 'required|unique:products,product_name',
+            'product_name' => [
+                'required',
+                Rule::unique('products', 'product_name')->ignore($request->input('product_id'), 'product_id'),
+            ],
             'product_unit' => 'required',
             'sort' => 'required|integer',
             'product_content' => 'string',
@@ -478,7 +481,7 @@ class ProductController extends Controller
 
         if ($validator->passes())
         {   /*验证通过*/
-            if (ProductSpec::where('product_id', $request->input('product_id'))->first()->isNotEmpty())
+            if (!empty(ProductSpec::where('product_id', $request->input('product_id'))->first()))
             {
                 $product->editProduct($request->all());
                 $m3result->code = 0;

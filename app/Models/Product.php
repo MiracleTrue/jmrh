@@ -372,12 +372,11 @@ class Product extends CommonModel
         /*修改*/
         $e_products->category_id = !empty($arr['category_id']) ? $arr['category_id'] : 0;
         $e_products->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
-        $e_products->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
         $e_products->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
-        if (request()->hasFile('product_image'))
+        if (request()->hasFile('product_thumb'))
         {
-            $e_products->product_thumb = $my_file->uploadThumb(request('product_image'));
-            $e_products->product_original = $my_file->uploadOriginal(request('product_image'));
+            $e_products->product_thumb = $my_file->uploadThumb(request('product_thumb'));
+            $e_products->product_original = $my_file->uploadOriginal(request('product_thumb'));
         }
         $e_products->product_content = !empty($arr['product_content']) ? $arr['product_content'] : '';
         $e_products->sort = !empty($arr['sort']) ? $arr['sort'] : 0;
