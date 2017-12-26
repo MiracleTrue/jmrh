@@ -44,7 +44,7 @@ class Product extends CommonModel
 
         $list = $e_product_category->with(['hm_products' => function ($query)
         {
-            $query->where('products.is_delete', self::PRODUCT_NO_DELETE)->orderBy('products.sort', 'desc');
+            $query->orderBy('products.sort', 'desc');
         }])
             ->where('product_category.is_index', self::CATEGORY_IS_INDEX)
             ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
@@ -78,7 +78,6 @@ class Product extends CommonModel
         {
             $query->where('product_category.is_delete', self::CATEGORY_NO_DELETE);
         }])
-            ->where('products.is_delete', self::PRODUCT_NO_DELETE)
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -126,10 +125,7 @@ class Product extends CommonModel
         $e_product_category = new ProductCategory();
 
         /*预加载ORM对象*/
-        $e_product_category = $e_product_category->withCount(['hm_products' => function ($query)
-        {
-            $query->where('products.is_delete', self::PRODUCT_NO_DELETE);
-        }])->with('hmt_users')
+        $e_product_category = $e_product_category->withCount('hm_products')->with('hmt_users')
             ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
             ->where($where);
         foreach ($orderBy as $value)
@@ -167,10 +163,7 @@ class Product extends CommonModel
         /*初始化*/
         $e_product_category = new ProductCategory();
         /*预加载ORM对象*/
-        $e_product_category = $e_product_category->withCount(['hm_products' => function ($query)
-        {
-            $query->where('products.is_delete', self::PRODUCT_NO_DELETE);
-        }])->where('product_category.is_delete', self::CATEGORY_NO_DELETE)->get();
+        $e_product_category = $e_product_category->withCount('hm_products')->where('product_category.is_delete', self::CATEGORY_NO_DELETE)->get();
         /*排序,去重,限数,分割返回新集合*/
         $unit_list = $e_product_category->sortByDesc('hm_products_count')->unique('unit')->take($number)->pluck('unit');
         return $unit_list;
@@ -184,7 +177,7 @@ class Product extends CommonModel
     public function getProductInfo($id)
     {
         /*初始化*/
-        $e_products = Products::where('product_id', $id)->where('is_delete', self::PRODUCT_NO_DELETE)->first() or die();
+        $e_products = Products::where('product_id', $id)->first() or die();
         $e_products->product_thumb = MyFile::makeUrl($e_products->product_thumb);
         $e_products->category_info = $e_products->ho_product_category;
         $e_products->spec_info = $e_products->hm_product_spec;
@@ -396,6 +389,7 @@ class Product extends CommonModel
         /*初始化*/
         $e_products = Products::find($id);
         /*伪删除*/
+        $e_products->product_name = '已删除-' . $e_products->product_name;
         $e_products->is_delete = self::PRODUCT_IS_DELETE;
 
         $e_products->save();

@@ -7,6 +7,8 @@
  */
 
 namespace App\Entity;
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Products   数据库Eloquent实体模型
@@ -15,6 +17,20 @@ namespace App\Entity;
  */
 class Products extends CommonEntity
 {
+    /**
+     * 数据模型的启动方法
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('is_delete', function(Builder $builder) {
+            $builder->where('is_delete', Product::PRODUCT_NO_DELETE);
+        });
+    }
+
     /**
      * 与模型关联的数据表
      *

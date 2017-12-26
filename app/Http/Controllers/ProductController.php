@@ -453,7 +453,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('products')->where(function ($query)
                 {
-                    $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
+                    $query->where('product_id', $GLOBALS['request']->input('product_id'));
                 }),
             ],
             'product_name' => [
@@ -533,7 +533,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('products')->where(function ($query)
                 {
-                    $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
+                    $query->where('product_id', $GLOBALS['request']->input('product_id'));
                 }),
             ],
         ];
@@ -573,7 +573,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('products')->where(function ($query)
                 {
-                    $query->where('product_id', $GLOBALS['request']->input('product_id'))->where('is_delete', Product::PRODUCT_NO_DELETE);
+                    $query->where('product_id', $GLOBALS['request']->input('product_id'));
                 }),
             ],
             'spec_name' => 'required',
