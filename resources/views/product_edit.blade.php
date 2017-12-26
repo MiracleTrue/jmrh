@@ -16,12 +16,12 @@
 @section('content')
   <div class="csy-box firststep">
   
-			<header>添加商品</header>
+			<header>修改商品</header>
 		
 			
 			
 	
-		<form id="productAdd" action="" method="post">
+		<form id="productEdit" action="" method="post">
 		
 			
 				<div class="error"></div>
@@ -84,10 +84,9 @@
 				<script id="container" name="product_content" type="text/plain">
          	   		
         </script>
-				<div class="csy-ope" >
+				<div class="csy-ope">
 					<input class="csy-submit" type="submit" name="" id="" value="下一步" />
 					<input class="csy-reset" type="reset" name="" id="" value="重置" />
-				
 				</div>
 				
 					@if(!empty($product_info))
@@ -375,89 +374,6 @@ function xieyiguanli(elm){
 	
 	
 	var product_id;
-	  //添加商品表单验证
-	  	var validatorAdd = $("#productAdd").validate({
-	        rules: {
-	          product_name: {
-	            required: true
-	          },
-	          product_image: {
-	          	required:true
-	          	
-	          },
-	          product_content:{
-	          	 required: true
-	          },
-	           sort:{
-	           required: true,
-	           isIntGtZero:true
-	          },
-	           product_unit:{
-	          	required: true
-	          }
-	        },
-	         messages: {
-		      product_name: "请输入商品名称",
-		      product_image:{
-		      	required:"请上传图片"
-		      	
-		      },
-		      product_content:{
-		      	required:"请输入内容"
-		      },
-		      sort:{
-		      	required: "请输入排序",
-	        	isIntGtZero:"请输入大于0的整数"
-		      },
-		       product_unit:{
-		      	required: "请输入单位"
-		      }
-		    },
-		    errorLabelContainer:$(".error"),
-		    wrapper:"li",		     
-		    submitHandler: function (form) {
-		          $(form).ajaxSubmit({
-		            url: '{{url("product/add/submit")}}',
-		            type: 'POST',
-		            dataType: 'JSON',
-		            data:{
-		            	_token:'{{csrf_token()}}'
-		            },
-		            beforeSend:function(res){
-		            	$(".csy-submit").attr("disabled","true");
-		            	
-		            },
-		            success: function (res) {
-		    		 console.log(res);
-		             if(res.code==0){
-		            	layer.msg(res.messages, {icon: 1, time: 1000},function(){
-								
-							 product_id=res.data.product_info.product_id;
-								console.log(product_id);
-								$(".firststep").hide();
-								$(".seccendstep").show();
-							 
-		             	/*   parent.location.reload();*/	 
-		             	   	 /* layer.closeAll('');*/
-		             	   });
-						
-		             }else{
-		             	    layer.msg(res.messages, {icon: 2, time: 1000},function(){
-		             	   $(".csy-submit").removeAttr("disabled");
-		             	   });
-		             }
-		            }/*,
-		            complete:function(){
-		            	 $("input[type='submit']").removeAttr("disabled");
-		            }*/
-		          });
-	        }
-	
-	      });
-	        
-	   
-	    
-	      
 	      //修改商品表单验证
 	      var validatorEd = $("#productEdit").validate({
 	        rules: {
@@ -497,7 +413,7 @@ function xieyiguanli(elm){
 		    wrapper:"li",		     
 		    submitHandler: function (form) {
 		          $(form).ajaxSubmit({
-		            url: '{{url("product/edit")}}',
+		            url: '{{url("product/edit/submit")}}',
 		            type: 'POST',
 		            dataType: 'JSON',
 		            data:{
@@ -514,7 +430,7 @@ function xieyiguanli(elm){
 		             	   parent.location.reload();	 
 		             	   	  layer.closeAll('');
 		             	   });
-						
+						 
 		             }else{
 		             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
 		             	   $("input[type='submit']").removeAttr("disabled");
@@ -525,16 +441,12 @@ function xieyiguanli(elm){
 	        }
 	
 	      });
-	       if(validatorAdd){
-      	$(".csy-reset").on("click",function(){
-     	   validatorAdd.resetForm();
-        });
-      }else{
-      	$(".csy-reset").on("click",function(){
-     	   validatorEd.resetForm();
-     	
-        });
-      }
+	      
+		      	$(".csy-reset").on("click",function(){
+		     	   validatorEd.resetForm();
+		     	
+		        });
+		     
 
 </script>
 
