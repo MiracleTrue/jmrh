@@ -12,6 +12,7 @@ use App\Entity\UserLog;
 use App\Entity\Users;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -346,7 +347,7 @@ class User extends CommonModel
 
             /*入库*/
             $user_log->user_id = $manage_u->user_id;
-            $user_log->ip_address = \Illuminate\Support\Facades\Request::getClientIp();
+            $user_log->ip_address = request()->getClientIp();
             $user_log->log_desc = $log_desc;
             $user_log->create_time = Carbon::now()->timestamp;
             $user_log->save();

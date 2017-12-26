@@ -93,7 +93,7 @@ class ProductController extends Controller
         $rules = [
             'category_name' => 'required',
             'unit' => 'required',
-            'sort' => 'required|integer',
+            'sort' => 'required|integer|between:-9999,9999',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -136,7 +136,7 @@ class ProductController extends Controller
             ],
             'category_name' => 'required',
             'unit' => 'required',
-            'sort' => 'required|integer',
+            'sort' => 'required|integer|between:-9999,9999',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -174,7 +174,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('product_category')->where(function ($query)
                 {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE)->where('is_index', Product::CATEGORY_NO_INDEX);
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_index', Product::CATEGORY_NO_INDEX);
                 }),
             ]
         ];
@@ -213,7 +213,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('product_category')->where(function ($query)
                 {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE)->where('is_index', Product::CATEGORY_IS_INDEX);
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_index', Product::CATEGORY_IS_INDEX);
                 }),
             ]
         ];
@@ -252,7 +252,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('product_category')->where(function ($query)
                 {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE);
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'));
                 }),
             ]
         ];
@@ -349,7 +349,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('product_category')->where(function ($query) use ($request)
                 {
-                    $query->where('category_id', $request->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE);
+                    $query->where('category_id', $request->input('category_id'));
                 }),
             ],
         ];
@@ -392,7 +392,7 @@ class ProductController extends Controller
 
         /*验证规则*/
         $rules = [
-            'sort' => 'required|integer',
+            'sort' => 'required|integer|between:-9999,9999',
             'product_thumb' => 'required|image|mimes:jpeg,gif,png|max:300',
             'product_unit' => 'required',
             'product_content' => 'string',
@@ -402,7 +402,7 @@ class ProductController extends Controller
                 'integer',
                 Rule::exists('product_category')->where(function ($query)
                 {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE);
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'));
                 }),
             ],
         ];
@@ -461,14 +461,14 @@ class ProductController extends Controller
                 Rule::unique('products', 'product_name')->ignore($request->input('product_id'), 'product_id'),
             ],
             'product_unit' => 'required',
-            'sort' => 'required|integer',
+            'sort' => 'required|integer|between:-9999,9999',
             'product_content' => 'string',
             'category_id' => [
                 'required',
                 'integer',
                 Rule::exists('product_category')->where(function ($query)
                 {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'))->where('is_delete', Product::CATEGORY_NO_DELETE);
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'));
                 }),
             ],
         ];

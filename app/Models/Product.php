@@ -15,6 +15,7 @@ use App\Entity\ProductSpec;
 use App\Entity\SupplierPrice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 /**
@@ -47,7 +48,6 @@ class Product extends CommonModel
             $query->orderBy('products.sort', 'desc');
         }])
             ->where('product_category.is_index', self::CATEGORY_IS_INDEX)
-            ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
             ->orderBy('product_category.sort', 'desc')
             ->get();
 
@@ -74,10 +74,7 @@ class Product extends CommonModel
         $e_products = new Products();
 
         /*预加载ORM对象*/
-        $e_products = $e_products->with(['ho_product_category' => function ($query)
-        {
-            $query->where('product_category.is_delete', self::CATEGORY_NO_DELETE);
-        }])
+        $e_products = $e_products->with('ho_product_category')
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -97,9 +94,7 @@ class Product extends CommonModel
         {
             if (empty($item->ho_product_category))
             {   /*如果是无效的分类,将产品删除*/
-                $item_delete = Products::find($item->product_id);
-                $item_delete->is_delete = Product::PRODUCT_IS_DELETE;
-                $item_delete->save();
+                $this->deleteProduct($item->product_id);
                 header("location: " . action('ProductController@ProductList'));
             }
             else
@@ -126,7 +121,6 @@ class Product extends CommonModel
 
         /*预加载ORM对象*/
         $e_product_category = $e_product_category->withCount('hm_products')->with('hmt_users')
-            ->where('product_category.is_delete', self::CATEGORY_NO_DELETE)
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -163,7 +157,7 @@ class Product extends CommonModel
         /*初始化*/
         $e_product_category = new ProductCategory();
         /*预加载ORM对象*/
-        $e_product_category = $e_product_category->withCount('hm_products')->where('product_category.is_delete', self::CATEGORY_NO_DELETE)->get();
+        $e_product_category = $e_product_category->withCount('hm_products')->get();
         /*排序,去重,限数,分割返回新集合*/
         $unit_list = $e_product_category->sortByDesc('hm_products_count')->unique('unit')->take($number)->pluck('unit');
         return $unit_list;
@@ -199,7 +193,7 @@ class Product extends CommonModel
     public function getProductCategory($id)
     {
         /*初始化*/
-        $e_product_category = ProductCategory::where('category_id', $id)->where('is_delete', self::CATEGORY_NO_DELETE)->first() or die();
+        $e_product_category = ProductCategory::where('category_id', $id)->first() or die();
 
         return $e_product_category;
     }
@@ -315,13 +309,31 @@ class Product extends CommonModel
      */
     public function deleteProductCategory($id)
     {
-        /*初始化*/
-        $e_product_category = ProductCategory::find($id);
-        /*伪删除*/
-        $e_product_category->is_delete = self::CATEGORY_IS_DELETE;
+        /*事物*/
+        try
+        {
+            DB::transaction(function () use ($id)
+            {
+                $e_product_category = ProductCategory::find($id);
+                /*伪删除*/
+                $e_product_category->is_delete = self::CATEGORY_IS_DELETE;
+                $e_product_category->save();
+                /*删除下级商品*/
+                $e_product = Products::where('category_id', $id)->get();
 
-        $e_product_category->save();
-        User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
+                $e_product->each(function ($item)
+                {
+                    $this->deleteProduct($item->product_id);
+                });
+                User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
+            });
+        } catch (\Exception $e)
+        {
+            $this->errors['code'] = 1;
+            $this->errors['messages'] = '分类删除失败';
+            return false;
+        }
+
         return true;
     }
 
@@ -393,7 +405,7 @@ class Product extends CommonModel
         $e_products->is_delete = self::PRODUCT_IS_DELETE;
 
         $e_products->save();
-        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::find($e_products->category_id)->category_name . ")");
+        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::withoutGlobalScope('is_delete')->find($e_products->category_id)->category_name . ")");
         return true;
     }
 

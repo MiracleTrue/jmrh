@@ -9,6 +9,7 @@
 namespace App\Entity;
 
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class ProductCategory   数据库Eloquent实体模型
@@ -17,6 +18,26 @@ use App\Models\Product;
  */
 class ProductCategory extends CommonEntity
 {
+    /**
+     * 数据模型的启动方法
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * 全局作用域
+         * 商品分类删除状态
+         * is_delete
+         */
+        static::addGlobalScope('is_delete', function (Builder $builder)
+        {
+            $builder->where('is_delete', Product::CATEGORY_NO_DELETE);
+        });
+    }
+
     /**
      * 与模型关联的数据表
      *

@@ -7,6 +7,7 @@
  */
 
 namespace App\Entity;
+
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -26,7 +27,13 @@ class Products extends CommonEntity
     {
         parent::boot();
 
-        static::addGlobalScope('is_delete', function(Builder $builder) {
+        /**
+         * 全局作用域
+         * 商品删除状态
+         * is_delete
+         */
+        static::addGlobalScope('is_delete', function (Builder $builder)
+        {
             $builder->where('is_delete', Product::PRODUCT_NO_DELETE);
         });
     }
@@ -63,7 +70,7 @@ class Products extends CommonEntity
      */
     public function ho_product_category()
     {
-        return $this->hasOne(ProductCategory::class,'category_id','category_id');
+        return $this->hasOne(ProductCategory::class, 'category_id', 'category_id');
     }
 
     /**
