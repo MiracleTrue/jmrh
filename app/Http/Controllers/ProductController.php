@@ -718,8 +718,8 @@ class ProductController extends Controller
     {
 //        $arr = array(
 //            'user_id' => '6',
-//            'spec_id' => '96',
-//            'price' => '55',
+//            'price_id' => '3',
+//            'price' => '56',
 //        );
 //        $request->merge($arr);
 
@@ -779,6 +779,13 @@ class ProductController extends Controller
      */
     public function ProductSupplierPriceEdit(Request $request)
     {
+//        $arr = array(
+//            'user_id' => '7',
+//            'price_id' => '3',
+//            'price' => '59',
+//        );
+//        $request->merge($arr);
+
         /*初始化*/
         $product = new Product();
         $m3result = new M3Result();
@@ -800,10 +807,11 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
         ];
         $validator = Validator::make($request->all(), $rules);
+        $price_id = $request->input('price_id');
 
         if ($validator->passes())
         {   /*验证通过*/
-            if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', $request->input('spec_id'))->first() == false)
+            if (SupplierPrice::where('user_id', $request->input('user_id'))->where('spec_id', SupplierPrice::find($price_id)->spec_id)->where('price_id', '!=', $price_id)->first() == false)
             {
                 $price_info = $product->editSupplierPrice($request->all());
                 $m3result->code = 0;
