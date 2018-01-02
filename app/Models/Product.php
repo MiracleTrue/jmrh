@@ -401,11 +401,12 @@ class Product extends CommonModel
         /*初始化*/
         $e_products = Products::find($id);
         /*伪删除*/
-        $e_products->product_name = '已删除-' . $e_products->product_name;
+        $name = $e_products->product_name;
+        $e_products->product_name = '已删除-' . $name;
         $e_products->is_delete = self::PRODUCT_IS_DELETE;
 
         $e_products->save();
-        User::userLog($e_products->product_name . "(商品分类:" . ProductCategory::withoutGlobalScope('is_delete')->find($e_products->category_id)->category_name . ")");
+        User::userLog($name . "(商品分类:" . ProductCategory::withoutGlobalScope('is_delete')->find($e_products->category_id)->category_name . ")");
         return true;
     }
 
@@ -488,7 +489,7 @@ class Product extends CommonModel
         {
             $query->where('users.is_disable', User::NO_DISABLE);
         }])
-            ->where('supplier_price.price_id', $spec_id)
+            ->where('supplier_price.spec_id', $spec_id)
             ->get();
 
         /*数据过滤*/

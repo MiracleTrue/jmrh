@@ -716,6 +716,13 @@ class ProductController extends Controller
      */
     public function ProductSupplierPriceAdd(Request $request)
     {
+//        $arr = array(
+//            'user_id' => '6',
+//            'spec_id' => '96',
+//            'price' => '55',
+//        );
+//        $request->merge($arr);
+
         /*初始化*/
         $product = new Product();
         $m3result = new M3Result();
