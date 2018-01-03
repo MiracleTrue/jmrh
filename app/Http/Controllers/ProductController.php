@@ -69,9 +69,9 @@ class ProductController extends Controller
     {
         /*初始化*/
         $product = new Product();
+        $user = new User();
         $this->ViewData['category_info'] = array();
-        $this->ViewData[''];
-
+        $this->ViewData['platform_user_list'] = $user->getPlatformUserList();
         if ($id > 0)
         {
             $this->ViewData['category_info'] = $product->getProductCategory($id);

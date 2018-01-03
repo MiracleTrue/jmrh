@@ -74,11 +74,19 @@ class ProductCategory extends CommonEntity
     }
 
     /**
-     * 远程一对多关联Users实体表,中间模型ProductsCategoryManage
+     * 一对一关联Users实体表
      */
-    public function hmt_users()
+    public function ho_users()
     {
-        return $this->hasManyThrough(Users::class, ProductsCategoryManage::class, 'category_id', 'user_id', 'category_id', 'user_id');
+        return $this->hasOne(Users::class,'user_id','manage_user_id');
     }
+
+//    /**
+//     * 远程一对多关联Users实体表,中间模型ProductsCategoryManage
+//     */
+//    public function hmt_users()
+//    {
+//        return $this->hasManyThrough(Users::class, ProductsCategoryManage::class, 'category_id', 'user_id', 'category_id', 'user_id');
+//    }
 
 }

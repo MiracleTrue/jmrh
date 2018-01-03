@@ -120,8 +120,7 @@ class Product extends CommonModel
         $e_product_category = new ProductCategory();
 
         /*预加载ORM对象*/
-//        $e_product_category = $e_product_category->withCount('hm_products')->with('hmt_users')
-        $e_product_category = $e_product_category->withCount('hm_products')
+        $e_product_category = $e_product_category->withCount('hm_products')->with('ho_users')
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -140,8 +139,9 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
+            $item->manage_user = $item->ho_users;
             unset($item->hm_products_count);
-            unset($item->hmt_users);
+            unset($item->ho_users);
             return $item;
         });
         return $category_list;
@@ -194,6 +194,7 @@ class Product extends CommonModel
     {
         /*初始化*/
         $e_product_category = ProductCategory::where('category_id', $id)->first() or die();
+        $e_product_category->manage_user = $e_product_category->ho_users;
 
         return $e_product_category;
     }
