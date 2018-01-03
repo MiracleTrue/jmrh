@@ -204,7 +204,7 @@ class UserController extends Controller
         $user = new User();
         $product = new Product();
         $this->ViewData['user_info'] = array();
-        $this->ViewData['category_list'] = $product->getProductCategoryList(array(),array(),false);
+        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(), false);
 
         if ($id > 0)
         {
@@ -332,7 +332,6 @@ class UserController extends Controller
     {
         /*初始化*/
         $user = new User();
-        $product = new Product();
         $m3result = new M3Result();
 
         /*验证规则*/
@@ -353,39 +352,12 @@ class UserController extends Controller
             'password_confirmation' => 'required|min:6',
         ];
         $validator = Validator::make($request->all(), $rules);
-        /*平台运营员 负责分类 验证增加规则*/
-        $validator->sometimes('category_id_json', 'json', function ($input) use ($request)//[1,4,3]
-        {
-            return $request->input('identity') == User::PLATFORM_ADMIN;
-        });
 
         if ($validator->passes())
         {   /*验证通过*/
-            if ($request->input('identity') == User::PLATFORM_ADMIN)/*平台运营员 处理*/
-            {
-                try
-                {
-                    $category_arr = json_decode($request->input('category_id_json'), true);
-                    DB::transaction(function () use ($product, $user, $request, $category_arr)
-                    {
-                        $new_user = $user->addUser($request->all());
-                        $product->platformAdminShareProductCategory($new_user->user_id, $category_arr);
-                    });
-                    $m3result->code = 0;
-                    $m3result->messages = '平台运营员添加成功';
-                } catch (\Exception $e)
-                {
-                    $m3result->code = 2;
-                    $m3result->messages = '负责分类分配不正确或已有负责人';
-                }
-            }
-            else
-            {
-                $user->addUser($request->all());
-                $m3result->code = 0;
-                $m3result->messages = '用户添加成功';
-            }
-
+            $user->addUser($request->all());
+            $m3result->code = 0;
+            $m3result->messages = '用户添加成功';
         }
         else
         {
@@ -407,7 +379,6 @@ class UserController extends Controller
     {
         /*初始化*/
         $user = new User();
-        $product = new Product();
         $m3result = new M3Result();
 
         /*验证规则*/
@@ -428,7 +399,6 @@ class UserController extends Controller
             'nick_name' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
-        $edit_user = Users::findOrFail($request->input('user_id'));
 
         /*密码增加规则*/
         $validator->sometimes('password', 'required|min:6|confirmed', function ($input)
@@ -442,38 +412,11 @@ class UserController extends Controller
             return !empty($input->password_confirmation);/*return true时才增加验证规则!*/
         });
 
-        /*平台运营员 负责分类 验证增加规则*/
-        $validator->sometimes('category_id_json', 'json', function ($input) use ($edit_user)//[1,4,3]
-        {
-            return $edit_user->identity == User::PLATFORM_ADMIN;
-        });
-
         if ($validator->passes())
         {   /*验证通过*/
-            if ($edit_user->identity == User::PLATFORM_ADMIN)/*平台运营员 处理*/
-            {
-                try
-                {
-                    $category_arr = json_decode($request->input('category_id_json'), true);
-                    DB::transaction(function () use ($product, $user, $request, $category_arr, $edit_user)
-                    {
-                        $user->editUser($request->all());
-                        $product->platformAdminShareProductCategory($edit_user->user_id, $category_arr);
-                    });
-                    $m3result->code = 0;
-                    $m3result->messages = '平台运营员修改成功';
-                } catch (\Exception $e)
-                {
-                    $m3result->code = 2;
-                    $m3result->messages = '负责分类分配不正确或已有负责人';
-                }
-            }
-            else
-            {
-                $user->editUser($request->all());
-                $m3result->code = 0;
-                $m3result->messages = '用户修改成功';
-            }
+            $user->editUser($request->all());
+            $m3result->code = 0;
+            $m3result->messages = '用户修改成功';
 
         }
         else

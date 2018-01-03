@@ -96,7 +96,9 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::get('product/edit/{product_id}', 'ProductController@ProductEditPage')->name('修改商品页面')->where('product_id', '[0-9]+');/*修改商品页面 | product_edit */
         Route::any('product/add/submit', 'ProductController@ProductAddSubmit')->name('新增商品');/*新增商品*/
         Route::any('product/edit/submit', 'ProductController@ProductEditSubmit')->name('修改商品');/*修改商品*/
+        Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
         Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
+
         /*规格*/
         Route::any('product/spec/add', 'ProductController@ProductSpecAdd')->name('新增商品规格');/*新增商品规格*/
         Route::any('product/spec/edit', 'ProductController@ProductSpecEdit')->name('编辑商品规格');/*编辑商品规格*/

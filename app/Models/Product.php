@@ -120,7 +120,8 @@ class Product extends CommonModel
         $e_product_category = new ProductCategory();
 
         /*预加载ORM对象*/
-        $e_product_category = $e_product_category->withCount('hm_products')->with('hmt_users')
+//        $e_product_category = $e_product_category->withCount('hm_products')->with('hmt_users')
+        $e_product_category = $e_product_category->withCount('hm_products')
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -139,7 +140,6 @@ class Product extends CommonModel
         $category_list->transform(function ($item)
         {
             $item->product_count = $item->hm_products_count;
-            $item->manage_user = $item->hmt_users->first();
             unset($item->hm_products_count);
             unset($item->hmt_users);
             return $item;
@@ -212,6 +212,7 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
+        $e_product_category->manage_user_id = !empty($arr['manage_user_id']) ? $arr['manage_user_id'] : null;
         $e_product_category->is_delete = self::CATEGORY_NO_DELETE;
         $e_product_category->is_index = self::CATEGORY_NO_INDEX;
 
@@ -234,48 +235,12 @@ class Product extends CommonModel
         $e_product_category->category_name = !empty($arr['category_name']) ? $arr['category_name'] : '';
         $e_product_category->unit = !empty($arr['unit']) ? $arr['unit'] : '';
         $e_product_category->sort = !empty($arr['sort']) ? $arr['sort'] : '';
+        $e_product_category->manage_user_id = !empty($arr['manage_user_id']) ? $arr['manage_user_id'] : null;
+
 
         $e_product_category->save();
         User::userLog($e_product_category->category_name . "(计量单位:$e_product_category->unit)");
         return true;
-    }
-
-    /**
-     * 平台运营员分配分类的负责人
-     * @param $user_id
-     * @param $category_arr [1,8,15]
-     * @return bool
-     * @throws \Exception
-     */
-    public function platformAdminShareProductCategory($user_id, $category_arr)
-    {
-        $category_arr = array_flatten($category_arr);
-        /*事物*/
-        try
-        {
-            DB::transaction(function () use ($user_id, $category_arr)
-            {
-                ProductsCategoryManage::where('user_id', $user_id)->delete();
-                if (ProductsCategoryManage::whereIn('category_id', $category_arr)->get()->isNotEmpty())
-                {
-                    throw new \Exception(1);/*已有负责人*/
-                }
-                foreach ($category_arr as $value)
-                {
-                    $item = new ProductsCategoryManage();
-                    $item->user_id = $user_id;
-                    $item->category_id = $value;
-                    $item->save();
-                }
-                return true;
-            });
-        } catch (\Exception $e)
-        {
-            $this->errors['code'] = 1;
-            $this->errors['messages'] = '负责分类分配不正确或已有负责人';
-            throw new \Exception(1);/*已有负责人*/
-        }
-        return false;
     }
 
     /**
