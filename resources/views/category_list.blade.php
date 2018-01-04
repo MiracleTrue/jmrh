@@ -24,10 +24,11 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 20%;"><span>分类名称</span></th>
+						<th style="width: 15%;"><span>分类负责人</span></th>
 						<th style="width: 17%;"><span>商品数量</span></th>
 						<th style="width: 16%;"><span>数量单位</span></th>
 						<th style="width: 13%;"><span>排序</span></th>
-						<th style="width: 13%;"><span>是否首页显示</span></th>
+						<th style=""><span>是否首页显示</span></th>
 
 
 						<th><span style="">操作</span></th>
@@ -36,6 +37,7 @@
 					  @foreach($category_list as $item)
 					<tr>
 						<td>{{$item['category_name']}}</td>
+						<td>{{$item['manage_user']['nick_name']}}</td>
 						<td>{{$item['product_count']}}</td>
 						<td>{{$item['unit']}}</td>
 						<td>{{$item['sort']}}</td>

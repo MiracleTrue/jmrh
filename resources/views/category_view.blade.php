@@ -46,7 +46,23 @@
 					<span>排序</span>
 				 	<input type="" name="sort" id="sort" value="{{$category_info['sort'] or ''}}" />
 				</p>
-			
+				<p>
+					<span>分类负责人</span>
+					<select name="manage_user_id">
+						<option value="0">无</option>
+						@if(!empty($category_info))
+							@foreach($platform_user_list as $item)
+							 <option value="{{$item['user_id']}}" @if($item['user_id'] == $category_info['manage_user']['user_id']) selected="selected" @endif >{{$item['nick_name']}}</option>
+							@endforeach
+						@else
+							@foreach($platform_user_list as $item)
+								<option value="{{$item['user_id']}}" >{{$item['nick_name']}}</option>
+							@endforeach
+						@endif
+					</select>
+				 	<!--<input  type="" name="unit" id="unit" value="{{$category_info['manage_user']['nick_name'] or ''}}" />-->
+				 	
+				</p>
 	    			<!--<p>
 						<span>标签</span>
 					 	<input type="text" name="labels" id="" value="{{$category_info['labels'] or ''}}" placeholder="标签用英文逗号隔开" />
