@@ -461,12 +461,12 @@ class ProductController extends Controller
             $m3result->code = 1;
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
-            if ($validator->errors()->has('product_thumb'))
+            if ($validator->errors()->has('product_thumb') && $request->filled('product_thumb'))
             {
                 $m3result->code = 2;
                 $m3result->messages = '图片格式不正确或大小超过300KB';
             }
-            if ($validator->errors()->has('product_name'))
+            if ($validator->errors()->has('product_name') && $request->filled('product_name'))
             {
                 $m3result->code = 3;
                 $m3result->messages = '商品已存在,请更换名称';
@@ -557,12 +557,12 @@ class ProductController extends Controller
             $m3result->code = 1;
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
-            if ($validator->errors()->has('product_thumb'))
+            if ($validator->errors()->has('product_thumb') && $request->filled('product_thumb'))
             {
                 $m3result->code = 2;
                 $m3result->messages = '图片格式不正确或大小超过300KB';
             }
-            if ($validator->errors()->has('product_name'))
+            if ($validator->errors()->has('product_name') && $request->filled('product_name'))
             {
                 $m3result->code = 3;
                 $m3result->messages = '商品已存在,请更换名称';
