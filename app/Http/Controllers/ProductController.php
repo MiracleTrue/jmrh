@@ -8,13 +8,13 @@
 namespace App\Http\Controllers;
 
 use App\Entity\ProductSpec;
-use App\Entity\SupplierPrice;
 use App\Models\MyFile;
 use App\Models\Product;
-use App\Models\Supplier;
 use App\Models\User;
 use App\Tools\M3Result;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -410,7 +410,6 @@ class ProductController extends Controller
         $rules = [
             'sort' => 'required|integer|between:-9999,9999',
             'product_thumb' => 'required|image|mimes:jpeg,gif,png|max:300',
-            'product_unit' => 'required',
             'product_content' => 'string',
             'product_name' => 'required|unique:products,product_name',
             'category_id' => [
@@ -421,21 +420,47 @@ class ProductController extends Controller
                     $query->where('category_id', $GLOBALS['request']->input('category_id'));
                 }),
             ],
+            'spec_json' => 'required|json'
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $product_info = $product->addProduct($request->all()))
-        {   /*验证通过*/
-            $m3result->code = 0;
-            $m3result->messages = '商品添加成功';
-            $m3result->data['product_info'] = $product_info;
+        if ($validator->passes() && is_array($spec_json_arr = json_decode($request->input('spec_json'), true)))
+        {
+            /*验证规格*/
+            $json_rules = [
+                '*.spec_name' => 'required',
+                '*.spec_unit' => 'required',
+                '*.product_price' => 'required|numeric|min:0',
+                '*.image_thumb' => 'required',
+                '*.image_original' => 'required',
+                '*.supplier_price.*.price' => 'required|numeric|min:0',
+                '*.supplier_price.*.user_id' => ['required', 'integer',
+                    Rule::exists('users')->where(function ($query)
+                    {
+                        $query->where('identity', User::SUPPLIER_ADMIN)->where('is_disable', User::NO_DISABLE);
+                    }),
+                ]
+            ];
+
+            $validator_json = Validator::make($spec_json_arr, $json_rules);
+            if ($validator_json->passes() && $product->addProduct($request->all()))
+            {
+                $m3result->code = 0;
+                $m3result->messages = '商品添加成功';
+            }
+            else
+            {
+                $m3result->code = 4;
+                $m3result->messages = '商品规格格式不正确';
+                $m3result->data['validator'] = $validator_json->messages();
+                $m3result->data['product'] = $product->messages();
+            }
         }
         else
         {
             $m3result->code = 1;
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
-            $m3result->data['product'] = $product->messages();
             if ($validator->errors()->has('product_thumb'))
             {
                 $m3result->code = 2;
@@ -464,6 +489,16 @@ class ProductController extends Controller
 
         /*验证规则*/
         $rules = [
+            'sort' => 'required|integer|between:-9999,9999',
+            'product_content' => 'string',
+            'category_id' => [
+                'required',
+                'integer',
+                Rule::exists('product_category')->where(function ($query)
+                {
+                    $query->where('category_id', $GLOBALS['request']->input('category_id'));
+                }),
+            ],
             'product_id' => [
                 'required',
                 'integer',
@@ -476,17 +511,7 @@ class ProductController extends Controller
                 'required',
                 Rule::unique('products', 'product_name')->ignore($request->input('product_id'), 'product_id'),
             ],
-            'product_unit' => 'required',
-            'sort' => 'required|integer|between:-9999,9999',
-            'product_content' => 'string',
-            'category_id' => [
-                'required',
-                'integer',
-                Rule::exists('product_category')->where(function ($query)
-                {
-                    $query->where('category_id', $GLOBALS['request']->input('category_id'));
-                }),
-            ],
+            'spec_json' => 'required|json'
         ];
         $validator = Validator::make($request->all(), $rules);
         /*缩略图增加规则*/
@@ -495,27 +520,43 @@ class ProductController extends Controller
             return $request->hasFile('product_thumb');/*return true时才增加验证规则!*/
         });
 
-        if ($validator->passes())
-        {   /*验证通过*/
-            if (!empty(ProductSpec::where('product_id', $request->input('product_id'))->first()))
+        if ($validator->passes() && is_array($spec_json_arr = json_decode($request->input('spec_json'), true)))
+        {
+            /*验证规格*/
+            $json_rules = [
+                '*.spec_name' => 'required',
+                '*.spec_unit' => 'required',
+                '*.product_price' => 'required|numeric|min:0',
+                '*.image_thumb' => 'required',
+                '*.image_original' => 'required',
+                '*.supplier_price.*.price' => 'required|numeric|min:0',
+                '*.supplier_price.*.user_id' => ['required', 'integer',
+                    Rule::exists('users')->where(function ($query)
+                    {
+                        $query->where('identity', User::SUPPLIER_ADMIN)->where('is_disable', User::NO_DISABLE);
+                    }),
+                ]
+            ];
+
+            $validator_json = Validator::make($spec_json_arr, $json_rules);
+            if ($validator_json->passes() && $product->editProduct($request->all()))
             {
-                $product->editProduct($request->all());
                 $m3result->code = 0;
                 $m3result->messages = '商品修改成功';
             }
             else
             {
                 $m3result->code = 4;
-                $m3result->messages = '商品规格不能为空';
+                $m3result->messages = '商品规格格式不正确';
+                $m3result->data['validator'] = $validator_json->messages();
+                $m3result->data['product'] = $product->messages();
             }
-
         }
         else
         {
             $m3result->code = 1;
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
-            $m3result->data['product'] = $product->messages();
             if ($validator->errors()->has('product_thumb'))
             {
                 $m3result->code = 2;

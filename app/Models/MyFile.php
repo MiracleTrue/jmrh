@@ -7,6 +7,7 @@
  */
 
 namespace App\Models;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -15,16 +16,17 @@ use Intervention\Image\Facades\Image;
  * Class MyFile 文件相关的模型
  * @package App\Models
  */
-class MyFile extends CommonModel{
+class MyFile extends CommonModel
+{
 
-    private $thumb_width     = 240;/*缩略图宽度*/
-    private $thumb_height    = 240;/*缩略图高度*/
+    private $thumb_width = 240;/*缩略图宽度*/
+    private $thumb_height = 240;/*缩略图高度*/
 
-    private $brand_width     = 120;/*品牌图宽度*/
-    private $brand_height    = 40 ;/*品牌图高度*/
+    private $brand_width = 120;/*品牌图宽度*/
+    private $brand_height = 40;/*品牌图高度*/
 
-    private $attr_width     = 60;/*属性小图宽度*/
-    private $attr_height    = 60 ;/*属性小图高度*/
+    private $attr_width = 60;/*属性小图宽度*/
+    private $attr_height = 60;/*属性小图高度*/
 
     private $clear_temp_odds = 1000;/*清空temp目录的几率 1000分之1*/
 
@@ -47,19 +49,19 @@ class MyFile extends CommonModel{
      * @param bool $name
      * @return mixed & 返回需要入数据库的文件路径
      */
-    public function uploadOriginal($file , $save_path = false , $name = false)
+    public function uploadOriginal($file, $save_path = false, $name = false)
     {
         $date = Carbon::now();
-        $child_path = 'original/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
+        $child_path = 'original/' . date('Ym', $date->timestamp) . '/' . $date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
 
-        if($save_path && $name)
+        if ($save_path && $name)
         {
-            $path = Storage::disk('local')->putFileAs($save_path , $file , $name.strrchr($file->getClientOriginalName(),'.') );/*自己拼接保持原本上传的后缀名*/
+            $path = Storage::disk('local')->putFileAs($save_path, $file, $name . strrchr($file->getClientOriginalName(), '.'));/*自己拼接保持原本上传的后缀名*/
             //$path = Storage::disk('local')->putFileAs($save_path , $file , $name.'.'.$file->extension());/*Laravel自动判断的后缀名*/
         }
         else
         {
-            $path = Storage::disk('local')->putFile($child_path,$file);
+            $path = Storage::disk('local')->putFile($child_path, $file);
         }
 
         return $path;
@@ -72,23 +74,23 @@ class MyFile extends CommonModel{
      * @param bool $name
      * @return mixed 返回需要入数据库的文件路径
      */
-    public function uploadThumb($file , $save_path = false , $name = false)
+    public function uploadThumb($file, $save_path = false, $name = false)
     {
         $date = Carbon::now();
         $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-        $child_path = 'thumb/'.date('Ym',$date->timestamp).'/'.$date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
+        $child_path = 'thumb/' . date('Ym', $date->timestamp) . '/' . $date->weekOfMonth;/*存储文件格式为 201706 下 1文件夹内  201706代表年月 1代表当前月的第几个星期*/
 
-        if($save_path && $name)
+        if ($save_path && $name)
         {
-            $path = Storage::disk('local')->putFileAs($save_path , $file , $name.strrchr($file->getClientOriginalName(),'.') );/*自己拼接保持原本上传的后缀名*/
+            $path = Storage::disk('local')->putFileAs($save_path, $file, $name . strrchr($file->getClientOriginalName(), '.'));/*自己拼接保持原本上传的后缀名*/
             //$path = Storage::disk('local')->putFileAs($save_path , $file , $name.'.'.$file->extension());/*Laravel自动判断的后缀名*/
         }
         else
         {
-            $path = Storage::disk('local')->putFile($child_path,$file);
+            $path = Storage::disk('local')->putFile($child_path, $file);
         }
 
-        Image::make($prefix_path.$path)->resize($this->thumb_width, $this->thumb_height)->save();
+        Image::make($prefix_path . $path)->resize($this->thumb_width, $this->thumb_height)->save();
 
         return $path;
     }
@@ -136,13 +138,13 @@ class MyFile extends CommonModel{
      */
     public function uploadTemp($file)
     {
-        if(mt_rand(0,$this->clear_temp_odds )== 0)
+        if (mt_rand(0, $this->clear_temp_odds) == 0)
         {
             $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
-            self::truncateFolder($prefix_path.'temp');
+            self::truncateFolder($prefix_path . 'temp');
         }
 
-        $path = Storage::disk('local')->putFile('temp',$file);
+        $path = Storage::disk('local')->putFile('temp', $file);
 
         return self::makeUrl($path);
     }
@@ -161,17 +163,23 @@ class MyFile extends CommonModel{
      * 删除所有子目录及目录中的文件(保留目录)
      * @param $path (物理地址的绝对路径文件夹)
      */
-   public function truncateFolder($path) {
+    public function truncateFolder($path)
+    {
         $op = dir($path);
-        while(false != ($item = $op->read())) {
-            if($item == '.' || $item == '..') {
+        while (false != ($item = $op->read()))
+        {
+            if ($item == '.' || $item == '..')
+            {
                 continue;
             }
-            if(is_dir($op->path.'/'.$item)) {
-                self::truncateFolder($op->path.'/'.$item);
-                rmdir($op->path.'/'.$item);
-            } else {
-                unlink($op->path.'/'.$item);
+            if (is_dir($op->path . '/' . $item))
+            {
+                self::truncateFolder($op->path . '/' . $item);
+                rmdir($op->path . '/' . $item);
+            }
+            else
+            {
+                unlink($op->path . '/' . $item);
             }
         }
     }

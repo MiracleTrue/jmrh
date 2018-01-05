@@ -153,8 +153,6 @@ class User extends CommonModel
         /*转换身份标识文本*/
         $e_users->identity_text = User::identityTransformText($e_users->identity);
         $e_users->create_time = Carbon::createFromTimestamp($e_users->create_time)->toDateTimeString();
-        /*平台运营员关联负责的分类*/
-        $e_users->category_manage = $e_users->hm_product_category_manage;
         return $e_users;
     }
 

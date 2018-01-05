@@ -202,9 +202,7 @@ class UserController extends Controller
     {
         /*初始化*/
         $user = new User();
-        $product = new Product();
         $this->ViewData['user_info'] = array();
-        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(), false);
 
         if ($id > 0)
         {

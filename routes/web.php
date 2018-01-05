@@ -99,20 +99,23 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
         Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
 
-        /*规格*/
-        Route::any('product/spec/add', 'ProductController@ProductSpecAdd')->name('新增商品规格');/*新增商品规格*/
-        Route::any('product/spec/edit', 'ProductController@ProductSpecEdit')->name('编辑商品规格');/*编辑商品规格*/
-        Route::any('product/spec/delete', 'ProductController@ProductSpecDelete')->name('删除商品规格');/*删除商品规格*/
-        /*供应商协议价*/
-        Route::get('product/supplier/price/{spec_id}', 'ProductController@ProductSupplierPriceView')->name('规格协议价列表')->where('spec_id', '[0-9]+');/*规格协议价列表 | product_supplier_price */
-        Route::any('product/supplier/price/add', 'ProductController@ProductSupplierPriceAdd')->name('新增供应商协议价');/*新增供应商协议价*/
-        Route::any('product/supplier/price/edit', 'ProductController@ProductSupplierPriceEdit')->name('编辑供应商协议价');/*编辑供应商协议价*/
-        Route::any('product/supplier/price/delete', 'ProductController@ProductSupplierPriceDelete')->name('删除供应商协议价');/*删除供应商协议价*/
     });
 
 });
 
 
+
+
+
+///*规格*/
+//Route::any('product/spec/add', 'ProductController@ProductSpecAdd')->name('新增商品规格');/*新增商品规格*/
+//Route::any('product/spec/edit', 'ProductController@ProductSpecEdit')->name('编辑商品规格');/*编辑商品规格*/
+//Route::any('product/spec/delete', 'ProductController@ProductSpecDelete')->name('删除商品规格');/*删除商品规格*/
+///*供应商协议价*/
+//Route::get('product/supplier/price/{spec_id}', 'ProductController@ProductSupplierPriceView')->name('规格协议价列表')->where('spec_id', '[0-9]+');/*规格协议价列表 | product_supplier_price */
+//Route::any('product/supplier/price/add', 'ProductController@ProductSupplierPriceAdd')->name('新增供应商协议价');/*新增供应商协议价*/
+//Route::any('product/supplier/price/edit', 'ProductController@ProductSupplierPriceEdit')->name('编辑供应商协议价');/*编辑供应商协议价*/
+//Route::any('product/supplier/price/delete', 'ProductController@ProductSupplierPriceDelete')->name('删除供应商协议价');/*删除供应商协议价*/
 
 
 //Route::get ('no/privilege','IndexController@NoPrivilege');/*没有权限页面*/

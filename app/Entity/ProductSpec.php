@@ -43,11 +43,11 @@ class ProductSpec extends CommonEntity
     protected $dateFormat = 'U';
 
     /**
-     * 一对一关联ProductCategory实体表
+     * 一对多关联SupplierPrice实体表
      */
-//    public function ho_product_category()
-//    {
-//        return $this->hasOne(ProductCategory::class,'category_id','category_id');
-//    }
+    public function hm_supplier_price()
+    {
+        return $this->hasMany(SupplierPrice::class, 'spec_id', 'spec_id');
+    }
 
 }
