@@ -17,7 +17,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
 /**
  * Class Product 产品相关模型
  * @package App\Models
@@ -80,6 +79,7 @@ class Product extends CommonModel
         {
             $e_products->orderBy($value[0], $value[1]);
         }
+        /*是否需要分页数据*/
         if ($is_paginate === true)
         {
             $product_list = $e_products->paginate($_COOKIE['PaginationSize']);
@@ -164,22 +164,25 @@ class Product extends CommonModel
     }
 
     /**
-     * 获取单个商品 (已关联: 分类,规格) (已转换:缩略图路径, 原图路径)
-     * @param $id
+     * 获取单个商品 (已关联: 分类,规格,协议价) (已转换:缩略图路径, 原图路径)
+     * @param $product_id
      * @return mixed
      */
-    public function getProductInfo($id)
+    public function getProductInfo($product_id)
     {
         /*初始化*/
-        $e_products = Products::where('product_id', $id)->first() or die();
+        $e_products = Products::where('product_id', $product_id)->first() or die();
         $e_products->product_thumb = MyFile::makeUrl($e_products->product_thumb);
         $e_products->category_info = $e_products->ho_product_category;
-        $e_products->spec_info = $e_products->hm_product_spec;
+        $e_products->spec_info = ProductSpec::where('product_id', $e_products->product_id)->with('hm_supplier_price')->get();
+
         /*数据过滤*/
         $e_products->spec_info->transform(function ($item)
         {
             $item->image_thumb = MyFile::makeUrl($item->image_thumb);
             $item->image_original = MyFile::makeUrl($item->image_original);
+            $item->supplier_price = $item->hm_supplier_price;
+            unset($item->hm_supplier_price);
             return $item;
         });
         return $e_products;
@@ -475,7 +478,7 @@ class Product extends CommonModel
         $spec_ids = $product_spec->pluck('spec_id')->all();
 
         /*删除图片文件*/
-        $product_spec->each(function ($item) use($my_file)
+        $product_spec->each(function ($item) use ($my_file)
         {
             $my_file->deleteFile($item->image_thumb);
             $my_file->deleteFile($item->image_original);

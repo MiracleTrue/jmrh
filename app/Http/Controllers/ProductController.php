@@ -29,16 +29,16 @@ class ProductController extends Controller
 
     /**
      * View 商品详情展示 页面
-     * @param $id
+     * @param $product_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function ProductShow($id)
+    public function ProductShow($product_id)
     {
         /*初始化*/
         $product = new Product();
         $manage_u = session('ManageUser');
 
-        $this->ViewData['product_info'] = $product->getProductInfo($id);
+        $this->ViewData['product_info'] = $product->getProductInfo($product_id);
         $this->ViewData['manage_user'] = $manage_u;
 
 //        dump($this->ViewData);
@@ -56,7 +56,8 @@ class ProductController extends Controller
         $this->ViewData['category_list'] = array();
 
         $this->ViewData['category_list'] = $product->getProductCategoryList();
-//        dump($this->ViewData);
+
+        //        dump($this->ViewData);
         return view('category_list', $this->ViewData);
     }
 
@@ -317,35 +318,26 @@ class ProductController extends Controller
     }
 
     /**
-     * View 商品添加 页面
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function ProductAddPage()
-    {
-        /*初始化*/
-        $product = new Product();
-        $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
-        $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
-
-        return view('product_add', $this->ViewData);
-    }
-
-    /**
-     * View 商品编辑 页面
+     * View 商品添加与编辑 页面
      * @param $product_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function ProductEditPage($product_id)
+    public function ProductView($product_id = 0)
     {
         /*初始化*/
         $product = new Product();
+        $user = new User();
         $this->ViewData['category_list'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
+        $this->ViewData['supplier_list'] = $user->getSupplierList();
 
-        $this->ViewData['product_info'] = $product->getProductInfo($product_id);
+        if ($product_id > 0)
+        {
+            $this->ViewData['product_info'] = $product->getProductInfo($product_id);
+        }
 
 //        dump($this->ViewData);
-        return view('product_edit', $this->ViewData);
+        return view('product_view', $this->ViewData);
     }
 
     /**
