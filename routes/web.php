@@ -32,6 +32,21 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('product/ajax/list', 'ProductController@ProductAjaxList')->name('获取商品列表');/*获取商品列表*/
     });
 
+    Route::group(['group' => '购物车', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
+    {
+        Route::get('cart/list', 'CartController@CartList')->name('查看购物车');/*查看购物车 | cart_list */
+        Route::any('cart/add', 'CartController@CartAddProduct')->name('加入购物车');/*加入购物车*/
+
+
+//        Route::get('product/list/{category_id?}', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
+//        Route::get('product/add', 'ProductController@ProductAddPage')->name('新增商品页面');/*新增商品页面 | product_add */
+//        Route::get('product/edit/{product_id}', 'ProductController@ProductEditPage')->name('修改商品页面')->where('product_id', '[0-9]+');/*修改商品页面 | product_edit */
+//        Route::any('product/add/submit', 'ProductController@ProductAddSubmit')->name('新增商品');/*新增商品*/
+//        Route::any('product/edit/submit', 'ProductController@ProductEditSubmit')->name('修改商品');/*修改商品*/
+//        Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
+//        Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
+    });
+
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
         Route::get('platform/need/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_need_list */
@@ -92,13 +107,11 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     {
         /*商品*/
         Route::get('product/list/{category_id?}', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
-        Route::get('product/add', 'ProductController@ProductAddPage')->name('新增商品页面');/*新增商品页面 | product_add */
-        Route::get('product/edit/{product_id}', 'ProductController@ProductEditPage')->name('修改商品页面')->where('product_id', '[0-9]+');/*修改商品页面 | product_edit */
+        Route::get('product/view', 'ProductController@ProductView')->name('商品编辑页面');/*商品编辑页面 | product_view */
         Route::any('product/add/submit', 'ProductController@ProductAddSubmit')->name('新增商品');/*新增商品*/
         Route::any('product/edit/submit', 'ProductController@ProductEditSubmit')->name('修改商品');/*修改商品*/
         Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
         Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
-
     });
 
 });
