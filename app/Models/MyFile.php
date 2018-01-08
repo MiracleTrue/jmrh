@@ -43,6 +43,18 @@ class MyFile extends CommonModel
     }
 
     /**
+     * 解码完整资源路径,返回录入数据库路径
+     * @param $internet_url
+     * @return mixed
+     */
+    public static function decodeUrl($internet_url)
+    {
+        $slice_url = config('filesystems.disks.local.url') . '/';
+
+        return str_replace($slice_url, '', $internet_url);
+    }
+
+    /**
      * 上传一个原始文件到original目录 （如有可选参数 指定目录及文件名）
      * @param $file & 表单的file对象
      * @param bool $save_path

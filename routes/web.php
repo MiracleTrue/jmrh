@@ -36,15 +36,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     {
         Route::get('cart/list', 'CartController@CartList')->name('查看购物车');/*查看购物车 | cart_list */
         Route::any('cart/add', 'CartController@CartAddProduct')->name('加入购物车');/*加入购物车*/
-
-
-//        Route::get('product/list/{category_id?}', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
-//        Route::get('product/add', 'ProductController@ProductAddPage')->name('新增商品页面');/*新增商品页面 | product_add */
-//        Route::get('product/edit/{product_id}', 'ProductController@ProductEditPage')->name('修改商品页面')->where('product_id', '[0-9]+');/*修改商品页面 | product_edit */
-//        Route::any('product/add/submit', 'ProductController@ProductAddSubmit')->name('新增商品');/*新增商品*/
-//        Route::any('product/edit/submit', 'ProductController@ProductEditSubmit')->name('修改商品');/*修改商品*/
-//        Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
-//        Route::any('product/delete', 'ProductController@ProductDelete')->name('删除商品');/*删除商品*/
+        Route::any('cart/delete', 'CartController@CartDeleteProducts')->name('删除产品');/*删除产品*/
+        Route::any('cart/number', 'CartController@CartChangeProductNumber')->name('产品改变数量');/*产品改变数量*/
     });
 
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
@@ -105,9 +98,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 
     Route::group(['group' => '商品管理', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
-        /*商品*/
         Route::get('product/list/{category_id?}', 'ProductController@ProductList')->name('商品列表');/*商品列表 | product_list */
-        Route::get('product/view', 'ProductController@ProductView')->name('商品编辑页面');/*商品编辑页面 | product_view */
+        Route::get('product/view/{id?}', 'ProductController@ProductView')->name('商品编辑页面');/*商品编辑页面 | product_view */
         Route::any('product/add/submit', 'ProductController@ProductAddSubmit')->name('新增商品');/*新增商品*/
         Route::any('product/edit/submit', 'ProductController@ProductEditSubmit')->name('修改商品');/*修改商品*/
         Route::any('product/upload/spec/image', 'ProductController@ProductUploadSpecImage')->name('上传规格图片');/*上传规格图片*/
