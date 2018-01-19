@@ -35,8 +35,7 @@ class Platform extends CommonModel
     public function getOrderList($where = array(), $orderBy = array(['orders.create_time', 'desc']))
     {
         /*预加载ORM对象*/
-        $e_orders = Orders::where('orders.is_delete', $this::ORDER_NO_DELETE)
-            ->where($where)->with('ho_users');
+        $e_orders = Orders::where($where)->with('ho_users');
         foreach ($orderBy as $value)
         {
             $e_orders->orderBy($value[0], $value[1]);
@@ -71,8 +70,7 @@ class Platform extends CommonModel
     public function getOrderInfo($id)
     {
         /*初始化*/
-        $e_orders = Orders::where('order_id', $id)
-            ->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $id)->first() or die('order missing');
 
         /*数据过滤*/
         $e_orders->offer_info = $e_orders->hm_order_offer()->where('create_time', '>=', $e_orders->create_time)->get();/*关联报价信息*/
@@ -143,7 +141,7 @@ class Platform extends CommonModel
             DB::transaction(function () use ($arr, $supplier_arr)
             {
                 /*初始化*/
-                $e_orders = Orders::where('order_id', $arr['order_id'])->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                $e_orders = Orders::where('order_id', $arr['order_id'])->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])
                     ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->lockForUpdate()->first();
                 if ($e_orders == false)
                 {
@@ -179,8 +177,7 @@ class Platform extends CommonModel
     {
         /*初始化*/
         $sms = new Sms();
-        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER])->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER])->first() or die('order missing');
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('order_id', $order_id)
             ->where('status', CommonModel::OFFER_AWAIT_PASS)->where('create_time', '>=', $e_orders->create_time)->first() or die('order_offer missing');
 
@@ -253,8 +250,7 @@ class Platform extends CommonModel
      */
     public function inventorySupplyNeed($order_id)
     {
-        $e_orders = Orders::where('order_id', $order_id)->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->where('type', Army::ORDER_TYPE_ARMY)->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION])->first() or die('order missing');
 
         $e_orders->status = CommonModel::ORDER_ALLOCATION_PLATFORM;
         $e_orders->save();
@@ -269,8 +265,7 @@ class Platform extends CommonModel
      */
     public function supplierConfirmReceive($order_id)
     {
-        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_SUPPLIER_SEND])->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [CommonModel::ORDER_SUPPLIER_SEND])->first() or die('order missing');
 
         if ($e_orders->type == Platform::ORDER_TYPE_PLATFORM)
         {
@@ -296,8 +291,7 @@ class Platform extends CommonModel
      */
     public function platformSendArmy($order_id)
     {
-        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM])->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM])->first() or die('order missing');
 
         $e_orders->status = CommonModel::ORDER_SEND_ARMY;
         $e_orders->save();

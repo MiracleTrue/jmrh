@@ -49,6 +49,7 @@ class Cart extends CommonModel
         /*数据过滤*/
         $cart_list->transform(function ($item)
         {
+            $item->product_thumb = MyFile::makeUrl($item->product_thumb);
             $item->user_info = $item->ho_users;
             unset($item->ho_users);
             return $item;

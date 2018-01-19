@@ -7,6 +7,7 @@
  */
 
 namespace App\Entity;
+use App\Models\CommonModel;
 
 /**
  * Class Orders   数据库Eloquent实体模型
@@ -15,6 +16,26 @@ namespace App\Entity;
  */
 class Orders extends CommonEntity
 {
+    /**
+     * 数据模型的启动方法
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * 全局作用域
+         * 商品删除状态
+         * is_delete
+         */
+        static::addGlobalScope('is_delete', function (Builder $builder)
+        {
+            $builder->where('is_delete', CommonModel::ORDER_NO_DELETE);
+        });
+    }
+
     /**
      * 与模型关联的数据表
      *
@@ -47,7 +68,7 @@ class Orders extends CommonEntity
      */
     public function hm_order_offer()
     {
-        return $this->hasMany(OrderOffer::class,'order_id');
+        return $this->hasMany(OrderOffer::class, 'order_id');
     }
 
     /**
@@ -55,7 +76,7 @@ class Orders extends CommonEntity
      */
     public function ho_users()
     {
-        return $this->hasOne(Users::class,'user_id','army_id');
+        return $this->hasOne(Users::class, 'user_id', 'army_id');
     }
 
 }

@@ -51,7 +51,7 @@ class CartController extends Controller
     {
 //        $arr = array(
 //            'product_id' => '143',
-//            'spec_id' => '137',
+//            'spec_id' => '139',
 //            'army_receive_time' => '2018-2-6',
 //            'contact_tel' => '15648974897',
 //            'contact_person' => '张三',

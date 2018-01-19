@@ -72,7 +72,6 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('supplier/send/goods', 'SupplierController@SendGoods')->name('配货');/*供应商配货*/
     });
 
-
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()
     {
         Route::get('log/list/{identity?}/{nick_name?}', 'UserController@LogList')->name('全部日志列表');/*全部日志列表 | log_list */

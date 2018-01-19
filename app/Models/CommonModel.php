@@ -30,21 +30,20 @@ class CommonModel
     /*订单状态:*/
     const ORDER_AWAIT_ALLOCATION = 0;/*待分配*/
     const ORDER_AGAIN_ALLOCATION = 1;/*重新分配*/
-    const ORDER_ALLOCATION_SUPPLIER = 100;/*已分配供应商*/
-    const ORDER_SUPPLIER_SELECTED = 110;/*已选择供应商*/
-    const ORDER_SUPPLIER_SEND = 120;/*供应商已发货*/
-    const ORDER_SUPPLIER_RECEIVE = 130;/*供应商货已到*/
-    const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应*/
+    const ORDER_ALREADY_ALLOCATION = 100;/*已分配*/
+    const ORDER_ALREADY_CONFIRM = 110;/*已确认(等待发货)*/
+    const ORDER_ALREADY_SEND = 120;/*已收货(供应商已全部到货)*/
+    const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应(平台供应全部货物)*/
     const ORDER_SEND_ARMY = 1000;/*已发货到军方*/
     const ORDER_SUCCESSFUL = 9000;/*军方已收货(交易成功) 或 平台已收货(交易成功)*/
 
     /*报价状态:*/
     const OFFER_OVERDUE = -1;/*已超期*/
-    const OFFER_AWAIT_OFFER = 0;/*待报价*/
-    const OFFER_AWAIT_PASS = 1;/*等待通过*/
-    const OFFER_NOT_PASS = 2;/*未通过*/
-    const OFFER_PASSED = 3;/*已通过*/
-    const OFFER_SEND = 4;/*已发货*/
+    const OFFER_AWAIT_REPLY = 0;/*待回复*/
+    const OFFER_AWAIT_CONFIRM = 1;/*待确认*/
+    const OFFER_AWAIT_SEND = 2;/*待发货*/
+    const OFFER_ALREADY_SEND = 3;/*已发货*/
+    const OFFER_ALREADY_REFUSE = 10;/*已拒绝*/
 
     /*报价预警状态*/
     const OFFER_IS_WARNING = 1;/*预警开启*/
@@ -134,5 +133,25 @@ class CommonModel
         return $this->errors;
     }
 
+
+
+//    /*订单状态:*/
+//    const ORDER_AWAIT_ALLOCATION = 0;/*待分配*/
+//    const ORDER_AGAIN_ALLOCATION = 1;/*重新分配*/
+//    const ORDER_ALLOCATION_SUPPLIER = 100;/*已分配供应商*/
+//    const ORDER_SUPPLIER_SELECTED = 110;/*已选择供应商*/
+//    const ORDER_SUPPLIER_SEND = 120;/*供应商已发货*/
+//    const ORDER_SUPPLIER_RECEIVE = 130;/*供应商货已到*/
+//    const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应*/
+//    const ORDER_SEND_ARMY = 1000;/*已发货到军方*/
+//    const ORDER_SUCCESSFUL = 9000;/*军方已收货(交易成功) 或 平台已收货(交易成功)*/
+//
+//    /*报价状态:*/
+//    const OFFER_OVERDUE = -1;/*已超期*/
+//    const OFFER_AWAIT_OFFER = 0;/*待报价*/
+//    const OFFER_AWAIT_PASS = 1;/*等待通过*/
+//    const OFFER_NOT_PASS = 2;/*未通过*/
+//    const OFFER_PASSED = 3;/*已通过*/
+//    const OFFER_SEND = 4;/*已发货*/
 
 }

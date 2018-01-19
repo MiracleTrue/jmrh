@@ -166,7 +166,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])->where('is_delete', CommonModel::ORDER_NO_DELETE)
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('type', [Army::ORDER_TYPE_ARMY, Platform::ORDER_TYPE_PLATFORM])
                         ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
                 }),
             ],
@@ -258,8 +258,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER]);
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('status', [CommonModel::ORDER_ALLOCATION_SUPPLIER]);
                 }),
             ],
             'offer_id' => [
@@ -308,8 +307,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('type', Army::ORDER_TYPE_ARMY)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('type', Army::ORDER_TYPE_ARMY)->whereIn('status', [CommonModel::ORDER_AWAIT_ALLOCATION, CommonModel::ORDER_AGAIN_ALLOCATION]);
                 }),
             ]
         ];
@@ -348,8 +346,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->whereIn('status', [CommonModel::ORDER_SUPPLIER_SEND]);
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('status', [CommonModel::ORDER_SUPPLIER_SEND]);
                 }),
             ]
         ];
@@ -388,8 +385,7 @@ class PlatformController extends Controller
                 'integer',
                 Rule::exists('orders')->where(function ($query)
                 {
-                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('is_delete', CommonModel::ORDER_NO_DELETE)
-                        ->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM]);
+                    $query->where('order_id', $GLOBALS['request']->input('order_id'))->whereIn('status', [CommonModel::ORDER_SUPPLIER_RECEIVE, CommonModel::ORDER_ALLOCATION_PLATFORM]);
                 }),
             ]
         ];

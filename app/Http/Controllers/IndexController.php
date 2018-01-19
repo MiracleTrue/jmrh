@@ -41,30 +41,30 @@ class IndexController extends Controller
         $this->ViewData['iframe_url'] = action('IndexController@Welcome');
         $this->ViewData['manage_user'] = $manage_u;
 
-        /*订单统计*/
-        switch ($manage_u->identity)
-        {
-            case User::ARMY_ADMIN :/*军方*/
-                $this->ViewData['order_status']['待确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AWAIT_ALLOCATION])->count();
-                $this->ViewData['order_status']['已确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AGAIN_ALLOCATION, Army::ORDER_ALLOCATION_SUPPLIER, Army::ORDER_SUPPLIER_SELECTED, Army::ORDER_SUPPLIER_SEND, Army::ORDER_SUPPLIER_RECEIVE, Army::ORDER_ALLOCATION_PLATFORM])->count();
-                $this->ViewData['order_status']['已发货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SEND_ARMY])->count();
-                $this->ViewData['order_status']['已到货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SUCCESSFUL])->count();
-                break;
-            case User::SUPPLIER_ADMIN :/*供应商*/
-                $this->ViewData['order_status']['待报价'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_AWAIT_OFFER)->count();
-                $this->ViewData['order_status']['等待确认'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_AWAIT_PASS)->count();
-                $this->ViewData['order_status']['待发货'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_PASSED)->count();
-                $this->ViewData['order_status']['已发货'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_SEND)->count();
-                $this->ViewData['order_status']['未通过'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_NOT_PASS)->count();
-                $this->ViewData['order_status']['已过期'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_OVERDUE)->count();
-                break;
-            default :/*平台和超级管理员*/
-                $this->ViewData['order_status']['待分配'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_AWAIT_ALLOCATION, Platform::ORDER_AGAIN_ALLOCATION])->count();
-                $this->ViewData['order_status']['已分配'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_ALLOCATION_SUPPLIER, Platform::ORDER_SUPPLIER_SELECTED, Platform::ORDER_SUPPLIER_SEND, Platform::ORDER_SUPPLIER_RECEIVE])->count();
-                $this->ViewData['order_status']['库存供应'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_ALLOCATION_PLATFORM])->count();
-                $this->ViewData['order_status']['交易成功'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_SUCCESSFUL])->count();
-                break;
-        }
+//        /*订单统计*/
+//        switch ($manage_u->identity)
+//        {
+//            case User::ARMY_ADMIN :/*军方*/
+//                $this->ViewData['order_status']['待确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AWAIT_ALLOCATION])->count();
+//                $this->ViewData['order_status']['已确认'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_AGAIN_ALLOCATION, Army::ORDER_ALLOCATION_SUPPLIER, Army::ORDER_SUPPLIER_SELECTED, Army::ORDER_SUPPLIER_SEND, Army::ORDER_SUPPLIER_RECEIVE, Army::ORDER_ALLOCATION_PLATFORM])->count();
+//                $this->ViewData['order_status']['已发货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SEND_ARMY])->count();
+//                $this->ViewData['order_status']['已到货'] = Orders::where('army_id', $manage_u->user_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Army::ORDER_SUCCESSFUL])->count();
+//                break;
+//            case User::SUPPLIER_ADMIN :/*供应商*/
+//                $this->ViewData['order_status']['待报价'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_AWAIT_OFFER)->count();
+//                $this->ViewData['order_status']['等待确认'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_AWAIT_PASS)->count();
+//                $this->ViewData['order_status']['待发货'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_PASSED)->count();
+//                $this->ViewData['order_status']['已发货'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_SEND)->count();
+//                $this->ViewData['order_status']['未通过'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_NOT_PASS)->count();
+//                $this->ViewData['order_status']['已过期'] = OrderOffer::where('user_id', $manage_u->user_id)->where('status', Supplier::OFFER_OVERDUE)->count();
+//                break;
+//            default :/*平台和超级管理员*/
+//                $this->ViewData['order_status']['待分配'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_AWAIT_ALLOCATION, Platform::ORDER_AGAIN_ALLOCATION])->count();
+//                $this->ViewData['order_status']['已分配'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_ALLOCATION_SUPPLIER, Platform::ORDER_SUPPLIER_SELECTED, Platform::ORDER_SUPPLIER_SEND, Platform::ORDER_SUPPLIER_RECEIVE])->count();
+//                $this->ViewData['order_status']['库存供应'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_ALLOCATION_PLATFORM])->count();
+//                $this->ViewData['order_status']['交易成功'] = Orders::where('is_delete', CommonModel::ORDER_NO_DELETE)->whereIn('status', [Platform::ORDER_SUCCESSFUL])->count();
+//                break;
+//        }
 
         /*iframe_url*/
         switch($manage_u->identity)

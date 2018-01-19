@@ -108,7 +108,6 @@ class ArmyController extends Controller
                     {
                         $query->where('order_id', $id)->where('army_id', $manage_u->user_id)
                             ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
-                            ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                             ->where('type', Army::ORDER_TYPE_ARMY);
                     }),
                 ]
@@ -186,7 +185,6 @@ class ArmyController extends Controller
                 {
                     $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
                         ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
-                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->where('type', Army::ORDER_TYPE_ARMY);
                 }),
             ],
@@ -233,7 +231,6 @@ class ArmyController extends Controller
                 Rule::exists('orders')->where(function ($query) use ($manage_u)
                 {
                     $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
-                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->where('status', CommonModel::ORDER_SEND_ARMY);
                 }),
             ]
@@ -275,7 +272,6 @@ class ArmyController extends Controller
                 Rule::exists('orders')->where(function ($query) use ($manage_u)
                 {
                     $query->where('order_id', $GLOBALS['request']->input('order_id'))->where('army_id', $manage_u->user_id)
-                        ->where('is_delete', CommonModel::ORDER_NO_DELETE)
                         ->where('type', Army::ORDER_TYPE_ARMY)
                         ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION);
                 }),

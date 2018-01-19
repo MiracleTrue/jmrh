@@ -34,7 +34,7 @@ class Army extends CommonModel
         /*初始化*/
         $e_orders = new Orders();
         /*预加载ORM对象*/
-        $e_orders = $e_orders->where('orders.is_delete', $this::ORDER_NO_DELETE)->where('orders.type', $this::ORDER_TYPE_ARMY)
+        $e_orders = $e_orders->where('orders.type', $this::ORDER_TYPE_ARMY)
             ->where($where)->with('ho_users');
         foreach ($orderBy as $value)
         {
@@ -64,7 +64,6 @@ class Army extends CommonModel
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
-            ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)->first() or die();
 
         /*数据过滤*/
@@ -123,7 +122,6 @@ class Army extends CommonModel
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $arr['order_id'])
-            ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)
             ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first() or die();
 
@@ -148,7 +146,6 @@ class Army extends CommonModel
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
-            ->where('is_delete', CommonModel::ORDER_NO_DELETE)
             ->where('type', Army::ORDER_TYPE_ARMY)
             ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first();
 
@@ -167,8 +164,7 @@ class Army extends CommonModel
      */
     public function armyConfirmReceive($order_id)
     {
-        $e_orders = Orders::where('order_id', $order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)
-            ->where('status', CommonModel::ORDER_SEND_ARMY)->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->where('status', CommonModel::ORDER_SEND_ARMY)->first() or die('order missing');
 
         $e_orders->status = CommonModel::ORDER_SUCCESSFUL;
         $e_orders->save();

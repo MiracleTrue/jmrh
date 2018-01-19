@@ -61,7 +61,7 @@ class HandleOverdueOffer extends Command
             if ($o_id !== $item->order_id)
             {
                 $o_id = $item->order_id;
-                $e_orders = Orders::where('order_id', $item->order_id)->where('is_delete', CommonModel::ORDER_NO_DELETE)->first();
+                $e_orders = Orders::where('order_id', $item->order_id)->first();
                 $e_orders->offer_info = $e_orders->hm_order_offer;
 
                 //判断order下的所有offer是否是"待报价 或 已过期" ture为条件成立

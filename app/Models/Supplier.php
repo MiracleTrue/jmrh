@@ -32,15 +32,7 @@ class Supplier extends CommonModel
         $e_order_offer = new OrderOffer();
 
         /*预加载ORM对象*/
-        $e_order_offer = $e_order_offer->with(['ho_orders' => function ($query)
-        {
-            $query->where('is_delete', '=', CommonModel::ORDER_NO_DELETE);
-        }, 'ho_users' => function ($query)
-        {
-
-        }
-        ])->where($where);
-
+        $e_order_offer = $e_order_offer->with('ho_orders', 'ho_users')->where($where);
         foreach ($orderBy as $value)
         {
             $e_order_offer->orderBy($value[0], $value[1]);
@@ -93,7 +85,7 @@ class Supplier extends CommonModel
         /*初始化*/
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->first() or die('order_offer missing');
 
-        $e_order_offer->order_info = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
+        $e_order_offer->order_info = $e_order_offer->ho_orders()->first() or die('order missing');
         $e_order_offer->user_info = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
         /*数据过滤*/
         $e_order_offer->status_text = self::offerStatusTransformText($e_order_offer->status);
@@ -119,7 +111,7 @@ class Supplier extends CommonModel
         /*初始化*/
         $sms = new Sms();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_OFFER)->first() or die('order_offer missing');
-        $e_orders = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
+        $e_orders = $e_order_offer->ho_orders()->first() or die('order missing');
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
 
         /*单价方式*/
@@ -150,7 +142,7 @@ class Supplier extends CommonModel
     {
         /*初始化*/
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_PASSED)->first() or die('order_offer missing');
-        $e_orders = $e_order_offer->ho_orders()->where('is_delete', CommonModel::ORDER_NO_DELETE)->first() or die('order missing');
+        $e_orders = $e_order_offer->ho_orders()->first() or die('order missing');
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
 
         /*更新*/

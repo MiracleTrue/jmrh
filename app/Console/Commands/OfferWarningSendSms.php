@@ -49,10 +49,7 @@ class OfferWarningSendSms extends Command
         $e_order_offer = new OrderOffer();
         $sms = new Sms();
         /*预加载ORM对象*/
-        $e_order_offer = $e_order_offer->with(['ho_orders' => function ($query)
-        {
-            $query->where('is_delete', '=', CommonModel::ORDER_NO_DELETE);
-        }])->where('order_offer.status', CommonModel::OFFER_PASSED)->where('order_offer.warning_is_sms', CommonModel::OFFER_NO_SMS)->get();
+        $e_order_offer = $e_order_offer->with('ho_orders')->where('order_offer.status', CommonModel::OFFER_PASSED)->where('order_offer.warning_is_sms', CommonModel::OFFER_NO_SMS)->get();
 
         /*数据过滤*/
         $e_order_offer->each(function ($item) use ($sms)
