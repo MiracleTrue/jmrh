@@ -8,6 +8,7 @@
 
 namespace App\Entity;
 use App\Models\CommonModel;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Orders   数据库Eloquent实体模型
