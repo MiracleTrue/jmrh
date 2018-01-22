@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Army;
+use App\Models\Cart;
 use App\Models\CommonModel;
 use App\Models\Product;
 use App\Models\User;
@@ -82,50 +83,75 @@ class ArmyController extends Controller
     }
 
     /**
-     * View 军方需求添加与编辑 页面
-     * @param $id
+     * View 军方需求发布 页面
+     * @param string $cart_ids 购物车id [5,6,8,18]
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function NeedView($id = 0)
+    public function NeedViewRelease($cart_ids = '')
+    {
+        /*初始化*/
+        $manage_u = session('ManageUser');
+        $cart = new Cart();
+        $where = array();
+        $this->ViewData['cart_order'] = array();
+        $cart_id_arr = collect(explode(',', $cart_ids))->filter()->toArray();
+
+        if (!empty($cart_id_arr))
+        {
+            $rules = [
+                '*' => [
+                    Rule::exists('shopping_cart','cart_id')->where(function ($query) use ($manage_u)
+                    {
+                        $query->where('user_id', $manage_u->user_id);
+                    }),
+                ]
+            ];
+            $validator = Validator::make(array('cart_id_arr' => $cart_id_arr), $rules);
+            if ($validator->passes())
+            {
+                /*加入sql条件购物车所有者id*/
+                array_push($where, ['shopping_cart.user_id', '=', $manage_u->user_id]);
+                $this->ViewData['cart_order'] = $cart->getCartList($where,array(['shopping_cart.create_time', 'desc']),false)->whereIn('cart_id',$cart_id_arr);
+            }
+        }
+        return view('army_need_release', $this->ViewData);
+    }
+
+    /**
+     * View 军方需求编辑 页面
+     * @param $order_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function NeedViewEdit($order_id)
     {
         /*初始化*/
         $manage_u = session('ManageUser');
         $army = new Army();
-        $product = new Product();
         $this->ViewData['order_info'] = array();
-        $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
-        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
+        /*验证规则*/
+        $rules = [
+            'order_id' => [
+                'required',
+                'integer',
+                Rule::exists('orders')->where(function ($query) use ($order_id, $manage_u)
+                {
+                    $query->where('order_id', $order_id)->where('army_id', $manage_u->user_id)
+                        ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
+                        ->where('type', Army::ORDER_TYPE_ARMY);
+                }),
+            ]
+        ];
+        $validator = Validator::make(array('order_id' => $order_id), $rules);
 
-        /*是否修改需求*/
-        if ($id > 0)
-        {
-            /*验证规则*/
-            $rules = [
-                'order_id' => [
-                    'required',
-                    'integer',
-                    Rule::exists('orders')->where(function ($query) use ($id, $manage_u)
-                    {
-                        $query->where('order_id', $id)->where('army_id', $manage_u->user_id)
-                            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)
-                            ->where('type', Army::ORDER_TYPE_ARMY);
-                    }),
-                ]
-            ];
-            $validator = Validator::make(array('order_id' => $id), $rules);
-
-            if ($validator->passes() || $manage_u->identity = User::ADMINISTRATOR)
-            {   /*验证通过*/
-                $this->ViewData['order_info'] = $army->getOrderInfo($id);
-            }
-            else
-            {
-                return CommonModel::noPrivilegePrompt(request());/*没有权限*/
-            }
+        if ($validator->passes() || $manage_u->identity = User::ADMINISTRATOR)
+        {   /*验证通过*/
+            $this->ViewData['order_info'] = $army->getOrderInfo($order_id);
         }
-
-//        dump($this->ViewData);
-        return view('army_need_view', $this->ViewData);
+        else
+        {
+            return CommonModel::noPrivilegePrompt(request());/*没有权限*/
+        }
+        return view('army_need_edit', $this->ViewData);
     }
 
     /**
@@ -141,24 +167,62 @@ class ArmyController extends Controller
 
         /*验证规则*/
         $rules = [
-            'product_name' => 'required',
-            'product_number' => 'required|integer|min:1',
-            'product_unit' => 'required',
-            'army_receive_time' => 'required|date|after:now'
+            'order_json' => 'required|json'
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $army->releaseNeed($request->all()))
-        {   /*验证通过并且处理成功*/
-            $m3result->code = 0;
-            $m3result->messages = '军方需求发布成功';
+        if ($validator->passes() && is_array($order_json_arr = json_decode($request->input('order_json'), true)))
+        {
+            /*验证json数据有效性*/
+            $json_rules = [
+                '*.product_number' => 'required|numeric|min:0.01',
+                '*.army_receive_time' => 'required|date|after:now',
+                '*.army_contact_person' => 'sometimes|max:45',
+                '*.army_contact_tel' => 'sometimes|max:15',
+                '*.army_note' => 'sometimes|max:255',
+                '*.product_name' => 'required',
+                '*.spec_name' => 'required',
+            ];
+            $validator_json = Validator::make($order_json_arr, $json_rules);
+
+            if ($validator_json->passes())
+            {   /*验证通过*/
+
+                /*事物*/
+                try
+                {
+                    DB::transaction(function () use ($order_json_arr, $army, $m3result)
+                    {
+                        foreach ($order_json_arr as $item)
+                        {
+                            if (!$army->releaseNeed($item))
+                                throw new \Exception('Transaction Exception');
+                        }
+                        $m3result->code = 0;
+                        $m3result->messages = '军方需求发布成功';
+                    });
+
+                } catch (\Exception $e)
+                {
+                    $m3result->code = 3;
+                    $m3result->data['army'] = $army->messages();
+                    $m3result->data['validator'] = $validator_json->messages();
+                    $m3result->messages = $m3result->data['army']['messages'];
+                }
+
+            }
+            else
+            {
+                $m3result->code = 2;
+                $m3result->messages = '数据验证失败';
+                $m3result->data['validator'] = $validator_json->messages();
+            }
         }
         else
         {
             $m3result->code = 1;
-            $m3result->messages = '数据验证失败';
+            $m3result->messages = '请传入Json数据';
             $m3result->data['validator'] = $validator->messages();
-            $m3result->data['army'] = $army->messages();
         }
 
         return $m3result->toJson();
@@ -175,7 +239,6 @@ class ArmyController extends Controller
         $manage_u = session('ManageUser');
         $army = new Army();
         $m3result = new M3Result();
-
         /*验证规则*/
         $rules = [
             'order_id' => [
@@ -188,10 +251,13 @@ class ArmyController extends Controller
                         ->where('type', Army::ORDER_TYPE_ARMY);
                 }),
             ],
+            'product_number' => 'required|numeric|min:0.01',
+            'army_receive_time' => 'required|date|after:now',
+            'army_contact_person' => 'sometimes|max:45',
+            'army_contact_tel' => 'sometimes|max:15',
+            'army_note' => 'sometimes|max:255',
             'product_name' => 'required',
-            'product_number' => 'required|integer|min:1',
-            'product_unit' => 'required',
-            'army_receive_time' => 'required|date|after:now'
+            'spec_name' => 'required',
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -206,6 +272,11 @@ class ArmyController extends Controller
             $m3result->messages = '数据验证失败';
             $m3result->data['validator'] = $validator->messages();
             $m3result->data['army'] = $army->messages();
+            if ($m3result->data['army']['code'] == 1)
+            {
+                $m3result->code = 2;
+                $m3result->messages = $m3result->data['army']['messages'];
+            }
         }
 
         return $m3result->toJson();

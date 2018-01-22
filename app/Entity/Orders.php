@@ -28,7 +28,7 @@ class Orders extends CommonEntity
 
         /**
          * 全局作用域
-         * 商品删除状态
+         * 订单删除状态
          * is_delete
          */
         static::addGlobalScope('is_delete', function (Builder $builder)

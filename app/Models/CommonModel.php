@@ -8,12 +8,7 @@
 
 namespace App\Models;
 
-use App\Entity\OrderOffer;
-use App\Entity\Orders;
 use App\Tools\M3Result;
-use Illuminate\Http\File;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class CommonModel 基础模型
@@ -27,12 +22,16 @@ class CommonModel
     const ORDER_IS_DELETE = 1;
     const ORDER_NO_DELETE = 0;
 
+    /*订单质检状态:  1.已质检  0.未质检*/
+    const ORDER_IS_QUALITY_CHECK = 1;
+    const ORDER_NO_QUALITY_CHECK = 0;
+
     /*订单状态:*/
     const ORDER_AWAIT_ALLOCATION = 0;/*待分配*/
     const ORDER_AGAIN_ALLOCATION = 1;/*重新分配*/
     const ORDER_ALREADY_ALLOCATION = 100;/*已分配*/
     const ORDER_ALREADY_CONFIRM = 110;/*已确认(等待发货)*/
-    const ORDER_ALREADY_SEND = 120;/*已收货(供应商已全部到货)*/
+    const ORDER_ALREADY_RECEIVE = 120;/*已收货(供应商已全部到货)*/
     const ORDER_ALLOCATION_PLATFORM = 200;/*库存供应(平台供应全部货物)*/
     const ORDER_SEND_ARMY = 1000;/*已发货到军方*/
     const ORDER_SUCCESSFUL = 9000;/*军方已收货(交易成功) 或 平台已收货(交易成功)*/
@@ -43,6 +42,7 @@ class CommonModel
     const OFFER_AWAIT_CONFIRM = 1;/*待确认*/
     const OFFER_AWAIT_SEND = 2;/*待发货*/
     const OFFER_ALREADY_SEND = 3;/*已发货*/
+    const OFFER_ALREADY_RECEIVE = 4;/*已收货*/
     const OFFER_ALREADY_REFUSE = 10;/*已拒绝*/
 
     /*报价预警状态*/
@@ -81,20 +81,23 @@ class CommonModel
             case $this::OFFER_OVERDUE:
                 $text = '已超期';
                 break;
-            case $this::OFFER_AWAIT_OFFER:
-                $text = '待报价';
+            case $this::OFFER_AWAIT_REPLY:
+                $text = '待回复';
                 break;
-            case $this::OFFER_AWAIT_PASS:
-                $text = '等待通过';
+            case $this::OFFER_AWAIT_CONFIRM:
+                $text = '待确认';
                 break;
-            case $this::OFFER_NOT_PASS:
-                $text = '未通过';
+            case $this::OFFER_AWAIT_SEND:
+                $text = '待发货';
                 break;
-            case $this::OFFER_PASSED:
-                $text = '已通过';
-                break;
-            case $this::OFFER_SEND:
+            case $this::OFFER_ALREADY_SEND:
                 $text = '已发货';
+                break;
+            case $this::OFFER_ALREADY_RECEIVE:
+                $text = '已收货';
+                break;
+            case $this::OFFER_ALREADY_REFUSE:
+                $text = '已拒绝';
                 break;
         }
         return $text;
@@ -132,8 +135,6 @@ class CommonModel
     {
         return $this->errors;
     }
-
-
 
 //    /*订单状态:*/
 //    const ORDER_AWAIT_ALLOCATION = 0;/*待分配*/

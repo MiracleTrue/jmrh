@@ -68,6 +68,7 @@ class Army extends CommonModel
 
         /*数据过滤*/
         $e_orders->status_text = self::orderStatusTransformText($e_orders->status);
+        $e_orders->quality_check_text = self::orderQualityCheckTransformText($e_orders->quality_check);
         $e_orders->create_time = Carbon::createFromTimestamp($e_orders->create_time)->toDateTimeString();
         $e_orders->army_receive_time = Carbon::createFromTimestamp($e_orders->army_receive_time)->toDateTimeString();
         return $e_orders;
@@ -80,6 +81,12 @@ class Army extends CommonModel
      */
     public function releaseNeed($arr)
     {
+        if (!$product = Product::checkProduct($arr['product_name'], $arr['spec_name']))
+        {
+            $this->errors['code'] = 1;
+            $this->errors['messages'] = '产品不存在';
+            return false;
+        }
         /*初始化*/
         $user = new User();
         $sms = new Sms();
@@ -89,27 +96,30 @@ class Army extends CommonModel
         $e_orders->type = self::ORDER_TYPE_ARMY;
         $e_orders->status = $this::ORDER_AWAIT_ALLOCATION;
         $e_orders->order_sn = $this->makeOrderSn();
-        $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
-        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        $e_orders->product_thumb = $product->product_thumb;
+        $e_orders->product_name = $product->product_name;
+        $e_orders->spec_name = $product->spec_info->spec_name;
+        $e_orders->spec_unit = $product->spec_info->spec_unit;
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
-        $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
+        $e_orders->army_contact_person = !empty($arr['army_contact_person']) ? $arr['army_contact_person'] : '';
+        $e_orders->army_contact_tel = !empty($arr['army_contact_tel']) ? $arr['army_contact_tel'] : '';
+        $e_orders->army_note = !empty($arr['army_note']) ? $arr['army_note'] : '';
+        $e_orders->platform_allocation_number = 0;
         $e_orders->platform_receive_time = 0;
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
         $e_orders->create_time = Carbon::now()->timestamp;
+        $e_orders->quality_check = $this::ORDER_NO_QUALITY_CHECK;
         $e_orders->is_delete = $this::ORDER_NO_DELETE;
         $e_orders->army_id = session('ManageUser')->user_id;
-
         $e_orders->save();
 
-        /*发送短信给所有平台运营员*/
-        $platform_users = $user->getPlatformUserList();
-        $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $platform_users_numbers_str);
-        //测试log
-        Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
-
-
-        User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
+//        /*发送短信给所有平台运营员*/
+//        $platform_users = $user->getPlatformUserList();
+//        $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
+//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $platform_users_numbers_str);
+//        //测试log
+//        Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
+        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
         return true;
     }
 
@@ -120,20 +130,31 @@ class Army extends CommonModel
      */
     public function editNeed($arr)
     {
+        if (!$product = Product::checkProduct($arr['product_name'], $arr['spec_name']))
+        {
+            $this->errors['code'] = 1;
+            $this->errors['messages'] = '产品不存在';
+            return false;
+        }
         /*初始化*/
         $e_orders = Orders::where('order_id', $arr['order_id'])
             ->where('type', Army::ORDER_TYPE_ARMY)
             ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first() or die();
 
         /*修改*/
-        $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
-        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
+        $e_orders->order_sn = $this->makeOrderSn();
+        $e_orders->product_thumb = $product->product_thumb;
+        $e_orders->product_name = $product->product_name;
+        $e_orders->spec_name = $product->spec_info->spec_name;
+        $e_orders->spec_unit = $product->spec_info->spec_unit;
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
-        $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
+        $e_orders->army_contact_person = !empty($arr['army_contact_person']) ? $arr['army_contact_person'] : '';
+        $e_orders->army_contact_tel = !empty($arr['army_contact_tel']) ? $arr['army_contact_tel'] : '';
+        $e_orders->army_note = !empty($arr['army_note']) ? $arr['army_note'] : '';
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
 
         $e_orders->save();
-        User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
+        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
         return true;
     }
 
@@ -153,7 +174,7 @@ class Army extends CommonModel
         $e_orders->is_delete = $this::ORDER_IS_DELETE;
 
         $e_orders->save();
-        User::userLog($e_orders->product_name . "($e_orders->product_number $e_orders->product_unit)");
+        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
         return true;
     }
 
@@ -168,8 +189,28 @@ class Army extends CommonModel
 
         $e_orders->status = CommonModel::ORDER_SUCCESSFUL;
         $e_orders->save();
-        User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 订单号: " . $e_orders->order_sn);
+        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
         return true;
+    }
+
+    /**
+     * 返回军方视角 订单质检状态 的文本名称
+     * @param $status
+     * @return string
+     */
+    public function orderQualityCheckTransformText($status)
+    {
+        $text = '';
+        switch ($status)
+        {
+            case $this::ORDER_NO_QUALITY_CHECK:
+                $text = '未质检';
+                break;
+            case $this::ORDER_IS_QUALITY_CHECK:
+                $text = '已质检';
+                break;
+        }
+        return $text;
     }
 
     /**
@@ -188,16 +229,13 @@ class Army extends CommonModel
             case $this::ORDER_AGAIN_ALLOCATION:
                 $text = '已确认';
                 break;
-            case $this::ORDER_ALLOCATION_SUPPLIER:
+            case $this::ORDER_ALREADY_ALLOCATION:
                 $text = '已确认';
                 break;
-            case $this::ORDER_SUPPLIER_SELECTED:
+            case $this::ORDER_ALREADY_CONFIRM:
                 $text = '已确认';
                 break;
-            case $this::ORDER_SUPPLIER_SEND:
-                $text = '已确认';
-                break;
-            case $this::ORDER_SUPPLIER_RECEIVE:
+            case $this::ORDER_ALREADY_RECEIVE:
                 $text = '已确认';
                 break;
             case $this::ORDER_ALLOCATION_PLATFORM:

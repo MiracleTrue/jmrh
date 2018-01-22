@@ -57,7 +57,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
     {
         Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('需求列表');/*军方需求列表 | army_need_list */
-        Route::get('army/need/view/{id?}', 'ArmyController@NeedView')->name('查看需求');/*军方查看需求 | army_need_view */
+        Route::get('army/need/view/release/{cart_ids?}', 'ArmyController@NeedViewRelease')->name('发布需求页面');/*军方发布需求 | army_need_release */
+        Route::get('army/need/view/edit/{order_id}', 'ArmyController@NeedViewEdit')->name('修改需求页面');/*军方编辑需求 | army_need_edit */
         Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布需求');/*军方发布需求*/
         Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/
         Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/

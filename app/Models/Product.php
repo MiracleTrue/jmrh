@@ -34,6 +34,28 @@ class Product extends CommonModel
     const  CATEGORY_NO_INDEX = 0;
 
     /**
+     * 检查产品及规格有效性
+     * @param $product_name
+     * @param $spec_name
+     * @return bool || 查找到的产品数据
+     */
+    public static function checkProduct($product_name, $spec_name)
+    {
+        /*初始化*/
+        $e_products = Products::where('product_name', $product_name)->first();
+        if (empty($e_products))
+        {
+            return false;
+        }
+        $e_products->spec_info = ProductSpec::where('product_id',$e_products->product_id)->where('spec_name',$spec_name)->first();
+        if (!empty($e_products->spec_info))
+        {
+            return $e_products;
+        }
+        return false;
+    }
+
+    /**
      * 获取首页商品分类楼层 (已关联: 商品) 默认排序:排序值
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
