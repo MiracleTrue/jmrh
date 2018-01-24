@@ -56,6 +56,7 @@ class CartController extends Controller
 //            'contact_tel' => '15648974897',
 //            'contact_person' => '张三',
 //            'note' => '000',
+//            'product_number' => 10
 //
 //        );
 //        $request->merge($arr);
@@ -72,6 +73,7 @@ class CartController extends Controller
             'contact_tel' => 'required',
             'note' => 'string',
             'product_id' => 'required|integer|exists:products,product_id',
+            'product_number' => 'required|numeric',
             'spec_id' => ['required', 'integer',
                 Rule::exists('product_spec', 'spec_id')->where(function ($query) use ($request)
                 {
@@ -81,7 +83,7 @@ class CartController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $cart->addProductToCart($manage_u->user_id, $request->input('product_id'), $request->input('spec_id'), $request->all()))
+        if ($validator->passes() && $cart->addProductToCart($manage_u->user_id, $request->input('product_id'), $request->input('spec_id'), $request->input('product_number'), $request->all()))
         {   /*验证通过并且处理成功*/
             $m3result->code = 0;
             $m3result->messages = '加入购物车成功';

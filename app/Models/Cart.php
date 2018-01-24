@@ -62,10 +62,11 @@ class Cart extends CommonModel
      * @param $user_id
      * @param $product_id
      * @param $spec_id
+     * @param $product_number
      * @param array $extra
      * @return bool
      */
-    public function addProductToCart($user_id, $product_id, $spec_id, $extra = array())
+    public function addProductToCart($user_id, $product_id, $spec_id, $product_number, $extra = array())
     {
         /*初始化*/
         $product = new Product();
@@ -80,7 +81,8 @@ class Cart extends CommonModel
 
             if ($check_data != null)
             {
-                $check_data->increment('product_number');
+                $check_data->product_number = bcadd($check_data->product_number, $product_number,2);
+                $check_data->save();
             }
             else
             {
@@ -88,7 +90,7 @@ class Cart extends CommonModel
                 /*添加*/
                 $e_shopping_cart->user_id = $user_id;
                 $e_shopping_cart->product_name = $goods->product_name;
-                $e_shopping_cart->product_number = 1;
+                $e_shopping_cart->product_number = $product_number;
                 $e_shopping_cart->product_thumb = MyFile::decodeUrl($goods->product_thumb);
                 $e_shopping_cart->spec_name = $spec->spec_name;
                 $e_shopping_cart->spec_unit = $spec->spec_unit;
