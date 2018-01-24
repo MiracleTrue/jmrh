@@ -49,17 +49,17 @@ class CartController extends Controller
      */
     public function CartAddProduct(Request $request)
     {
-        $arr = array(
-            'product_id' => '143',
-            'spec_id' => '139',
-            'army_receive_time' => '2018-2-6',
+//        $arr = array(
+//            'product_id' => '143',
+//            'spec_id' => '139',
+//            'army_receive_time' => '2018-2-6',
 //            'contact_tel' => '15648974897',
 //            'contact_person' => '张三',
 //            'note' => null,
-            'product_number' => 10
-
-        );
-        $request->merge($arr);
+//            'product_number' => 10
+//
+//        );
+//        $request->merge($arr);
 
         /*初始化*/
         $cart = new Cart();
