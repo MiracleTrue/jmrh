@@ -49,17 +49,17 @@ class CartController extends Controller
      */
     public function CartAddProduct(Request $request)
     {
-//        $arr = array(
-//            'product_id' => '143',
-//            'spec_id' => '139',
-//            'army_receive_time' => '2018-2-6',
+        $arr = array(
+            'product_id' => '143',
+            'spec_id' => '139',
+            'army_receive_time' => '2018-2-6',
 //            'contact_tel' => '15648974897',
 //            'contact_person' => '张三',
-//            'note' => '000',
-//            'product_number' => 10
-//
-//        );
-//        $request->merge($arr);
+//            'note' => null,
+            'product_number' => 10
+
+        );
+        $request->merge($arr);
 
         /*初始化*/
         $cart = new Cart();
@@ -69,9 +69,9 @@ class CartController extends Controller
         /*验证规则*/
         $rules = [
             'army_receive_time' => 'required|date|after:now',
-            'contact_person' => 'required',
-            'contact_tel' => 'required',
-            'note' => 'string',
+            'contact_person' => 'nullable|string',
+            'contact_tel' => 'nullable|string',
+            'note' => 'nullable|string',
             'product_id' => 'required|integer|exists:products,product_id',
             'product_number' => 'required|numeric',
             'spec_id' => ['required', 'integer',
