@@ -96,7 +96,7 @@ $(".refresh").on("click",function(){
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['920px', '700px'],
-						content: '{{url('product/edit')}}'+'/'+product_id
+						content: '{{url('product/view')}}'+'/'+product_id
 					});
 		
 		
@@ -150,7 +150,7 @@ $(".refresh").on("click",function(){
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
 						area: ['920px', '700px'],
-						content: '{{url('product/add')}}'
+						content: '{{url('product/view')}}'
 					});
 				});
 			});

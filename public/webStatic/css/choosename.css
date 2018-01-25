@@ -54,7 +54,7 @@
 				border-top: 1px solid #dddddd ;
 				position: relative;
 			}
-			.productinfo ul{
+			.productinfo .nameul{
 				overflow: hidden;
 				height: 220px;
 				margin-top: 30px;

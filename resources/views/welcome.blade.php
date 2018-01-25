@@ -8,23 +8,26 @@
 @endsection
 @section('content')
     <section style="position: relative;">
-        <div class="floor" style="position: fixed;right: 6%;top: 14%;width: 5%;height: 80%;">
+        <div class="floor" style="position: fixed;right: 6%;top: 14%;width: 6%;height: 80%;">
             {{--<a href="#floor1"><img src="img/F1.png" alt="" /></a>--}}
             {{--<a href="#floor2"><img src="img/F2.png" alt="" /></a>--}}
             {{--<a href="#floor3"><img src="img/F3.png" alt="" /></a>--}}
             {{--<a href="#floor4"><img src="img/F4.png" alt="" /></a>--}}
            {{--  <a href="#floor1"><img src="{{asset('webStatic/images/F1.png')}}" alt="" /></a>--}}
-           
+           @foreach($product_list as $key => $items)
+           <a style="text-decoration:none;margin-top:6px" ><span class="floor_span" style="background:'+bcolor+'">{{$items['category_name']}}</span></a>
+           @endforeach
         </div>
  		@foreach($product_list as $key => $item)
         <div class="f1" id="floor{{$key}}">
             <div class="floor_div">
                 <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">{{$item['category_name']}}</span>
-               <!-- <ul class="head">
+              {{--  <!-- <ul class="head">
                 	@foreach($item['labels'] as $label)
                     <li>{{$label}}</li>
                     @endforeach
                 </ul>-->
+                --}}
                 </p>
             </div>
 
@@ -58,16 +61,14 @@
     	$(function(){
     	
     	var spanColor=['#FF433A','#08ad00','#ffea95','#fe8d01'];	
-  
+	 
+	  for(var i=0;i<$(".floor a").length;i++){
+	  		var bcolor=spanColor[i%4];
+	  	$(".floor a").eq(i).attr("href","#floor"+i);
+	  	$(".floor a span").eq(i).css("background",bcolor);
+	  }
     	
-	    	for(var i=0;i<$(".f1").length;i++){
-	    		var bcolor=spanColor[i%4];
-	    		var fNum=i+1;
-	    		$(".floor").append('<a href="#floor'+i+'" style="text-decoration:none;margin-top:6px" ><span class="floor_span" style="background:'+bcolor+'">F'+fNum+'</span></a>')
-	    		
-	    		$(".floor_div").eq(i).prepend('<span class="floor_spansmall" style="background:'+bcolor+'">F'+fNum+'</span>');
-	    		
-	    	}
+	    	
 	    /*控制图片大小*/
 	   	var imgWidth=$(".proudut_img").width();
 	   	$(".proudut_img").height(imgWidth);
@@ -106,11 +107,11 @@
     	$(function(){
     		var floora= $(".floor a").width();
     	/*console.log(floora);*/
-    	$(".floor a").height(floora);
-    		$(".floor a span").height(floora);
+    	$(".floor a").height(floora/2);
+    		$(".floor a span").height(floora/2);
     	/*	console.log(floora+"px")*/
-    		$(".floor a span").css("line-height",floora+"px");
-    		$(".floor a span").css("font-size",floora/2+"px")
+    		$(".floor a span").css("line-height",floora/2+"px");
+    		$(".floor a span").css("font-size",floora/4.5+"px")
     	})
     </script>
     

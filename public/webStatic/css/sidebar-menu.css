@@ -117,3 +117,10 @@
 .sidebar-menu .hovera{
 		color: #fe7e01 !important;
 }
+.footimg{
+	height: 434px;
+	display: block;
+	width: 200px;
+	background:url(images/logofooter.png) no-repeat;
+
+}

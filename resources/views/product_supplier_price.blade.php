@@ -11,26 +11,27 @@
 @endsection
 <div class="layer3">
 	<div class="addguige">增加</div>
-	<div class="seccendstep_div1">
-		<form class="addxieyi" action="" method="post">
+		@foreach($price_list as $items)
+			<div class="seccendstep_div1">
+				<form class="addxieyi" action="" method="post">
+					
+					<p><span>供货商</span>
+				<select name="user_id">
+					@foreach($supplier_list as $item)
+						<option value="{{$item['user_id']}}" @if($item['user_id'] == $price_list['user_id']) selected="selected" @endif>{{$item['nick_name']}}</option>
+					@endforeach
+				</select>
+				<span>协议价</span><input type="text" name="price" id="" value="{{$items['price']}}" />
+				<span class="deleguige" onclick="ProductSpecDelete(this,'{{$items['price_id']}}')">删除</span>
+				<input type="submit" class="xieyisubmit" name="" id="" value="确认" onclick="xieyiform(this)" />
+				</p>
 			
-			<p><span>供货商</span>
-		<select name="user_id">
-			@foreach($supplier_list as $item)
-				<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
-			@endforeach
-		</select>
-		<span>公开价</span><input type="text" name="price" id="" value="" />
-		<span class="deleguige" onclick="ProductSpecDelete(this)">删除</span>
-		<input type="submit" class="xieyisubmit" name="" id="" value="确认" onclick="xieyiform(this)" />
-		</p>
-	
-	<input type="hidden" name="spec_id" id="" value="{{$spec_id}}" />
-		
-		</form>
-	
-	</div>
-	
+			<input type="hidden" name="spec_id" id="" value="{{$spec_id}}" />
+				
+				</form>
+			
+		</div>
+		@endforeach
 </div>
 @section('content')
 @endsection
@@ -42,8 +43,9 @@
 	$(".addguige").click(function(){
 			      		$(".layer3").append('<div class="seccendstep_div1"><form class="addxieyi" action="" method="post"><p><span>供货商</span><select name="user_id">@foreach($supplier_list as $item)<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>@endforeach</select><span >公开价</span><input type="text" name="price" id="" value="" /><span class="deleguige" onclick="ProductSpecDelete(this)">删除</span><input type="submit" class="xieyisubmit" name="" id="" value="确认" onclick="xieyiform(this)" /></p><input type="hidden" name="spec_id" id="" value="{{$spec_id}}" /></form></div>')
 			      	
-			      	$(".deleguige").on("click",function(){
-						$(this).parent().parent().remove();
+			     	$(".deleguige").on("click",function(){
+			      	
+						$(this).parent().parent().parent().remove();
 					})
 			      	
 			      	})
@@ -106,10 +108,31 @@
 	   }
 	      	 	      	
 		/*删除供应商协议价*/
-			function ProductSpecDelete(elm){
-		  		var price_id = $(elm).parent().parent().attr("price_id");
+			function ProductSpecDelete(elm,price_id){
+		
+		  		var price_id1 = $(elm).parent().parent().attr("price_id");
 		  	/*	console.log(price_id);*/
-		  			if(price_id){
+		  			if(price_id1){
+		  				$.ajax({
+				  			  url: '{{url("product/supplier/price/delete")}}',
+						      type: 'POST',
+						      dataType: 'JSON',
+						      data:{
+						        price_id:price_id1,
+						        _token:'{{csrf_token()}}'
+						      },
+						      success:function(res){
+						      	console.log(res);
+						      	if(res.code==0){
+						      		 layer.msg(res.messages, {icon: 1, time: 1000},function(){
+						      	 	$(elm).parent().parent().parent().remove();
+						      	 });
+						      	}
+						      	
+						      }
+				  		});
+		  			}else{
+		  				/*$(elm).parent().parent().parent().remove();*/
 		  				$.ajax({
 				  			  url: '{{url("product/supplier/price/delete")}}',
 						      type: 'POST',
@@ -122,18 +145,17 @@
 						      	console.log(res);
 						      	if(res.code==0){
 						      		 layer.msg(res.messages, {icon: 1, time: 1000},function(){
-						      	 	$(elm).parent().remove();
+						      	 	$(elm).parent().parent().parent().remove();
 						      	 });
 						      	}
 						      	
 						      }
 				  		});
-		  			}else{
-		  				$(elm).parent().remove();
 		  			}
 		  		
 		  	}
-        	
+        /*编辑供应商协议价*/	
+        
 		
 </script>
 

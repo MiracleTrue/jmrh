@@ -35,17 +35,21 @@
 			<table>
 				<tbody>
 					<tr class="tr1">
-						<th style="width: 9%;"><span>序号</span></th>
-							@if($manage_user['identity'] == '1')
+						<th style="width: 5%;"><span>序号</span></th>
+						<!--	@if($manage_user['identity'] == '1')
 							<th style="width: 8%;"><span>军方名称</span></th>
-							@endif
+							@endif-->
 						<th style="width: 10%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
-						<th style="width: 8%;"><span>下单时间</span></th>
+						<th style="width: 8%;"><span>规格</span></th>
 						<th style="width: 8%;"><span>到货时间</span></th>
 						<!--<th style="width: 8%;"><span style="">价格</span></th>-->
-						<th style="width: 12%;"><span style="">数量</span></th>
-						<th style="width: 13%;"><span style="">状态</span></th>
+						<th style="width: 9%;"><span style="">数量</span></th>
+						<th style="width: 8%;"><span style="">联系人</span></th>
+						<th style="width: 8%;"><span style="">电话</span></th>
+						<th style="width: 6%;"><span style="">备注</span></th>
+						<th style="width: 7%;"><span style="">状态</span></th>
+						<th style="width: 7%;"><span style="">质检状态</span></th>
 						<th ><span style="">操作</span></th>
 					</tr>
 					
@@ -53,16 +57,19 @@
             
             <tr>
                 <td>{{$item['order_id']}}</td>
-                @if($manage_user['identity'] == '1')
-							
+                <!--@if($manage_user['identity'] == '1')
 						<td>{{$item['army_info']['nick_name']}}</td>
-							@endif
+				@endif-->
                 <td>{{$item['order_sn']}}</td>
                 <td>{{$item['product_name']}}</td>
-                <td>{{$item['create_time']}}</td>
+                <td>{{$item['spec_name']}}</td>
                 <td>{{$item['army_receive_time']}}</td>
                 <!-- <td>{{$item['product_price']}}元</td>-->
-                <td>{{$item['product_number']}}{{$item['product_unit']}}</td>
+                <td>{{$item['product_number']}}{{$item['spec_unit']}}</td>
+                <td>{{$item['army_contact_person']}}</td>
+                <td>{{$item['army_contact_tel']}}</td> 
+                <td><a>点击查看</a></td>
+                <td>{{$item['status_text']}}</td>
                 <td>{{$item['status_text']}}</td>
                 <td class="blueWord">
                 	@if($item['status'] == '0')
@@ -200,8 +207,8 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['965px' , '550px'],
-		      content: '{{url('army/need/view')}}'
+		      area : ['965px' , '850px'],
+		      content: '{{url('army/need/view/release')}}'
 		    });
 		  });
 		});
