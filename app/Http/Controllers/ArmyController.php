@@ -92,8 +92,11 @@ class ArmyController extends Controller
         /*初始化*/
         $manage_u = session('ManageUser');
         $cart = new Cart();
+        $product = new Product();
         $where = array();
         $this->ViewData['cart_order'] = array();
+        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
+
         $cart_id_arr = collect(explode(',', $cart_ids))->filter()->toArray();
 
         if (!empty($cart_id_arr))
