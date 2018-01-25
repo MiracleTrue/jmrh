@@ -103,8 +103,12 @@ class CartController extends Controller
      * @param Request $request
      * @return \App\Tools\json
      */
-    public function CartDeleteProduct(Request $request)
+    public function CartDeleteProducts(Request $request)
     {
+//        $arr = array(
+//            'cart_id' => 5,
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $cart = new Cart();
         $m3result = new M3Result();
