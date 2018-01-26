@@ -97,6 +97,48 @@ class User extends CommonModel
         return $user_list;
     }
 
+
+    /**
+     * 获取分配产品有协议价的供货商列表 (已转换:身份标识文本,创建时间)
+     * @param $product_name
+     * @param $spec_name
+     * @return mixed
+     */
+    public function getAllocationProductSupplierList($product_name, $spec_name)
+    {
+        /*初始化*/
+        $e_product = Product::checkProduct($product_name, $spec_name);
+        if(empty($e_product))
+        {
+            return collect();
+        }
+        $e_users = new Users();
+
+        /*预加载ORM对象*/
+        $supplier_list = $e_users->where('users.is_disable', User::NO_DISABLE)->where('users.identity', User::SUPPLIER_ADMIN)
+            ->with(['ho_supplier_price' => function ($query) use($e_product)
+            {
+                $query->where('spec_id',$e_product->spec_info->spec_id);
+            }])->get();
+
+        /*过滤没有该产品协议价的供应商*/
+        $supplier_list = $supplier_list->filter(function ($value) {
+            return !empty($value->ho_supplier_price);
+        });
+
+        /*数据过滤排版*/
+        $supplier_list->transform(function ($item)
+        {
+            $item->identity_text = User::identityTransformText($item->identity);
+            $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            $item->price_info = $item->ho_supplier_price;
+            unset($item->ho_supplier_price);
+            return $item;
+        });
+
+        return $supplier_list;
+    }
+
     /**
      * 获取所有供货商列表 (已转换:身份标识文本,创建时间)
      * @return mixed

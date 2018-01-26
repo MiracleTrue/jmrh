@@ -9,24 +9,24 @@
 namespace App\Entity;
 
 /**
- * Class Users   数据库Eloquent实体模型
- * Table 用户表
+ * Class OrderLog   数据库Eloquent实体模型
+ * Table 订单日志表
  * @package App\Entity
  */
-class Users extends CommonEntity
+class OrderLog extends CommonEntity
 {
     /**
      * 与模型关联的数据表
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'order_log';
 
     /**
      * 可以通过 $primaryKey 属性，重新定义主键字段
      * @var string
      */
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'log_id';
 
     /**
      * 默认情况下，Eloquent预计数据表中有 "created_at" & "updated_at" 字段。
@@ -41,29 +41,5 @@ class Users extends CommonEntity
      * @var string
      */
     protected $dateFormat = 'U';
-
-    /**
-     * 一对多关联ProductsCategoryManage实体表
-     */
-    public function hm_product_category_manage()
-    {
-        return $this->hasMany(ProductsCategoryManage::class, 'user_id');
-    }
-
-    /**
-     * 一对多关联SupplierPrice实体表
-     */
-    public function hm_supplier_price()
-    {
-        return $this->hasMany(SupplierPrice::class, 'user_id');
-    }
-
-    /**
-     * 一对多关联SupplierPrice实体表
-     */
-    public function ho_supplier_price()
-    {
-        return $this->hasOne(SupplierPrice::class, 'user_id', 'user_id');
-    }
 
 }

@@ -43,22 +43,17 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
         Route::get('platform/order/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_order_list */
-        Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
+//        Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
         Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('首次分配页面');/*首次分配供应商页面 | platform_allocation_view*/
         Route::get('platform/re/allocation/view/{order_id}', 'PlatformController@OfferReAllocationView')->name('二次分配页面');/*二次分配供应商页面 | platform_re_allocation_view*/
         Route::get('platform/order/confirm/view/{order_id}', 'PlatformController@OrderConfirmView')->name('订单确认页面');/*订单确认页面 | platform_order_confirm_view*/
-        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
-
-//  删除      Route::get('platform/offer/view/{order_id}', 'PlatformController@OfferInfoView')->name('查看报价页面');/*选择供应商页面 | platform_offer_view*/
-
-
+        Route::get('platform/confirm/receive/view/{order_id}', 'PlatformController@ConfirmReceiveView')->name('确认收货页面');/*确认收货页面 | platform_order_receive_view*/
+//        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
         Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('首次分配供应商');/*平台首次分配供应商*/
-        Route::any('platform/allocation/re/offer', 'PlatformController@OfferReAllocation')->name('二次分配供应商');/*平台二次分配供应商*/
-
-
-        Route::any('platform/selected/offer', 'PlatformController@OfferSelected')->name('选择供应商');/*平台供应商选择*/
+        Route::any('platform/re/allocation/offer', 'PlatformController@OfferReAllocation')->name('二次分配供应商');/*平台二次分配供应商*/
+        Route::any('platform/order/confirm', 'PlatformController@OrderConfirm')->name('确认订单');/*确认订单*/
+        Route::any('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('确认收货');/*确认收货*/
         Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
-        Route::any('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('供应商确认收货');/*供应商确认收货*/
         Route::any('platform/send/army', 'PlatformController@SendArmy')->name('发货到军方');/*发货到军方*/
     });
 

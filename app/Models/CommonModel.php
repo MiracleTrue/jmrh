@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use App\Entity\OrderLog;
 use App\Tools\M3Result;
 
 /**
@@ -125,6 +126,23 @@ class CommonModel
         {
             die('没有权限访问');
         }
+    }
+
+    /**
+     * 订单日志生成,请在模型中调用,并写入描述
+     * @param $order_id
+     * @param string $desc
+     */
+    public static function orderLog($order_id, $desc = '')
+    {
+        /*初始化*/
+        $order_log = new OrderLog();
+
+        /*入库*/
+        $order_log->order_id = $order_id;
+        $order_log->log_desc = $desc;
+        $order_log->create_time = now()->timestamp;
+        $order_log->save();
     }
 
     /**
