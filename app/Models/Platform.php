@@ -370,7 +370,6 @@ class Platform extends CommonModel
                 $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [$this::ORDER_ALREADY_CONFIRM])->firstOrFail();
                 $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('status', $this::OFFER_ALREADY_SEND)->firstOrFail();
 
-
                 /*更新报价状态*/
                 $e_order_offer->status = $this::OFFER_ALREADY_RECEIVE;
                 $e_order_offer->save();
@@ -382,8 +381,9 @@ class Platform extends CommonModel
                 $validate_offer = OrderOffer::where('order_id', $e_orders->order_id)->whereIn('status', [$this::OFFER_AWAIT_SEND, $this::OFFER_ALREADY_SEND])->get();
                 if ($validate_offer->isEmpty())
                 {
-                    /*更新订单状态*/
+                    /*更新订单状态,及质检*/
                     $e_orders->status = $this::ORDER_ALREADY_RECEIVE;
+                    $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
                     $e_orders->save();
                 }
                 User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
