@@ -165,12 +165,14 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -231,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 
