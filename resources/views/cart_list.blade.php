@@ -69,7 +69,7 @@
 					</td>
 					<td>{{$item['product_name']}}</td>
 					<td>{{$item['contact_person']}}</td>
-					<td>{{$item['spec_unit']}}</td>
+					<td>{{$item['spec_name']}}</td>
 					<td>{{$item['army_receive_time']}}</td>
 					<td><input cart_id="{{$item['cart_id']}}"  class="product_num" type="text" name="" id="" value="{{$item['product_number']}}" readonly="readonly" />{{$item['spec_unit']}}</td>
 					<td>{{$item['contact_tel']}}</td>
@@ -167,6 +167,38 @@
 	
 	
 	})
+	
+	$(".xiadan").click(function(){
+		var xiadanData="";
+		var xiadanData2="";
+		$(".onecheck").each(function(i,index){
+			if($(index).is(":checked")){
+			 xiadanData += $(index).attr("cart_id")+",";
+			 $(index).attr("delete","ture");
+			}
+		})
+		 if(xiadanData.length>0){
+		 	 xiadanData2=xiadanData.substr(0,xiadanData.length-1);
+		 }
+		
+		
+		
+	var xiadan= layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		      fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['965px' , '850px'],
+		      content: '{{url('army/need/view/release')}}'+"/"+xiadanData2
+		    });
+	})
+	
+	
+	
+	
+	
+	
 	
 	/*改变商品数量*/
 	$(".product_num").change(function(){

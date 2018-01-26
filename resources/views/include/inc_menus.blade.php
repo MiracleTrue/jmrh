@@ -182,5 +182,5 @@
 
 
     </ul>
-
+<!--<img src="{{asset('webStatic/images/logofooter.png')}}" />-->
 </div>

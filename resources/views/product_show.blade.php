@@ -60,7 +60,7 @@
 				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 24px;display: inline-block;"  value=""/> </p> 
 				
 				<p><input type="submit" class="productshow_pspan1 addshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;float: left;"  name="" id="" value="加入购物车" />
-					<span class="productshow_pspan1 goshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;background: #fe8d01;">去购物车</span>
+					<span class="productshow_pspan1 goshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;background: #fe8d01;margin-left: 20px;">去购物车</span>
 					</p>
 				
 				<input type="hidden" name="product_id" id="product_id" value="{{$product_info['product_id']}}" />
@@ -158,16 +158,16 @@
 		            },
 		            beforeSend:function(res){
 		            	
-		            	 $(".addspecsubmit").attr("disabled","true");
+		            	 $(".addshop").attr("disabled","true");
 		            
 		            	
 		            },
 		            success: function (res) {
-		        	console.log(res);
 		        	
-			         /*  if(res.code==0){			             	
+		        	
+			          if(res.code==0){			             	
 			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
-			             	 $(".addspecsubmit").removeAttr("disabled");
+			             	 $(".addshop").removeAttr("disabled");
 			             	
 			             	   });
 							addspecstate=true;
@@ -175,9 +175,9 @@
 			             	
 			             
 			             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
-			             	 			 $(".addspecsubmit").removeAttr("disabled");
+			             	 			 $(".addshop").removeAttr("disabled");
 			             	   });
-			             }*/
+			             }
 		            }
 		          });
 	        }
