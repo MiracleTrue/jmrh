@@ -103,7 +103,7 @@ class ArmyController extends Controller
         {
             $rules = [
                 '*' => [
-                    Rule::exists('shopping_cart','cart_id')->where(function ($query) use ($manage_u)
+                    Rule::exists('shopping_cart', 'cart_id')->where(function ($query) use ($manage_u)
                     {
                         $query->where('user_id', $manage_u->user_id);
                     }),
@@ -114,7 +114,7 @@ class ArmyController extends Controller
             {
                 /*加入sql条件购物车所有者id*/
                 array_push($where, ['shopping_cart.user_id', '=', $manage_u->user_id]);
-                $this->ViewData['cart_order'] = $cart->getCartList($where,array(['shopping_cart.create_time', 'desc']),false)->whereIn('cart_id',$cart_id_arr);
+                $this->ViewData['cart_order'] = $cart->getCartList($where, array(['shopping_cart.create_time', 'desc']), false)->whereIn('cart_id', $cart_id_arr);
             }
         }
         return view('army_need_release', $this->ViewData);

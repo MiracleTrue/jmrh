@@ -50,6 +50,7 @@ class Army extends CommonModel
             $item->create_time = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
             $item->army_receive_time = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
             $item->army_info->identity_text = User::identityTransformText($item->army_info->identity);
+            $item->quality_check_text = self::orderQualityCheckTransformText($item->quality_check);
             return $item;
         });
         return $order_list;
@@ -105,7 +106,6 @@ class Army extends CommonModel
         $e_orders->army_contact_tel = !empty($arr['army_contact_tel']) ? $arr['army_contact_tel'] : '';
         $e_orders->army_note = !empty($arr['army_note']) ? $arr['army_note'] : '';
         $e_orders->platform_allocation_number = 0;
-        $e_orders->platform_receive_time = 0;
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
         $e_orders->create_time = Carbon::now()->timestamp;
         $e_orders->quality_check = $this::ORDER_NO_QUALITY_CHECK;
