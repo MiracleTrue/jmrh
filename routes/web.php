@@ -71,7 +71,10 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     Route::group(['group' => '供应商', 'identity' => [\App\Models\User::SUPPLIER_ADMIN]], function ()
     {
         Route::get('supplier/need/list/{status?}/{create_time?}', 'SupplierController@NeedList')->name('需求列表');/*供货商需求列表 | supplier_need_list */
-        Route::get('supplier/offer/view/{offer_id}', 'SupplierController@OfferView')->name('报价页面');/*报价页面 | supplier_offer_view */
+
+
+
+        Route::get('supplier/offer/view/{offer_id}', 'SupplierController@OfferView')->name('查看报价');/*查看报价页面 | supplier_offer_view */
         Route::any('supplier/offer/submit', 'SupplierController@OfferSubmit')->name('报价');/*报价提交*/
         Route::any('supplier/send/goods', 'SupplierController@SendGoods')->name('配货');/*供应商配货*/
     });

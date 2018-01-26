@@ -47,7 +47,7 @@ class Product extends CommonModel
         {
             return false;
         }
-        $e_products->spec_info = ProductSpec::where('product_id',$e_products->product_id)->where('spec_name',$spec_name)->first();
+        $e_products->spec_info = ProductSpec::where('product_id', $e_products->product_id)->where('spec_name', $spec_name)->first();
         if (!empty($e_products->spec_info))
         {
             return $e_products;
@@ -95,7 +95,7 @@ class Product extends CommonModel
         $e_products = new Products();
 
         /*预加载ORM对象*/
-        $e_products = $e_products->with('ho_product_category')
+        $e_products = $e_products->with('ho_product_category', 'hm_product_spec')
             ->where($where);
         foreach ($orderBy as $value)
         {
@@ -121,9 +121,11 @@ class Product extends CommonModel
             }
             else
             {
-                $item->product_category = $item->ho_product_category->toArray();
+                $item->product_category = $item->ho_product_category;
+                $item->product_spec = $item->hm_product_spec;
             }
             unset($item->ho_product_category);
+            unset($item->hm_product_spec);
             return $item;
         });
         return $product_list;
