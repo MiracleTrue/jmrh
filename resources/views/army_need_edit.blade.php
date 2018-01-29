@@ -109,88 +109,35 @@ li {
 	<form id="arym_form" action="" method="post">
 
 		<div class="arymy_div1">
-			添加需求
+			修改需求
 		</div>
 
 		<div class="xuqiugrandpa">
-
-			@if(!empty($cart_order))
-			@foreach($cart_order as $item)
 			<div class="xuqiuparent">
 
 				<div class="ary_adddiv" style="position: relative;">
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" />
+						<input type="text" name="product_name" class="product_name" value="{{$order_info['product_name']}}" />
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
-					</p>
-					<p class="div_floatleft" style="text-indent: 15px;position: relative;">
-						<span>数量</span>
-						<input type="text" name="product_number" class="product_number" value="{{$item['product_number']}}" />
-						<span style="position: absolute;right: 20px;top: 10px;">{{$item['spec_unit']}}</span>
-					</p>
-				</div>
-
-				<div class="ary_adddiv">
-					<p class="div_floatleft">
-						<span>联系人</span>
-						<input type="text" class="army_contact_person" name="" id="" value="{{$item['contact_person']}}" />
-					</p>
-					<p class="div_floatright">
-						<span>电话</span>
-						<input type="text"class="army_contact_tel" value="{{$item['contact_tel']}}"/>
-					</p>
-
-				</div>
-
-				<div class="ary_adddiv">
-
-					<p class="div_floatright">
-						<span>到货时间</span>
-						<input style="width: 286px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
-					</p>
-
-				</div>
-
-				<div class="ary_adddiv" style="font-size: 16px;">
-					<p style="text-indent: 12px;">
-						<span>备注</span>
-						<input class="army_note" style="height: 43px;width: 746px;outline: 0;margin-left: 18px;"  type="text" value="{{$item['note']}}"/>
-					</p>
-
-				</div>
-				<input type="hidden" class="spec_name" name="" id="" value="{{$item['spec_name']}}" />
-			</div>
-			@endforeach
-
-			@else
-
-			<div class="xuqiuparent">
-
-				<div class="ary_adddiv" style="position: relative;">
-
-					<p style="text-indent: 15px;" class="div_floatleft" >
-						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="" />
-						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
-					<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;"></span>
+					<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;">{{$order_info['spec_name']}}</span>
 					
 					
 					</p>
 					<p class="div_floatleft" style="text-indent: 15px;">
 						<span>数量</span>
-						<input type="text" name="product_number" class="product_number" value="" />
+						<input type="text" name="product_number" class="product_number" value="{{$order_info['product_number']}}" />
 					</p>
 				</div>
 				<div class="ary_adddiv">
 					<p class="div_floatleft">
 						<span>联系人</span>
-						<input type="text" class="army_contact_person" name="" id="" value="" />
+						<input type="text" class="army_contact_person" name="" id="" value="{{$order_info['army_contact_person']}}" />
 					</p>
 					<p class="div_floatright">
 						<span>电话</span>
-						<input type="text"class="army_contact_tel"/>
+						<input type="text" class="army_contact_tel" value="{{$order_info['army_contact_tel']}}"/>
 					</p>
 
 				</div>
@@ -198,7 +145,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input autocomplete="off" type="text" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time" id="" value="{{$order_info['army_receive_time'] or ''}}" id style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
+						<input autocomplete="off" type="text" value="{{$order_info['army_receive_time']}}" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$order_info['army_receive_time'] or ''}}"  style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>
@@ -206,13 +153,13 @@ li {
 				<div class="ary_adddiv" style="font-size: 16px;">
 					<p style="text-indent: 12px;">
 						<span>备注</span>
-						<input class="army_note" style="height: 43px;width: 746px;outline: 0;margin-left: 18px;"  type="text"/>
+						<input class="army_note" style="height: 43px;width: 746px;outline: 0;margin-left: 18px;" type="text" value="{{$order_info['army_note ']}}"/>
 					</p>
 
 				</div>
 			</div>
 
-			@endif
+		
 
 		</div>
 		<div style="text-align: center;padding-top: 33px;">
@@ -448,11 +395,7 @@ $(function() {
 		wrapper: "li",
 		submitHandler: function(form) {
 			
-			@if(!empty($cart_order))
-				jsonData()
-			@else
 				jsonData2()
-			@endif
 			
 			
 			$(form).ajaxSubmit({

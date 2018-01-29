@@ -29,7 +29,7 @@
 
         </li>
         <li class="treeview">
-            <a href="{{url('platform/need/list')}}">
+            <a href="{{url('platform/order/list')}}">
                 <i class="fa fa-laptop"></i>
                 <span>平台</span>
 
@@ -85,7 +85,7 @@
         </li>
       
         <li class="treeview">
-            <a href="{{url('platform/need/list')}}">
+            <a href="{{url('platform/order/list')}}">
                 <i class="fa fa-laptop"></i>
                 <span>平台</span>
 
