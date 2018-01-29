@@ -40,7 +40,7 @@ class PlatformController extends Controller
      * @param string $create_time
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function OrderList($type = 0, $status = 'null', $create_time = 'null')
+    public function NeedList($type = 0, $status = 'null', $create_time = 'null')
     {
         /*初始化*/
         $platform = new Platform();
