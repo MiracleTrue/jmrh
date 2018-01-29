@@ -130,6 +130,7 @@ class ArmyController extends Controller
         /*初始化*/
         $manage_u = session('ManageUser');
         $army = new Army();
+        $product = new Product();
         $this->ViewData['order_info'] = array();
         $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
         /*验证规则*/
