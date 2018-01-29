@@ -76,7 +76,7 @@ class Army extends CommonModel
     }
 
     /**
-     * 军方发布需求
+     * 军方发布单个需求
      * @param $arr
      * @return bool
      */
@@ -112,6 +112,9 @@ class Army extends CommonModel
         $e_orders->is_delete = $this::ORDER_NO_DELETE;
         $e_orders->army_id = session('ManageUser')->user_id;
         $e_orders->save();
+
+        /*清除购物车该产品*/
+
 
 //        /*发送短信给所有平台运营员*/
 //        $platform_users = $user->getPlatformUserList();
