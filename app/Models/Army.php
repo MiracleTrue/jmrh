@@ -65,7 +65,7 @@ class Army extends CommonModel
     {
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
-            ->where('type', Army::ORDER_TYPE_ARMY)->first() or die();
+            ->where('type', Army::ORDER_TYPE_ARMY)->firstOrFail();
 
         /*数据过滤*/
         $e_orders->status_text = self::orderStatusTransformText($e_orders->status);
@@ -119,7 +119,7 @@ class Army extends CommonModel
 //        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $platform_users_numbers_str);
 //        //测试log
 //        Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
-        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
 
@@ -139,7 +139,7 @@ class Army extends CommonModel
         /*初始化*/
         $e_orders = Orders::where('order_id', $arr['order_id'])
             ->where('type', Army::ORDER_TYPE_ARMY)
-            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first() or die();
+            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->firstOrFail();
 
         /*修改*/
         $e_orders->order_sn = $this->makeOrderSn();
@@ -154,7 +154,7 @@ class Army extends CommonModel
         $e_orders->army_receive_time = !empty($arr['army_receive_time']) ? strtotime($arr['army_receive_time']) : 0;/*2017-10-18 08:45:12*/
 
         $e_orders->save();
-        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
 
@@ -168,13 +168,13 @@ class Army extends CommonModel
         /*初始化*/
         $e_orders = Orders::where('order_id', $id)
             ->where('type', Army::ORDER_TYPE_ARMY)
-            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->first();
+            ->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->firstOrFail();
 
         /*伪删除*/
         $e_orders->is_delete = $this::ORDER_IS_DELETE;
 
         $e_orders->save();
-        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
 
@@ -185,11 +185,11 @@ class Army extends CommonModel
      */
     public function armyConfirmReceive($order_id)
     {
-        $e_orders = Orders::where('order_id', $order_id)->where('status', CommonModel::ORDER_SEND_ARMY)->first() or die('order missing');
+        $e_orders = Orders::where('order_id', $order_id)->where('status', CommonModel::ORDER_SEND_ARMY)->firstOrFail();
 
         $e_orders->status = CommonModel::ORDER_SUCCESSFUL;
         $e_orders->save();
-        User::userLog($e_orders->product_name . ' - ' . $e_orders->spec_name . "($e_orders->product_number $e_orders->spec_unit)");
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
 

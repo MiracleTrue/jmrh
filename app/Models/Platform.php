@@ -135,7 +135,7 @@ class Platform extends CommonModel
             });
         }
         $e_orders->status_text = self::orderStatusTransformText($e_orders->type, $e_orders->status);
-        $e_orders->create_time = Carbon::createFromTimestamp($e_orders->create_time)->toDateTimeString();
+        $e_orders->create_date = Carbon::createFromTimestamp($e_orders->create_time)->toDateTimeString();
         $e_orders->army_receive_date = Carbon::createFromTimestamp($e_orders->army_receive_time)->toDateTimeString();
         return $e_orders;
     }

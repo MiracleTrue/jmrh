@@ -384,7 +384,6 @@ class ProductController extends Controller
             $m3result->data['product'] = $product->messages();
         }
 
-//        dd($m3result->data);
         return $m3result->toJson();
     }
 
