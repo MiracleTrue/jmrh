@@ -234,15 +234,13 @@ li {
 
 <script type="text/javascript">/*选择品名*/
 laydate.skin('molv');
-{{--$(".moreName").on("click", function() {
+$(".moreName").on("click", function() {
 			layer.open({
 				fixed: false,
 				title: false,
 				area: ['919px', '500px'], //宽高
-				content: '<div class="box"><div class="head">添加品名</div><div class="className"><span category_id="0">全部</span>@foreach($product_category as $item)<span category_id="{{$item['
-				category_id ']}}">{{$item['
-				category_name ']}}</span>@endforeach</div><div class="productinfo"><div class="imgposition"><img src="{{asset('
-				webStatic / images / moreclass.png ')}}"/></div><ul class="productNameul"></ul><ul class="nameul"></ul></div></div>',
+				moveOut:true,
+				content: '<div class="box"><div class="head">添加品名</div><div class="className"><span category_id="0">全部</span>@foreach($product_category as $item)<span category_id="{{$item['category_id ']}}">{{$item['category_name ']}}</span>@endforeach</div><div class="productinfo"><div class="imgposition"><img src="{{asset('webStatic/images/moreclass.png ')}}"/></div><ul class="productNameul"></ul><ul class="nameul"></ul></div></div>',
 				success: function() {
 					$(".className span").eq(0).addClass("actived");
 					$(".nameul").eq(0).show().siblings().not(".imgposition").not(".productNameul").hide();
@@ -290,8 +288,7 @@ laydate.skin('molv');
 
 								$(".nameul").empty();
 								for(var i in myData) {
-									$(".nameul").append('<li pricedata="' + myData[i].product_price + '"><img src="/uploads/' + myData[i].product_thumb + '"  onerror="this.src=`{{asset('
-										webStatic / images / noimg.png ')}}`"/><span id="">' + myData[i].product_name + '</span></li>')
+									$(".nameul").append('<li pricedata="' + myData[i].product_price + '"><img src="/uploads/' + myData[i].product_thumb + '"  onerror="this.src=`{{asset('webStatic/images/noimg.png ')}}`"/><span id="">' + myData[i].product_name + '</span></li>')
 								}
 
 								$(".productinfo li").on("click", function() {
@@ -313,7 +310,7 @@ laydate.skin('molv');
 
 				}
 			});
-		})--}}
+		})
 
 $(function() {
 	
