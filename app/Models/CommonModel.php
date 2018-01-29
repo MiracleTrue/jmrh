@@ -44,7 +44,7 @@ class CommonModel
     const OFFER_AWAIT_SEND = 2;/*待发货*/
     const OFFER_ALREADY_SEND = 3;/*已发货*/
     const OFFER_ALREADY_RECEIVE = 4;/*已收货*/
-    const OFFER_ALREADY_REFUSE = 10;/*已拒绝*/
+    const OFFER_ALREADY_DENY = 10;/*已拒绝*/
 
     /*报价预警状态*/
     const OFFER_IS_WARNING = 1;/*预警开启*/
@@ -97,7 +97,7 @@ class CommonModel
             case $this::OFFER_ALREADY_RECEIVE:
                 $text = '已收货';
                 break;
-            case $this::OFFER_ALREADY_REFUSE:
+            case $this::OFFER_ALREADY_DENY:
                 $text = '已拒绝';
                 break;
         }
@@ -172,5 +172,15 @@ class CommonModel
 //    const OFFER_NOT_PASS = 2;/*未通过*/
 //    const OFFER_PASSED = 3;/*已通过*/
 //    const OFFER_SEND = 4;/*已发货*/
+
+
+    /*单价方式*/
+//$calculated_price = floatval(sprintf("%.4f", $price));;/*保留4位小数的单价(舍去法 取4位浮点数)*/
+//$calculated_total = bcmul($calculated_price, $e_orders->product_number, 2);/*保留2位小数的总价(舍去法 取2位浮点数)*/
+
+    /*总价方式*/
+//$calculated_total = round($total_price, 2);/*保留2位小数的总价(小数第3位四舍五入)*/
+//$calculated_price = bcdiv($total_price, $e_orders->product_number, 4);/*保留4位小数的单价(舍去法 取4位浮点数)*/
+
 
 }

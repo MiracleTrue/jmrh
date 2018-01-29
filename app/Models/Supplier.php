@@ -54,8 +54,9 @@ class Supplier extends CommonModel
 
             $item->status_text = $this->offerStatusTransformText($item->status);
             $item->warning_status = CommonModel::OFFER_NO_WARNING;
+            $item->platform_receive_date = Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString();
             /*判断是否达到预警条件*/
-            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info['platform_receive_time'], $item->warning_time) < now()->timestamp)
+            if ($item->status == CommonModel::OFFER_AWAIT_SEND && bcsub($item->platform_receive_time, $item->warning_time) < now()->timestamp)
             {
                 $item->warning_status = CommonModel::OFFER_IS_WARNING;
             }
@@ -63,9 +64,8 @@ class Supplier extends CommonModel
             $item->confirm_time = Carbon::createFromTimestamp($item->confirm_time)->toDateTimeString();
             /*order_info*/
             $item->order_info->status_text = self::orderStatusTransformText($item->order_info->status);
-            $item->order_info->create_time = Carbon::createFromTimestamp($item->order_info->create_time)->toDateTimeString();
-            $item->order_info->platform_receive_time = $item->order_info->platform_receive_time ? Carbon::createFromTimestamp($item->order_info->platform_receive_time)->toDateTimeString() : '';
-            $item->order_info->army_receive_time = $item->order_info->army_receive_time ? Carbon::createFromTimestamp($item->order_info->army_receive_time)->toDateTimeString() : '';
+            $item->order_info->create_date = Carbon::createFromTimestamp($item->order_info->create_time)->toDateTimeString();
+            $item->order_info->army_receive_date = $item->order_info->army_receive_time ? Carbon::createFromTimestamp($item->order_info->army_receive_time)->toDateTimeString() : '';
             /*user_info*/
             $item->user_info->identity_text = User::identityTransformText($item->user_info->identity);
 
@@ -76,59 +76,80 @@ class Supplier extends CommonModel
     }
 
     /**
-     * 获取 单个报价信息 关联供应商信息 关联订单信息  (已转换:状态文本, 创建时间, 军方接收时间)
+     * 获取 单个报价信息 关联供应商信息 关联订单信息 (已转换:状态文本, 创建时间, 军方接收时间)
      * @param $offer_id
      * @return mixed
      */
     public function getSupplierOfferInfo($offer_id)
     {
         /*初始化*/
-        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->first() or die('order_offer missing');
+        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->firstOrFail();
 
-        $e_order_offer->order_info = $e_order_offer->ho_orders()->first() or die('order missing');
-        $e_order_offer->user_info = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
+        $e_order_offer->order_info = $e_order_offer->ho_orders()->firstOrFail();
+        $e_order_offer->user_info = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
         /*数据过滤*/
+        $e_order_offer->total_price = 1;
         $e_order_offer->status_text = self::offerStatusTransformText($e_order_offer->status);
-        $e_order_offer->create_time = Carbon::createFromTimestamp($e_order_offer->create_time)->toDateTimeString();
-        $e_order_offer->confirm_time = Carbon::createFromTimestamp($e_order_offer->confirm_time)->toDateTimeString();
+        $e_order_offer->create_date = Carbon::createFromTimestamp($e_order_offer->create_time)->toDateTimeString();
+        $e_order_offer->confirm_date = Carbon::createFromTimestamp($e_order_offer->confirm_time)->toDateTimeString();
+        $e_order_offer->platform_receive_date = Carbon::createFromTimestamp($e_order_offer->platform_receive_time)->toDateTimeString();
         $e_order_offer->order_info->status_text = self::orderStatusTransformText($e_order_offer->order_info->status);
-        $e_order_offer->order_info->create_time = Carbon::createFromTimestamp($e_order_offer->order_info->create_time)->toDateTimeString();
-        $e_order_offer->order_info->platform_receive_time = Carbon::createFromTimestamp($e_order_offer->order_info->platform_receive_time)->toDateTimeString();
-        $e_order_offer->order_info->army_receive_time = Carbon::createFromTimestamp($e_order_offer->order_info->army_receive_time)->toDateTimeString();
+        $e_order_offer->order_info->create_date = Carbon::createFromTimestamp($e_order_offer->order_info->create_time)->toDateTimeString();
+        $e_order_offer->order_info->army_receive_date = Carbon::createFromTimestamp($e_order_offer->order_info->army_receive_time)->toDateTimeString();
 
         return $e_order_offer;
     }
 
     /**
-     * 单个供应商提交一份报价
+     * 单个供应商同意一份报价
      * @param $supplier_id
      * @param $offer_id
-     * @param $price
      * @return bool
      */
-    public function supplierSubmitOffer($supplier_id, $offer_id, $price)
+    public function supplierSubmitOffer($supplier_id, $offer_id)
     {
         /*初始化*/
-        $sms = new Sms();
-        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_OFFER)->first() or die('order_offer missing');
-        $e_orders = $e_order_offer->ho_orders()->first() or die('order missing');
-        $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
+//        $sms = new Sms();
+        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->firstOrFail();
+        $e_orders = $e_order_offer->ho_orders()->firstOrFail();
+        $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
 
-        /*单价方式*/
-        $calculated_price = floatval(sprintf("%.4f", $price));;/*保留4位小数的单价(舍去法 取4位浮点数)*/
-        $calculated_total = bcmul($calculated_price, $e_orders->product_number, 2);/*保留2位小数的总价(舍去法 取2位浮点数)*/
-
-        /*总价方式*/
-//        $calculated_total = round($total_price, 2);/*保留2位小数的总价(小数第3位四舍五入)*/
-//        $calculated_price = bcdiv($total_price, $e_orders->product_number, 4);/*保留4位小数的单价(舍去法 取4位浮点数)*/
 
         /*更新*/
-        $e_order_offer->total_price = $calculated_total;
-        $e_order_offer->price = $calculated_price;
-        $e_order_offer->status = CommonModel::OFFER_AWAIT_PASS;
+        $e_order_offer->status = CommonModel::OFFER_AWAIT_CONFIRM;
         $e_order_offer->save();
-        User::userLog('订单:' . "($e_orders->order_sn $e_orders->product_name $e_orders->product_number$e_orders->product_unit) 报价: " . $e_users->nick_name . "   $calculated_price 元");
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
+
+        $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (同意供货)');
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+
+//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
+        return true;
+    }
+
+    /**
+     * 单个供应商拒绝一份报价
+     * @param $supplier_id
+     * @param $offer_id
+     * @param string $deny_reason
+     * @return bool
+     */
+    public function supplierDenyOffer($supplier_id, $offer_id, $deny_reason = '')
+    {
+        /*初始化*/
+//        $sms = new Sms();
+        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->firstOrFail();
+        $e_orders = $e_order_offer->ho_orders()->firstOrFail();
+        $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
+
+        /*更新*/
+        $e_order_offer->status = CommonModel::OFFER_ALREADY_DENY;
+        $e_order_offer->deny_reason = !empty($deny_reason) ? $deny_reason : '';
+        $e_order_offer->save();
+
+        $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (拒绝供货)' . '  原因:' . $deny_reason);
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+
+//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
         return true;
     }
 
@@ -138,23 +159,21 @@ class Supplier extends CommonModel
      * @param $offer_id
      * @return bool
      */
-    public function supplierSendGoods($supplier_id, $offer_id)
+    public function supplierSendProduct($supplier_id, $offer_id)
     {
         /*初始化*/
-        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_PASSED)->first() or die('order_offer missing');
-        $e_orders = $e_order_offer->ho_orders()->first() or die('order missing');
-        $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->first() or die('user missing');
+        //        $sms = new Sms();
+        $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_SEND)->firstOrFail();
+        $e_orders = $e_order_offer->ho_orders()->firstOrFail();
+        $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
 
         /*更新*/
-        $e_order_offer->status = CommonModel::OFFER_SEND;
-        $e_orders->status = CommonModel::ORDER_SUPPLIER_SEND;
-        /*事物*/
-        DB::transaction(function () use ($e_orders, $e_order_offer)
-        {
-            $e_orders->save();
-            $e_order_offer->save();
-            User::userLog('订单:' . "($e_orders->order_sn $e_orders->product_name $e_orders->product_number$e_orders->product_unit) " . "配货");
-        });
+        $e_order_offer->status = CommonModel::OFFER_ALREADY_SEND;
+        $e_order_offer->save();
+
+        $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (已发货)');
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+
         return true;
     }
 
@@ -168,16 +187,16 @@ class Supplier extends CommonModel
         $text = '';
         switch ($status)
         {
-            case $this::ORDER_ALLOCATION_SUPPLIER:
-                $text = '已分配供应商';
+            case $this::ORDER_AGAIN_ALLOCATION:
+                $text = '待确认';
                 break;
-            case $this::ORDER_SUPPLIER_SELECTED:
-                $text = '已选择供应商';
+            case $this::ORDER_ALREADY_ALLOCATION:
+                $text = '待确认';
                 break;
-            case $this::ORDER_SUPPLIER_SEND:
-                $text = '供应商已发货';
+            case $this::ORDER_ALREADY_CONFIRM:
+                $text = '已确认';
                 break;
-            case $this::ORDER_SUPPLIER_RECEIVE:
+            case $this::ORDER_ALREADY_RECEIVE:
                 $text = '已收货(交易成功)';
                 break;
             case $this::ORDER_SEND_ARMY:

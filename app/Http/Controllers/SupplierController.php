@@ -30,7 +30,7 @@ class SupplierController extends Controller
     public $ViewData = array(); /*传递页面的数组*/
 
     /**
-     * View 平台订单列表 页面 (搜索条件参数: 订单状态, 创建时间)
+     * View 供应商报价列表 页面 (搜索条件参数: 报价状态, 创建时间)
      * @param string $status
      * @param string $create_time
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -52,20 +52,23 @@ class SupplierController extends Controller
         /*条件搜索*/
         switch ($status)
         {
-            case '待报价' :
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_AWAIT_OFFER]);
+            case '待回复' :
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_AWAIT_REPLY]);
                 break;
-            case '等待确认':
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_AWAIT_PASS]);
+            case '待确认':
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_AWAIT_CONFIRM]);
                 break;
             case '待发货' :
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_PASSED]);
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_AWAIT_SEND]);
                 break;
             case '已发货' :
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_SEND]);
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_ALREADY_SEND]);
                 break;
-            case '未通过':
-                array_push($where, ['order_offer.status', '=', $supplier::OFFER_NOT_PASS]);
+            case '已收货':
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_ALREADY_RECEIVE]);
+                break;
+            case '已拒绝':
+                array_push($where, ['order_offer.status', '=', $supplier::OFFER_ALREADY_DENY]);
                 break;
             case '已过期' :
                 array_push($where, ['order_offer.status', '=', $supplier::OFFER_OVERDUE]);
@@ -105,8 +108,7 @@ class SupplierController extends Controller
                 'integer',
                 Rule::exists('order_offer')->where(function ($query) use ($offer_id, $manage_u)
                 {
-                    $query->where('offer_id', $offer_id)->where('user_id', $manage_u->user_id)
-                        ->where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '>=', now()->timestamp);
+                    $query->where('offer_id', $offer_id)->where('user_id', $manage_u->user_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->where('confirm_time', '>=', now()->timestamp);
                 }),
             ]
         ];
@@ -125,12 +127,16 @@ class SupplierController extends Controller
     }
 
     /**
-     * Ajax 供应商报价 请求处理
+     * Ajax 供应商同意供货 请求处理
      * @param Request $request
      * @return \App\Tools\json
      */
     public function OfferSubmit(Request $request)
     {
+//        $arr = array(
+//            'offer_id' => '1',
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $supplier = new Supplier();
         $m3result = new M3Result();
@@ -144,17 +150,63 @@ class SupplierController extends Controller
                 Rule::exists('order_offer')->where(function ($query) use ($request, $manage_u)
                 {
                     $query->where('offer_id', $request->input('offer_id'))->where('user_id', $manage_u->user_id)
-                        ->where('status', CommonModel::OFFER_AWAIT_OFFER)->where('confirm_time', '>=', now()->timestamp);
+                        ->where('status', CommonModel::OFFER_AWAIT_REPLY)->where('confirm_time', '>=', now()->timestamp);
                 }),
-            ],
-            'price' => 'required|numeric|min:0',
+            ]
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $supplier->supplierSubmitOffer($manage_u->user_id, $request->input('offer_id'), $request->input('price')))
+        if ($validator->passes() && $supplier->supplierSubmitOffer($manage_u->user_id, $request->input('offer_id')))
         {   /*验证通过并且处理成功*/
             $m3result->code = 0;
-            $m3result->messages = '供应商报价成功';
+            $m3result->messages = '同意供货';
+        }
+        else
+        {
+            $m3result->code = 1;
+            $m3result->messages = '数据验证失败';
+            $m3result->data['validator'] = $validator->messages();
+            $m3result->data['supplier'] = $supplier->messages();
+        }
+        return $m3result->toJson();
+    }
+
+    /**
+     * Ajax 供应商拒绝供货 请求处理
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function OfferDeny(Request $request)
+    {
+//        $arr = array(
+//            'offer_id' => '1',
+//            'deny_reason' => '没货',
+//        );
+//        $request->merge($arr);
+        /*初始化*/
+        $supplier = new Supplier();
+        $m3result = new M3Result();
+        $manage_u = session('ManageUser');
+
+        /*验证规则*/
+        $rules = [
+            'offer_id' => [
+                'required',
+                'integer',
+                Rule::exists('order_offer')->where(function ($query) use ($request, $manage_u)
+                {
+                    $query->where('offer_id', $request->input('offer_id'))->where('user_id', $manage_u->user_id)
+                        ->where('status', CommonModel::OFFER_AWAIT_REPLY)->where('confirm_time', '>=', now()->timestamp);
+                }),
+            ],
+            'deny_reason' => 'nullable|string'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->passes() && $supplier->supplierDenyOffer($manage_u->user_id, $request->input('offer_id'), $request->input('deny_reason')))
+        {   /*验证通过并且处理成功*/
+            $m3result->code = 0;
+            $m3result->messages = '拒绝供货';
         }
         else
         {
@@ -171,8 +223,12 @@ class SupplierController extends Controller
      * @param Request $request
      * @return \App\Tools\json
      */
-    public function SendGoods(Request $request)
+    public function SendProduct(Request $request)
     {
+//        $arr = array(
+//            'offer_id' => '1',
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $supplier = new Supplier();
         $m3result = new M3Result();
@@ -186,13 +242,13 @@ class SupplierController extends Controller
                 Rule::exists('order_offer')->where(function ($query) use ($request, $manage_u)
                 {
                     $query->where('offer_id', $request->input('offer_id'))->where('user_id', $manage_u->user_id)
-                        ->where('status', CommonModel::OFFER_PASSED);
+                        ->where('status', CommonModel::OFFER_AWAIT_SEND);
                 }),
             ]
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $supplier->supplierSendGoods($manage_u->user_id, $request->input('offer_id')))
+        if ($validator->passes() && $supplier->supplierSendProduct($manage_u->user_id, $request->input('offer_id')))
         {   /*验证通过并且处理成功*/
             $m3result->code = 0;
             $m3result->messages = '配货成功';
