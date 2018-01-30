@@ -426,7 +426,7 @@ class PlatformController extends Controller
         });
 
         /*军方订单 平台到货时间 增加规则*/
-        $validator->sometimes('platform_receive_time', ['date', 'after:now', 'before:' . $order_info->army_receive_time], function ($input) use ($order_info)
+        $validator->sometimes('platform_receive_time', ['date', 'after:now', 'before:' . $order_info->army_receive_date], function ($input) use ($order_info)
         {
             return $order_info->type === Army::ORDER_TYPE_ARMY;
         });
