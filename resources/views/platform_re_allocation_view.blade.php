@@ -43,17 +43,14 @@
 <div class="error"></div>
 <div class="clt-box">
 	<form id="platallpost" action="" method="post">
-			<header>客户分配</header>
+			<header>客户二次分配</header>
 			<div>
 				<span>库存剩余</span>
 				<span>{{$repertory_info['number']}}{{$order_info['spec_unit']}}</span>
 					
 				
 				<span class="shijian" style="margin-left: 20px;">分配数量</span>
-				<input type="number" class="fenpeinumber shijian" name="platform_allocation_number" id="" value="" style="width: 110px;height: 30px;" min="0"/>
-				
-				<input type="checkbox" name="" id="kucungongying" value="" style="width: 20px;height: 20px;"/>
-				<label for="kucungongying">全部库存供应</label>
+				<input type="number" class="fenpeinumber shijian" name="platform_allocation_number" id="" value="{{$order_info['platform_allocation_number']}}" style="width: 110px;height: 30px;" min="0"/>
 			</div>
 			
 			<div class="input_value">
@@ -112,7 +109,7 @@
 				</p>
 					<p>
 					<span>需求量</span>
-				 	<input type=""class="xuqiuliang" name="" id="" value="{{$order_info['product_number']}}{{$order_info['spec_unit']}}" disabled="" placeholder=""/>
+				 	<input type=""class="xuqiuliang" name="" id="" value="{{$need_number}}{{$order_info['spec_unit']}}" disabled="" placeholder=""/>
 				</p>
 				
 					
@@ -221,41 +218,12 @@ $(".confirm_time").change(function(){
 		s = date.getSeconds(); 
 	/*	console.log(Y+M+D+h+m+s); */
 		confirm_time=Y+M+D+h+m+s;
-		console.log(confirm_time)
+	/*	console.log(confirm_time)*/
 })
-var fenpeistaus=true;
-$("#kucungongying").click(function(){
-	if($(this).is(":checked")){
-		 
-		$(".input_value,.shijian").hide();
-		fenpeistaus=false;
-		console.log(fenpeistaus);
-		
-	}else{
-			$(".input_value,.shijian").show();
-			fenpeistaus=true;
-			console.log(fenpeistaus)
-	}
-})
-
-
-
-
-
-
-
-
-
-
-
-
 
  /**
        * 分配客户
        */     
-       $(".clt-submit").click(function(){       	      
-       if(fenpeistaus==true){
-      
      var validatorAdd = $("#platallpost").validate({
         rules: {
           warning_time: {
@@ -285,7 +253,7 @@ $("#kucungongying").click(function(){
 	        	supplier_B_number=$(".supplier_B_number").val();
 	        	supplier_C_number=$(".supplier_C_number").val();
 	        	fenpeinumber=$(".fenpeinumber").val();
-	        	xueqiunumber={{$order_info['product_number']}};
+	        	xueqiunumber={{$need_number}};
 	        	if(xueqiunumber!=Number(supplier_A_number)+Number(supplier_C_number)+Number(fenpeinumber)+Number(supplier_B_number)){
 	        		 layer.msg("分配数量不正确", {icon: 2, time: 1000});
 	        	}else{
@@ -293,7 +261,7 @@ $("#kucungongying").click(function(){
 	        			
 	        		
 	        			$(form).ajaxSubmit({
-				            url: '{{url("platform/allocation/offer")}}',
+				            url: '{{url("platform/re/allocation/offer")}}',
 				            type: 'POST',
 				            dataType: 'JSON',
 				            data:{
@@ -305,7 +273,7 @@ $("#kucungongying").click(function(){
 				            	
 				            },
 				            success: function (res) {
-				            	console.log(res)
+				            	/*console.log(res)*/
 				            if(res.code==0){
 				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 				             	   parent.location.reload();	 
@@ -331,42 +299,8 @@ $("#kucungongying").click(function(){
 	     
 
       });
-     }else{
-     	 var validatorAdd = $("#platallpost").validate({
-	        submitHandler: function (form) {	
-	        			$(form).ajaxSubmit({
-				            url: '{{url("platform/inventory/supply")}}',
-				            type: 'POST',
-				            dataType: 'JSON',
-				            data:{
-				            	_token:'{{csrf_token()}}'
-				            },
-				            beforeSend:function(res){
-				            	$("input[type='submit']").attr("disabled","true");
-				            	
-				            },
-				            success: function (res) {
-				            	console.log(res)
-				           /* if(res.code==0){
-				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
-				             	   parent.location.reload();	 
-				             	   	  layer.closeAll('');
-				             	   });
-								
-				             }else{
-				             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
-				             	   $("input[type='submit']").removeAttr("disabled");
-				             	 });
-				             }*/
-				            }
-				        });
-      
-	        }
-      });
-      
-     	
-     }
-      })
+   
+    
       $(".clt-reset").on("click",function(){
      	   validatorAdd.resetForm();
      	

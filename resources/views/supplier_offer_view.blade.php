@@ -51,7 +51,7 @@
 			<p style="position: relative;">
 				<span>单价</span>
 				<input class="price" type="number" name="price" id="price" value="" onkeyup="test(this.value)"  />
-				<span class="adr-money">元/{{$offer_info['order_info']['product_unit']}}</span>
+				<span class="adr-money">元/{{$offer_info['order_info']['spec_unit']}}</span>
 			</p>
 
 			<p style="position: relative;">
@@ -68,6 +68,10 @@
 
 			<p>
 				<span>供应商</span>
+				<input disabled="disabled" type="text" name="" id="" value="{{$offer_info['user_info']['nick_name']}}" />
+			</p>
+			<p>
+				<span>拒绝理由</span>
 				<input disabled="disabled" type="text" name="" id="" value="{{$offer_info['user_info']['nick_name']}}" />
 			</p>
 
