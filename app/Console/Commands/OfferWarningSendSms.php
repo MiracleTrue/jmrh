@@ -10,7 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 /**
- * 已通过的报价达到预警条件发送短信给供应商 (Artisan 计划任务)
+ * 待发货的报价达到预警条件发送短信给供应商 (Artisan 计划任务)
  * Class OfferWarningSendSms
  * @package App\Console\Commands
  */
@@ -49,7 +49,7 @@ class OfferWarningSendSms extends Command
         $e_order_offer = new OrderOffer();
         $sms = new Sms();
         /*预加载ORM对象*/
-        $e_order_offer = $e_order_offer->with('ho_orders')->where('order_offer.status', CommonModel::OFFER_PASSED)->where('order_offer.warning_is_sms', CommonModel::OFFER_NO_SMS)->get();
+        $e_order_offer = $e_order_offer->with('ho_orders')->where('order_offer.status', CommonModel::OFFER_AWAIT_SEND)->where('order_offer.warning_is_sms', CommonModel::OFFER_NO_SMS)->get();
 
         /*数据过滤*/
         $e_order_offer->each(function ($item) use ($sms)
@@ -64,16 +64,16 @@ class OfferWarningSendSms extends Command
                 $item->order_info = $item->ho_orders;
             }
             /*判断是否达到预警条件*/
-            if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) < now()->timestamp)
+            if ($item->warning_time != 0 && bcsub($item->platform_receive_time, $item->warning_time) < now()->timestamp)
             {
                 //发送短信
-                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_WARNING_CODE, Users::find($item->user_id)->phone);
+                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_WARNING_CODE, Users::find($item->user_id)->phone, array('order_sn' => $item->order_info->order_sn));
 
                 //改变发送短信的状态
                 OrderOffer::where('offer_id', $item->offer_id)->update(['warning_is_sms' => CommonModel::OFFER_IS_SMS]);
 
                 //测试log
-                Log::info('(Artisan 计划任务) 已通过的报价达到预警条件发送短信给供应商  offer ID:' . $item->offer_id . ' Phone:' . Users::find($item->user_id)->phone);
+                Log::info('(Artisan 计划任务) 待发货的报价达到预警条件发送短信给供应商  offer ID:' . $item->offer_id . ' Phone:' . Users::find($item->user_id)->phone);
             }
         });
 

@@ -40,7 +40,7 @@ class Sms extends CommonModel
     const SUPPLIER_DENY_OFFER_CODE = 'SMS_123671805';
 
     /*供货商逾期提醒的模板Code*/
-    const SUPPLIER_OVERDUE_CODE = 'SMS_123671803';//未完
+    const SUPPLIER_OVERDUE_CODE = 'SMS_123671803';
 
     /*平台确认订单提醒的模板Code*/
     const PLATFORM_CONFIRM_ORDER_CODE = 'SMS_123671798';
@@ -52,7 +52,7 @@ class Sms extends CommonModel
     const PLATFORM_CONFIRM_RECEIVE_CODE = 'SMS_123666836';
 
     /*供货商到货时间预警的模板Code*/
-    const SUPPLIER_WARNING_CODE = 'SMS_123672512';//未完
+    const SUPPLIER_WARNING_CODE = 'SMS_123672512';
 
     static $acsClient = null;
 
