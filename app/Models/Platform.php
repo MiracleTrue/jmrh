@@ -75,7 +75,7 @@ class Platform extends CommonModel
     }
 
     /**
-     * 获取所有订单列表 关联军方信息 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
+     * 获取所有订单列表 关联军方信息 关联分类负责人 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orderBy
      * @return mixed
@@ -93,6 +93,16 @@ class Platform extends CommonModel
         /*数据过滤*/
         $order_list->transform(function ($item)
         {
+            /*分类负责人*/
+            if (!empty($item->category_id))
+            {
+                $item->manage_user = $item->hmt_users->first();
+            }
+            else
+            {
+                $item->manage_user = null;
+            }
+            /*军方信息*/
             if (!empty($item->ho_users))
             {
                 $item->army_info = clone $item->ho_users;

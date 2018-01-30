@@ -65,6 +65,22 @@ class Orders extends CommonEntity
     protected $dateFormat = 'U';
 
     /**
+     * 一对一关联ProductCategory实体表
+     */
+    public function ho_product_category()
+    {
+        return $this->hasOne(ProductCategory::class, 'category_id', 'category_id');
+    }
+
+    /**
+     * 远程一对多关联Users实体表,中间模型ProductsCategory
+     */
+    public function hmt_users()
+    {
+        return $this->hasManyThrough(Users::class, ProductCategory::class, 'category_id', 'user_id', 'category_id', 'manage_user_id');
+    }
+
+    /**
      * 一对多关联OrderOffer实体表
      */
     public function hm_order_offer()

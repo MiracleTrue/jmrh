@@ -97,6 +97,7 @@ class Army extends CommonModel
         $e_orders->type = self::ORDER_TYPE_ARMY;
         $e_orders->status = $this::ORDER_AWAIT_ALLOCATION;
         $e_orders->order_sn = $this->makeOrderSn();
+        $e_orders->category_id = $product->category_id;
         $e_orders->product_thumb = $product->product_thumb;
         $e_orders->product_name = $product->product_name;
         $e_orders->spec_name = $product->spec_info->spec_name;
