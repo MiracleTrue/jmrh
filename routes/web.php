@@ -53,7 +53,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('platform/re/allocation/offer', 'PlatformController@OfferReAllocation')->name('二次分配供应商');/*平台二次分配供应商*/
         Route::any('platform/order/confirm', 'PlatformController@OrderConfirm')->name('确认订单');/*确认订单*/
         Route::any('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('确认收货');/*确认收货*/
-        Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台库存供应*/
+        Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台全部库存供应*/
         Route::any('platform/send/army', 'PlatformController@SendArmy')->name('发货到军方');/*发货到军方*/
     });
 
