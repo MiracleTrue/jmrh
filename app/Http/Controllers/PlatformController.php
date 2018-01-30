@@ -225,11 +225,13 @@ class PlatformController extends Controller
     public function OfferAllocation(Request $request)
     {
 //        $arr = array(
-//            'order_id' => 7,
+//            'order_id' => 264,
 //            'confirm_time' => '2018-2-3',
 //            'platform_receive_time' => '2018-2-3',
 //            'supplier_A_id' => '5',
 //            'supplier_A_number' => '500',
+//            'supplier_B_id' => '3',
+//            'supplier_B_number' => null,
 //            'platform_allocation_number' => '100',
 //            'warning_time' => '0'
 //        );
@@ -243,9 +245,9 @@ class PlatformController extends Controller
         $rules = [
             'warning_time' => 'required|integer',
             'platform_receive_time' => 'required',
-            'supplier_A_number' => 'sometimes|numeric',
-            'supplier_B_number' => 'sometimes|numeric',
-            'supplier_C_number' => 'sometimes|numeric',
+            'supplier_A_number' => 'nullable|numeric',
+            'supplier_B_number' => 'nullable|numeric',
+            'supplier_C_number' => 'nullable|numeric',
             'order_id' => [
                 'required',
                 'integer',
@@ -395,9 +397,9 @@ class PlatformController extends Controller
         $rules = [
             'warning_time' => 'required|integer',
             'platform_receive_time' => 'required',
-            'supplier_A_number' => 'sometimes|numeric',
-            'supplier_B_number' => 'sometimes|numeric',
-            'supplier_C_number' => 'sometimes|numeric',
+            'supplier_A_number' => 'nullable|numeric',
+            'supplier_B_number' => 'nullable|numeric',
+            'supplier_C_number' => 'nullable|numeric',
             'order_id' => [
                 'required',
                 'integer',
