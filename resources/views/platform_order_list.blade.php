@@ -85,22 +85,22 @@
 						<td>{{$item->product_number}}</td>
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
-							@if($item['status'] == '0' || $item['status'] == '1' )
+							@if($item['status'] == '0')
 							<a class="tre-caozuo platfenpei" onclick="fenpei(this,'{{$item->order_id}}')">分配</a>
-							@if(!empty($item['army_info']))
+							@if($item['type']=='1')
 								<a style="margin-left: 5%;" onclick="InventorySupply(this,'{{$item->order_id}}')">库存供应</a>
 							@endif
-						  @elseif($item['status'] == '100' || $item['status'] == '110' )
-								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >查看报价</a>
-						   @elseif($item['status'] == '120')
-						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">已到货</a>
-				   			 @elseif($item['status'] == '130'|| $item['status'] == '200')
-				   			<a class="tre-caozuo"  onclick="sendArmy(this,'{{$item->order_id}}')">发货到军方</a>
-						   	@endif
-						   	<a>订单确认</a>	
-						   	<a>确认到货</a>
+							@elseif($item['status'] == '1')
+							<a class="tre-caozuo platfenpei" onclick="fenpei2(this,'{{$item->order_id}}')">重新分配</a>
+						 	 @elseif($item['status'] == '100')
+								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >订单确认</a>
+							 @elseif($item['status'] == '110')
+								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >确认收货</a>
+						   @elseif($item['status'] == '120' || $item['status'] == '200' )
+						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">发货到军方</a>
+						   	@endif 	
 						   	<a>打印</a>	
-						   	<a>详细信息</a>
+						 	<a onclick="xiangxiinfo(this,'{{$item->army_note}}')">详细信息</a>
 						   	
 						</td>
 					</tr>
@@ -117,6 +117,17 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
 
 <script>
+		function xiangxiinfo(elm,data){
+			 layer.open({
+		      type: 1,
+		      title: false,
+		      maxmin: false,
+		       fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['500px','250px'],
+		      content: data
+		    });
+		}
 	!function(){
 
 	laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
@@ -156,7 +167,7 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['965px' , '600px'],
+		      area : ['965px' , '800px'],
 		      content: '{{url('platform/need/view')}}'
 		    });
 		  });
@@ -174,16 +185,30 @@ $(".refresh").on("click",function(){
 		      content: '{{url('platform/allocation/view')}}'+'/'+order_id
 		    });
 		  }
-		    function chakanbaojia(elm,order_id){
-		    layer.open({
-		      type: 2,
-		      title: false,
-		      maxmin: false,
-		       fixed :false,
-		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '500px'],
-		      content: '{{url('platform/offer/view')}}'+'/'+order_id
+		  
+		  function fenpei2(elm,order_id){
+		  	 layer.open({
+			      type: 2,
+			      title: false,
+			      maxmin: false,
+			       fixed :false,
+			      shadeClose: true, //点击遮罩关闭层
+			      area : ['900px' , '600px'],
+			      content: '{{url('platform/re/allocation/view')}}'+'/'+order_id
 		    });
+		  }
+		  
+		  
+		    function chakanbaojia(elm,order_id){
+			    layer.open({
+			      type: 2,
+			      title: false,
+			      maxmin: false,
+			       fixed :false,
+			      shadeClose: true, //点击遮罩关闭层
+			      area : ['900px' , '500px'],
+			      content: '{{url('platform/order/confirm/view')}}'+'/'+order_id
+			    });
 		  }
 		  
 		  function sendArmy(elm,order_id){
@@ -221,14 +246,14 @@ $(".refresh").on("click",function(){
 		  }
 		  
 		   function ConfirmReceive(elm,order_id){
-		  	if (confirm("确认已到货吗？")){
+		  	if (confirm("确认发货到军方吗？")){
 		  		$.ajax({
 		  			type:'post',
 		  			data:{
 		  				order_id:order_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
-		  			url:'{{url('platform/confirm/receive')}}',
+		  			url:'{{url('platform/send/army')}}',
 		  			async:true,
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)

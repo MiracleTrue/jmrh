@@ -36,9 +36,7 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
-							@if($manage_user['identity'] == '1')
-							<th style="width: 10%;"><span>供应商名称</span></th>
-							@endif
+							
 						<th style="width: 18%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
 						<th style="width: 6%;"><span>到货时间</span></th>
@@ -50,10 +48,7 @@
 					  @foreach($offer_list as $item)
 					<tr>
 						<td>{{$item->offer_id}}</td>
-							@if($manage_user['identity'] == '1')
 							
-						<td>{{$item['user_info']['nick_name']}}</td>
-							@endif
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
 						@if($item->warning_status)
@@ -74,7 +69,10 @@
 							  	  	  <a class="pvr-caozuo" onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
 							  	  	  @elseif($item['status'] == '4')
 							  	  	  <a class="pvr-caozuo"style="color: #333;">已配货</a>
-							 	@endif		
+							 	@endif
+							 	
+							 	<a>查看订单</a>	
+							 	<a>打印</a>	
 						</td>
 					</tr>
 					
@@ -110,7 +108,7 @@ $(".refresh").on("click",function(){
 		      title: false,
 		      maxmin: false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['660px' , '690px'],
+		      area : ['660px' , '700px'],
 		      fixed :false,
 		      content: '{{url('supplier/offer/view')}}'+"/"+offer_id
 		    });
