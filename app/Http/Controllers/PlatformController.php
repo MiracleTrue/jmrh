@@ -125,6 +125,7 @@ class PlatformController extends Controller
         $platform = new Platform();
         $order_info = $platform->getOrderInfo($order_id);
         $this->ViewData['offer_list'] = $order_info->offer_info->groupBy('create_date')->values();
+        $this->ViewData['order_info'] = $order_info;
         $this->ViewData['count_down'] = 0;
         $this->ViewData['button'] = '等待';
 
