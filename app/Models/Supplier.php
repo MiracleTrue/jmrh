@@ -109,11 +109,10 @@ class Supplier extends CommonModel
     public function supplierSubmitOffer($supplier_id, $offer_id)
     {
         /*初始化*/
-//        $sms = new Sms();
+        $sms = new Sms();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->firstOrFail();
         $e_orders = $e_order_offer->ho_orders()->firstOrFail();
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
-
 
         /*更新*/
         $e_order_offer->status = CommonModel::OFFER_AWAIT_CONFIRM;
@@ -122,7 +121,13 @@ class Supplier extends CommonModel
         $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (同意供货)');
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
 
-//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
+        /*发送短信*/
+        $phone = Users::find($e_order_offer->allocation_user_id)->phone;
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_SUBMIT_OFFER_CODE, $phone,
+            array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
+        info('短信-供货商同意供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+
+
         return true;
     }
 
@@ -136,7 +141,7 @@ class Supplier extends CommonModel
     public function supplierDenyOffer($supplier_id, $offer_id, $deny_reason = '')
     {
         /*初始化*/
-//        $sms = new Sms();
+        $sms = new Sms();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->firstOrFail();
         $e_orders = $e_order_offer->ho_orders()->firstOrFail();
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
@@ -149,7 +154,12 @@ class Supplier extends CommonModel
         $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (拒绝供货)' . '  原因:' . $deny_reason);
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
 
-//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_RECEIVED_OFFER_CODE, Users::find($e_order_offer->allocation_user_id)->phone);/*发送短信*/
+        /*发送短信*/
+        $phone = Users::find($e_order_offer->allocation_user_id)->phone;
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_DENY_OFFER_CODE, $phone,
+            array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
+        info('短信-供货商拒绝供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+
         return true;
     }
 
@@ -162,7 +172,7 @@ class Supplier extends CommonModel
     public function supplierSendProduct($supplier_id, $offer_id)
     {
         /*初始化*/
-        //        $sms = new Sms();
+        $sms = new Sms();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_SEND)->firstOrFail();
         $e_orders = $e_order_offer->ho_orders()->firstOrFail();
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
@@ -173,6 +183,12 @@ class Supplier extends CommonModel
 
         $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (已发货)');
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+
+        /*发送短信*/
+        $phone = Users::find($e_order_offer->allocation_user_id)->phone;
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_SEND_CODE, $phone,
+            array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
+        info('短信-供货商已发货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
 
         return true;
     }

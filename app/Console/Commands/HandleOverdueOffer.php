@@ -76,7 +76,7 @@ class HandleOverdueOffer extends Command
 
                     /*发送短信*/
                     $sms_user = Users::find($e_orders->offer_info->first()->allocation_user_id);
-                    $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::AGAIN_ALLOCATION_CODE, $sms_user->phone);
+                    $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_OVERDUE_CODE, $sms_user->phone);
 
                     //测试log
                     Log::info('(Artisan 计划任务) 处理已过确认时间的报价,改为已超期,订单状态改为重新分配 order ID:' . $item->order_id . '  发送短信给分配人:' . $sms_user->phone);

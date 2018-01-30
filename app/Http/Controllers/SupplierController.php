@@ -134,7 +134,7 @@ class SupplierController extends Controller
     public function OfferSubmit(Request $request)
     {
 //        $arr = array(
-//            'offer_id' => '1',
+//            'offer_id' => '4',
 //        );
 //        $request->merge($arr);
         /*初始化*/
@@ -179,7 +179,7 @@ class SupplierController extends Controller
     public function OfferDeny(Request $request)
     {
 //        $arr = array(
-//            'offer_id' => '1',
+//            'offer_id' => '4',
 //            'deny_reason' => '没货',
 //        );
 //        $request->merge($arr);
@@ -226,7 +226,7 @@ class SupplierController extends Controller
     public function SendProduct(Request $request)
     {
 //        $arr = array(
-//            'offer_id' => '1',
+//            'offer_id' => '4',
 //        );
 //        $request->merge($arr);
         /*初始化*/

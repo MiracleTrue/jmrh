@@ -224,21 +224,16 @@ class PlatformController extends Controller
      */
     public function OfferAllocation(Request $request)
     {
-        $arr = array(
-            'order_id' => 7,
-            'confirm_time' => '2018-2-3',
-            'platform_receive_time' => '2018-2-3',
-            'supplier_A_id' => '5',
-            'supplier_A_number' => '200',
-            'supplier_B_id' => '3',
-            'supplier_B_number' => '300',
-
-
-            'platform_allocation_number' => '100',
-            'warning_time' => '0'
-        );
-        $request->merge($arr);
-
+//        $arr = array(
+//            'order_id' => 7,
+//            'confirm_time' => '2018-2-3',
+//            'platform_receive_time' => '2018-2-3',
+//            'supplier_A_id' => '5',
+//            'supplier_A_number' => '500',
+//            'platform_allocation_number' => '100',
+//            'warning_time' => '0'
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $m3result = new M3Result();
         $platform = new Platform();
@@ -276,7 +271,7 @@ class PlatformController extends Controller
         });
 
         /*军方订单 平台到货时间 增加规则*/
-        $validator->sometimes('platform_receive_time', ['date', 'after:now', 'before:' . $order_info->army_receive_time], function ($input) use ($order_info)
+        $validator->sometimes('platform_receive_time', ['date', 'after:now', 'before:' . $order_info->army_receive_date], function ($input) use ($order_info)
         {
             return $order_info->type === Army::ORDER_TYPE_ARMY;
         });
@@ -378,20 +373,19 @@ class PlatformController extends Controller
      */
     public function OfferReAllocation(Request $request)
     {
-        $arr = array(
-            'order_id' => 7,
-            'confirm_time' => '2018-2-3',
-            'platform_receive_time' => '2018-2-3',
-            'supplier_A_id' => '5',
-            'supplier_A_number' => '50',
-            'supplier_B_id' => '3',
-            'supplier_B_number' => '50',
-
-            'platform_allocation_number' => '300',
-            'warning_time' => '0'
-        );
-        $request->merge($arr);
-
+//        $arr = array(
+//            'order_id' => 7,
+//            'confirm_time' => '2018-2-3',
+//            'platform_receive_time' => '2018-2-3',
+//            'supplier_A_id' => '5',
+//            'supplier_A_number' => '50',
+//            'supplier_B_id' => '3',
+//            'supplier_B_number' => '50',
+//
+//            'platform_allocation_number' => '300',
+//            'warning_time' => '0'
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $m3result = new M3Result();
         $platform = new Platform();
@@ -538,10 +532,10 @@ class PlatformController extends Controller
      */
     public function OrderConfirm(Request $request)
     {
-        $arr = array(
-            'order_id' => '7',
-        );
-        $request->merge($arr);
+//        $arr = array(
+//            'order_id' => '7',
+//        );
+//        $request->merge($arr);
         /*初始化*/
         $m3result = new M3Result();
         $platform = new Platform();
@@ -679,7 +673,7 @@ class PlatformController extends Controller
     {
 //        $arr = array(
 //            'order_id' => '7',
-//            'offer_id' => 6,
+//            'offer_id' => 4,
 //        );
 //        $request->merge($arr);
         /*初始化*/

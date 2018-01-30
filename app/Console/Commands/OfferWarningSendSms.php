@@ -67,7 +67,7 @@ class OfferWarningSendSms extends Command
             if ($item->status == CommonModel::OFFER_PASSED && bcsub($item->order_info->platform_receive_time, $item->warning_time) < now()->timestamp)
             {
                 //发送短信
-                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_ALLOCATION_CODE, Users::find($item->user_id)->phone);
+                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_WARNING_CODE, Users::find($item->user_id)->phone);
 
                 //改变发送短信的状态
                 OrderOffer::where('offer_id', $item->offer_id)->update(['warning_is_sms' => CommonModel::OFFER_IS_SMS]);

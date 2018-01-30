@@ -152,46 +152,45 @@ class Platform extends CommonModel
 
     /**
      * 分配一个订单到单个供应商
-     * @param $order_id .订单id
+     * @param $order_info .订单
      * @param $supplier_id .供应商id
      * @param $spec_id .规格id
-     * @param $product_number .分配的数量
+     * @param $allocation_number .分配的数量
      * @param array $data array('confirm_time' => 1512057600, 'warning_time' => 0, 'platform_receive_time' => 1512057600)
      * @return bool
      */
-    private function allocationOfferToSupplier($order_id, $supplier_id, $spec_id, $product_number, $data = array())
+    private function allocationOfferToSupplier($order_info, $supplier_id, $spec_id, $allocation_number, $data = array())
     {
         $supplier_price = SupplierPrice::where('user_id', $supplier_id)->where('spec_id', $spec_id)->firstOrFail();
-        if (!$order_id || !$supplier_id || !$supplier_price || !$product_number || !MyHelper::is_timestamp($data['confirm_time']) || !MyHelper::is_timestamp($data['platform_receive_time']) || $data['warning_time'] < 0)
+        if (empty($order_info) || !$supplier_id || !$supplier_price || !$allocation_number || !MyHelper::is_timestamp($data['confirm_time']) || !MyHelper::is_timestamp($data['platform_receive_time']) || $data['warning_time'] < 0)
         {
             return false;
         }
         /*初始化*/
         $e_order_offer = new OrderOffer();
-//        $sms = new Sms();
+        $supplier_info = Users::find($supplier_id);
+        $sms = new Sms();
 
         /*添加*/
-        $e_order_offer->order_id = $order_id;
+        $e_order_offer->order_id = $order_info->order_id;
         $e_order_offer->user_id = $supplier_id;
         $e_order_offer->status = $this::OFFER_AWAIT_REPLY;
         $e_order_offer->price = $supplier_price->price;
-        $e_order_offer->product_number = $product_number;
+        $e_order_offer->product_number = $allocation_number;
         $e_order_offer->create_time = $GLOBALS['create_time']->timestamp;
         $e_order_offer->platform_receive_time = $data['platform_receive_time'];
         $e_order_offer->confirm_time = $data['confirm_time'];
         $e_order_offer->warning_time = $data['warning_time'];
         $e_order_offer->allocation_user_id = session('ManageUser')->user_id;
         $e_order_offer->save();
-        $this::orderLog($order_id, Users::find($supplier_id)->nick_name . ' 需供货量:' . $product_number . ' (已分配)');
+        $this::orderLog($order_info->order_id, $supplier_info->nick_name . ' 需供货量:' . $allocation_number . ' (已分配)');
+
+        /*发送短信*/
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_RECEIVE_OFFER_CODE, $supplier_info->phone,
+            array('date' => now('Asia/Shanghai')->toDateTimeString(), 'order_sn' => $order_info->order_sn, 'confirm_date' => Carbon::createFromTimeStamp($data['confirm_time'], 'Asia/Shanghai')->toDateTimeString()));
+        info('短信-供货商收到订单  order ID:' . $order_info->order_id . ' Phone:' . $supplier_info->phone);
+
         return true;
-
-
-//        if ()
-//        {
-//            $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_ALLOCATION_CODE, Users::find($e_order_offer->user_id)->phone);/*发送短信*/
-//            return true;
-//        }
-//        return false;
     }
 
     /**
@@ -221,7 +220,7 @@ class Platform extends CommonModel
                 $e_orders->save();
                 foreach ($supplier_arr as $item)
                 {
-                    if (!$this->allocationOfferToSupplier($e_orders->order_id, $item['supplier_id'], $e_products->spec_info->spec_id, $item['product_number'], array('platform_receive_time' => strtotime($arr['platform_receive_time']), 'confirm_time' => strtotime($arr['confirm_time']), 'warning_time' => $arr['warning_time'])))
+                    if (!$this->allocationOfferToSupplier($e_orders, $item['supplier_id'], $e_products->spec_info->spec_id, $item['product_number'], array('platform_receive_time' => strtotime($arr['platform_receive_time']), 'confirm_time' => strtotime($arr['confirm_time']), 'warning_time' => $arr['warning_time'])))
                     {
                         throw new SupplierPriceNotFindException();
                     }
@@ -248,14 +247,20 @@ class Platform extends CommonModel
         return true;
     }
 
+    /**
+     * 平台确认订单
+     * @param $order_id
+     * @return bool
+     */
     public function orderConfirm($order_id)
     {
         /*初始化*/
+        $sms = new Sms();
 
         /*事物*/
         try
         {
-            DB::transaction(function () use ($order_id)
+            DB::transaction(function () use ($order_id, $sms)
             {
                 /*初始化*/
                 $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [CommonModel::ORDER_ALREADY_ALLOCATION])->lockForUpdate()->firstOrFail();
@@ -274,10 +279,11 @@ class Platform extends CommonModel
 
                 /*发送短信,记录订单日志*/
                 $e_order_offer = OrderOffer::where('order_id', '=', $e_orders->order_id)->where('status', $this::OFFER_AWAIT_CONFIRM)->get();
-                $e_order_offer->each(function ($item) use ($e_orders)
+                $e_order_offer->each(function ($item) use ($e_orders, $sms)
                 {
-                    //发送短信
-                    //xxx
+                    /*发送短信*/
+                    $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_CONFIRM_ORDER_CODE, $item->ho_users->phone, array('order_sn' => $e_orders->order_sn));
+                    info('短信-平台确认订单提醒  order ID:' . $e_orders->order_id . ' Phone:' . $item->ho_users->phone);
                     $this::orderLog($e_orders->order_id, Users::find($item->user_id)->nick_name . ' 需供货量:' . $item->product_number . ' (已确认)');
                 });
                 /*修改报价状态*/
@@ -371,21 +377,25 @@ class Platform extends CommonModel
      */
     public function supplierConfirmReceive($order_id, $offer_id)
     {
+        $sms = new Sms();
         /*事物*/
         try
         {
-            DB::transaction(function () use ($order_id, $offer_id)
+            DB::transaction(function () use ($order_id, $offer_id, $sms)
             {
 
                 $e_orders = Orders::where('order_id', $order_id)->whereIn('status', [$this::ORDER_ALREADY_CONFIRM])->firstOrFail();
                 $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('status', $this::OFFER_ALREADY_SEND)->firstOrFail();
+                $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
 
                 /*更新报价状态*/
                 $e_order_offer->status = $this::OFFER_ALREADY_RECEIVE;
                 $e_order_offer->save();
-                $this::orderLog($e_orders->order_id, Users::find($e_order_offer->user_id)->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (已确认收货)');
-                /*发送短信*/
-                // code...
+                $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (已确认收货)');
+
+                /*发送短信 给供应商*/
+                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::PLATFORM_CONFIRM_RECEIVE_CODE, $e_users->phone, array('order_sn' => $e_orders->order_sn));
+                info('短信-平台确认收货  order ID:' . $e_orders->order_id . ' Phone:' . $e_users->phone);
 
                 /*验证是否所有供货商都已经到货*/
                 $validate_offer = OrderOffer::where('order_id', $e_orders->order_id)->whereIn('status', [$this::OFFER_AWAIT_SEND, $this::OFFER_ALREADY_SEND])->get();

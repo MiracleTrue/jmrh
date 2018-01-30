@@ -22,28 +22,37 @@ use Illuminate\Support\Facades\Log;
 class Sms extends CommonModel
 {
     /*短信是否可用   true   false*/
-    const SEND_STATUS = false;
+    const SEND_STATUS = true;
 
     /*短信签名_1*/
     const SMS_SIGNATURE_1 = '青岛军民融合生活保障中心';
 
-    /*重新分配提醒的模板Code*/
-    const AGAIN_ALLOCATION_CODE = 'SMS_114385358';
-
     /*军方发布提醒的模板Code*/
-    const ARMY_RELEASE_CODE = 'SMS_113461381';
+    const ARMY_RELEASE_CODE = 'SMS_123736619';
 
-    /*选择供应商的模板Code*/
-    const SELECT_SUPPLIER_CODE = 'SMS_109410246';
+    /*供货商收到订单的模板Code*/
+    const SUPPLIER_RECEIVE_OFFER_CODE = 'SMS_123797223';
 
-    /*报价逾期提醒的模板Code*/
-    const OFFER_OVERDUE_CODE = 'SMS_109385266';
+    /*供货商同意供货的模板Code*/
+    const SUPPLIER_SUBMIT_OFFER_CODE = 'SMS_123671806';
 
-    /*平台运营员收到报价的模板Code*/
-    const PLATFORM_RECEIVED_OFFER_CODE = 'SMS_109420273';
+    /*供货商拒绝供货的模板Code*/
+    const SUPPLIER_DENY_OFFER_CODE = 'SMS_123671805';
 
-    /*供应商分配的模板Code*/
-    const SUPPLIER_ALLOCATION_CODE = 'SMS_109475255';
+    /*供货商逾期提醒的模板Code*/
+    const SUPPLIER_OVERDUE_CODE = 'SMS_123671803';//未完
+
+    /*平台确认订单提醒的模板Code*/
+    const PLATFORM_CONFIRM_ORDER_CODE = 'SMS_123671798';
+
+    /*供货商已发货的模板Code*/
+    const SUPPLIER_SEND_CODE = 'SMS_123671808';
+
+    /*平台确认收货的模板Code*/
+    const PLATFORM_CONFIRM_RECEIVE_CODE = 'SMS_123666836';
+
+    /*供货商到货时间预警的模板Code*/
+    const SUPPLIER_WARNING_CODE = 'SMS_123672512';//未完
 
     static $acsClient = null;
 

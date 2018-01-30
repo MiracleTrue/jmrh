@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Entity\Orders;
+use App\Entity\ShoppingCart;
 use App\Entity\Users;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -89,7 +90,6 @@ class Army extends CommonModel
             return false;
         }
         /*初始化*/
-        $user = new User();
         $sms = new Sms();
         $e_orders = new Orders();
 
@@ -115,14 +115,13 @@ class Army extends CommonModel
         $e_orders->save();
 
         /*清除购物车该产品*/
+        ShoppingCart::where('user_id', session('ManageUser')->user_id)->where('product_name', $e_orders->product_name)->where('spec_name', $e_orders->spec_name)->delete();
 
-
-//        /*发送短信给所有平台运营员*/
-//        $platform_users = $user->getPlatformUserList();
-//        $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
-//        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $platform_users_numbers_str);
-//        //测试log
-//        Log::info('平台发布需求,发送短信给所有平台运营员  order ID:' . $e_orders->order_id . ' Phone:' . $platform_users_numbers_str);
+        /*发送短信给负责人运营员*/
+        $phone = $e_orders->hmt_users->first()->phone;
+        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $phone, array('date' => now('Asia/Shanghai')->toDateTimeString(), 'order_sn' => $e_orders->order_sn));
+        //测试log
+        info('短信-军方发布提醒  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
@@ -147,6 +146,7 @@ class Army extends CommonModel
 
         /*修改*/
         $e_orders->order_sn = $this->makeOrderSn();
+        $e_orders->category_id = $product->category_id;
         $e_orders->product_thumb = $product->product_thumb;
         $e_orders->product_name = $product->product_name;
         $e_orders->spec_name = $product->spec_info->spec_name;
