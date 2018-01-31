@@ -149,7 +149,7 @@ $(".refresh").on("click",function(){
 						maxmin: true,
 						fixed :false,
 						shadeClose: true, //点击遮罩关闭层
-						area: ['920px', '700px'],
+						area: ['920px', '98%'],
 						content: '{{url('product/view')}}'
 					});
 				});

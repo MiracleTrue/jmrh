@@ -11,6 +11,72 @@
 	color: red;
 	
 }
+.pruduct_box{
+	padding-left: 40px;
+	padding-right: 40px;
+	
+}
+.product_h1{
+	height: 93px;
+	line-height: 93px;
+	font-size: 24px;
+	color: #0e99dc;
+	border-bottom: 1px solid #dddddd;
+}
+select{
+	width: 284px;
+	height: 33px;
+	margin-left: 15px;
+}
+input{
+	width: 284px;
+	height: 39px;
+	margin-left: 15px;
+}p{
+	font-size: 15px;
+	height: 59px;
+	line-height: 59px;
+}
+.add_agreementprice{
+	margin: 0 auto;
+	text-align: center;
+	height: 44px;
+	line-height: 44px;
+	color: #0e99dc;
+	font-size: 15px;
+	cursor: pointer;
+}
+.conadd{
+	text-align: center;
+	cursor: pointer;
+	height:60px;
+	line-height: 60px;
+	color: #0e99dc;
+	font-size: 15px;
+}
+.addspecsubmit{
+	width: 210px;
+	height: 64px;
+	background: #fe8d01;
+	color: #FFFFFF;
+	font-size: 20px;
+	text-align: center;
+	line-height: 64px;
+	font-weight: bold;
+}
+.reset{
+	width: 210px;
+	height: 64px;
+font-weight: bold;
+	font-size: 20px;
+	text-align: center;
+	line-height: 64px;
+}
+.addguige{
+	margin-top: 10px;
+	padding-bottom: 25px;
+	border-bottom: 1px dashed #333333;
+}
 </style>
 @endsection
 
@@ -18,18 +84,24 @@
 	
 	<div class="pruduct_box">
 		
+		
+		
+		
+		
 		 @if(!empty($product_info))
     	<form id="product_editform" action="" method="post">
+    		<h1 class="product_h1">编辑分类</h1>
     		@else
+    		<h1 class="product_h1">添加分类</h1>
     	<form id="product_addform" action="" method="post">
     		@endif
 		
-		
+		<div class="error"></div>
 		
 		
 		
 		<div>
-			<p>
+			<p style="height: 60px;line-height: 60px;font-size: 15px;margin-top: 30px;position: relative;">
 				<label>所属分类</label>
 				<select name="category_id">
 					
@@ -41,20 +113,23 @@
 						@endif
 					@endforeach
 				</select>
-				<label>商品图片</label>
-				<input type="file" accept="image/gif, image/jpeg,image/jpg,image/png"   name="product_thumb" id="" value="" />
-
+				<label style="margin-left: 28px;">商品图片</label>
+				<input style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" accept="image/gif, image/jpeg,image/jpg,image/png" name="product_thumb" id="product_thumb" class="upimgclass"/>
+				<input  style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 13px;right: 70px;" disabled="disabled" class="faker" value="点击右边上传按钮" />
+				<a><label for="product_thumb"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
 			</p>
-			<p>
-				<label>商品名称</label><input type="text" name="product_name" id="" value="{{$product_info['product_name'] or ''}}" />
-				<label>排序</label><input type="text" name="sort" id="" value="{{$product_info['sort'] or ''}}" />
+			<p style="height: 60px;line-height: 60px;font-size: 15px;">
+				<label style="">商品名称</label>
+				<input style="height: 35px;width: 280px;" type="text" name="product_name" id="" value="{{$product_info['product_name'] or ''}}" />
+				<label style="margin-left: 50px;">排序</label>
+				<input type="text" name="sort" id="" value="{{$product_info['sort'] or ''}}" style="height: 35px;width: 280px;margin-left: 15px;" />
 
 			</p>
 		</div>
 		<!--添加规格-->
 		<div id="addguigefa">
 			
-			<p>添加规格：</p>
+			<p style="height: 48px;line-height: 48px;color:#0e99dc ;font-size: 16px;">添加规格：</p>
 			
 		<!--循环商品规格-->	
 	 @if(!empty($product_info))
@@ -62,9 +137,11 @@
 	 	<input type="hidden" name="product_id" id="product_id" value="{{$product_info['product_id']}}" />
     	@foreach($product_info['spec_info'] as $item)
 			<div class="addguige">
-				<p>
-					<label>商品图片</label>
-					<input type="file" class="product_img spec_image" onchange="upimg()"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
+					<label>规格图片</label>
+					<input style="padding-top: 10px;height: 29px;" class="upimgclass" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" class="product_img spec_image" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+					<!--<input class="faker" style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" disabled="disabled" value="点击右边上传按钮" />
+					<a><label for="spec_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>-->
 					<label>规格名称</label><input class="spec_name" type="text" name="spec_name" id="" value="{{$item['spec_name'] or ''}}" />
 	
 				</p>
@@ -72,31 +149,33 @@
 					<label>计量单位</label><input class="spec_unit" type="text" name="spec_unit" id="" value="{{$item['spec_unit'] or ''}}" />
 				</p>
 				<!--供应商协议价-->
-				<div>供应商协议价：</div>
+				<div style="height: 48px;line-height: 48px;color:#0e99dc ;font-size: 16px;">供应商协议价：</div>
 				
 				<div class="fa_agreementprice">
 					<div class="agreementprice">
 						@foreach($item['supplier_price'] as $items)	
-							<p class="suliper"><label>选择供应商</label>
+							<p class="suliper" style="position: relative;">
+								<label>选择供应商</label>
 								<select class="supplier_list supplier2" name="supplier_list">
 										@foreach($supplier_list as $itema)
 											<option value="{{$itema['user_id']}}" @if($itema['user_id'] == $items['user_id']) selected="selected" @endif  >{{$itema['nick_name']}}</option>
 										@endforeach
 								</select>
-								<label>价格</label>
+								<label style="margin-left: 40px;">价格</label>
 								<input type="text" class="supplier_price supplier2" name="supplier_price"  value="{{$items['price'] or ''}}" />
-								<div><span>元/</span><span>斤</span></div>
+							<a style="position: absolute;right: 69px;top: 3px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></a>	
 							</p>
+							
 						@endforeach
 					</div>
 					
-					<div class="add_agreementprice" onclick="addjiage(this)">增加供应商协议价</div>
+					<div class="add_agreementprice" onclick="addjiage(this)"><a>增加供应商协议价</a></div>
 				</div>
 				
 				<!--军方协议价-->
-				<div>
-					<label>军方协议价</label><input class="army_price" name="army_price" type="text" value="{{$item['product_price'] or ''}}" />
-					<div><span>元/</span><span>斤</span></div>
+				<div style="position: relative;">
+					<label style="font-size: 15px;">军方协议价</label><input class="army_price" name="army_price" type="text" value="{{$item['product_price'] or ''}}" />
+					<div style="position: absolute;left: 337px;top: 12px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></div>
 	
 				</div>
 				
@@ -104,38 +183,47 @@
 		@endforeach
     		@else
     	<div class="addguige">
-				<p>
-					<label>商品图片</label>
-					<input type="file" class="spec_image product_img" onchange="upimg()"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
-					<label>规格名称</label><input class="spec_name" type="text" name="spec_name" id="" value="" />
+				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
+					<label>规格图片</label>
+					<input style="padding-top: 10px;height: 29px;" class="upimgclass spec_image product_img" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+					
+					<!--<input style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" class="faker" disabled="disabled" value="点击右边上传按钮" />
+					<a><label for="spec_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
+					-->
+					
+					<label style="margin-left:23px;">规格名称</label>
+					<input class="spec_name" type="text" name="spec_name" id="" value="" style=""/>
 	
 				</p>
 				<p>
 					<label>计量单位</label><input class="spec_unit" type="text" name="spec_unit" id="" value="" />
 				</p>
 				<!--供应商协议价-->
-				<div>供应商协议价：</div>
+				<div style="height: 48px;line-height: 48px;color:#0e99dc ;font-size: 16px;">供应商协议价：</div>
 				
 				<div class="fa_agreementprice">
-					<div class="agreementprice">
-						<p class="suliper"><label>选择供应商</label>
+					<div class="agreementprice" style="position: relative;">
+						<p class="suliper" style="position: relative;">
+							<label>选择供应商</label>
 							<select class="supplier_list supplier2" name="supplier_list">
 								@foreach($supplier_list as $item)
 									<option value="{{$item['user_id']}}">{{$item['nick_name']}}</option>
 								@endforeach
 							</select>
-							<label>价格</label>
-							<input type="text" class="supplier_price supplier2" name="supplier_price" id="" value="" />
-							<div><span>元/</span><span>斤</span></div>
+							<label style="margin-left: 40px;">价格</label>
+							<input style="position: relative;" type="text" class="supplier_price supplier2" name="supplier_price" id="" value="" />
+						<a style="position: absolute;right: 76px;top: 3px;"><span>元/</span><span class="myspec_unit">斤</span></a>
+							
 						</p>
+
 					</div>
 					
-					<div class="add_agreementprice" onclick="addjiage(this)">增加供应商协议价</div>
+						<div  class="add_agreementprice" onclick="addjiage(this)">增加供应商协议价</div>
 				</div>
 				
 				<!--军方协议价-->
-				<div><label>军方协议价</label><input class="army_price" type="text" name="army_price" id="" value="" />
-					<div><span>元/</span><span>斤</span></div>
+				<div style="position: relative;"><label style="font-size: 15px;">军方协议价</label><input class="army_price" type="text" name="army_price" id="" value="" />
+					<div style="position: absolute;left:335px;top: 13px;font-size: 14px;"><span>元/</span><span class="myspec_unit">斤</span></div>
 	
 				</div>
 				
@@ -151,9 +239,9 @@
 				<script id="container" name="product_content" type="text/plain">
          	   		
         </script>
-		<div>
+		<div style="text-align: center;margin-top: 50px;">
 			<input class="addspecsubmit" type="submit" name="" id="" value="提交" />
-			<input type="reset" name="" id="" value="重置" />
+			<input class="reset" type="reset" name="" id="" value="重置" />
 		</div>	
 			
 			</form>	
@@ -173,6 +261,42 @@
 
 <script>
 	
+	$(".conadd").click(function(){
+		var addguige=$(this).parent().find(".addguige").eq(0);
+			addguige.clone(true).appendTo("#addguigefa");
+		
+	})
+	function addjiage(elm){
+		/*	$(".agreementprice").eq(0).clone().prependTo($(elm).parent());*/
+		$(".suliper").eq(0).clone(true).prependTo($(elm).parent());
+		/*$(elm).parent().jQueryprepend('<div class="agreementprice"><p class="suliper"><label>选择供应商</label><select class="supplier_list supplier2" name="supplier_list"><option value="2">AA</option><option value="3">BB</option><option value="5">蔬菜366</option></select><label>价格</label><input type="text" class="supplier_price supplier2" name="" id="" value=""></p><div><span>元/</span><span>斤</span></div><p></p></div>')
+	*/
+	}
+	
+	
+	
+	
+	
+	//获取上传图片名称
+	var imgName;
+	$(".upimgclass").change(function(){
+		var imgName=$(this).val();
+		var arr=imgName.split('\\');
+		var my=arr[arr.length-1];
+		console.log(my)
+		/*$(this).siblings("input.faker").val(my);*/
+		 $(this).parent().find(".faker").val(my);
+		
+	})
+	
+	
+	
+	
+	
+	$(".spec_unit").blur(function(){
+		$(this).parent().parent().find(".myspec_unit").text($(this).val());
+		/*$(".myspec_unit").text($(".spec_unit").val())*/
+	})
 	 if ($.validator) {
 	   $.validator.prototype.elements = function () {
 	    var validator = this,
@@ -198,16 +322,6 @@
 	
 	
 	
-	$(".conadd").click(function(){
-		var addguige=$(this).parent().find(".addguige").eq(0);
-			addguige.clone().appendTo("#addguigefa");
-		
-	})
-	function addjiage(elm){
-			$(".agreementprice").eq(0).clone().prependTo($(elm).parent());
-		/*$(elm).parent().jQueryprepend('<div class="agreementprice"><p class="suliper"><label>选择供应商</label><select class="supplier_list supplier2" name="supplier_list"><option value="2">AA</option><option value="3">BB</option><option value="5">蔬菜366</option></select><label>价格</label><input type="text" class="supplier_price supplier2" name="" id="" value=""></p><div><span>元/</span><span>斤</span></div><p></p></div>')
-	*/
-	}
 
 	
 		
@@ -223,8 +337,14 @@
 	var image_original1=[];
 	var image_thumb1=[];
 	 var k=0;
-	function upimg(){
-	
+	/* $(".spec_image").change(function(){
+	 	
+	 })*/ 
+	 
+	function upimg(elm){
+		
+		$(elm).parent().find(".faker").val($(elm).val().split('\\')[$(elm).val().split('\\').length-1]);
+		
 		$.ajaxFileUpload({
 			url: '{{url("product/upload/spec/image")}}',
 		    type: 'POST',
@@ -235,9 +355,16 @@
 		    },
 		    success:function(resData){
 		    	var resData=JSON.parse(resData);
-		    
 		    console.log(resData);
-		  	
+		    if(resData.code==0){
+		    	
+		    
+		    				             	
+			             	  layer.msg(resData.messages, {icon: 1, time: 1000},function(){ });
+			             }else{
+			             	 layer.msg(resData.messages, {icon: 2, time: 1000},function(){ });
+			             }
+		  		
 		  			image_original1[k]=resData.data.spec_image.image_original;
 		  			image_thumb1[k]=resData.data.spec_image.image_thumb;
 		  			k++;
@@ -249,10 +376,11 @@
 		   /* image_original=resData.data.spec_image.image_original;
 		    image_thumb=resData.data.spec_image.image_thumb;*/
 		    
-		    
+		   
 	    
 		    }
 		});
+		
 	}
 	
 
@@ -326,9 +454,7 @@ $(function(){
 	          		required: true
 	          	},
 	          	
-	          	spec_image:{
-	          		required: true,
-	          	},spec_name:{
+	          	spec_name:{
 	          		required: true,
 	          	},spec_unit:{
 	          		required: true,
@@ -337,8 +463,8 @@ $(function(){
 	          	},army_price:{
 	          		required: true,
 	          		number:true
-	          	}
-	        
+	          	},
+	      
 	        },
 	         messages: {
 		      sort: {
@@ -347,7 +473,7 @@ $(function(){
 		      	range:"范围在-9999和9999之间"
 		      },
 		       product_thumb:{
-		      	required: "请上传图片",
+		      	required: "请上传商品图片",
 	        	
 		      },
 		       product_name:{
@@ -376,6 +502,8 @@ $(function(){
 		       
 		      
 		    }, 
+		      errorLabelContainer:$(".error"),
+		        wrapper:"li",		     
 		    submitHandler: function (form) {
 		    		json();
 		          $(form).ajaxSubmit({
@@ -396,9 +524,9 @@ $(function(){
 		        	/*console.log(res);*/
 		        	
 			           if(res.code==0){			             	
-			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
-			             	 $(".addspecsubmit").removeAttr("disabled");
-			             	
+			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){
+			             	  	  layer.closeAll('');  
+			             	 $(".addspecsubmit").removeAttr("disabled");			            
 			             	   });
 							addspecstate=true;
 			             }else{
@@ -506,7 +634,7 @@ $(function(){
 			           if(res.code==0){			             	
 			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 			             	 $(".addspecsubmit").removeAttr("disabled");
-			             	
+			             	  layer.closeAll('');
 			             	   });
 							addspecstate=true;
 			             }else{
