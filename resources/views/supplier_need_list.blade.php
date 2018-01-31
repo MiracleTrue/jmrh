@@ -36,10 +36,9 @@
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 9%;"><span>序号</span></th>
-							
 						<th style="width: 18%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
-						<th style="width: 6%;"><span>到货时间</span></th>
+						<th style="width: 12%;"><span>到货时间</span></th>
 						<th style="width: 14%;"><span style="">数量</span></th>
 						<th style="width: 14%;"><span style="">报价</span></th>
 
@@ -48,30 +47,30 @@
 					  @foreach($offer_list as $item)
 					<tr>
 						<td>{{$item->offer_id}}</td>
-							
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
-						@if($item->warning_status)
-						<td style="color: red;">{{$item['order_info']['platform_receive_time']}}</td>
-						@else
-						<td>{{$item['order_info']['platform_receive_time']}}</td>
-						@endif
-						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['product_unit']}}</td>
-						<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>
+						<td>{{$item['platform_receive_date']}}</td>
+						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['spec_unit']}}</td>
+						<!--<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>-->
+						<td>{{$item['status_text']}}</td>
 						<td class="blueWord">
 							@if($item['status'] == '0')
-							<a class="pvr-caozuo" onclick="supplierView(this,{{$item->offer_id}})">报价</a>
+							<a class="pvr-caozuo" ></a>
 							  @elseif($item['status'] == '1')
-							  	<a class="pvr-caozuo" style="color: #333;">等待通过</a>
+							  	<a class="pvr-caozuo" style="color: #333;" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
 							  	  @elseif($item['status'] == '2')
-							  	  	<a class="pvr-caozuo" style="color: #333;">未通过</a>
+							  	  	<a class="pvr-caozuo" style="color: #333;"onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
 							  	  	  @elseif($item['status'] == '3')
-							  	  	  <a class="pvr-caozuo" onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
+							  	  	  <a class="pvr-caozuo" >已发货</a>
 							  	  	  @elseif($item['status'] == '4')
-							  	  	  <a class="pvr-caozuo"style="color: #333;">已配货</a>
+							  	  	  <a class="pvr-caozuo"style="color: #333;"></a>
+							  	  	   @elseif($item['status'] == '-1')
+							  	  	  <a class="pvr-caozuo"style="color: #333;"></a>
+							  	  	    @elseif($item['status'] == '10')
+							  	  	  <a class="pvr-caozuo"style="color: #333;"></a>
 							 	@endif
 							 	
-							 	<a>查看订单</a>	
+							 	
 							 	<a>打印</a>	
 						</td>
 					</tr>
@@ -123,7 +122,7 @@ $(".refresh").on("click",function(){
 		  				offer_id:offer_id,
 	  					_token:'{{csrf_token()}}'
 		  			},
-		  			url:'{{url('supplier/send/goods')}}',
+		  			url:'{{url('supplier/send/product')}}',
 		  			async:true,
 		  			success: function (resData) {
 		  				var res=JSON.parse(resData)
