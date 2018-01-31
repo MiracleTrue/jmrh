@@ -55,7 +55,7 @@
 						<td>{{$item['status_text']}}</td>
 						<td class="blueWord">
 							@if($item['status'] == '0')
-							<a class="pvr-caozuo" ></a>
+							<a class="pvr-caozuo" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
 							  @elseif($item['status'] == '1')
 							  	<a class="pvr-caozuo" style="color: #333;" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
 							  	  @elseif($item['status'] == '2')
