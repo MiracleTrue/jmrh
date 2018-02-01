@@ -4,6 +4,20 @@
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     {{--<link rel="stylesheet" type="text/css" href="css/iframe.css" />--}}
     <link rel="stylesheet" type="text/css" href="{{asset('webStatic/css/iframe.css')}}" />
+ 	<style type="text/css">
+ 		.fnumber{
+ 			font-weight: bold;
+ 			color: #FFFFFF;
+ 			height:50px;
+ 			width:50px;
+ 			display:inline-block;
+ 			line-height:50px;
+ 			text-align:center;
+ 			font-size:30px;
+ 			border-radius:50%;
+ 			margin-right: 5px;
+ 		}
+ 	</style>
  	
 @endsection
 @section('content')
@@ -21,7 +35,7 @@
  		@foreach($product_list as $key => $item)
         <div class="f1" id="floor{{$key}}">
             <div class="floor_div">
-                <p style="float: left;"><span style="font-size: 26px;font-weight: bolder;">{{$item['category_name']}}</span>
+                <p style="float: left;"><span style="background:'+bcolor+'" class="fnumber"></span><span style="font-size: 26px;font-weight: bolder;">{{$item['category_name']}}</span>
               {{--  <!-- <ul class="head">
                 	@foreach($item['labels'] as $label)
                     <li>{{$label}}</li>
@@ -66,12 +80,18 @@
 	  		var bcolor=spanColor[i%4];
 	  	$(".floor a").eq(i).attr("href","#floor"+i);
 	  	$(".floor a span").eq(i).css("background",bcolor);
+	  	$(".fnumber").eq(i).css("background",bcolor);
 	  }
     	
 	    	
 	    /*控制图片大小*/
 	   	var imgWidth=$(".proudut_img").width();
 	   	$(".proudut_img").height(imgWidth);
+	   	
+	   	$(".fnumber").each(function(i,index){
+    		$(index).text("F"+Number(i+1));
+    	})
+	   	
 	    		
     	})
     	 $(".floor a").css("width","100%");
@@ -113,6 +133,8 @@
     		$(".floor a span").css("line-height",floora/2+"px");
     		$(".floor a span").css("font-size",floora/4.5+"px")
     	})
+    	
+    
     </script>
     
 @endsection

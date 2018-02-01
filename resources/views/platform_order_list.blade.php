@@ -31,7 +31,7 @@
       		<div class="refresh">
 		  		<img src="{{asset('webStatic/images/refresh.png')}}" />
 		  	</div>
-			<div>
+			<div style="line-height: 36px;">
 				<a href="#" class="tre-tianjia"></a>
 				<div class="tre-shaixuan platshaixuan" style="background: none;">
 					<div class="plat_shanixuan" >筛选</div>
@@ -59,6 +59,15 @@
 					</div>
 				</div>
 				<a class="tre-btn">搜索</a>
+				
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<span>-</span>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
+
+				<a onclick="tongji(this)" style="margin-left: 10px;color: blue;font-size: 14px;">统计</a>						
+				
+				
 			</div>
 			
 				<table>
@@ -100,7 +109,7 @@
 						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">发货到军方</a>
 						   	@endif 	
 						   	<a>打印</a>	
-						 	<a onclick="xiangxiinfo(this,'{{$item->army_note}}')">详细信息</a>
+						 	<a onclick="xiangxiinfo(this,'{{$item->order_id}}')">详细信息</a>
 						   	
 						</td>
 					</tr>
@@ -117,15 +126,46 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
 
 <script>
-		function xiangxiinfo(elm,data){
-			 layer.open({
-		      type: 1,
+	function biaoge(){
+		var start_date=$(".start_time").val();
+		var end_date=$(".end_time").val();
+		if(start_date=="" && end_date==""){
+			alert("时间选择不能为空")
+			
+		}else{
+			location.href="{{url('platform/output/excel')}}"+"/"+start_date+"/"+end_date
+			
+		}
+		
+	
+		
+	}
+	/*统计*/
+	function tongji(){
+		var start_date=$(".start_time").val();
+		var end_date=$(".end_time").val();
+		
+		 layer.open({
+		      type: 2,
 		      title: false,
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['500px','250px'],
-		      content: data
+		      area : ['80%' , '70%'],
+		      content: '{{url('platform/statistics')}}'+"/"+start_date+"/"+end_date
+		    });
+	}
+	
+	
+		function xiangxiinfo(elm,order_id){
+			 layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		       fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['900px' , '500px'],
+		      content: '{{url('platform/order/detail/view')}}'+"/"+order_id
 		    });
 		}
 	!function(){

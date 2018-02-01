@@ -139,9 +139,9 @@ font-weight: bold;
 			<div class="addguige">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
-					<input style="padding-top: 10px;height: 29px;" class="upimgclass" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" class="product_img spec_image" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
-					<!--<input class="faker" style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" disabled="disabled" value="点击右边上传按钮" />
-					<a><label for="spec_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>-->
+					<input style="padding-top: 10px;height: 29px;" class="upimgclass product_img spec_image" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+					<input class="faker" style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" disabled="disabled" value="点击右边上传按钮" />
+					<a><label class="labelid"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
 					<label>规格名称</label><input class="spec_name" type="text" name="spec_name" id="" value="{{$item['spec_name'] or ''}}" />
 	
 				</p>
@@ -182,14 +182,17 @@ font-weight: bold;
 			</div>
 		@endforeach
     		@else
+    		
+    		<!--添加商品-->
+    		
     	<div class="addguige">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
 					<input style="padding-top: 10px;height: 29px;" class="upimgclass spec_image product_img" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
 					
-					<!--<input style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" class="faker" disabled="disabled" value="点击右边上传按钮" />
-					<a><label for="spec_image"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
-					-->
+					<input style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" class="faker" disabled="disabled" value="点击右边上传按钮" />
+					<a><label class="labelid"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
+					
 					
 					<label style="margin-left:23px;">规格名称</label>
 					<input class="spec_name" type="text" name="spec_name" id="" value="" style=""/>
@@ -260,7 +263,9 @@ font-weight: bold;
 <script type="text/javascript" src="{{asset('/webStatic/library/jqueryJson/jquery.json.js')}}"></script>
 
 <script>
-	
+	$(".labelid").click(function(){
+		$(this).parent().siblings(".spec_image").trigger("click");
+	});
 	$(".conadd").click(function(){
 		var addguige=$(this).parent().find(".addguige").eq(0);
 			addguige.clone(true).appendTo("#addguigefa");
@@ -635,6 +640,7 @@ $(function(){
 			           if(res.code==0){			             	
 			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 			             	 $(".addspecsubmit").removeAttr("disabled");
+			             	  parent.location.reload();  
 			             	  layer.closeAll('');
 			             	   });
 							addspecstate=true;

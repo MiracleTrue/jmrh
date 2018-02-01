@@ -56,7 +56,7 @@
 				<p style="position:relative;">
 					<span>{{$item['user_info']['nick_name']}}</span>
 				 	<input type="" name="" id="" value="单价{{$item['price']}}元/{{$order_info['spec_unit']}} {{$item['product_number']}}{{$order_info['spec_unit']}}" disabled="disabled"/>
-					<span style="position: absolute;right: 20px;top: 3px;color: blue;">{{$item['status_text']}}</span>
+					<span  onclick="denyReason(this,'{{$item['deny_reason']}}')" style="position: absolute;right: 20px;top: 3px;color: blue;cursor: pointer;">{{$item['status_text']}}</span>
 				</p>
 				@endforeach
 				
@@ -103,6 +103,24 @@
 <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/jquery.validate.js')}}"></script>
    <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
+	/*拒绝理由查看*/
+	function denyReason(elm,deny_reason){
+		if($(elm).text()=="已拒绝"){
+			 layer.open({
+		      type: 1,
+		      title: false,
+		      maxmin: false,
+		       fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['350px' , '200px'],
+		      content: deny_reason
+		    });
+		}
+		
+	}
+	
+	
+	
 	
 <!--倒计时-->
 	var qteSub=true;
@@ -134,20 +152,26 @@ var EndTimeMsg = {{$count_down}};
 			$(".header_span").css("color","red").text('(确认时间已过)');
 		<!-- qteSub=false;-->
 		}
+		
+		 
 		var order_id={{$order_info['order_id']}};
 		if("{{$button}}"=="等待"){
 			$(".qte-ope").hide();
 		}else if("{{$button}}"=="重新分配"){
-			 layer.open({
-			      type: 2,
-			      title: false,
-			      maxmin: false,
-			       fixed :false,
-			      shadeClose: true, //点击遮罩关闭层
-			      area : ['900px' , '600px'],
-			      content: '{{url('platform/re/allocation/view')}}'+'/'+{{$order_info['order_id']}}
-		    });
+			$('.qte-submit').text("重新分配");
+			$('.qte-submit').on("click",function(){
+				 layer.open({
+				      type: 2,
+				      title: false,
+				      maxmin: false,
+				       fixed :false,
+				      shadeClose: true, //点击遮罩关闭层
+				      area : ['900px' , '600px'],
+				      content: '{{url('platform/re/allocation/view')}}'+'/'+{{$order_info['order_id']}}
+			    });
+		    })
 		}else{
+			$('.qte-submit').text("确认");
 			$('.qte-submit').on("click",function(){
 				 $("#platformbaojiatijiao").ajaxSubmit({
 			            url: '{{url("platform/order/confirm")}}',

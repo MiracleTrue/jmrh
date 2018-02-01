@@ -3,7 +3,10 @@
 @section('MyCss')
     {{--<link rel="stylesheet" href="{{URL::asset('/css/***.css')}}">--}}
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
-  <link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
+  	<link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
+	<link rel="stylesheet" type='text/css' href="{{asset('webStatic/css/print2.css')}}">
+	  <link rel="stylesheet" media='print' href="{{asset('webStatic/css/military.css')}}">
+  	<link rel="stylesheet" type='text/css' media='print' href="{{asset('webStatic/css/print.css')}}">
 <style>
 
 </style>
@@ -30,6 +33,10 @@
 					<input  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon mly-time"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time'] != 'null') "{{$page_search['create_time']}}" @else "" @endif placeholder="请选择日期"/>
 				</div>
 				<a class="mly-btn">搜索</a>
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<span>-</span>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
 			</div>
 
 			<table>
@@ -79,7 +86,7 @@
 	                @elseif($item['status'] == '1000')
 	                   <a class="mly-caozuo" onclick="ConfirmReceive(this,'{{$item['order_id']}}')">已到货</a>
                 	@endif
-                		<a style="margin-left: 5px;">打印</a>
+                		<a style="margin-left: 5px;" onclick="print(this)">打印</a>
                 </td>
             </tr>
             @endforeach
@@ -90,12 +97,131 @@
 
 		
 		</section>
+		<table style="width: 800px;" class="printone">
+			<tbody >
+				<tr style="border: 1px solid #333333;">
+					<td style="width: 10%;border-right:1px solid #333333 ;">序号</td>
+					<td style="width: 20%;border-right:1px solid #333333 ;">      </td>
+					<td style="border-right:1px solid #333333 ;width: 20%;"cellspacing="20px">订单编号</td>
+					<td></td>
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td>商品名称</td>
+					<td>      </td>
+					<td>下单时间</td>
+					<td></td>
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td>到货时间</td>
+					<td>      </td>
+					<td>商品数量</td>
+					<td></td>
+					
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td>商品规格</td>
+					<td>      </td>
+					<td>商品 单价</td>
+					<td></td>
+					
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td style="border-right:1px solid #333333;">商品总价</td>
+					<td colspan="3">      </td>
+					
+					
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td>订单状态</td>
+					<td  colspan="3">      </td>
+					
+					
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td >商品质检状态</td>
+					<td  colspan="3">      </td>
+					
+					
+				</tr>
+				<tr style="border: 1px solid #000000;">
+					<td style="border:1px solid #333333 ;">备注</td>
+					<td style="border:1px solid #333333 ;" colspan="3">      </td>
+					
+					
+				</tr>
+			</tbody>
+		</table>
+		
+		<div id="myprint">
+			
+		</div>
+		
 @endsection
 
 @section('MyJs')
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
-
+	<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+ <script type="text/javascript" src="{{asset('/webStatic/library/jquery.jqprint/jquery.jqprint-0.3.js')}}"></script>
 <script>
+	function biaoge(){
+		var start_date=$(".start_time").val();
+		var end_date=$(".end_time").val();
+		if(start_date=="" && end_date==""){
+			alert("时间选择不能为空")
+			
+		}else{
+			location.href="{{url('army/output/excel')}}"+"/"+start_date+"/"+end_date
+			
+		}
+		
+	
+		
+	}
+	
+	
+	var data=[{
+			    "name": "BeJson",
+			    "url": "http://www.bejson.com",
+			    "page": 88,
+			    "isNonProfit": true,
+			    },{
+			    "name": "BeJson2",
+			    "url": "http://www.bejson.com",
+			    "page": 882,
+			    "isNonProfit": true
+			  
+			}];
+	$.ajax({
+		type:"post",
+		url:"{{url('product/ajax/list')}}",
+		async:true,
+		data:{
+	    		
+	    		_token:'{{csrf_token()}}'
+	    	},
+		success:function(resData){
+			var data=JSON.parse(resData)
+			console.log()
+			var mydata=data.data
+			for(var i in mydata){
+				$("#myprint").append('<table style="width: 800px;" class="printone"><tbody ><tr style="border: 1px solid #333333;"><td style="width: 10%;border-right:1px solid #333333 ;">序号</td><td style="width: 20%;border-right:1px solid #333333 ;">'+mydata[i].product_id+'</td><td style="border-right:1px solid #333333 ;width: 20%;"cellspacing="20px">订单编号</td><td></td></tr></tbody></table>')
+			}
+		}
+	});
+	
+	
+	
+	function print(elm){
+		$(".printone").jqprint({
+		     debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+		     importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+		     printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+		     operaSupport: true//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+		});
+		
+	}
+	
+	
 	
 	/*点击查看*/
 	function noteShow(elm,noteData){
