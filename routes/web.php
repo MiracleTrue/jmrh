@@ -55,6 +55,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('platform/confirm/receive', 'PlatformController@ConfirmReceive')->name('确认收货');/*确认收货*/
         Route::any('platform/inventory/supply', 'PlatformController@InventorySupply')->name('库存供应');/*平台全部库存供应*/
         Route::any('platform/send/army', 'PlatformController@SendArmy')->name('发货到军方');/*发货到军方*/
+        Route::get('platform/output/excel/{start_date}/{end_date}', 'PlatformController@OutputExcel')->name('导出Excel');/*平台导出Excel*/
     });
 
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
@@ -66,6 +67,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/
         Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/
         Route::any('army/confirm/receive', 'ArmyController@ConfirmReceive')->name('确认收货');/*军方确认收货*/
+        Route::get('army/output/excel/{start_date}/{end_date}', 'ArmyController@OutputExcel')->name('导出Excel');/*军方导出Excel*/
     });
 
     Route::group(['group' => '供应商', 'identity' => [\App\Models\User::SUPPLIER_ADMIN]], function ()
@@ -75,6 +77,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('supplier/offer/submit', 'SupplierController@OfferSubmit')->name('同意供货');/*同意供货*/
         Route::any('supplier/offer/deny', 'SupplierController@OfferDeny')->name('拒绝供货');/*拒绝供货*/
         Route::any('supplier/send/product', 'SupplierController@SendProduct')->name('配货');/*配货*/
+        Route::get('supplier/output/excel/{start_date}/{end_date}', 'SupplierController@OutputExcel')->name('导出Excel');/*供应商导出Excel*/
     });
 
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()

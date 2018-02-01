@@ -198,26 +198,6 @@ class Army extends CommonModel
     }
 
     /**
-     * 返回军方视角 订单质检状态 的文本名称
-     * @param $status
-     * @return string
-     */
-    public function orderQualityCheckTransformText($status)
-    {
-        $text = '';
-        switch ($status)
-        {
-            case $this::ORDER_NO_QUALITY_CHECK:
-                $text = '未质检';
-                break;
-            case $this::ORDER_IS_QUALITY_CHECK:
-                $text = '已质检';
-                break;
-        }
-        return $text;
-    }
-
-    /**
      * 返回军方视角 订单状态 的文本名称
      * @param $status
      * @return string

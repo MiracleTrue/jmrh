@@ -105,6 +105,26 @@ class CommonModel
     }
 
     /**
+     * 返回 订单质检状态 的文本名称
+     * @param $status
+     * @return string
+     */
+    public function orderQualityCheckTransformText($status)
+    {
+        $text = '';
+        switch ($status)
+        {
+            case $this::ORDER_NO_QUALITY_CHECK:
+                $text = '未质检';
+                break;
+            case $this::ORDER_IS_QUALITY_CHECK:
+                $text = '合格';
+                break;
+        }
+        return $text;
+    }
+
+    /**
      * 根据请求方式,返回不同的"没有"权限的信息
      * @param $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector

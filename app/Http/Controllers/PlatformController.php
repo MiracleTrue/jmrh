@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\Entity\OrderOffer;
 use App\Entity\Orders;
 use App\Exceptions\SupplierPriceNotFindException;
 use App\Models\Army;
@@ -14,6 +15,7 @@ use App\Models\CommonModel;
 use App\Models\Platform;
 use App\Models\Product;
 use App\Models\Sms;
+use App\Models\Supplier;
 use App\Models\User;
 use App\Tools\M3Result;
 use App\Tools\MyHelper;
@@ -22,6 +24,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 /**
@@ -821,6 +824,137 @@ class PlatformController extends Controller
         }
 
         return $m3result->toJson();
+    }
+
+    /**
+     * 平台 导出Excel
+     * @param $start_date
+     * @param $end_date
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function OutputExcel($start_date, $end_date)
+    {
+        /*初始化*/
+        $time_where = array();
+
+        if (strtotime($start_date) && strtotime($end_date))
+        {
+            $start_dt = Carbon::parse($start_date);
+            $end_dt = Carbon::parse($end_date);
+            array_push($time_where, ['order_offer.create_time', '>=', $start_dt->timestamp]);
+            array_push($time_where, ['order_offer.create_time', '<=', $end_dt->timestamp]);
+
+            $offer_list = OrderOffer::where($time_where)->orderBy('offer_id', 'asc')->with('ho_orders', 'ho_users')->get();
+
+            $cellData = [
+                ['平台打印信息'],
+                ['导出时间:' . now()->toDateTimeString()],
+                ['序号', '订单编号', '货品名称', '军方下单时间', '军方规定到货时间', '供应商名称', '货品状态', '货品质检状态', '军方联系人', '联系电话', '货品数量', '货品规格', '货品单价', '货品总价'],
+            ];
+            Excel::create('平台打印信息' . now()->toDateString(), function ($excel) use ($cellData, $offer_list)
+            {
+                /*全局样式*/
+                $excel->getDefaultStyle()
+                    ->getAlignment()
+                    ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+                $excel->sheet('列表一', function ($sheet) use ($cellData, $offer_list)
+                {
+                    $sheet->rows($cellData);
+
+                    /*标题样式*/
+                    $sheet->mergeCells('A1:N1');
+                    $sheet->cells('A1', function ($cells)
+                    {
+                        $cells->setFontColor('#ff2832');
+                        $cells->setFontSize(16);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(1, 40);
+
+                    /*导出时间样式*/
+                    $sheet->mergeCells('A2:N2');
+                    $sheet->cells('A2:N2', function ($cells)
+                    {
+                        $cells->setAlignment('left');
+                        $cells->setFontColor('#548235');
+                        $cells->setFontSize(12);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(2, 30);
+
+                    /*表头样式*/
+                    $sheet->setBorder('A3:N3', 'thin');
+                    $sheet->cells('A3:N3', function ($cells)
+                    {
+                        $cells->setFontSize(12);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(3, 30);
+
+                    /*宽度设置*/
+                    $sheet->setWidth('A', 10);
+                    $sheet->setWidth('B', 30);
+                    $sheet->setWidth('C', 20);
+                    $sheet->setWidth('D', 20);
+                    $sheet->setWidth('E', 20);
+                    $sheet->setWidth('F', 20);
+                    $sheet->setWidth('G', 15);
+                    $sheet->setWidth('H', 15);
+                    $sheet->setWidth('I', 15);
+                    $sheet->setWidth('J', 15);
+                    $sheet->setWidth('K', 15);
+                    $sheet->setWidth('L', 20);
+                    $sheet->setWidth('M', 15);
+                    $sheet->setWidth('N', 15);
+
+                    /*循环加入数据*/
+                    $supplier = new Supplier();
+                    $total_price = 0;
+                    $start_index = 4;
+                    $offer_list->each(function ($item) use (&$total_price, $supplier, $sheet, &$start_index)
+                    {
+                        $item->total_price = bcmul($item->price, $item->product_number, 2);
+                        $sheet->appendRow(array(
+                            $item->offer_id,
+                            $item->ho_orders->order_sn,
+                            $item->ho_orders->product_name,
+                            Carbon::createFromTimestamp($item->ho_orders->create_time)->toDateTimeString(),
+                            Carbon::createFromTimestamp($item->ho_orders->army_receive_time)->toDateTimeString(),
+                            $item->ho_users->nick_name,
+                            $supplier->offerStatusTransformText($item->status),
+                            $supplier->orderQualityCheckTransformText($item->quality_check),
+                            $item->ho_orders->army_contact_person,
+                            $item->ho_orders->army_contact_tel,
+                            $item->product_number . $item->ho_orders->spec_unit,
+                            $item->ho_orders->spec_name,
+                            $item->price . '元',
+                            $item->total_price . '元'
+                        ));
+                        $sheet->setBorder('A' . $start_index . ':N' . $start_index, 'thin');
+                        $sheet->setHeight($start_index, 20);
+                        $start_index++;
+                        $total_price = bcadd($total_price, $item->total_price, 2);
+                    });
+
+                    /*总价*/
+                    $total_price_index = ++$start_index;
+                    $sheet->appendRow($total_price_index, array(
+                        '货品总额:' . $total_price . '元'
+                    ));
+                    $sheet->mergeCells('A' . $total_price_index . ':N' . $total_price_index);
+                    $sheet->cells('A' . $total_price_index . ':N' . $total_price_index, function ($cells)
+                    {
+                        $cells->setAlignment('right');
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight($total_price_index, 30);
+
+                });
+            })->export('xls');
+        }
+        return back();
     }
 
 }
