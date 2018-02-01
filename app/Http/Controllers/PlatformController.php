@@ -158,6 +158,22 @@ class PlatformController extends Controller
     }
 
     /**
+     * View 平台订单详情 页面
+     * @param $order_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function OrderDetailView($order_id)
+    {
+        /*初始化*/
+        $platform = new Platform();
+
+        $this->ViewData['order_info'] = $platform->getOrderInfo($order_id);
+        $this->ViewData['log_list'] = $platform->getOrderLog($order_id);
+
+        return view('platform_order_detail_view', $this->ViewData);
+    }
+
+    /**
      * View 平台确认收货 页面
      * @param $order_id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

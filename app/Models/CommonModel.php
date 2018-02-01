@@ -10,6 +10,7 @@ namespace App\Models;
 
 use App\Entity\OrderLog;
 use App\Tools\M3Result;
+use Carbon\Carbon;
 
 /**
  * Class CommonModel 基础模型
@@ -67,6 +68,26 @@ class CommonModel
         $time = date('YmdHis') + $time;
 
         return $time . str_pad(mt_rand(1, 99999), 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * 获取单个订单的日志
+     * @param $order_id
+     * @return mixed
+     */
+    public function getOrderLog($order_id)
+    {
+        /*初始化*/
+        $e_order_log = OrderLog::where('order_id', $order_id)->orderBy('create_time', 'asc')->get();
+
+        /*数据过滤*/
+        $e_order_log->transform(function ($item)
+        {
+            $item->create_date = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            return $item;
+        });
+
+        return $e_order_log;
     }
 
     /**

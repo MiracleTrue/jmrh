@@ -7,6 +7,7 @@
  */
 
 namespace App\Entity;
+
 use App\Models\CommonModel;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -94,6 +95,14 @@ class Orders extends CommonEntity
     public function ho_users()
     {
         return $this->hasOne(Users::class, 'user_id', 'army_id');
+    }
+
+    /**
+     * 一对一关联OrderLog 订单日志
+     */
+    public function order_log()
+    {
+        return $this->hasMany(OrderLog::class, 'order_id');
     }
 
 }

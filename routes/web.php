@@ -48,6 +48,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::get('platform/re/allocation/view/{order_id}', 'PlatformController@OfferReAllocationView')->name('二次分配页面');/*二次分配供应商页面 | platform_re_allocation_view*/
         Route::get('platform/order/confirm/view/{order_id}', 'PlatformController@OrderConfirmView')->name('订单确认页面');/*订单确认页面 | platform_order_confirm_view*/
         Route::get('platform/confirm/receive/view/{order_id}', 'PlatformController@ConfirmReceiveView')->name('确认收货页面');/*确认收货页面 | platform_order_receive_view*/
+        Route::get('platform/order/detail/view/{order_id}', 'PlatformController@OrderDetailView')->name('订单详情页面');/*订单详情页面 | platform_order_detail_view*/
 //        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
         Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('首次分配供应商');/*平台首次分配供应商*/
         Route::any('platform/re/allocation/offer', 'PlatformController@OfferReAllocation')->name('二次分配供应商');/*平台二次分配供应商*/
