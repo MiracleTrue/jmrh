@@ -12,7 +12,7 @@
 		<div class="refresh">
   			<img src="{{asset('webStatic/images/refresh.png')}}" />
   		</div>
-			<div>
+			<div style="line-height: 36px;">
 				
 				<div class="pvr-shaixuan">
 					<select name="" class="pvr-state">
@@ -30,6 +30,10 @@
 				 	<input  autocomplete="off" class="pvr-time laydate-icon" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"   name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
 				</div>
 				<a class="pvr-btn">搜索</a>
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<span>-</span>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
 			</div>
 			
 			<table>
@@ -92,6 +96,20 @@
 @section('MyJs')
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
   <script>
+  	function biaoge(){
+		var start_date=$(".start_time").val();
+		var end_date=$(".end_time").val();
+		if(start_date=="" && end_date==""){
+			alert("时间选择不能为空")
+			
+		}else{
+			location.href="{{url('supplier/output/excel')}}"+"/"+start_date+"/"+end_date
+			
+		}
+		
+	
+		
+	}
   		!function(){
 
 			laydate.skin('molv');//切换皮肤，请查看skins下面皮肤库
