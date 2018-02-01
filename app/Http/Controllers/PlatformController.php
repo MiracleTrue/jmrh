@@ -8,17 +8,13 @@
 namespace App\Http\Controllers;
 
 use App\Entity\OrderOffer;
-use App\Entity\Orders;
-use App\Exceptions\SupplierPriceNotFindException;
 use App\Models\Army;
 use App\Models\CommonModel;
 use App\Models\Platform;
 use App\Models\Product;
-use App\Models\Sms;
 use App\Models\Supplier;
 use App\Models\User;
 use App\Tools\M3Result;
-use App\Tools\MyHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -35,6 +31,31 @@ use Maatwebsite\Excel\Facades\Excel;
 class PlatformController extends Controller
 {
     public $ViewData = array(); /*传递页面的数组*/
+
+    /**
+     * View 平台统计 页面 (搜索条件参数: 开始时间, 结束时间)
+     * @param string $start_date
+     * @param string $end_date
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function Statistics($start_date = 'null', $end_date = 'null')
+    {
+        /*初始化*/
+        $platform = new Platform();
+        $time_where = array();
+
+        if (strtotime($start_date) && strtotime($end_date))
+        {
+            $start_dt = Carbon::parse($start_date);
+            $end_dt = Carbon::parse($end_date);
+            array_push($time_where, ['order_offer.create_time', '>=', $start_dt->timestamp]);
+            array_push($time_where, ['order_offer.create_time', '<=', $end_dt->timestamp]);
+        }
+        $this->ViewData['list'] = $platform->getStatistics($time_where);
+        $this->ViewData['page_search'] = array('start_date' => $start_date, 'end_date' => $end_date);
+
+        return view('platform_statistics', $this->ViewData);
+    }
 
     /**
      * View 平台订单列表 页面 (搜索条件参数: 订单类型, 订单状态, 创建时间)
@@ -840,6 +861,121 @@ class PlatformController extends Controller
         }
 
         return $m3result->toJson();
+    }
+
+    /**
+     * 平台 统计导出Excel
+     * @param $start_date
+     * @param $end_date
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function StatisticsOutputExcel($start_date, $end_date)
+    {
+        /*初始化*/
+        $time_where = array();
+
+        if (strtotime($start_date) && strtotime($end_date))
+        {
+            $start_dt = Carbon::parse($start_date);
+            $end_dt = Carbon::parse($end_date);
+            array_push($time_where, ['order_offer.create_time', '>=', $start_dt->timestamp]);
+            array_push($time_where, ['order_offer.create_time', '<=', $end_dt->timestamp]);
+
+            $offer_list = OrderOffer::where($time_where)->where('status', CommonModel::OFFER_ALREADY_RECEIVE)->orderBy('create_time', 'desc')->with('ho_users', 'ho_orders', 'ho_orders.ho_users')->get();
+
+            $cellData = [
+                ['平台统计打印信息'],
+                ['导出时间:' . now()->toDateTimeString()],
+                ['供应商名称', '军方名称', '订单编号', '货品名称', '货品规格', '军方单价', '供应商单价', '货品数量', '军方总价', '供应商总价', '订单创建时间']
+            ];
+            Excel::create('平台统计打印信息' . now()->toDateString(), function ($excel) use ($cellData, $offer_list)
+            {
+                /*全局样式*/
+                $excel->getDefaultStyle()
+                    ->getAlignment()
+                    ->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                    ->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+                $excel->sheet('列表一', function ($sheet) use ($cellData, $offer_list)
+                {
+                    $sheet->rows($cellData);
+
+                    /*标题样式*/
+                    $sheet->mergeCells('A1:K1');
+                    $sheet->cells('A1', function ($cells)
+                    {
+                        $cells->setFontColor('#ff2832');
+                        $cells->setFontSize(16);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(1, 40);
+
+                    /*导出时间样式*/
+                    $sheet->mergeCells('A2:K2');
+                    $sheet->cells('A2:K2', function ($cells)
+                    {
+                        $cells->setAlignment('left');
+                        $cells->setFontColor('#548235');
+                        $cells->setFontSize(12);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(2, 30);
+
+                    /*表头样式*/
+                    $sheet->setBorder('A3:K3', 'thin');
+                    $sheet->cells('A3:K3', function ($cells)
+                    {
+                        $cells->setFontSize(12);
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setHeight(3, 30);
+
+                    /*宽度设置*/
+                    $sheet->setWidth('A', 30);
+                    $sheet->setWidth('B', 30);
+                    $sheet->setWidth('C', 20);
+                    $sheet->setWidth('D', 20);
+                    $sheet->setWidth('E', 20);
+                    $sheet->setWidth('F', 15);
+                    $sheet->setWidth('G', 15);
+                    $sheet->setWidth('H', 15);
+                    $sheet->setWidth('I', 15);
+                    $sheet->setWidth('J', 15);
+                    $sheet->setWidth('K', 25);
+
+                    /*循环加入数据*/
+                    $supplier = new Supplier();
+                    $product = new Product();
+                    $start_index = 4;
+                    $offer_list->each(function ($item) use ($product, $supplier, $sheet, &$start_index)
+                    {
+
+                        $item->total_price = bcmul($item->price, $item->product_number, 2);
+                        $e_products = $product->checkProduct($item->product_name, $item->spec_name);
+                        $e_products ? $item->army_price = $e_products->spec_info->product_price : $item->army_price = 0;
+                        $item->army_total_price = bcmul($item->army_price, $item->product_number, 2);
+                        $sheet->appendRow(array(
+                            $item->ho_users->nick_name,
+                            $item->ho_orders->ho_users->nick_name,
+                            $item->ho_orders->order_sn,
+                            $item->ho_orders->product_name,
+                            $item->ho_orders->spec_name,
+                            $item->army_price . '元',
+                            $item->price . '元',
+                            $item->product_number . $item->ho_orders->spec_unit,
+                            $item->army_total_price . '元',
+                            $item->total_price . '元',
+                            Carbon::createFromTimestamp($item->create_time)->toDateTimeString(),
+                        ));
+                        $sheet->setBorder('A' . $start_index . ':K' . $start_index, 'thin');
+                        $sheet->setHeight($start_index, 20);
+                        $start_index++;
+                    });
+
+                });
+            })->export('xls');
+        }
+        return back();
     }
 
     /**

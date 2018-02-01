@@ -75,6 +75,46 @@ class Platform extends CommonModel
     }
 
     /**
+     * 获取统计列表 关联军方信息 关联分类负责人 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
+     * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
+     * @param array $orderBy
+     * @param bool $is_paginate & 是否需要分页
+     * @return mixed
+     */
+    public function getStatistics($where = array(), $orderBy = array(['order_offer.create_time', 'desc']), $is_paginate = true)
+    {
+        /*预加载ORM对象*/
+        $e_order_offer = OrderOffer::where($where)->where('status', $this::OFFER_ALREADY_RECEIVE)->with('ho_users', 'ho_orders');
+        /*排序规则*/
+        foreach ($orderBy as $value)
+        {
+            $e_order_offer->orderBy($value[0], $value[1]);
+        }
+        /*是否需要分页*/
+        if ($is_paginate === true)
+        {
+            $offer_list = $e_order_offer->paginate($_COOKIE['PaginationSize']);
+        }
+        else
+        {
+            $offer_list = $e_order_offer->get();
+        }
+
+        /*数据过滤*/
+        $offer_list->transform(function ($item)
+        {
+            $item->user_info = $item->ho_users;
+            $item->order_info = $item->ho_orders;
+            $item->create_date = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+            $item->total_price = bcmul($item->price, $item->product_number, 2);
+            unset($item->ho_users);
+            unset($item->ho_orders);
+            return $item;
+        });
+        return $offer_list;
+    }
+
+    /**
      * 获取所有订单列表 关联军方信息 关联分类负责人 (已转换:状态文本, 创建时间, 平台接收时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orderBy
