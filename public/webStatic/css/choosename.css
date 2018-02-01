@@ -55,23 +55,24 @@
 }
 
 .productinfo {
-	height: 222px;
+	/*height: 222px;*/
 	border-top: 1px solid #dddddd;
 	position: relative;
 }
 
 .productinfo .nameul {
 	overflow: hidden;
-	height: 220px;
+	height: 150px;
 	margin-top: 30px;
 	overflow-y: auto;
+	border-bottom: 1px solid #333333;
 }
 
 .productinfo li {
 	float: left;
-	width: 254px;
-	height: 81px;
-	line-height: 81px;
+	width: 142px;
+	height: 55px;
+	line-height: 55px;
 	list-style: none;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -83,7 +84,7 @@
 }
 
 .productinfo li img {
-	width: 69px;
+	width: 38px;
 	display: inline-block;
 	float: left;
 	margin-top: 9px;
@@ -91,7 +92,7 @@
 }
 
 .productinfo span {
-	width: 178px;
+	width: 66px;
 	display: block;
 	float: left;
 	text-overflow: ellipsis;
