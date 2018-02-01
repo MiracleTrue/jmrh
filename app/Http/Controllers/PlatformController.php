@@ -951,7 +951,7 @@ class PlatformController extends Controller
                     {
 
                         $item->total_price = bcmul($item->price, $item->product_number, 2);
-                        $e_products = $product->checkProduct($item->product_name, $item->spec_name);
+                        $e_products = $product->checkProduct($item->ho_orders->product_name, $item->ho_orders->spec_name);
                         $e_products ? $item->army_price = $e_products->spec_info->product_price : $item->army_price = 0;
                         $item->army_total_price = bcmul($item->army_price, $item->product_number, 2);
                         $sheet->appendRow(array(
