@@ -32,7 +32,7 @@ class WebLoginAndPrivilege
         /*超级管理员权限拒绝数组*/
         $administrator_deny = array(
             /*平台*/
-            action('PlatformController@NeedRelease'),/*平台发布需求*/
+//            action('PlatformController@NeedRelease'),/*平台发布需求*/
             action('PlatformController@OfferAllocation'),/*首次分配供应商*/
             action('PlatformController@OfferReAllocation'),/*二次分配供应商*/
             action('PlatformController@OrderConfirm'),/*确认订单*/
