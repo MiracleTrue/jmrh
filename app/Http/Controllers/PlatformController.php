@@ -949,7 +949,6 @@ class PlatformController extends Controller
                     $start_index = 4;
                     $offer_list->each(function ($item) use ($product, $supplier, $sheet, &$start_index)
                     {
-
                         $item->total_price = bcmul($item->price, $item->product_number, 2);
                         $e_products = $product->checkProduct($item->ho_orders->product_name, $item->ho_orders->spec_name);
                         $e_products ? $item->army_price = $e_products->spec_info->product_price : $item->army_price = 0;

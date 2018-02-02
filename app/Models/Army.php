@@ -118,10 +118,12 @@ class Army extends CommonModel
         ShoppingCart::where('user_id', session('ManageUser')->user_id)->where('product_name', $e_orders->product_name)->where('spec_name', $e_orders->spec_name)->delete();
 
         /*发送短信给负责人运营员*/
-        $phone = $e_orders->hmt_users->first()->phone;
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $phone, array('date' => now('Asia/Shanghai')->toDateTimeString(), 'order_sn' => $e_orders->order_sn));
-        //测试log
-        info('短信-军方发布提醒  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+        if ($phone = $e_orders->hmt_users->first())
+        {
+            $phone = $phone->phone;
+            $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::ARMY_RELEASE_CODE, $phone, array('date' => now('Asia/Shanghai')->toDateTimeString(), 'order_sn' => $e_orders->order_sn));
+            info('短信-军方发布提醒  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+        }
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }

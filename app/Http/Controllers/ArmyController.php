@@ -502,5 +502,37 @@ class ArmyController extends Controller
         return back();
     }
 
+    public function OutputPrint(Request $request)
+    {
+        /*初始化*/
+        $manage_u = session('ManageUser');
+//        $product = new Product();
+//        $where = array();
+//        $this->ViewData['cart_order'] = array();
+//        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
+
+//        $cart_id_arr = collect(explode(',', $cart_ids))->filter()->toArray();
+//
+//        if (!empty($cart_id_arr))
+//        {
+//            $rules = [
+//                '*' => [
+//                    Rule::exists('orders', 'cart_id')->where(function ($query) use ($manage_u)
+//                    {
+//                        $query->where('user_id', $manage_u->user_id);
+//                    }),
+//                ]
+//            ];
+//            $validator = Validator::make(array('cart_id_arr' => $cart_id_arr), $rules);
+//            if ($validator->passes())
+//            {
+//                /*加入sql条件购物车所有者id*/
+//                array_push($where, ['shopping_cart.user_id', '=', $manage_u->user_id]);
+//                $this->ViewData['cart_order'] = $cart->getCartList($where, array(['shopping_cart.create_time', 'desc']), false)->whereIn('cart_id', $cart_id_arr);
+//            }
+//        }
+//        return view('army_need_release', $this->ViewData);
+    }
+
 
 }
