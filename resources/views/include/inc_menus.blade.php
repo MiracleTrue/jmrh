@@ -120,6 +120,13 @@
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>
+        
+          <li class="munu-caozuorizhi">
+            <a href="{{url('platform/statistics/list')}}">
+                <i class="fa fa-envelope-square"></i> <span>统计</span>
+                <!--<small class="label pull-right label-warning">12</small>-->
+            </a>
+        </li>
       
 		@elseif($manage_user['identity'] == '3')<!--供货商-->
         <li class="treeview">
