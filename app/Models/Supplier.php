@@ -88,7 +88,7 @@ class Supplier extends CommonModel
         $e_order_offer->order_info = $e_order_offer->ho_orders()->firstOrFail();
         $e_order_offer->user_info = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
         /*数据过滤*/
-        $e_order_offer->total_price = 1;
+        $e_order_offer->total_price = bcmul($e_order_offer->price, $e_order_offer->product_number, 2);
         $e_order_offer->status_text = self::offerStatusTransformText($e_order_offer->status);
         $e_order_offer->create_date = Carbon::createFromTimestamp($e_order_offer->create_time)->toDateTimeString();
         $e_order_offer->confirm_date = Carbon::createFromTimestamp($e_order_offer->confirm_time)->toDateTimeString();
