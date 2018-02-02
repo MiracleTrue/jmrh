@@ -31,21 +31,25 @@ class WebLoginAndPrivilege
         );
         /*超级管理员权限拒绝数组*/
         $administrator_deny = array(
-//            action('PlatformController@NeedRelease'),/*平台发布需求*/
-//            action('PlatformController@OfferAllocation'),/*平台供应商分配*/
-//            action('PlatformController@OfferSelected'),/*平台供应商选择*/
-//            action('PlatformController@InventorySupply'),/*平台库存供应*/
-//            action('PlatformController@ConfirmReceive'),/*供应商确认收货*/
-//            action('PlatformController@SendArmy'),/*发货到军方*/
-//
-//            action('ArmyController@NeedRelease'),/*军方发布需求*/
-//            action('ArmyController@NeedEdit'),/*军方修改需求*/
-//            action('ArmyController@NeedDelete'),/*军方删除需求*/
-//            action('ArmyController@ConfirmReceive'),/*军方删除需求*/
-//
-//            action('SupplierController@OfferSubmit'),/*报价提交*/
-//            action('SupplierController@SendGoods'),/*供应商配货*/
+            /*平台*/
+            action('PlatformController@NeedRelease'),/*平台发布需求*/
+            action('PlatformController@OfferAllocation'),/*首次分配供应商*/
+            action('PlatformController@OfferReAllocation'),/*二次分配供应商*/
+            action('PlatformController@OrderConfirm'),/*确认订单*/
+            action('PlatformController@ConfirmReceive'),/*确认收货*/
+            action('PlatformController@InventorySupply'),/*库存供应*/
+            action('PlatformController@SendArmy'),/*发货到军方*/
 
+            /*军方*/
+            action('ArmyController@NeedRelease'),/*军方发布需求*/
+            action('ArmyController@NeedEdit'),/*军方修改需求*/
+            action('ArmyController@NeedDelete'),/*军方删除需求*/
+            action('ArmyController@ConfirmReceive'),/*军方确认收货*/
+
+            /*供应商*/
+            action('SupplierController@OfferSubmit'),/*同意供货*/
+            action('SupplierController@OfferDeny'),/*拒绝供货*/
+            action('SupplierController@SendProduct'),/*配货*/
         );
 
         if (in_array(url($route->uri), $filterable) || empty($route->action['identity']))
