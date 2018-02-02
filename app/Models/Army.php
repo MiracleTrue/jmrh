@@ -28,20 +28,30 @@ class Army extends CommonModel
      * 获取所有军方订单列表 (已转换:状态文本, 创建时间, 军方接收时间) (如有where 则加入新的sql条件) "分页" | 默认排序:创建时间
      * @param array $where & [['users.identity', '=', '2'],['nick_name', 'like', '%:00%']]
      * @param array $orderBy
+     * @param bool $is_paginate & 是否需要分页
      * @return mixed
      */
-    public function getOrderList($where = array(), $orderBy = array(['orders.create_time', 'desc']))
+    public function getOrderList($where = array(), $orderBy = array(['orders.create_time', 'desc']), $is_paginate = true)
     {
         /*初始化*/
         $e_orders = new Orders();
         /*预加载ORM对象*/
         $e_orders = $e_orders->where('orders.type', $this::ORDER_TYPE_ARMY)
             ->where($where)->with('ho_users');
+        /*排序规则*/
         foreach ($orderBy as $value)
         {
             $e_orders = $e_orders->orderBy($value[0], $value[1]);
         }
-        $order_list = $e_orders->paginate($_COOKIE['PaginationSize']);
+        /*是否需要分页*/
+        if ($is_paginate === true)
+        {
+            $order_list = $e_orders->paginate($_COOKIE['PaginationSize']);
+        }
+        else
+        {
+            $order_list = $e_orders->get();
+        }
 
         /*数据过滤*/
         $order_list->transform(function ($item)

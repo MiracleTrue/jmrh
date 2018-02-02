@@ -42,7 +42,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
 
     Route::group(['group' => '平台', 'identity' => [\App\Models\User::PLATFORM_ADMIN]], function ()
     {
-        Route::get('platform/statistics/{start_date?}/{end_date?}', 'PlatformController@Statistics')->name('平台统计');/*平台统计 | platform_statistics */
+        Route::get('platform/statistics/list/{start_date?}/{end_date?}', 'PlatformController@Statistics')->name('平台统计');/*平台统计 | platform_statistics_list */
         Route::get('platform/order/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_order_list */
 //        Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
         Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('首次分配页面');/*首次分配供应商页面 | platform_allocation_view*/
@@ -59,6 +59,8 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('platform/send/army', 'PlatformController@SendArmy')->name('发货到军方');/*发货到军方*/
         Route::get('platform/output/excel/{start_date}/{end_date}', 'PlatformController@OutputExcel')->name('导出Excel');/*平台导出Excel*/
         Route::get('platform/statistics/output/excel/{start_date}/{end_date}', 'PlatformController@StatisticsOutputExcel')->name('统计导出Excel');/*平台统计导出Excel*/
+        Route::any('platform/output/print', 'PlatformController@OutputPrint')->name('平台打印');/*平台打印*/
+        Route::any('platform/statistics/output/print', 'PlatformController@StatisticsOutputPrint')->name('统计打印');/*统计打印*/
     });
 
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
@@ -71,6 +73,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('army/need/delete', 'ArmyController@NeedDelete')->name('删除需求');/*军方删除需求*/
         Route::any('army/confirm/receive', 'ArmyController@ConfirmReceive')->name('确认收货');/*军方确认收货*/
         Route::get('army/output/excel/{start_date}/{end_date}', 'ArmyController@OutputExcel')->name('导出Excel');/*军方导出Excel*/
+        Route::any('army/output/print', 'ArmyController@OutputPrint')->name('军方打印');/*军方打印*/
     });
 
     Route::group(['group' => '供应商', 'identity' => [\App\Models\User::SUPPLIER_ADMIN]], function ()
@@ -81,6 +84,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('supplier/offer/deny', 'SupplierController@OfferDeny')->name('拒绝供货');/*拒绝供货*/
         Route::any('supplier/send/product', 'SupplierController@SendProduct')->name('配货');/*配货*/
         Route::get('supplier/output/excel/{start_date}/{end_date}', 'SupplierController@OutputExcel')->name('导出Excel');/*供应商导出Excel*/
+        Route::any('supplier/output/print', 'SupplierController@OutputPrint')->name('供应商打印');/*供应商打印*/
     });
 
     Route::group(['group' => '用户管理', 'identity' => [\App\Models\User::ADMINISTRATOR]], function ()

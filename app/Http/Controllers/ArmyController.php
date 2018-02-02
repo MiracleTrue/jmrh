@@ -502,36 +502,63 @@ class ArmyController extends Controller
         return back();
     }
 
+    /**
+     * Ajax 军方打印 请求数据
+     * @param Request $request
+     * @return \App\Tools\json
+     */
     public function OutputPrint(Request $request)
     {
+//        $arr = array(
+//            'order_ids' => '291,292',
+//        );
+//        $request->merge($arr);
+
         /*初始化*/
         $manage_u = session('ManageUser');
-//        $product = new Product();
-//        $where = array();
-//        $this->ViewData['cart_order'] = array();
-//        $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
+        $m3result = new M3Result();
+        $product = new Product();
+        $army = new Army();
 
-//        $cart_id_arr = collect(explode(',', $cart_ids))->filter()->toArray();
-//
-//        if (!empty($cart_id_arr))
-//        {
-//            $rules = [
-//                '*' => [
-//                    Rule::exists('orders', 'cart_id')->where(function ($query) use ($manage_u)
-//                    {
-//                        $query->where('user_id', $manage_u->user_id);
-//                    }),
-//                ]
-//            ];
-//            $validator = Validator::make(array('cart_id_arr' => $cart_id_arr), $rules);
-//            if ($validator->passes())
-//            {
-//                /*加入sql条件购物车所有者id*/
-//                array_push($where, ['shopping_cart.user_id', '=', $manage_u->user_id]);
-//                $this->ViewData['cart_order'] = $cart->getCartList($where, array(['shopping_cart.create_time', 'desc']), false)->whereIn('cart_id', $cart_id_arr);
-//            }
-//        }
-//        return view('army_need_release', $this->ViewData);
+        $order_id_arr = collect(explode(',', $request->input('order_ids')))->filter()->toArray();
+
+        if (!empty($order_id_arr))
+        {
+            $rules = [
+                '*' => [
+                    Rule::exists('orders', 'order_id')->where(function ($query) use ($manage_u)
+                    {
+                        if ($manage_u->identity != User::ADMINISTRATOR)
+                        {
+                            $query->where('army_id', $manage_u->user_id);
+                        }
+                    }),
+                ]
+            ];
+            $validator = Validator::make(array('order_id_arr' => $order_id_arr), $rules);
+            if ($validator->passes())
+            {
+                $list = Orders::whereIn('order_id', $order_id_arr)->get();
+                $list->transform(function ($item) use ($product, $army)
+                {
+                    $e_products = $product->checkProduct($item->product_name, $item->spec_name);
+                    $e_products ? $item->price = $e_products->spec_info->product_price : $item->price = 0;
+                    $item->total_price = bcmul($item->price, $item->product_number, 2);
+                    $item->create_date = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
+                    $item->army_receive_date = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
+                    $item->quality_check_text = $army->orderQualityCheckTransformText($item->quality_check);
+                    $item->status_text = $army->orderStatusTransformText($item->status);
+                    return $item;
+                });
+                $m3result->code = 0;
+                $m3result->messages = '获取军方打印信息';
+                $m3result->data = $list;
+                return $m3result->toJson();
+            }
+        }
+        $m3result->code = 1;
+        $m3result->messages = '数据验证失败';
+        return $m3result->toJson();
     }
 
 

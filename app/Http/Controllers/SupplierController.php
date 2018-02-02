@@ -389,4 +389,60 @@ class SupplierController extends Controller
         return back();
     }
 
+    /**
+     * Ajax 供应商打印 请求数据
+     * @param Request $request
+     * @return \App\Tools\json
+     */
+    public function OutputPrint(Request $request)
+    {
+//        $arr = array(
+//            'offer_ids' => '22',
+//        );
+//        $request->merge($arr);
+
+        /*初始化*/
+        $manage_u = session('ManageUser');
+        $m3result = new M3Result();
+        $product = new Product();
+        $supplier = new Supplier();
+
+        $offer_id_arr = collect(explode(',', $request->input('offer_ids')))->filter()->toArray();
+
+        if (!empty($offer_id_arr))
+        {
+            $rules = [
+                '*' => [
+                    Rule::exists('order_offer', 'offer_id')->where(function ($query) use ($manage_u)
+                    {
+                        if ($manage_u->identity != User::ADMINISTRATOR)
+                        {
+                            $query->where('user_id', $manage_u->user_id);
+                        }
+                    }),
+                ]
+            ];
+            $validator = Validator::make(array('offer_id_arr' => $offer_id_arr), $rules);
+            if ($validator->passes())
+            {
+                $list = OrderOffer::whereIn('offer_id', $offer_id_arr)->with('ho_orders')->get();
+                $list->transform(function ($item) use ($product, $supplier)
+                {
+                    $item->order_info = $item->ho_orders;
+                    $item->total_price = bcmul($item->price, $item->product_number, 2);
+                    $item->platform_receive_date = Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString();
+                    $item->status_text = $supplier->offerStatusTransformText($item->status);
+                    unset($item->ho_orders);
+                    return $item;
+                });
+                $m3result->code = 0;
+                $m3result->messages = '获取供应商打印信息';
+                $m3result->data = $list;
+                return $m3result->toJson();
+            }
+        }
+        $m3result->code = 1;
+        $m3result->messages = '数据验证失败';
+        return $m3result->toJson();
+    }
 }
