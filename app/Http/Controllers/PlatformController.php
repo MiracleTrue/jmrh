@@ -55,7 +55,7 @@ class PlatformController extends Controller
         $this->ViewData['list'] = $platform->getStatistics($time_where);
         $this->ViewData['page_search'] = array('start_date' => $start_date, 'end_date' => $end_date);
 
-        return view('platform_statistics', $this->ViewData);
+        return view('platform_statistics_list', $this->ViewData);
     }
 
     /**
