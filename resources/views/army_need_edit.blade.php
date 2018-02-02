@@ -125,19 +125,21 @@ li {
 					
 					
 					</p>
-					<p class="div_floatleft" style="text-indent: 15px;">
+					
+					<p class="div_floatleft" style="text-indent: 15px;"style="position: relative;">
 						<span>数量</span>
 						<input type="text" name="product_number" class="product_number" value="{{$order_info['product_number']}}" />
+						<span style="position: absolute;right: 20px;top: 10px;" class="my_unit">{{$order_info['spec_unit']}}</span>
 					</p>
 				</div>
 				<div class="ary_adddiv">
 					<p class="div_floatleft">
 						<span>联系人</span>
-						<input type="text" class="army_contact_person" name="" id="" value="{{$order_info['army_contact_person']}}" />
+						<input type="text" class="army_contact_person" name="army_contact_person" id="" value="{{$order_info['army_contact_person']}}" />
 					</p>
 					<p class="div_floatright">
 						<span>电话</span>
-						<input type="text" class="army_contact_tel" value="{{$order_info['army_contact_tel']}}"/>
+						<input type="text" name="army_contact_tel" class="army_contact_tel" value="{{$order_info['army_contact_tel']}}"/>
 					</p>
 
 				</div>
@@ -153,7 +155,7 @@ li {
 				<div class="ary_adddiv" style="font-size: 16px;">
 					<p style="text-indent: 12px;">
 						<span>备注</span>
-						<input class="army_note" style="height: 43px;width: 746px;outline: 0;margin-left: 18px;" type="text" value="{{$order_info['army_note ']}}"/>
+						<input class="army_note" name="army_note" style="height: 43px;width: 746px;outline: 0;margin-left: 18px;" type="text" value="{{$order_info['army_note ']}}"/>
 					</p>
 
 				</div>
@@ -162,9 +164,11 @@ li {
 		
 
 		</div>
-		<div style="text-align: center;padding-top: 33px;">
+		<!--<div style="text-align: center;padding-top: 33px;">
 			<img class="moreaddxuiqu" src="{{asset('webStatic/images/morebtn.png')}}"/>
-		</div>
+		</div>-->
+		<input type="hidden" name="spec_name" id="spec_name" value="{{$order_info['spec_name']}}" />
+		<input type="hidden" name="order_id" id="order_id" value="{{$order_info['order_id']}}" />
 		<div class="ary-ope" style="">
 			<input type="submit" class="ary-submit" name="ary-submit" id="ary-submit" value="提交" />
 			<input type="reset" class="ary-reset" name="ary-reset" id="ary-reset" value="重置" />
@@ -185,6 +189,7 @@ li {
 <script type="text/javascript">/*选择品名*/
 laydate.skin('molv');
 $(".moreName").on("click", function() {
+	var that=$(this);
 			layer.open({
 				fixed: false,
 				title: false,
@@ -265,7 +270,7 @@ $(".moreName").on("click", function() {
 									var datai=$(this).attr("datai");
 									
 									for(var k in myData[datai].product_spec){
-										$(".choose_spec_name").append('<li><img src="/uploads/'+myData[datai].product_spec[k].image_thumb +'"  onerror="this.src=`{{asset('webStatic/images/noimg.png ')}}`"/><span>' + myData[datai].product_spec[k].spec_name + '</span></li>')
+										$(".choose_spec_name").append('<li unit="' + myData[datai].product_spec[k].spec_unit + '"><img src="/uploads/'+myData[datai].product_spec[k].image_thumb +'"  onerror="this.src=`{{asset('webStatic/images/noimg.png ')}}`"/><span>' + myData[datai].product_spec[k].spec_name + '</span></li>')
 									}	
 								
 									pinmingdata=productname;
@@ -275,6 +280,7 @@ $(".moreName").on("click", function() {
 									
 									pinmingdata=pinmingdata;
 								specname=$(this).find("span").text();
+								 my_unit=$(this).attr("unit");
 								})
 								
 								
@@ -283,10 +289,10 @@ $(".moreName").on("click", function() {
 								
 								
 								$(".layui-layer-btn0").on("click", function() {
-									$(".product_name").val(pinmingdata);
-									$(".form_spec_name").text(specname);
+								that.siblings('.product_name').val(pinmingdata);
+								that.siblings(".form_spec_name").text(specname);
 									/*$("#product_price").val(productprice);*/
-									
+									that.parent().parent().find(".my_unit").text(my_unit);
 								})
 							},
 							complete: function() {
@@ -300,59 +306,6 @@ $(".moreName").on("click", function() {
 		})
 
 $(function() {
-	
-	$(".moreaddxuiqu").click(function() {
-		$(".xuqiuparent").eq(0).clone().prependTo(".xuqiugrandpa");
-	})
-
-	var arr = [];
-
-	function jsonData() {
-		$('.xuqiuparent').each(function(i, index) {
-			var obj = new Object();
-			obj.product_number = $(".product_number").eq(i).val();
-			obj.army_receive_time = $(".army_receive_time").eq(i).val();
-			obj.army_contact_person = $(".army_contact_person").eq(i).val();
-			obj.army_contact_tel = $(".army_contact_tel").eq(i).val();
-			obj.army_note = $(".army_note").eq(i).val();
-			obj.product_name = $(".product_name").eq(i).val();
-			obj.spec_name=$(".spec_name").eq(i).val();
-		/*	$(".form_spec_name").eq(i).text()*/
-			
-
-			arr.push(obj)
-
-		})
-		strjson = JSON.parse($.toJSON(arr));
-
-		spec_json = JSON.stringify(strjson);
-			
-
-	}
-	function jsonData2() {
-		$('.xuqiuparent').each(function(i, index) {
-			var obj = new Object();
-			obj.product_number = $(".product_number").eq(i).val();
-			obj.army_receive_time = $(".army_receive_time").eq(i).val();
-			obj.army_contact_person = $(".army_contact_person").eq(i).val();
-			obj.army_contact_tel = $(".army_contact_tel").eq(i).val();
-			obj.army_note = $(".army_note").eq(i).val();
-			obj.product_name = $(".product_name").eq(i).val();
-			obj.spec_name=$(".form_spec_name").eq(i).text();
-			arr.push(obj)
-
-		})
-		strjson = JSON.parse($.toJSON(arr));
-
-		spec_json = JSON.stringify(strjson);
-			
-			
-
-	}
-	
-	
-	
-	
 	
 
 	var addspec = $("#arym_form").validate({
@@ -395,15 +348,12 @@ $(function() {
 		wrapper: "li",
 		submitHandler: function(form) {
 			
-				jsonData2()
-			
 			
 			$(form).ajaxSubmit({
-				url: '{{url("army/need/release")}}',
+				url: '{{url("army/need/edit")}}',
 				type: 'POST',
 				dataType: 'JSON',
 				data: {
-					order_json: spec_json,
 					_token: '{{csrf_token()}}'
 				},
 				beforeSend: function(res) {
@@ -420,6 +370,7 @@ $(function() {
 							time: 1000
 						}, function() {
 							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+							parent.location.reload();
 							parent.layer.close(index); //再执行关闭
 							$(".ary-submit").removeAttr("disabled");
 

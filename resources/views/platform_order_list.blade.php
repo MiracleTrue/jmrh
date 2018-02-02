@@ -145,15 +145,17 @@
 		var start_date=$(".start_time").val();
 		var end_date=$(".end_time").val();
 		
-		 layer.open({
+		/* layer.open({
 		      type: 2,
 		      title: false,
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['80%' , '70%'],
-		      content: '{{url('platform/statistics')}}'+"/"+start_date+"/"+end_date
-		    });
+		      content: '{{url('platform/statistics/list')}}'+"/"+start_date+"/"+end_date
+		    });*/
+		   var url="{{url('platform/statistics/list')}}"+"/"+start_date+"/"+end_date
+		location.replace(url);
 	}
 	
 	

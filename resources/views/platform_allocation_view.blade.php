@@ -122,7 +122,7 @@
 			<div class="shijian">
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(),max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}'})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 				</p>
 			<p>
 					<span>接单时间</span>
@@ -347,7 +347,7 @@ $("#kucungongying").click(function(){
 				            },
 				            success: function (res) {
 				            	console.log(res)
-				           /* if(res.code==0){
+				            if(res.code==0){
 				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 				             	   parent.location.reload();	 
 				             	   	  layer.closeAll('');
@@ -357,7 +357,7 @@ $("#kucungongying").click(function(){
 				             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
 				             	   $("input[type='submit']").removeAttr("disabled");
 				             	 });
-				             }*/
+				             }
 				            }
 				        });
       

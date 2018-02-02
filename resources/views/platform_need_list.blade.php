@@ -52,7 +52,7 @@
 						<option value="交易成功"  @if($page_search['status'] == '交易成功') selected="selected" @endif>交易成功</option>
 					</select>
 					<span style="margin-left: 24px;font-size: 16px;">分配时间</span>
-					<input  autocomplete="off" style="margin-left: 15px;"value= @if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon tre-time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+					<input  autocomplete="off" style="margin-left: 15px;width: 100px;"value= @if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon tre-time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
 					
 					
 					

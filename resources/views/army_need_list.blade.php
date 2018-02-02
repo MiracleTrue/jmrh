@@ -17,7 +17,7 @@
   	<div class="refresh">
   		<img src="{{asset('webStatic/images/refresh.png')}}" />
   	</div>
-			<div style="margin-bottom: 78px;">
+			<div style="margin-bottom: 78px;line-height: 36px;">
 				<a href="#" class="mly-tianjia"></a>
 				<div class="mly-shaixuan">
 					<select name="status" class="mly-state">

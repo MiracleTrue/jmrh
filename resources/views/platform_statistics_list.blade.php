@@ -10,7 +10,11 @@
 				<span>-</span>
 				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
 	
-	<a onclick="biaoge(this)" style="color: blue;">导出表格到本地</a><a style="margin-left: 20px;color: blue;">打印</a></div>
+			<a onclick="biaoge(this)" style="color: blue;">导出表格到本地</a><a style="margin-left: 20px;color: blue;">打印</a>
+			
+			<a onclick="tongji(this)" style="color: blue;margin-left: 20px;">统计</a></div>
+			</div>
+			
 <table style="width: 100%;">
 	<tbody>
 		<tr class="tr1">
@@ -57,6 +61,13 @@
 		}
 		
 	
+		
+	}
+	function tongji(){
+		var start_date=$(".start_time").val();
+		var end_date=$(".end_time").val();
+		var url="{{url('platform/statistics/list')}}"+"/"+start_date+"/"+end_date
+		location.replace(url);
 		
 	}
 </script>

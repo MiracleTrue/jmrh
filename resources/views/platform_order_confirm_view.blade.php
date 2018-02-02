@@ -54,7 +54,7 @@
 				
 				@foreach($val as $item)
 				<p style="position:relative;">
-					<span>{{$item['user_info']['nick_name']}}</span>
+					<span style="width: 75px; display: inline-block;height: 20px;text-overflow:ellipsis;white-space: nowrap;">{{$item['user_info']['nick_name']}}</span>
 				 	<input type="" name="" id="" value="单价{{$item['price']}}元/{{$order_info['spec_unit']}} {{$item['product_number']}}{{$order_info['spec_unit']}}" disabled="disabled"/>
 					<span  onclick="denyReason(this,'{{$item['deny_reason']}}')" style="position: absolute;right: 20px;top: 3px;color: blue;cursor: pointer;">{{$item['status_text']}}</span>
 				</p>

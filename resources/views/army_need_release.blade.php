@@ -122,13 +122,13 @@ li {
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" />
+						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
 					</p>
 					<p class="div_floatleft" style="text-indent: 15px;position: relative;">
 						<span>数量</span>
 						<input type="text" name="product_number" class="product_number" value="{{$item['product_number']}}" />
-						<span style="position: absolute;right: 20px;top: 10px;">{{$item['spec_unit']}}</span>
+						<!--<span style="position: absolute;right: 20px;top: 10px;">{{$item['spec_unit']}}</span>-->
 					</p>
 				</div>
 
@@ -172,15 +172,17 @@ li {
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="" />
+						<input type="text" name="product_name" class="product_name" value="" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
 					<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;"></span>
 					
 					
 					</p>
-					<p class="div_floatleft" style="text-indent: 15px;">
+					<p class="div_floatleft" style="text-indent: 15px;position: relative;">
 						<span>数量</span>
 						<input type="text" name="product_number" class="product_number" value="" />
+						<span style="position: absolute;right: 20px;top: 10px;" class="my_unit"></span>
+						
 					</p>
 				</div>
 				<div class="ary_adddiv">
@@ -238,6 +240,7 @@ li {
 <script type="text/javascript">/*选择品名*/
 laydate.skin('molv');
 $(".moreName").on("click", function() {
+	var that=$(this);
 			layer.open({
 				fixed: false,
 				title: false,
@@ -318,7 +321,7 @@ $(".moreName").on("click", function() {
 									var datai=$(this).attr("datai");
 									
 									for(var k in myData[datai].product_spec){
-										$(".choose_spec_name").append('<li><img src="/uploads/'+myData[datai].product_spec[k].image_thumb +'"  onerror="this.src=`{{asset('webStatic/images/noimg.png ')}}`"/><span>' + myData[datai].product_spec[k].spec_name + '</span></li>')
+										$(".choose_spec_name").append('<li unit="' + myData[datai].product_spec[k].spec_unit + '"><img src="/uploads/'+myData[datai].product_spec[k].image_thumb +'"  onerror="this.src=`{{asset('webStatic/images/noimg.png ')}}`"/><span>' + myData[datai].product_spec[k].spec_name + '</span></li>')
 									}	
 								
 									pinmingdata=productname;
@@ -328,6 +331,8 @@ $(".moreName").on("click", function() {
 									
 									pinmingdata=pinmingdata;
 								specname=$(this).find("span").text();
+								
+									 my_unit=$(this).attr("unit");
 								})
 								
 								
@@ -336,10 +341,10 @@ $(".moreName").on("click", function() {
 								
 								
 								$(".layui-layer-btn0").on("click", function() {
-									$(".product_name").val(pinmingdata);
-									$(".form_spec_name").text(specname);
+								that.siblings('.product_name').val(pinmingdata);
+								that.siblings(".form_spec_name").text(specname);
 									/*$("#product_price").val(productprice);*/
-									
+									that.parent().parent().find(".my_unit").text(my_unit);
 								})
 							},
 							complete: function() {
@@ -369,7 +374,7 @@ $(function() {
 			obj.army_contact_tel = $(".army_contact_tel").eq(i).val();
 			obj.army_note = $(".army_note").eq(i).val();
 			obj.product_name = $(".product_name").eq(i).val();
-			obj.spec_name=$(".spec_name").eq(i).val();
+			obj.spec_name=$(".form_spec_name").eq(i).val();
 		/*	$(".form_spec_name").eq(i).text()*/
 			
 
@@ -379,7 +384,7 @@ $(function() {
 		strjson = JSON.parse($.toJSON(arr));
 
 		spec_json = JSON.stringify(strjson);
-			
+	
 
 	}
 	function jsonData2() {
@@ -478,6 +483,7 @@ $(function() {
 						}, function() {
 							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 							parent.layer.close(index); //再执行关闭
+							parent.location.reload();
 							$(".ary-submit").removeAttr("disabled");
 
 						});

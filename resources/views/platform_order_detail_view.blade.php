@@ -37,7 +37,7 @@
 	<div>
 		<p class="biaoti" style="margin-top: 40px;margin-bottom: 20px;">操作日志</p>
 			  @foreach($log_list as $item)
-			  <p style="line-height: 32px;font-size: 14px;"><span>{{$item['create_date']}}</span><span>{{$item['log_desc']}}</span></p>
+			  <p style="line-height: 32px;font-size: 14px;"><span>{{$item['create_date']}}</span><span style="margin-left: 10px   ;">{{$item['log_desc']}}</span></p>
 			   @endforeach
 	</div>
 	

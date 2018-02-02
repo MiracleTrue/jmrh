@@ -536,7 +536,7 @@ $(function(){
 			             	   });
 							addspecstate=true;
 			             }else{
-			             	
+			             	spec_json="";
 			             
 			             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
 			             	 			 $(".addspecsubmit").removeAttr("disabled");
@@ -618,6 +618,8 @@ $(function(){
 		       }
 		      
 		    }, 
+		      errorLabelContainer:$(".error"),
+		        wrapper:"li",		
 		    submitHandler: function (form) {
 		    		json();
 		          $(form).ajaxSubmit({

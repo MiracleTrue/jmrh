@@ -57,13 +57,13 @@
 
 			<p style="position: relative;">
 				<span>数量</span>
-				<input class="product_number" type="text" name="" id="text" value="{{$offer_info['order_info']['product_number']}}" disabled="disabled" />
+				<input class="product_number" type="text" name="" id="text" value="{{$offer_info['product_number']}}" disabled="disabled" />
 				<span class="adr-money">{{$offer_info['order_info']['spec_unit']}}</span>
 			</p>
 
 			<p style="position: relative;">
 				<span>总价</span>
-				<input class="total_pride" type="number" name="total_price" id="total_price" value="" disabled="disabled" />
+				<input class="total_pride" type="number" name="total_price" id="total_price"  disabled="disabled" value="{{$offer_info['total_price']}}"/>
 				<span class="adr-money">元</span>
 			</p>
 
@@ -77,7 +77,7 @@
 			</p>
 
 		<input type="hidden" name="offer_id" id="offer_id" value="{{$offer_info['offer_id']}}" />
-		<div style="margin: 0 auto;">
+		<div style="margin: 0 auto;"class="mycaozuo">
 			
 			<input type="submit" class="adr-submit" name="" id="" value="同意" />
 			<input offer_id="{{$offer_info['offer_id']}}" onclick="OfferDeny(this,{{$offer_info['offer_id']}})"  type="text" class="adr-reset" name="" id="" value="拒绝" readonly="readonly" style="border: none;"/>
@@ -93,6 +93,12 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery.validation/1.14.0/validate-methods.js')}}"></script>
   <script src="{{asset('webStatic/library/jquery.form/jquery.form.js')}}" type="text/javascript" charset="utf-8"></script>
 <script>
+	if({{$offer_info['status']}}==0){
+		$(".mycaozuo").show();
+	}else{
+		$(".mycaozuo").hide();
+	}
+	
 	
 	function OfferDeny(elm,offer_id){
 		var deny_reason=$(".deny_reason").val();
@@ -149,9 +155,9 @@
 	            	var val=Number(value*$(".product_number").val());
 				$(".total_pride").val(Math.floor(val * 100) / 100)
 			});*/
-				var value=$(".price").val();
-        		var val=Number(value*$(".product_number").val());
-				$(".total_pride").val(Math.floor(val * 100) / 100)
+			/*	var value=$(".price").val();
+        		var val=Number(value*$(".product_number").val());*/
+				/*$(".total_pride").val(Math.floor(val * 100) / 100)*/
             
 		
 		
