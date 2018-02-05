@@ -60,9 +60,9 @@
 				</div>
 				<a class="tre-btn">搜索</a>
 				
-				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 				<span>-</span>
-				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
 				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
 
 				<a onclick="tongji(this)" style="margin-left: 10px;color: blue;font-size: 14px;">统计</a>						

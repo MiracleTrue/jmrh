@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{asset('webStatic/css/military.css')}}">
   	<link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
 	<link rel="stylesheet" type='text/css' href="{{asset('webStatic/css/print2.css')}}">
-	  <link rel="stylesheet" media='print' href="{{asset('webStatic/css/military.css')}}">
+	<link rel="stylesheet" media='print' href="{{asset('webStatic/css/military.css')}}">
   	<link rel="stylesheet" type='text/css' media='print' href="{{asset('webStatic/css/print.css')}}">
 <style>
 
@@ -33,10 +33,11 @@
 					<input  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD' })" class="laydate-icon mly-time"  name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time'] != 'null') "{{$page_search['create_time']}}" @else "" @endif placeholder="请选择日期"/>
 				</div>
 				<a class="mly-btn">搜索</a>
-				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 				<span>-</span>
-				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
 				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
+				<a style="margin-left: 10px;color: blue;font-size: 14px;" onclick="allPrint(this)">打印</a>
 			</div>
 
 			<table>
@@ -62,8 +63,8 @@
 					
 				 @foreach($order_list as $item)
             
-            <tr>
-                <td>{{$item['order_id']}}</td>
+            <tr class="orer_id" order_id="{{$item['order_id']}}">
+                <td >{{$item['order_id']}}</td>
                 <!--@if($manage_user['identity'] == '1')
 						<td>{{$item['army_info']['nick_name']}}</td>
 				@endif-->
@@ -77,7 +78,7 @@
                 <td>{{$item['army_contact_tel']}}</td> 
                 <td><a noteData="{{$item['army_note']}}" onclick="noteShow(this,'{{$item['army_note']}}')">点击查看</a></td>
                 <td>{{$item['status_text']}}</td>
-                <td>{{$item['status_text']}}</td>
+                <td>{{$item['quality_check_text']}}</td>
                 <td class="blueWord">
                 
                 	@if($item['status'] == '0')
@@ -87,6 +88,7 @@
 	                   <a class="mly-caozuo" onclick="ConfirmReceive(this,'{{$item['order_id']}}')">已到货</a>
                 	@endif
                 		<a style="margin-left: 5px;" onclick="print(this)">打印</a>
+                		<a style="margin-left: 5px;float: right;margin-right: 5px;"><input type="checkbox" class="printcheck" name="" id="" value="" order_id="{{$item['order_id']}}"/></a>
                 </td>
             </tr>
             @endforeach
@@ -97,7 +99,7 @@
 
 		
 		</section>
-		<table style="width: 800px;" class="printone">
+	<!--	<table style="width: 800px;" class="">
 			<tbody >
 				<tr style="border: 1px solid #333333;">
 					<td style="width: 10%;border-right:1px solid #333333 ;">序号</td>
@@ -143,15 +145,20 @@
 					
 					
 				</tr>
-				<tr style="border: 1px solid #000000;">
-					<td style="border:1px solid #333333 ;">备注</td>
-					<td style="border:1px solid #333333 ;" colspan="3">      </td>
+				<tr style="border: 1px solid #000000;" >
+					<td style="border:1px solid #333333 ;"	rowspan="2">备注</td>
+					<td style="border:1px solid #333333 ;" colspan="3"rowspan="2">      </td>
 					
 					
 				</tr>
+				<tr style="border: 1px solid #000000;" >
+					
+					
+				</tr>
+				
 			</tbody>
 		</table>
-		
+		-->
 		<div id="myprint">
 			
 		</div>
@@ -166,7 +173,7 @@
 	function biaoge(){
 		var start_date=$(".start_time").val();
 		var end_date=$(".end_time").val();
-		if(start_date=="" && end_date==""){
+		if(start_date=="" || end_date==""){
 			alert("时间选择不能为空")
 			
 		}else{
@@ -177,42 +184,50 @@
 	
 		
 	}
+		var printData="";
+		var allPrintData="";
+		$(".printcheck").hide();
+	function allPrint(){
+		$(".printcheck").show();
+		
+		$(".printcheck").each(function(i,index){
+				if($(index).is(":checked")){
+					printData += $(index).attr("order_id")+",";
+				}
+		
+			
+		})
 	
-	
-	var data=[{
-			    "name": "BeJson",
-			    "url": "http://www.bejson.com",
-			    "page": 88,
-			    "isNonProfit": true,
-			    },{
-			    "name": "BeJson2",
-			    "url": "http://www.bejson.com",
-			    "page": 882,
-			    "isNonProfit": true
-			  
-			}];
-	$.ajax({
+		if(printData.length>0){
+		 	 allPrintData=printData.substr(0,printData.length-1);
+		 }	
+		
+		
+		$.ajax({
 		type:"post",
-		url:"{{url('product/ajax/list')}}",
+		url:"{{url('army/output/print')}}",
 		async:true,
 		data:{
-	    		
+	    		order_ids:allPrintData,
 	    		_token:'{{csrf_token()}}'
 	    	},
 		success:function(resData){
 			var data=JSON.parse(resData)
-			console.log()
-			var mydata=data.data
+			console.log(data)
+			var mydata=data.data;
 			for(var i in mydata){
-				$("#myprint").append('<table style="width: 800px;" class="printone"><tbody ><tr style="border: 1px solid #333333;"><td style="width: 10%;border-right:1px solid #333333 ;">序号</td><td style="width: 20%;border-right:1px solid #333333 ;">'+mydata[i].product_id+'</td><td style="border-right:1px solid #333333 ;width: 20%;"cellspacing="20px">订单编号</td><td></td></tr></tbody></table>')
+				$("#myprint").append('<table style="width: 800px;" class="printone"><tbody><tr style="border: 1px solid #333333;"><td style="width: 10%;border-right:1px solid #333333 ;">序号</td><td style="width: 20%;border-right:1px solid #333333 ;">'+mydata[i].order_id+'</td><td style="border-right:1px solid #333333 ;width: 20%;"cellspacing="20px">订单编号</td><td>'+mydata[i].order_sn+'</td></tr><tr style="border: 1px solid #000000;"><td>商品名称</td><td>'+mydata[i].product_name+'</td><td>下单时间</td><td>'+mydata[i].create_date+'</td></tr><tr style="border: 1px solid #000000;"><td>到货时间</td><td>'+mydata[i].army_receive_date+'</td><td>商品数量</td><td>'+mydata[i].product_number+''+mydata[i].spec_unit+'</td></tr><tr style="border: 1px solid #000000;"><td>商品规格</td><td>'+mydata[i].spec_name+'</td><td>商品单价</td><td>'+mydata[i].price+'元</td></tr><tr style="border: 1px solid #000000;"><td style="border-right:1px solid #333333;">商品总价</td><td colspan="3">'+mydata[i].total_price+'元</td></tr><tr style="border: 1px solid #000000;"><td>订单状态</td><td  colspan="3">'+mydata[i].status_text+'</td></tr><tr style="border: 1px solid #000000;"><td >商品质检状态</td><td  colspan="3">'+mydata[i].quality_check_text+'</td></tr><tr style="border: 1px solid #000000;"><td style="border:1px solid #333333 ;"rowspan="2">备注</td><td style="border:1px solid #333333 ;" colspan="3"rowspan="2"></td></tr><tr></tr></tbody></table>')
 			}
+			
+		allprint();	
 		}
 	});
 	
+	}
+
 	
-	
-	function print(elm){
-		$(".printone").jqprint({
+	function allprint(elm){
+		$("#myprint").jqprint({
 		     debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
 		     importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
 		     printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
@@ -220,6 +235,7 @@
 		});
 		
 	}
+	
 	
 	
 	
