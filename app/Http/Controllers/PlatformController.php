@@ -85,23 +85,21 @@ class PlatformController extends Controller
         switch ($status)
         {
             case '待分配' :
-                array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_SUPPLIER]);
-                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_SELECTED]);
-                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_SEND]);
-                array_push($where, ['orders.status', '!=', $platform::ORDER_SUPPLIER_RECEIVE]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALREADY_ALLOCATION]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALREADY_CONFIRM]);
+                array_push($where, ['orders.status', '!=', $platform::ORDER_ALREADY_RECEIVE]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_PLATFORM]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_SEND_ARMY]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_SUCCESSFUL]);
                 break;
             case '已分配':
-                array_push($where, ['orders.status', '!=', $platform::ORDER_ALLOCATION_PLATFORM]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_SEND_ARMY]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_SUCCESSFUL]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_AWAIT_ALLOCATION]);
                 array_push($where, ['orders.status', '!=', $platform::ORDER_AGAIN_ALLOCATION]);
                 break;
-            case '库存供应' :
-                array_push($where, ['orders.status', '=', $platform::ORDER_ALLOCATION_PLATFORM]);
+            case '已发货':
+                array_push($where, ['orders.status', '=', $platform::ORDER_SEND_ARMY]);
                 break;
             case '交易成功' :
                 array_push($where, ['orders.status', '=', $platform::ORDER_SUCCESSFUL]);
@@ -118,7 +116,6 @@ class PlatformController extends Controller
         $this->ViewData['order_list'] = $platform->getOrderList($where);
         $this->ViewData['page_search'] = array('type' => $type, 'status' => $status, 'create_time' => $create_time);
 
-//        dump($this->ViewData);
         return view('platform_order_list', $this->ViewData);
     }
 
@@ -135,7 +132,6 @@ class PlatformController extends Controller
         $this->ViewData['unit_list'] = $product->getProductCategoryUnitList();
         $this->ViewData['product_category'] = $product->getProductCategoryList(array(), array(['product_category.sort', 'desc']), false);
 
-//        dump($this->ViewData);
         return view('platform_need_view', $this->ViewData);
     }
 
