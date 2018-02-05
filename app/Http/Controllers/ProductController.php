@@ -336,7 +336,6 @@ class ProductController extends Controller
             $this->ViewData['product_info'] = $product->getProductInfo($product_id);
         }
 
-//        dump($this->ViewData);
         return view('product_view', $this->ViewData);
     }
 
@@ -634,6 +633,9 @@ class ProductController extends Controller
             $m3result->messages = '图片格式不正确或大小超过300KB';
             $m3result->data['validator'] = $validator->messages();
         }
+
+//        echo $m3result->toJson();
+//        exit();
         return $m3result->toJson();
     }
 

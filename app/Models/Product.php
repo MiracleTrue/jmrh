@@ -203,6 +203,8 @@ class Product extends CommonModel
         /*数据过滤*/
         $e_products->spec_info->transform(function ($item)
         {
+            $item->de_image_thumb = $item->image_thumb;
+            $item->de_image_original = $item->image_original;
             $item->image_thumb = MyFile::makeUrl($item->image_thumb);
             $item->image_original = MyFile::makeUrl($item->image_original);
             $item->supplier_price = $item->hm_supplier_price;
