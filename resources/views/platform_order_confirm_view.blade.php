@@ -157,8 +157,10 @@ var EndTimeMsg = {{$count_down}};
 		var order_id={{$order_info['order_id']}};
 		if("{{$button}}"=="等待"){
 			$(".qte-ope").hide();
+			$(".header_span").hide();
 		}else if("{{$button}}"=="重新分配"){
 			$('.qte-submit').text("重新分配");
+			$(".header_span").hide();
 			$('.qte-submit').on("click",function(){
 				 layer.open({
 				      type: 2,
