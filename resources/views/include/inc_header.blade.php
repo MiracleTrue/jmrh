@@ -12,6 +12,7 @@
 	
 	
     </div>
+    <div class="clearfloat" style="clear: both;"></div> 
    <a href="{{url('logout')}}"> <div class="headerdiv2">退出平台</div></a>
 </div>
 @section('MyJs')

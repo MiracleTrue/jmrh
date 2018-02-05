@@ -10,7 +10,7 @@ body {
 }
 
 .home-header {
-	height: 42px;
+	/*height: 42px;*/
 	background: #fe8d01;
 	padding-left: 200px;
 	position: relative;
@@ -59,6 +59,21 @@ body {
 	text-align: center;
 	color: #fff;
 }
+
+@media screen and (max-width: 1600px) {
+    .home-header div span {
+		display: inline-block;
+		height: 30px;
+		width:90px;
+		line-height: 30px;
+		background: #feb501;
+		margin-left: 5px;
+		border-radius: 15px;
+		text-align: center;
+		color: #fff;
+	}
+}
+
 
 .home-aside {
 	width: 200px;
