@@ -70,7 +70,7 @@
 					<td>{{$item['product_name']}}</td>
 					<td>{{$item['contact_person']}}</td>
 					<td>{{$item['spec_name']}}</td>
-					<td>{{$item['army_receive_time']}}</td>
+					<td>{{$item['army_receive_date']}}</td>
 					<td><input cart_id="{{$item['cart_id']}}"  class="product_num" type="text" name="" id="" value="{{$item['product_number']}}" readonly="readonly" />{{$item['spec_unit']}}</td>
 					<td>{{$item['contact_tel']}}</td>
 				<td><a onclick="cartdelete(this,'{{$item['cart_id']}}')">删除</a></td>
