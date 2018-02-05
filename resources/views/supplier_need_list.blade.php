@@ -17,11 +17,12 @@
 				<div class="pvr-shaixuan">
 					<select name="" class="pvr-state">
 						<option value="null" >全部</option>
-						<option value="待报价"   @if($page_search['status'] == '待报价') selected="selected" @endif>待报价</option>
-						<option value="等待确认" @if($page_search['status'] == '等待确认') selected="selected" @endif>等待确认</option>
+						<option value="待回复"   @if($page_search['status'] == '待回复') selected="selected" @endif>待回复</option>
+						<option value="待确认" @if($page_search['status'] == '待确认') selected="selected" @endif>待确认</option>
 						<option value="待发货" @if($page_search['status'] == '待发货') selected="selected" @endif>待发货</option>
 						<option value="已发货" @if($page_search['status'] == '已发货') selected="selected" @endif>已发货</option>
-						<option value="未通过" @if($page_search['status'] == '未通过') selected="selected" @endif>未通过</option>
+						<option value="已收货" @if($page_search['status'] == '已收货') selected="selected" @endif>已收货</option>
+						<option value="已拒绝" @if($page_search['status'] == '已拒绝') selected="selected" @endif>已拒绝</option>
 						<option value="已过期" @if($page_search['status'] == '已过期') selected="selected" @endif>已过期</option>
 						
 

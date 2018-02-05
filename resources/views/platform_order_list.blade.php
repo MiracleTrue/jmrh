@@ -48,7 +48,7 @@
 						<option value="null"  @if($page_search['status'] == 'null') selected="selected" @endif>全部</option>
 						<option value="待分配"  @if($page_search['status'] == '待分配') selected="selected" @endif>待分配</option>
 						<option value="已分配"  @if($page_search['status'] == '已分配') selected="selected" @endif>已分配</option>
-						<option value="库存供应"  @if($page_search['status'] == '库存供应') selected="selected" @endif>库存供应</option>
+						<option value="库存供应"  @if($page_search['status'] == '已发货') selected="selected" @endif>已发货</option>
 						<option value="交易成功"  @if($page_search['status'] == '交易成功') selected="selected" @endif>交易成功</option>
 					</select>
 					<span style="margin-left: 24px;font-size: 16px;">分配时间</span>
@@ -207,7 +207,7 @@ $(".refresh").on("click",function(){
     	
 	   var staus_val = $('.type_val option:selected').val();
     	var status_val=$(".staus_val option:selected").val();	
-    	var url="{{url('platform/need/list')}}"+"/"+staus_val+"/"+status_val+"/"+time;
+    	var url="{{url('platform/order/list')}}"+"/"+staus_val+"/"+status_val+"/"+time;
     	
     	location.replace(url);
     });
