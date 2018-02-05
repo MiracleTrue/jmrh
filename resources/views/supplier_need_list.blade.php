@@ -66,7 +66,7 @@
 							  	<a class="pvr-caozuo" style="" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
 							  	  @elseif($item['status'] == '2')
 							  	  <a class="pvr-caozuo" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
-							  	  	<a class="pvr-caozuo" style="color: #333;"onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
+							  	  	<a class="pvr-caozuo" style="color: #4284c5;"onclick="SendGoods(this,{{$item->offer_id}})" >准备配货</a>
 							  	  	  @elseif($item['status'] == '3')
 							  	  	  <a class="pvr-caozuo" onclick="supplierView(this,{{$item->offer_id}})">查看订单</a>
 							  	  	  <a class="pvr-caozuo" >已发货</a>
