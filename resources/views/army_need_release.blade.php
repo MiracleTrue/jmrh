@@ -312,6 +312,7 @@ $(".moreName").on("click", function() {
 								
 											var pinmingdata="";
 											var specname="";
+											 $(".layui-layer-btn0").hide();
 								$(".nameul li").on("click", function() {
 									$(this).css("border", "1px solid #fe8d01").siblings().css("border", "1px solid #dddddd")
 									productname = $(this).find("span").text();
@@ -330,9 +331,12 @@ $(".moreName").on("click", function() {
 									$(this).css("border", "1px solid #fe8d01").siblings().css("border", "1px solid #dddddd");
 									
 									pinmingdata=pinmingdata;
-								specname=$(this).find("span").text();
+									specname=$(this).find("span").text();
 								
 									 my_unit=$(this).attr("unit");
+								
+								 $(".layui-layer-btn0").show();
+								
 								})
 								
 								
@@ -342,9 +346,13 @@ $(".moreName").on("click", function() {
 								
 								$(".layui-layer-btn0").on("click", function() {
 								that.siblings('.product_name').val(pinmingdata);
+								
 								that.siblings(".form_spec_name").text(specname);
 									/*$("#product_price").val(productprice);*/
 									that.parent().parent().find(".my_unit").text(my_unit);
+										
+								
+									
 								})
 							},
 							complete: function() {
