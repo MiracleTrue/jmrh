@@ -16,6 +16,7 @@ use App\Exceptions\NetworkBusyException;
 use App\Exceptions\OutRepertoryException;
 use App\Exceptions\SupplierPriceNotFindException;
 use App\Tools\MyHelper;
+use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -31,27 +32,41 @@ class Platform extends CommonModel
     const ORDER_TYPE_PLATFORM = 2;
 
     /**
-     * 仓库Api 获取产品数量
+     * 仓库Api 查询产品库存数量
      * @param $product_name
      * @param $spec_name
-     * @return bool|\Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getRepertory($product_name, $spec_name)
     {
-        if (1)
+        $client = new Client();
+        $response = $client->request('GET', 'http://47.97.179.80/service_sel.php',
+            [
+                'query' =>
+                    [
+                        'p_name' => $product_name,
+                        'p_spe' => $spec_name,
+                    ]
+            ]
+        );
+        $json = json_decode($response->getBody()->getContents(), true);
+        if ($response->getStatusCode() == 200 && isset($json['code']) && $json['code'] == 0)
         {
-            //
             $collect = collect(array(
                 'product_name' => $product_name,
                 'spec_name' => $spec_name,
-                'number' => 1000
+                'number' => $json['data']
             ));
-            return $collect;
         }
         else
         {
-            return false;
+            $collect = collect(array(
+                'product_name' => $product_name,
+                'spec_name' => $spec_name,
+                'number' => 0
+            ));
         }
+        return $collect;
     }
 
     /**

@@ -604,7 +604,7 @@ class PlatformController extends Controller
             if ($order_info->platform_allocation_number > 0)
             {   /*有库存供应,验证数量*/
                 $repertory_info = $platform->getRepertory($order_info->product_name, $order_info->spec_name);
-                if (!$repertory_info || bcsub($repertory_info['number'], $order_info->platform_allocation_number, 2) <= 0)
+                if (bcsub($repertory_info['number'], $order_info->platform_allocation_number, 2) <= 0)
                 {
                     $m3result->code = 3;
                     $m3result->messages = '库存供应数量不足';

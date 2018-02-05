@@ -108,15 +108,15 @@ class SupplierController extends Controller
             'offer_id' => [
                 'required',
                 'integer',
-                Rule::exists('order_offer')->where(function ($query) use ($offer_id, $manage_u)
+                Rule::exists('order_offer', 'offer_id')->where(function ($query) use ($offer_id, $manage_u)
                 {
-                    $query->where('offer_id', $offer_id)->where('user_id', $manage_u->user_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->where('confirm_time', '>=', now()->timestamp);
+                    $query->where('user_id', $manage_u->user_id);
                 }),
             ]
         ];
         $validator = Validator::make(array('offer_id' => $offer_id), $rules);
 
-        if ($validator->passes() || $manage_u->identity = User::ADMINISTRATOR)
+        if ($validator->passes() || $manage_u->identity == User::ADMINISTRATOR)
         {   /*验证通过*/
             $this->ViewData['offer_info'] = $supplier->getSupplierOfferInfo($offer_id);
         }
