@@ -104,7 +104,7 @@
 						 	 @elseif($item['status'] == '100')
 								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >订单确认</a>
 							 @elseif($item['status'] == '110')
-								<a class="tre-caozuo" onclick="chakanbaojia(this,'{{$item->order_id}}')" >确认收货</a>
+								<a class="tre-caozuo" onclick="confirmshouhuo(this,'{{$item->order_id}}')" >确认收货</a>
 						   @elseif($item['status'] == '120' || $item['status'] == '200' )
 						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">发货到军方</a>
 						   	@endif 	
@@ -126,10 +126,24 @@
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
 
 <script>
+	/*确认收货页面*/
+	function confirmshouhuo(elm,order_id){
+		 layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		       fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['50%' , '50%'],
+		      content: '{{url('platform/confirm/receive/view')}}'+"/"+order_id
+		    });
+	}
+	
+	
 	function biaoge(){
 		var start_date=$(".start_time").val();
 		var end_date=$(".end_time").val();
-		if(start_date=="" && end_date==""){
+		if(start_date=="" || end_date==""){
 			alert("时间选择不能为空")
 			
 		}else{

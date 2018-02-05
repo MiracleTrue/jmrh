@@ -88,7 +88,7 @@
 				<div class="qte-ope">
 					<input type="hidden" name="order_id" value="" />
 					
-					<a class="qte-submit" type="submit" name="" id="qte-submit" value="提交" >提交</a>
+					<a class="qte-submit" type="submit" name="" id="qte-submit" value="提交">提交</a>
 					<input class="qte-reset" type="reset" name="" id="qte-reset" value="重置" />
 					
 					
@@ -157,7 +157,7 @@ var EndTimeMsg = {{$count_down}};
 		var order_id={{$order_info['order_id']}};
 		if("{{$button}}"=="等待"){
 			$(".qte-ope").hide();
-			$(".header_span").hide();
+			
 		}else if("{{$button}}"=="重新分配"){
 			$('.qte-submit').text("重新分配");
 			$(".header_span").hide();
@@ -173,6 +173,7 @@ var EndTimeMsg = {{$count_down}};
 			    });
 		    })
 		}else{
+			$(".header_span").hide();
 			$('.qte-submit').text("确认");
 			$('.qte-submit').on("click",function(){
 				 $("#platformbaojiatijiao").ajaxSubmit({
@@ -188,7 +189,6 @@ var EndTimeMsg = {{$count_down}};
 			            	
 			            },
 			            success: function (res) {
-			            	<!--console.log(res)-->
 			            if(res.code==0){
 			             layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 			             	   parent.location.reload();	 

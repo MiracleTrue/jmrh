@@ -52,7 +52,7 @@
 	function biaoge(){
 		var start_date=$(".start_time").val();
 		var end_date=$(".end_time").val();
-		if(start_date=="" && end_date==""){
+		if(start_date=="" || end_date==""){
 			alert("时间选择不能为空")
 			
 		}else{
