@@ -9,10 +9,10 @@
 @endsection
 @section('content')
 <section>
-		<div class="refresh">
+		<div class="refresh" style="top: 142px;">
   			<img src="{{asset('webStatic/images/refresh.png')}}" />
   		</div>
-			<div style="line-height: 36px;">
+			<div style="line-height: 36px;margin-bottom: 20px;">
 				
 				<div class="pvr-shaixuan">
 					<select name="" class="pvr-state">
@@ -30,12 +30,14 @@
 				 	<input  autocomplete="off" class="pvr-time laydate-icon" name="cre_time" id="cre_time" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"   name="army_receive_time" id="army_receive_time" value=@if($page_search['create_time']=="null") "" @else "{{$page_search['create_time']}}"@endif placeholder="请选择日期"/>
 				</div>
 				<a class="pvr-btn">搜索</a>
+				
+			</div>
+			<div>
 				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
 				<span>-</span>
 				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="army_receive_time"  placeholder="请选择日期"/>
 				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
 			</div>
-			
 			<table>
 				<tbody>
 					<tr class="tr1">
