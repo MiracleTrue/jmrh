@@ -124,11 +124,12 @@ li {
 						<span>品名</span>
 						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
+						<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;">{{$item['spec_name']}}</span>
 					</p>
 					<p class="div_floatleft" style="text-indent: 15px;position: relative;">
 						<span>数量</span>
 						<input type="text" name="product_number" class="product_number" value="{{$item['product_number']}}" />
-						<!--<span style="position: absolute;right: 20px;top: 10px;">{{$item['spec_unit']}}</span>-->
+						<span style="position: absolute;right: 20px;top: 10px;">{{$item['spec_unit']}}</span>
 					</p>
 				</div>
 
@@ -382,7 +383,7 @@ $(function() {
 			obj.army_contact_tel = $(".army_contact_tel").eq(i).val();
 			obj.army_note = $(".army_note").eq(i).val();
 			obj.product_name = $(".product_name").eq(i).val();
-			obj.spec_name=$(".form_spec_name").eq(i).val();
+			obj.spec_name=$(".form_spec_name").eq(i).text();
 		/*	$(".form_spec_name").eq(i).text()*/
 			
 
@@ -396,6 +397,7 @@ $(function() {
 
 	}
 	function jsonData2() {
+	
 		$('.xuqiuparent').each(function(i, index) {
 			var obj = new Object();
 			obj.product_number = $(".product_number").eq(i).val();
