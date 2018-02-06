@@ -233,6 +233,8 @@ class Platform extends CommonModel
         $e_order_offer = new OrderOffer();
         $supplier_info = Users::find($supplier_id);
         $sms = new Sms();
+        /*时区设置*/
+        date_default_timezone_set('PRC');
 
         /*添加*/
         $e_order_offer->order_id = $order_info->order_id;

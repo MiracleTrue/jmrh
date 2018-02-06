@@ -9,6 +9,7 @@
 namespace App\Models;
 
 use App\Entity\OrderOffer;
+use App\Entity\Orders;
 use App\Entity\Users;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -146,20 +147,36 @@ class Supplier extends CommonModel
         $e_orders = $e_order_offer->ho_orders()->firstOrFail();
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
 
-        /*更新*/
-        $e_order_offer->status = CommonModel::OFFER_ALREADY_DENY;
-        $e_order_offer->deny_reason = !empty($deny_reason) ? $deny_reason : '';
-        $e_order_offer->save();
+        try
+        {
+            DB::transaction(function () use ($e_order_offer, $e_orders, $e_users, $deny_reason, $sms)
+            {
+                /*更新*/
+                $e_order_offer->status = CommonModel::OFFER_ALREADY_DENY;
+                $e_order_offer->deny_reason = !empty($deny_reason) ? $deny_reason : '';
+                $e_order_offer->save();
 
-        $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (拒绝供货)' . '  原因:' . $deny_reason);
-        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+                $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (拒绝供货)' . '  原因:' . $deny_reason);
+                User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
 
-        /*发送短信*/
-        $phone = Users::find($e_order_offer->allocation_user_id)->phone;
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_DENY_OFFER_CODE, $phone,
-            array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
-        info('短信-供货商拒绝供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+                /*发送短信*/
+                $phone = Users::find($e_order_offer->allocation_user_id)->phone;
+                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_DENY_OFFER_CODE, $phone,
+                    array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
+                info('短信-供货商拒绝供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
 
+                /*查询该订单下的offer  如果没有"待回复"的报价将订单状态设置为 "重新分配"*/
+                $count_order_offer = OrderOffer::where('order_id', $e_order_offer->order_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->count();
+                if ($count_order_offer === 0)
+                {
+                    /*将order设置为"重新分配"*/
+                    Orders::where('order_id', $e_order_offer->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);
+                }
+            });
+        } catch (\Exception $e)
+        {
+            return false;
+        }
         return true;
     }
 

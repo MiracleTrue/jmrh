@@ -25,6 +25,9 @@ class Controller extends BaseController
 
     public function __construct()
     {
+        /*时区设置*/
+        date_default_timezone_set('PRC');
+
         /*全局创建时间统一*/
         $GLOBALS['create_time'] = now();
 

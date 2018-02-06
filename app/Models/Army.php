@@ -102,6 +102,8 @@ class Army extends CommonModel
         /*初始化*/
         $sms = new Sms();
         $e_orders = new Orders();
+        /*时区设置*/
+        date_default_timezone_set('PRC');
 
         /*添加*/
         $e_orders->type = self::ORDER_TYPE_ARMY;
