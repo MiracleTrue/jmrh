@@ -201,7 +201,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input autocomplete="off" type="text" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time" id="" value="{{$order_info['army_receive_time'] or ''}}" id style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
+						<input autocomplete="off" type="text" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$order_info['army_receive_time'] or ''}}" style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>
@@ -240,6 +240,9 @@ li {
 
 <script type="text/javascript">/*选择品名*/
 laydate.skin('molv');
+
+
+
 $(".moreName").on("click", function() {
 	var that=$(this);
 			layer.open({
@@ -365,12 +368,48 @@ $(".moreName").on("click", function() {
 				}
 			});
 		})
-
+				$(".moreaddxuiqu").click(function() {
+						$(".xuqiuparent").eq(0).clone(true).prependTo(".xuqiugrandpa");
+						addId();
+					})
+				addId();
+					function addId(){
+							$(".army_receive_time").each(function(i,index){
+								$(index).attr("id","army_receive_time"+i);
+									
+								var dateId=$(index).attr("id");
+						
+						
+							})
+					}
+					
+						
+						$(".army_receive_time").on("click",function(){
+								
+								
+								laydate({
+											format: 'YYYY-MM-DD hh:mm:ss',
+											istime: true, 
+											min: laydate.now(),
+											elem:'#'+$(this).attr("id")
+										})	
+							
+								
+						})
+						
+					
+					
+					
+					
+					
 $(function() {
 	
-	$(".moreaddxuiqu").click(function() {
-		$(".xuqiuparent").eq(0).clone(true).prependTo(".xuqiugrandpa");
-	})
+	
+		
+	
+
+
+
 
 	var arr = [];
 
