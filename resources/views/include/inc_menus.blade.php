@@ -74,6 +74,12 @@
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>
+         <li class="munu-caozuorizhi">
+            <a href="{{url('platform/statistics/list')}}">
+                <i class="fa fa-bar-chart "></i> <span>统计</span>
+                <!--<small class="label pull-right label-warning">12</small>-->
+            </a>
+        </li>
 		@elseif($manage_user['identity'] == '2')<!--平台运营员-->
 							
 							
@@ -123,7 +129,7 @@
         
           <li class="munu-caozuorizhi">
             <a href="{{url('platform/statistics/list')}}">
-                <i class="fa fa-envelope-square"></i> <span>统计</span>
+                <i class="fa fa-bar-chart"></i> <span>统计</span>
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>

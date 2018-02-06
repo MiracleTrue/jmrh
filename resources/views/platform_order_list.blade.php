@@ -5,6 +5,9 @@
    
     <link rel="stylesheet" href="{{asset('webStatic/css/terrace.css')}}">
     	<link rel="stylesheet" href="{{asset('webStatic/css/page.css')}}">
+    	<link rel="stylesheet" media='print' href="{{asset('webStatic/css/military.css')}}">
+  		<link rel="stylesheet" type='text/css' media='print' href="{{asset('webStatic/css/print.css')}}">
+  		<link rel="stylesheet" type='text/css' href="{{asset('webStatic/css/print2.css')}}">
 <style>
 	
 
@@ -28,10 +31,10 @@
 @section('content')
 
       <section>
-      		<div class="refresh">
+      		<div class="refresh" style="top: 159px;">
 		  		<img src="{{asset('webStatic/images/refresh.png')}}" />
 		  	</div>
-			<div style="line-height: 36px;">
+			<div style="line-height: 36px;margin-bottom: 30px;">
 				<a href="#" class="tre-tianjia"></a>
 				<div class="tre-shaixuan platshaixuan" style="background: none;">
 					<div class="plat_shanixuan" >筛选</div>
@@ -60,6 +63,8 @@
 				</div>
 				<a class="tre-btn">搜索</a>
 				
+			</div>
+			<div>
 				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#start_time' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 				<span>-</span>
 				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#end_time' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
@@ -67,9 +72,10 @@
 
 				<a onclick="tongji(this)" style="margin-left: 10px;color: blue;font-size: 14px;">统计</a>						
 				
-				
-			</div>
-			
+				<a class="printdingdan" style="margin-left: 10px;color: blue;font-size: 14px;" >打印</a>
+				<a class="printAll" style="margin-left: 10px;color: blue;font-size: 14px;">确认打印</a>
+				<a class="cancelprint" style="margin-left: 10px;color: blue;font-size: 14px;">取消打印</a>
+				</div>
 				<table>
 				<tbody>
 					<tr class="tr1">
@@ -115,9 +121,11 @@
 						   @elseif($item['status'] == '120' || $item['status'] == '200' )
 						   			<a class="tre-caozuo" onclick="ConfirmReceive(this,'{{$item->order_id}}')">发货到军方</a>
 						   	@endif 	
-						   	<a>打印</a>	
+						 
 						 	<a onclick="xiangxiinfo(this,'{{$item->order_id}}')">详细信息</a>
-						   	
+						   	<a style="margin-left: 5px;" onclick="print(this,'{{$item['order_id']}}')">打印</a>
+                		<a style="margin-left: 5px;float: right;margin-right: 5px;"><input type="checkbox" class="printcheck" name="" id="" value="" order_id="{{$item['order_id']}}"/></a>
+
 						</td>
 					</tr>
 					  @endforeach
@@ -126,12 +134,15 @@
 			</table>
 			 @include('include.inc_pagination',['pagination'=>$order_list])
 		</section>
-
+	<div id="myprint">
+			
+		</div>
 @endsection
  
 @section('MyJs')
   <script type="text/javascript" src="{{asset('/webStatic/library/jquery-calendar/js/laydate.js')}}"></script>
-
+<script src="http://www.jq22.com/jquery/jquery-migrate-1.2.1.min.js"></script>
+ <script type="text/javascript" src="{{asset('/webStatic/library/jquery.jqprint/jquery.jqprint-0.3.js')}}"></script>
 <script>
 	/*确认收货页面*/
 	function confirmshouhuo(elm,order_id){
@@ -161,6 +172,120 @@
 	
 		
 	}
+	
+	
+	
+		var printData="";
+		var allPrintData="";
+		$(".printcheck").hide();
+		$(".printAll").hide();
+		$(".cancelprint").hide();
+		
+		
+		$(".cancelprint").click(function(){
+			$(".printAll").hide();
+			$(".printdingdan").show();
+			$(this).hide();
+			$(".printcheck").hide();
+			
+		})
+		
+		$(".printdingdan").click(function(){
+			$(".printcheck").show();
+			$(this).hide();
+			$(".cancelprint").show();
+			
+			$(".printAll").show();
+		})
+		
+		$(".printAll").click(function(){
+			
+					$(".printcheck").each(function(i,index){
+								if($(index).is(":checked")){
+									printData += $(index).attr("order_id")+",";
+								}
+						
+							
+						})
+					
+						if(printData.length>0){
+						 	 allPrintData=printData.substr(0,printData.length-1);
+						 }	
+				
+				
+						$.ajax({
+						type:"post",
+						url:"{{url('platform/output/print')}}",
+						async:true,
+						data:{
+					    		order_ids:allPrintData,
+					    		_token:'{{csrf_token()}}'
+					    	},
+						success:function(resData){
+							printData="";
+							var data=JSON.parse(resData)
+							console.log(data)
+							var mydata=data.data;
+							$("#myprint").empty();
+							for(var i in mydata){
+								$("#myprint").append('<table style="width: 800px;" class="printone"><tbody><tr style="border: 1px solid #333333;"><td style="width: 10%;border-right:1px solid #333333 ;">序号</td><td style="width: 20%;border-right:1px solid #333333 ;">'+mydata[i].order_id+'</td><td style="border-right:1px solid #333333 ;width: 20%;" cellspacing="20px">订单编号</td><td>'+mydata[i].order_sn+'</td></tr><tr style="border: 1px solid #000000;"><td>商品名称</td><td>'+mydata[i].product_name+'</td><td>商品数量</td><td>'+mydata[i].product_number+'</td></tr><tr style="border: 1px solid #000000;"><td>军方下单时间</td><td>'+mydata[i].create_date+'</td><td>军方规定到货时间</td><td>'+mydata[i].army_receive_date+'</td></tr><tr style="border: 1px solid #000000;"><td>商品规格</td><td>'+mydata[i].spec_name+'</td><td>商品单价</td><td>'+mydata[i].price+'元</td></tr><tr style="border: 1px solid #000000;"><td>商品总价</td><td>'+mydata[i].total_price+'元</td><td>军方联系人</td><td>'+mydata[i].army_contact_person+'</td></tr><tr style="border: 1px solid #000000;"><td>联系电话</td><td colspan="3">'+mydata[i].army_contact_tel+'</td></tr><tr style="border: 1px solid #000000;"><td>订单状态</td><td colspan="3">'+mydata[i].status_text+'</td></tr><tr style="border: 1px solid #000000;"><td>商品质检状态</td><td colspan="3">'+mydata[i].quality_check_text+'</td></tr><tr style="border: 1px solid #000000;"><td style="border:1px solid #333333 ;" rowspan="2">备注</td><td style="border:1px solid #333333 ;" colspan="3" rowspan="2"></td></tr><tr></tr></tbody></table>')
+							}
+							
+							allprint();	
+						}
+					});
+			
+			
+			
+		})
+	
+		function print(elm,orer_id){
+			$.ajax({
+						type:"post",
+						url:"{{url('platform/output/print')}}",
+						async:true,
+						data:{
+					    		order_ids:orer_id,
+					    		_token:'{{csrf_token()}}'
+					    	},
+						success:function(resData){
+							var data=JSON.parse(resData)
+							console.log(data)
+							var mydata=data.data;
+							$("#myprint").empty();
+							for(var i in mydata){
+								$("#myprint").append('<table style="width: 800px;" class="printone"><tbody><tr style="border: 1px solid #333333;"><td style="width: 10%;border-right:1px solid #333333 ;">序号</td><td style="width: 20%;border-right:1px solid #333333 ;">'+mydata[i].order_id+'</td><td style="border-right:1px solid #333333 ;width: 20%;" cellspacing="20px">订单编号</td><td>'+mydata[i].order_sn+'</td></tr><tr style="border: 1px solid #000000;"><td>商品名称</td><td>'+mydata[i].product_name+'</td><td>商品数量</td><td>'+mydata[i].product_number+'</td></tr><tr style="border: 1px solid #000000;"><td>军方下单时间</td><td>'+mydata[i].create_date+'</td><td>军方规定到货时间</td><td>'+mydata[i].army_receive_date+'</td></tr><tr style="border: 1px solid #000000;"><td>商品规格</td><td>'+mydata[i].spec_name+'</td><td>商品单价</td><td>'+mydata[i].price+'元</td></tr><tr style="border: 1px solid #000000;"><td>商品总价</td><td>'+mydata[i].total_price+'元</td><td>军方联系人</td><td>'+mydata[i].army_contact_person+'</td></tr><tr style="border: 1px solid #000000;"><td>联系电话</td><td colspan="3">'+mydata[i].army_contact_tel+'</td></tr><tr style="border: 1px solid #000000;"><td>订单状态</td><td colspan="3">'+mydata[i].status_text+'</td></tr><tr style="border: 1px solid #000000;"><td>商品质检状态</td><td colspan="3">'+mydata[i].quality_check_text+'</td></tr><tr style="border: 1px solid #000000;"><td style="border:1px solid #333333 ;" rowspan="2">备注</td><td style="border:1px solid #333333 ;" colspan="3" rowspan="2"></td></tr><tr></tr></tbody></table>')
+							}
+							
+							allprint();	
+						}
+					});
+		}	
+				
+	
+	
+
+	
+	function allprint(elm){
+		$("#myprint").jqprint({
+		     debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+		     importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+		     printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+		     operaSupport: true//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+		});
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*统计*/
 	function tongji(){
 		var start_date=$(".start_time").val();
