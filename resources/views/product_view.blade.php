@@ -38,6 +38,7 @@ input{
 	line-height: 59px;
 }
 .add_agreementprice{
+	width: 133px;
 	margin: 0 auto;
 	text-align: center;
 	height: 44px;
@@ -53,6 +54,8 @@ input{
 	line-height: 60px;
 	color: #0e99dc;
 	font-size: 15px;
+	width: 100px;
+	margin: 0 auto;
 }
 .addspecsubmit{
 	width: 210px;
@@ -90,9 +93,9 @@ font-weight: bold;
 		
 		 @if(!empty($product_info))
     	<form id="product_editform" action="" method="post">
-    		<h1 class="product_h1">编辑分类</h1>
+    		<h1 class="product_h1">编辑商品</h1>
     		@else
-    		<h1 class="product_h1">添加分类</h1>
+    		<h1 class="product_h1">添加商品</h1>
     	<form id="product_addform" action="" method="post">
     		@endif
 		
@@ -139,7 +142,7 @@ font-weight: bold;
 			<div class="addguige">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
-					<input style="padding-top: 10px;height: 29px;" class="upimgclass product_img spec_image" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+					<input image_thumb="{{$item['image_thumb']}}" image_original="{{$item['image_original']}}" style="padding-top: 10px;height: 29px;" class="upimgclass product_img spec_image" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
 					<input class="faker" style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" disabled="disabled" value="点击右边上传按钮" />
 					<a><label class="labelid"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
 					<label>规格名称</label><input class="spec_name" type="text" name="spec_name" id="" value="{{$item['spec_name'] or ''}}" />
@@ -175,7 +178,7 @@ font-weight: bold;
 				<!--军方协议价-->
 				<div style="position: relative;">
 					<label style="font-size: 15px;">军方协议价</label><input class="army_price" name="army_price" type="text" value="{{$item['product_price'] or ''}}" />
-					<div style="position: absolute;left: 337px;top: 12px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></div>
+					<div style="position: absolute;left: 321px;top: 12px;font-size: 14px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></div>
 	
 				</div>
 				
@@ -188,7 +191,7 @@ font-weight: bold;
     	<div class="addguige">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
-					<input style="padding-top: 10px;height: 29px;" class="upimgclass spec_image product_img" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
+					<input style="padding-top: 10px;height: 29px;" class="upimgclass spec_image product_img" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" />
 					
 					<input style="background-color: #FFFFFF;border: 1px solid #A9A9A9;position: absolute;top: 5px;left: 61px;" class="faker" disabled="disabled" value="点击右边上传按钮" />
 					<a><label class="labelid"><img style="cursor: pointer;" src="{{asset('webStatic/images/shizi.png')}}" alt="浏览按钮" /></label></a>
@@ -226,7 +229,7 @@ font-weight: bold;
 				
 				<!--军方协议价-->
 				<div style="position: relative;"><label style="font-size: 15px;">军方协议价</label><input class="army_price" type="text" name="army_price" id="" value="" />
-					<div style="position: absolute;left:335px;top: 13px;font-size: 14px;"><span>元/</span><span class="myspec_unit">斤</span></div>
+					<div style="position: absolute;left:321px;top: 13px;font-size: 14px;"><span>元/</span><span class="myspec_unit">斤</span></div>
 	
 				</div>
 				
@@ -269,8 +272,16 @@ font-weight: bold;
 	$(".conadd").click(function(){
 		var addguige=$(this).parent().find(".addguige").eq(0);
 			addguige.clone(true).appendTo("#addguigefa");
-		
+			
+		addId();
 	})
+	addId();
+	function addId(){
+			$(".spec_image").each(function(i,index){
+				$(index).attr("id","spec_image"+i)
+			})
+	}
+
 	function addjiage(elm){
 		/*	$(".agreementprice").eq(0).clone().prependTo($(elm).parent());*/
 		$(".suliper").eq(0).clone(true).prependTo($(elm).parent());
@@ -346,44 +357,43 @@ font-weight: bold;
 	 	
 	 })*/ 
 	 
+	
 	function upimg(elm){
-		
 		$(elm).parent().find(".faker").val($(elm).val().split('\\')[$(elm).val().split('\\').length-1]);
+
+		var image_original="";
+	
+	if(arguments[0].length == 0 || $(elm) == null || $(elm) == undefined || $(elm)[0].files[0] == undefined) return false;
+	
+	
+		var formData = new FormData();
+		formData.append("spec_image",$(elm)[0].files[0]);
+        formData.append("_token","{{csrf_token()}}");
 		
-		$.ajaxFileUpload({
+		$.ajax({
 			url: '{{url("product/upload/spec/image")}}',
 		    type: 'POST',
 		    dataType: 'JSON',
-		    fileElementId : 'spec_image',
-		    data:{
-		    	_token:'{{csrf_token()}}'
-		    },
+		 	processData : false,
+		  	contentType : false,
+		  	data:formData, 
 		    success:function(resData){
-		    	var resData=JSON.parse(resData);
+		    	
 		    console.log(resData);
 		    if(resData.code==0){
 		    	
-		    
-		    				             	
-			             	  layer.msg(resData.messages, {icon: 1, time: 1000},function(){ });
-			             }else{
-			             	 layer.msg(resData.messages, {icon: 2, time: 1000},function(){ });
-			             }
-		  		
-		  			image_original1[k]=resData.data.spec_image.image_original;
-		  			image_thumb1[k]=resData.data.spec_image.image_thumb;
-		  			k++;
-		   	
-		
-		  
-		   	
-		     
-		   /* image_original=resData.data.spec_image.image_original;
-		    image_thumb=resData.data.spec_image.image_thumb;*/
-		    
-		   
-	    
+ 				  layer.msg(resData.messages, {icon: 1, time: 1000});
+ 			
+ 			$(elm).attr("image_original",resData.data.spec_image.image_original);
+			$(elm).attr("image_thumb",resData.data.spec_image.image_thumb);	
+			
+			
+			}else{
+			        layer.msg(resData.messages, {icon: 2, time: 1000});
+			 }
+
 		    }
+		   
 		});
 		
 	}
@@ -412,8 +422,8 @@ font-weight: bold;
 			  	 	obj.spec_name =$(".spec_name").eq(i).val();
 			  	 	obj.spec_unit =$(".spec_unit").eq(i).val();
 		            obj.product_price = $(".army_price").eq(i).val();
-		            obj.image_thumb = image_thumb1[i];
-		            obj.image_original=image_original1[i];
+		            obj.image_thumb =$(".spec_image").eq(i).attr("image_thumb");
+		            obj.image_original=$(".spec_image").eq(i).attr("image_original");
 		            obj.supplier_price=[];
 		            
 		            $(elm).find(".suliper").each(function(k,elm2){ 
@@ -469,6 +479,9 @@ $(function(){
 	          		required: true,
 	          		number:true
 	          	},
+	          	spec_image:{
+	          		required: true,
+	          	}
 	      
 	        },
 	         messages: {
@@ -536,9 +549,10 @@ $(function(){
 			             	   });
 							addspecstate=true;
 			             }else{
-			             	spec_json="";
-			             
+			             	
 			             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
+			             	   	spec_json="";
+			             
 			             	 			 $(".addspecsubmit").removeAttr("disabled");
 			             	   });
 			             }
@@ -566,9 +580,7 @@ $(function(){
 	          	category_id:{
 	          		required: true
 	          	},
-	          	spec_image:{
-	          		required: true
-	          	},
+	      
 		       spec_name:{
 		       	required:true
 		       }

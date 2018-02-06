@@ -60,9 +60,9 @@
 				</div>
 				<a class="tre-btn">搜索</a>
 				
-				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
+				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#start_time' })" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 				<span>-</span>
-				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
+				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#end_time' })" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
 				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
 
 				<a onclick="tongji(this)" style="margin-left: 10px;color: blue;font-size: 14px;">统计</a>						
@@ -79,7 +79,7 @@
 						<th style="width: 7%;"><span>规格</span></th>
 						<th style="width: 12%;"><span>到货时间</span></th>
 						<th style="width: 12%;"><span style="">数量</span></th>
-						<th style="width: 12%;"><span style="">操作员</span></th>
+						<th style="width: 12%;"><span style="">负责人</span></th>
 						<th style="width: 12%;"><span style="">状态</span></th>
 						<th style=""><span style="">操作</span></th>
 					</tr>
@@ -91,7 +91,14 @@
 						<td>{{$item->spec_name}}</td>
 						<td>{{$item->army_receive_time}}</td>
 						<td>{{$item->product_number}}{{$item->spec_unit}}</td>
-						<td>{{$item->product_number}}</td>
+						
+						@if($item->manage_user)
+							<td>{{$item->manage_user['nick_name']}}</td>
+						@else
+							<td></td>
+						@endif
+					
+					
 						<td>{{$item->status_text}}</td>
 						<td class="blueWord">
 							@if($item['status'] == '0')
