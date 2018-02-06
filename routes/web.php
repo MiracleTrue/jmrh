@@ -32,7 +32,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
         Route::any('product/ajax/list', 'ProductController@ProductAjaxList')->name('获取商品列表');/*获取商品列表*/
     });
 
-    Route::group(['group' => '购物车', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
+    Route::group(['group' => '购物车', 'identity' => [\App\Models\User::ARMY_ADMIN,\App\Models\User::PLATFORM_ADMIN]], function ()
     {
         Route::get('cart/list', 'CartController@CartList')->name('查看购物车');/*查看购物车 | cart_list */
         Route::any('cart/add', 'CartController@CartAddProduct')->name('加入购物车');/*加入购物车*/

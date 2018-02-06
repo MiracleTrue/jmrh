@@ -62,6 +62,7 @@ class HandleOverdueOffer extends Command
                 $item->status = CommonModel::OFFER_OVERDUE;
                 $item->save();
                 Log::info('(Artisan 计划任务) 处理已过确认时间的报价,改为已超期 offer ID:' . $item->offer_id);
+                CommonModel::orderLog($item->order_id, Users::find($item->user_id)->nick_name . ' 需供货量:' . $item->product_number . ' (已超期)');
 
                 /*查询该订单下的offer  如果没有"待回复"的报价将订单状态设置为 "重新分配"*/
                 $count_order_offer = OrderOffer::where('order_id', $item->order_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->count();
