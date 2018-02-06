@@ -1185,6 +1185,7 @@ class PlatformController extends Controller
                     $item->total_price = bcmul($item->price, $item->product_number, 2);
                     $item->platform_receive_date = Carbon::createFromTimestamp($item->platform_receive_time)->toDateTimeString();
                     $item->status_text = $supplier->offerStatusTransformText($item->status);
+                    $item->create_date = Carbon::createFromTimestamp($item->create_time)->toDateTimeString();
                     unset($item->ho_orders);
                     unset($item->ho_users);
                     return $item;
