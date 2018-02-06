@@ -100,13 +100,13 @@
             </a>
 
         </li>
-         <li class="treeview">
+       <!--  <li class="treeview">
             <a href="{{url('category/list')}}">
                 <i class="fa  fa-ellipsis-v"></i> <span>分类管理</span>
 
             </a>
 
-        </li>
+        </li>-->
        
         <li class="password">
             <a href="javascript:void(0)">

@@ -66,7 +66,9 @@
 				<input type="hidden" name="product_id" id="product_id" value="{{$product_info['product_id']}}" />
 				</form>
 				
-				<p class="productshow_p2"><span class="productshow_pspan1">详情描述</span><span class="productshow_pspan2">下单</span></p>
+				<p class="productshow_p2"><span class="productshow_pspan1">详情描述</span>
+					<!--<span class="productshow_pspan2">下单</span>-->
+				</p>
 				<p  class="productshow_p3">{!!$product_info['product_content']!!}</p>
 			</div>
 		</section>
