@@ -369,7 +369,7 @@ $(".moreName").on("click", function() {
 $(function() {
 	
 	$(".moreaddxuiqu").click(function() {
-		$(".xuqiuparent").eq(0).clone().prependTo(".xuqiugrandpa");
+		$(".xuqiuparent").eq(0).clone(true).prependTo(".xuqiugrandpa");
 	})
 
 	var arr = [];
