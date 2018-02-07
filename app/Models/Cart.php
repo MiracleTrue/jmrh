@@ -50,7 +50,7 @@ class Cart extends CommonModel
         $cart_list->transform(function ($item)
         {
             $item->product_thumb = MyFile::makeUrl($item->product_thumb);
-            $item->army_receive_date = Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
+            $item->army_receive_date = $item->army_receive_time == 0 ? '':Carbon::createFromTimestamp($item->army_receive_time)->toDateTimeString();
             $item->user_info = $item->ho_users;
             unset($item->ho_users);
             return $item;
