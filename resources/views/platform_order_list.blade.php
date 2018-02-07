@@ -355,8 +355,8 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['965px' , '800px'],
-		      content: '{{url('platform/need/view')}}'
+		      area : ['965px' , '600px'],
+		      content: '{{url('platform/need/view/release')}}'
 		    });
 		  });
 		  //分配

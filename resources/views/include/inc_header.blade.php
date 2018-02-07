@@ -12,6 +12,9 @@
 	
 	
     </div>
+    @if($manage_user['identity'] != '3')
+    <a class="cartbutton" href="{{url('cart/list')}}" style="margin-left: 20px;"><img src="{{asset('webStatic/images/cartbutton.jpg')}}"/></a>
+    @endif
     <div class="clearfloat" style="clear: both;"></div> 
    <a href="{{url('logout')}}"> <div class="headerdiv2">退出平台</div></a>
 </div>

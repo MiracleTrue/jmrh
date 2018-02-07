@@ -23,7 +23,7 @@
 		
 			</div>
 			
-<table style="width: 85%;">
+<table style="width: 85%;margin-left: 40px;">
 	<tbody>
 		<tr class="tr1">
 			<th style="width: 6%;"><span>序号</span></th>

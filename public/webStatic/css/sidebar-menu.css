@@ -9,6 +9,11 @@
 	margin: 0;
 	padding: 0;
 	border-bottom: 1px solid #dedede;
+	filter:alpha(opacity=80);  /*支持 IE 浏览器*/
+	-moz-opacity:0.80; /*支持 FireFox 浏览器*/
+	-khtml-opacity: 0.8; /*webkit内核浏览器*/
+	opacity:0.80;  /*支持 Chrome, Opera, Safari 等浏览器*/
+	background: #EFEFEF;
 }
 
 /*.sidebar-menu li:hover {

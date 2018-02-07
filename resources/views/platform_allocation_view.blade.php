@@ -44,6 +44,8 @@
 <div class="clt-box">
 	<form id="platallpost" action="" method="post">
 			<header>客户分配</header>
+			
+			@if($order_info['type']!="2")
 			<div>
 				<span>库存剩余</span>
 				<span>{{$repertory_info['number']}}{{$order_info['spec_unit']}}</span>
@@ -55,7 +57,7 @@
 				<input type="checkbox" name="" id="kucungongying" value="" style="width: 20px;height: 20px;"/>
 				<label for="kucungongying">全部库存供应</label>
 			</div>
-			
+			@endif
 			<div class="input_value">
 				<p>
 					<span>选择供应商1</span>

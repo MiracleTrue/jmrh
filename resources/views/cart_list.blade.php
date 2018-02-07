@@ -109,7 +109,8 @@
 		    					 
 			    				 setTimeout(function(){
 			    				 	if(!resData.code){
-			    						$(elm).parent().parent().hide();
+			    					/*	$(elm).parent().parent().hide();*/
+			    				location.reload()
 			    					}
 			    				 },1200)
 		    				}else{
@@ -149,8 +150,7 @@
 		    				var resData=JSON.parse(res);
 		    				console.log(resData);
 		    				if(resData.code==0){
-		    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
-		    					 });
+		    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){});
 		    					 
 			    				 setTimeout(function(){
 			    				 	if(!resData.code){
@@ -180,10 +180,10 @@
 		 if(xiadanData.length>0){
 		 	 xiadanData2=xiadanData.substr(0,xiadanData.length-1);
 		 }
-		
-		
-		
-	var xiadan= layer.open({
+		if(xiadanData2==""){
+			layer.msg("请选择下单商品", {icon: 2, time: 1000},function(){});
+		}else{
+			var xiadan= layer.open({
 		      type: 2,
 		      title: false,
 		      maxmin: false,
@@ -192,6 +192,8 @@
 		      area : ['965px' , '850px'],
 		      content: '{{url('army/need/view/release')}}'+"/"+xiadanData2
 		    });
+		}
+	
 	})
 	
 	

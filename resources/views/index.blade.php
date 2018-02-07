@@ -60,6 +60,12 @@ if (window.ActiveXObject || "ActiveXObject" in window){
 		$("#Info1").attr("src",$(this).attr("href"));
 		return false;
 	})
+	$(".cartbutton").click(function(){
+		$("#Info1").attr("src",$(this).attr("href"));
+		return false;
+	})
+	
+	
 	$(".sidebar-menu li").eq(0).css("background-color","#fe8d01");
 	$(".sidebar-menu li").eq(0).find("a").css("color","#fff");
 	

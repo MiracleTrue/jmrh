@@ -54,11 +54,13 @@
 					<input type="number" name="product_number" id="" value="" min="0"/>
   <!--  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" value=""placeholder="请填入商品数量"/>--></p>
 				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span class="product_unit" style="font-weight: bolder;"></span></p>
+				
+					@if($manage_user['identity'] == '4')
 				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 24px;display: inline-block;" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">联系人</span><input name="contact_person" class="product_number" style="height: 24px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">电话 </span><input name="contact_tel" class="product_number" style="height: 24px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 24px;display: inline-block;"  value=""/> </p> 
-				
+				@endif
 				<p><input type="submit" class="productshow_pspan1 addshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;float: left;"  name="" id="" value="加入购物车" />
 					<span class="productshow_pspan1 goshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;background: #fe8d01;margin-left: 20px;">去购物车</span>
 					</p>

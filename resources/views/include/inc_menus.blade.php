@@ -1,4 +1,13 @@
-<div class="home-aside">
+
+@if($manage_user['identity'] == '3')
+<div class="home-aside" style="position: absolute;" >
+     <img src="{{asset('webStatic/images/changcheng.jpg')}}" style="position: absolute;bottom: 0;left: 0;"/>
+  @elseif ($manage_user['identity'] == '4')
+  <div class="home-aside" style="position: absolute;">
+     <img src="{{asset('webStatic/images/tiananmen.jpg')}}"style="position: absolute;bottom: 0;left: 0;" />
+@else  
+  <div class="home-aside" >
+  	@endif
     <ul class="sidebar-menu">
     	
     	
@@ -156,7 +165,7 @@
                 <!--<small class="label pull-right label-warning">12</small>-->
             </a>
         </li>
-        
+      
 		@elseif($manage_user['identity'] == '4')<!--军方-->
 			
 			
