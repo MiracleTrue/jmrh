@@ -44,13 +44,13 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     {
         Route::get('platform/statistics/list/{start_date?}/{end_date?}', 'PlatformController@Statistics')->name('平台统计');/*平台统计 | platform_statistics_list */
         Route::get('platform/order/list/{type?}/{status?}/{create_time?}', 'PlatformController@NeedList')->name('订单列表');/*平台订单列表 | platform_order_list */
-//        Route::get('platform/need/view', 'PlatformController@NeedView')->name('发布需求页面');/*平台发布需求页面 | platform_need_view */
+        Route::get('platform/need/view/release/{cart_ids?}', 'PlatformController@NeedViewRelease')->name('发布需求页面');/*平台发布需求页面 | platform_need_release */
         Route::get('platform/allocation/view/{order_id}', 'PlatformController@OfferAllocationView')->name('首次分配页面');/*首次分配供应商页面 | platform_allocation_view*/
         Route::get('platform/re/allocation/view/{order_id}', 'PlatformController@OfferReAllocationView')->name('二次分配页面');/*二次分配供应商页面 | platform_re_allocation_view*/
         Route::get('platform/order/confirm/view/{order_id}', 'PlatformController@OrderConfirmView')->name('订单确认页面');/*订单确认页面 | platform_order_confirm_view*/
         Route::get('platform/confirm/receive/view/{order_id}', 'PlatformController@ConfirmReceiveView')->name('确认收货页面');/*确认收货页面 | platform_order_receive_view*/
         Route::get('platform/order/detail/view/{order_id}', 'PlatformController@OrderDetailView')->name('订单详情页面');/*订单详情页面 | platform_order_detail_view*/
-//        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
+        Route::any('platform/need/release', 'PlatformController@NeedRelease')->name('发布需求');/*平台发布需求*/
         Route::any('platform/allocation/offer', 'PlatformController@OfferAllocation')->name('首次分配供应商');/*平台首次分配供应商*/
         Route::any('platform/re/allocation/offer', 'PlatformController@OfferReAllocation')->name('二次分配供应商');/*平台二次分配供应商*/
         Route::any('platform/order/confirm', 'PlatformController@OrderConfirm')->name('确认订单');/*确认订单*/
@@ -66,7 +66,7 @@ Route::group(['middleware' => ['WebLoginAndPrivilege']], function ()
     Route::group(['group' => '军方', 'identity' => [\App\Models\User::ARMY_ADMIN]], function ()
     {
         Route::get('army/need/list/{status?}/{create_time?}', 'ArmyController@NeedList')->name('需求列表');/*军方需求列表 | army_need_list */
-        Route::get('army/need/view/release/{cart_ids?}', 'ArmyController@NeedViewRelease')->name('发布需求页面');/*军方发布需求 | army_need_release */
+        Route::get('army/need/view/release/{cart_ids?}', 'ArmyController@NeedViewRelease')->name('发布需求页面');/*军方发布需求页面 | army_need_release */
         Route::get('army/need/view/edit/{order_id}', 'ArmyController@NeedViewEdit')->name('修改需求页面');/*军方编辑需求 | army_need_edit */
         Route::any('army/need/release', 'ArmyController@NeedRelease')->name('发布需求');/*军方发布需求*/
         Route::any('army/need/edit', 'ArmyController@NeedEdit')->name('修改需求');/*军方修改需求*/

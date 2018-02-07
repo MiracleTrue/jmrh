@@ -10,6 +10,7 @@ namespace App\Models;
 
 use App\Entity\OrderOffer;
 use App\Entity\Orders;
+use App\Entity\ShoppingCart;
 use App\Entity\SupplierPrice;
 use App\Entity\Users;
 use App\Exceptions\NetworkBusyException;
@@ -224,7 +225,7 @@ class Platform extends CommonModel
      */
     private function allocationOfferToSupplier($order_info, $supplier_id, $spec_id, $allocation_number, $data = array())
     {
-        $supplier_price = SupplierPrice::where('user_id', $supplier_id)->where('spec_id', $spec_id)->firstOrFail();
+        $supplier_price = SupplierPrice::where('user_id', $supplier_id)->where('spec_id', $spec_id)->first();
         if (empty($order_info) || !$supplier_id || !$supplier_price || !$allocation_number || !MyHelper::is_timestamp($data['confirm_time']) || !MyHelper::is_timestamp($data['platform_receive_time']) || $data['warning_time'] < 0)
         {
             return false;
@@ -381,41 +382,46 @@ class Platform extends CommonModel
     /**
      * 发布平台需求
      * @param $arr
-     * @param array $supplier_arr & 供应商数组 [28,185,66]
      * @return bool
      */
-    public function releaseNeed($arr, $supplier_arr = array())
+    public function releaseNeed($arr)
     {
-        if (!is_array($supplier_arr) || empty($supplier_arr))
+        if (!$product = Product::checkProduct($arr['product_name'], $arr['spec_name']))
         {
             $this->errors['code'] = 1;
-            $this->errors['messages'] = '供应商不能为空';
+            $this->errors['messages'] = '产品不存在';
             return false;
         }
         /*初始化*/
         $e_orders = new Orders();
+        /*时区设置*/
+        date_default_timezone_set('PRC');
+
         /*添加*/
         $e_orders->type = self::ORDER_TYPE_PLATFORM;
-        $e_orders->status = $this::ORDER_ALLOCATION_SUPPLIER;/*已分配*/
+        $e_orders->status = $this::ORDER_AWAIT_ALLOCATION;
         $e_orders->order_sn = $this->makeOrderSn();
-        $e_orders->product_name = !empty($arr['product_name']) ? $arr['product_name'] : '';
+        $e_orders->category_id = $product->category_id;
+        $e_orders->product_thumb = $product->product_thumb;
+        $e_orders->product_name = $product->product_name;
+        $e_orders->spec_name = $product->spec_info->spec_name;
+        $e_orders->spec_unit = $product->spec_info->spec_unit;
         $e_orders->product_number = !empty($arr['product_number']) ? $arr['product_number'] : 1;
-        $e_orders->product_price = !empty($arr['product_price']) ? $arr['product_price'] : 0;
-        $e_orders->product_unit = !empty($arr['product_unit']) ? $arr['product_unit'] : '';
-        $e_orders->platform_receive_time = !empty($arr['platform_receive_time']) ? strtotime($arr['platform_receive_time']) : 0;/*2017-10-18 08:45:12*/;
-        $e_orders->army_receive_time = 0;
-        $e_orders->create_time = Carbon::now()->timestamp;
+        $e_orders->army_contact_person = '';
+        $e_orders->army_contact_tel = '';
+        $e_orders->army_note = '';
+        $e_orders->platform_allocation_number = 0;
+        $e_orders->army_receive_time = 0;/*2017-10-18 08:45:12*/
+        $e_orders->create_time = Carbon::now('PRC')->timestamp;
+        $e_orders->quality_check = $this::ORDER_NO_QUALITY_CHECK;
         $e_orders->is_delete = $this::ORDER_NO_DELETE;
-        /*事物*/
-        DB::transaction(function () use ($e_orders, $arr, $supplier_arr)
-        {
-            $e_orders->save();
-            foreach ($supplier_arr as $item)
-            {
-//                $this->allocationOfferToSupplier($e_orders->order_id, $item, array('confirm_time' => strtotime($arr['confirm_time']), 0));
-            }
-            User::userLog($e_orders->product_name . "($e_orders->product_number$e_orders->product_unit) 供应商: " . implode(',', Users::whereIn('user_id', $supplier_arr)->get()->pluck('nick_name')->all()));
-        });
+        $e_orders->army_id = null;
+        $e_orders->save();
+
+        /*清除购物车该产品*/
+        ShoppingCart::where('user_id', session('ManageUser')->user_id)->where('product_name', $e_orders->product_name)->where('spec_name', $e_orders->spec_name)->delete();
+
+        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
     }
 
@@ -467,9 +473,24 @@ class Platform extends CommonModel
                 if ($validate_offer->isEmpty())
                 {
                     /*更新订单状态,及质检*/
-                    $e_orders->status = $this::ORDER_ALREADY_RECEIVE;
-                    $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
-                    $e_orders->save();
+                    //军方订单
+                    if ($e_orders->type === Army::ORDER_TYPE_ARMY)
+                    {
+                        $e_orders->status = $this::ORDER_ALREADY_RECEIVE;
+                        $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
+                        $e_orders->save();
+                    }
+                    //平台订单
+                    else if ($e_orders->type === Platform::ORDER_TYPE_PLATFORM)
+                    {
+                        $e_orders->status = $this::ORDER_SUCCESSFUL;
+                        $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
+                        $e_orders->save();
+                    }
+                    else
+                    {
+                        throw new \Exception();
+                    }
                 }
                 User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
             });
@@ -539,27 +560,24 @@ class Platform extends CommonModel
         }
         elseif ($type == Platform::ORDER_TYPE_PLATFORM)
         {
-//            switch ($status)
-//            {
-//                case $this::ORDER_AGAIN_ALLOCATION:
-//                    $text = '重新分配';
-//                    break;
-//                case $this::ORDER_ALLOCATION_SUPPLIER:
-//                    $text = '已分配';
-//                    break;
-//                case $this::ORDER_SUPPLIER_SELECTED:
-//                    $text = '供应商未发货';
-//                    break;
-//                case $this::ORDER_SUPPLIER_SEND:
-//                    $text = '供应商已发货';
-//                    break;
-//                case $this::ORDER_SUPPLIER_RECEIVE:
-//                    $text = '供应商货已到';
-//                    break;
-//                case $this::ORDER_SUCCESSFUL:
-//                    $text = '平台已收货(交易成功)';
-//                    break;
-//            }
+            switch ($status)
+            {
+                case $this::ORDER_AWAIT_ALLOCATION:
+                    $text = '待分配';
+                    break;
+                case $this::ORDER_AGAIN_ALLOCATION:
+                    $text = '需再分配';
+                    break;
+                case $this::ORDER_ALREADY_ALLOCATION:
+                    $text = '待确认';
+                    break;
+                case $this::ORDER_ALREADY_CONFIRM:
+                    $text = '待确认到货';
+                    break;
+                case $this::ORDER_SUCCESSFUL:
+                    $text = '平台已收货(交易成功)';
+                    break;
+            }
         }
         return $text;
     }
