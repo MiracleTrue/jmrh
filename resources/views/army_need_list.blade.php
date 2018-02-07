@@ -125,7 +125,7 @@
 					<td></td>
 					
 				</tr>
-				<tr style="border: 1px solid #000000;">
+			<tr style="border: 1px solid #000000;">
 					<td>商品规格</td>
 					<td>      </td>
 					<td>商品 单价</td>
