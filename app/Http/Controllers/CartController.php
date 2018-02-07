@@ -68,7 +68,7 @@ class CartController extends Controller
 
         /*验证规则*/
         $rules = [
-            'army_receive_time' => 'required|date|after:now',
+            'army_receive_time' => 'nullable|date',
             'contact_person' => 'nullable|string',
             'contact_tel' => 'nullable|string',
             'note' => 'nullable|string',
