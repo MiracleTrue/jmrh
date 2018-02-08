@@ -79,9 +79,20 @@ class Platform extends CommonModel
      */
     public function outRepertory($product_name, $spec_name, $number)
     {
-        if (1)
+        $client = new Client();
+        $response = $client->request('GET', 'http://47.97.179.80/service_del.php',
+            [
+                'query' =>
+                    [
+                        'p_name' => $product_name,
+                        'p_spe' => $spec_name,
+                        'p_num' => $number
+                    ]
+            ]
+        );
+        $json = json_decode($response->getBody()->getContents(), true);
+        if ($response->getStatusCode() == 200 && isset($json['code']) && $json['code'] == 0)
         {
-            //
             return true;
         }
         else
