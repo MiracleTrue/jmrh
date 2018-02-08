@@ -10,9 +10,11 @@ namespace App\Http\Controllers;
 use App\Entity\OrderOffer;
 use App\Entity\Orders;
 use App\Models\CommonModel;
+use App\Models\Platform;
 use App\Models\Sms;
 use App\Models\User;
 use App\Tools\MyHelper;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,19 +25,46 @@ class TestController extends Controller
 
     public function Index(Request $request)
     {
+        $p = new Platform();
+        dd($p->getRepertory('白菜(新)','新鲜、老叶少'));
 
-        dd($_COOKIE);
-        $my_helper = new MyHelper();
-        var_dump(
-            $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis', Orders::find(83)->army_receive_time) : 'now'
-        );
+//        /*库存接口*/
+//        $client = new Client();
+//        $response = $client->request('GET', 'http://47.97.179.80/service_del.php',
+//            [
+//                'query' =>
+//                    [
+//                        'p_name' => '白菜(新)11',
+//                        'p_spe' => '新鲜、老叶少',
+//                        'p_num' => 1
+//                    ]
+//            ]
+//        );
+//        $json = json_decode($response->getBody()->getContents(), true);
+//
+//        dd($json);
+//
+//        $a = $client->getConfig();
 
-        var_dump(
-            date('YmdHis', Orders::find(83)->army_receive_time)
-        );
+//        dd($a);
 
 
-        dd(date('YmdHis', 1510135244));
+        /*发送短信给负责人运营员*/
+//        $platform_users = $user->getPlatformUserList();
+//        $platform_users_numbers_str = implode(',', $platform_users->pluck('phone')->unique()->all());
+
+//        dd($_COOKIE);
+//        $my_helper = new MyHelper();
+//        var_dump(
+//            $my_helper->is_timestamp(Orders::find(83)->army_receive_time) ? date('YmdHis', Orders::find(83)->army_receive_time) : 'now'
+//        );
+//
+//        var_dump(
+//            date('YmdHis', Orders::find(83)->army_receive_time)
+//        );
+//
+//
+//        dd(date('YmdHis', 1510135244));
         /*初始化*/
 //        $a = new CommonModel();
 //
@@ -44,10 +73,18 @@ class TestController extends Controller
 //        return 'test';
     }
 
+    public function T_file()
+    {
+
+        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+        $file = new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg');
+        $path = Storage::disk('local')->putFileAs('temp', $file, date('H-i-s', time()) . '.jpeg');
+
+    }
+
     public function T_add(Request $request)
     {
         /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-
         $arr = array(
             'identity' => '1',
             'user_name' => 'A-' . now(),
@@ -79,6 +116,44 @@ class TestController extends Controller
         $request->merge($arr);
 
         /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+        $arr = array(
+            'order_json' => '[
+    {
+        "product_name": "苹果",
+        "spec_name": "无水",
+        "army_receive_time": "2018-2-10",
+        "product_number": "600",
+        "army_contact_person": "Tom",
+        "army_contact_tel": "15644561145",
+        "army_note": "快啊!!"
+    },
+    {
+        "product_name": "橘子",
+        "spec_name": "大橘子",
+        "army_receive_time": "2018-2-10",
+        "product_number": "1500",
+        "army_contact_person": "Tom",
+        "army_contact_tel": "15644561145",
+        "army_note": "快啊!!"
+    }
+]'
+        );
+
+        $request->merge($arr);
+
+        /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+
+        $arr = array(
+            'product_name' => '蔬菜49',
+            'spec_name' => '红色11',
+            'army_receive_time' => '2018-2-10',
+            'product_number' => '600',
+            'army_contact_person' => 'Tom',
+            'army_contact_tel' => '15644561145',
+            'army_note' => '快啊!!'
+        );
+        $request->merge($arr);
+
 
         return 'test';
     }
@@ -208,6 +283,120 @@ class TestController extends Controller
 //        })->store('xls')->download('xls');
 
         return 'table';
+    }
+
+    public function T_product()
+    {
+        $prefix_path = Storage::disk('local')->getAdapter()->getPathPrefix();
+        $arr = array(
+            'product_name' => '蔬菜' . mt_rand(1, 999),
+            'product_thumb' => new File($prefix_path . 'thumb/201710/4/4MXHPAO6cwbbtPIVPoYGWoxhImDQlW3tDorS6PPJ.jpeg'),
+            'spec_json' => '[12,21]',
+            'category_id' => '1',
+            'sort' => 988,
+        );
+
+        $arr['spec_json'] = '[
+    {
+        "spec_name": "红色11",
+        "spec_unit": "斤",
+        "product_price": "48.88",
+        "image_thumb": "/****/xxx.jpg",
+        "image_original": "/****/xxx.jpg",
+        "supplier_price": [
+            {
+                "user_id": "2",
+                "price": "88.88"
+            },
+            {
+                "user_id": "3",
+                "price": "68.88"
+            }
+        ]
+    },
+    {
+        "spec_name": "红色22",
+        "spec_unit": "斤",
+        "product_price": "48.88",
+        "image_thumb": "/****/xxx.jpg",
+        "image_original": "/****/xxx.jpg",
+        "supplier_price": [
+            {
+                "user_id": "3",
+                "price": "88.88"
+            },
+            {
+                "user_id": "5",
+                "price": "68.88"
+            }
+        ]
+    },
+    {
+        "spec_name": "红色33",
+        "spec_unit": "斤",
+        "product_price": "48.88",
+        "image_thumb": "/****/xxx.jpg",
+        "image_original": "/****/xxx.jpg",
+        "supplier_price": [
+            {
+                "user_id": "2",
+                "price": "88.88"
+            },
+            {
+                "user_id": "2",
+                "price": "68.88"
+            },
+            {
+                "user_id": "5",
+                "price": "58.88"
+            }
+        ]
+    },
+    {
+        "spec_name": "红色33",
+        "spec_unit": "斤",
+        "product_price": "48.88",
+        "image_thumb": "/****/xxx.jpg",
+        "image_original": "/****/xxx.jpg",
+        "supplier_price": [
+            {
+                "user_id": "2",
+                "price": "88.88"
+            },
+            {
+                "user_id": "2",
+                "price": "68.88"
+            },
+            {
+                "user_id": "5",
+                "price": "58.88"
+            }
+        ]
+    },
+        {
+        "spec_name": "红色44",
+        "spec_unit": "斤",
+        "product_price": "48.88",
+        "image_thumb": "/****/xxx.jpg",
+        "image_original": "/****/xxx.jpg",
+        "supplier_price": [
+            {
+                "user_id": "2",
+                "price": "88.88"
+            },
+            {
+                "user_id": "5",
+                "price": "68.88"
+            },
+            {
+                "user_id": "5",
+                "price": "58.88"
+            }
+        ]
+    }
+]';
+
+        $request->merge($arr);
     }
 
 }
