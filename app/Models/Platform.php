@@ -507,6 +507,7 @@ class Platform extends CommonModel
             });
         } catch (\Exception $e)
         {
+            info($e);
             $this->errors['code'] = 1;
             $this->errors['messages'] = '未知错误';
             return false;
