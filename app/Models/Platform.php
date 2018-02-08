@@ -485,14 +485,14 @@ class Platform extends CommonModel
                 {
                     /*更新订单状态,及质检*/
                     //军方订单
-                    if ($e_orders->type === Army::ORDER_TYPE_ARMY)
+                    if ($e_orders->type == Army::ORDER_TYPE_ARMY)
                     {
                         $e_orders->status = $this::ORDER_ALREADY_RECEIVE;
                         $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
                         $e_orders->save();
                     }
                     //平台订单
-                    else if ($e_orders->type === Platform::ORDER_TYPE_PLATFORM)
+                    else if ($e_orders->type == Platform::ORDER_TYPE_PLATFORM)
                     {
                         $e_orders->status = $this::ORDER_SUCCESSFUL;
                         $e_orders->quality_check = $this::ORDER_IS_QUALITY_CHECK;
