@@ -24,7 +24,8 @@
   * * * * * php /var/www/jmrh/artisan schedule:run >> /dev/null 2>&1    保存
   crontab -u root -l   查看
 
-7.
+7.IDE-高亮提示助手
+  php artisan ide-helper:generate
 
 备注:
 Linux问题:

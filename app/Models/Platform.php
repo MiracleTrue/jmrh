@@ -275,6 +275,7 @@ class Platform extends CommonModel
      * @param $arr
      * @param $supplier_arr
      * @return bool
+     * @throws \Throwable
      */
     public function allocationSupplier($arr, $supplier_arr)
     {
@@ -328,6 +329,7 @@ class Platform extends CommonModel
      * 平台确认订单
      * @param $order_id
      * @return bool
+     * @throws \Throwable
      */
     public function orderConfirm($order_id)
     {
@@ -456,6 +458,7 @@ class Platform extends CommonModel
      * @param $order_id
      * @param $offer_id
      * @return bool
+     * @throws \Throwable
      */
     public function supplierConfirmReceive($order_id, $offer_id)
     {
