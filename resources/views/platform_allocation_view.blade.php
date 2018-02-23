@@ -68,8 +68,8 @@
 				 		@endforeach
 				 	</select>
 				 	<span style="margin-left: 20px;">协议价</span>
-				 	<input class="xieyijia"  type="text" name="" id="" value="" readonly="readonly"/>
-					<span style="margin-left: 20px;">分配数量</span><input name="supplier_A_number" class="supplier_A_number" type="number" value="" />
+				 	<input style="margin-left:14px ;" class="xieyijia"  type="text" name="" id="" value="" readonly="readonly"/>
+					<span style="margin-left: 20px;">分配数量</span><input name="supplier_A_number" class="supplier_A_number" type="number" value="" min="0"/>
 				</p>
 				
 					
@@ -85,7 +85,7 @@
 				 		@endforeach
 				 	</select>
 				 	<span style="margin-left: 20px;">协议价</span><input class="xieyijia" type="text" name="" id="" value="" readonly="readonly" />
-					<span style="margin-left: 20px;">分配数量</span><input name="supplier_B_number" class="supplier_B_number" type="number" value="" />
+					<span style="margin-left: 20px;">分配数量</span><input name="supplier_B_number" class="supplier_B_number" type="number" value="" min="0"/>
 				</p>
 			</div>
 			<div class="input_value">
@@ -98,7 +98,7 @@
 				 		@endforeach
 				 	</select>
 				 	<span style="margin-left: 20px;">协议价</span><input class="xieyijia" type="text" name="" id="" value="" readonly="readonly"/>
-					<span style="margin-left: 20px;">分配数量</span><input name="supplier_C_number" class="supplier_C_number" type="number" value="" />
+					<span style="margin-left: 20px;">分配数量</span><input name="supplier_C_number" class="supplier_C_number" type="number" value="" min="0" />
 				</p>
 				
 					
