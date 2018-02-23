@@ -111,23 +111,44 @@ class Supplier extends CommonModel
     {
         /*初始化*/
         $sms = new Sms();
+        $platform = new Platform();
         $e_order_offer = OrderOffer::where('offer_id', $offer_id)->where('user_id', $supplier_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->firstOrFail();
         $e_orders = $e_order_offer->ho_orders()->firstOrFail();
         $e_users = $e_order_offer->ho_users()->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)->firstOrFail();
 
-        /*更新*/
-        $e_order_offer->status = CommonModel::OFFER_AWAIT_CONFIRM;
-        $e_order_offer->save();
+        try
+        {
+            DB::transaction(function () use ($e_order_offer, $e_orders, $e_users, $sms, $platform)
+            {
+                /*更新*/
+                $e_order_offer->status = CommonModel::OFFER_AWAIT_CONFIRM;
+                $e_order_offer->save();
 
-        $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (同意供货)');
-        User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
+                $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (同意供货)');
+                User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
 
-        /*发送短信*/
-        $phone = Users::find($e_order_offer->allocation_user_id)->phone;
-        $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_SUBMIT_OFFER_CODE, $phone,
-            array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
-        info('短信-供货商同意供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+                $order_info = $platform->getOrderInfo($e_orders->order_id);
+                $confirm_offer = $order_info->offer_info->filter(function ($value)
+                {
+                    return $value->status == CommonModel::OFFER_AWAIT_CONFIRM;
+                });
 
+                /*查询该订单下的offer  如果验证供货数量不正确将订单状态设置为 "重新分配"*/
+                if(bcadd($confirm_offer->sum('product_number'), $order_info->platform_allocation_number, 2) != $order_info->product_number)
+                {
+                    Orders::where('order_id', $e_order_offer->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);
+                }
+
+                /*发送短信*/
+                $phone = Users::find($e_order_offer->allocation_user_id)->phone;
+                $sms->sendSms(Sms::SMS_SIGNATURE_1, Sms::SUPPLIER_SUBMIT_OFFER_CODE, $phone,
+                    array('supplier_name' => $e_users->nick_name, 'order_sn' => $e_orders->order_sn));
+                info('短信-供货商同意供货  order ID:' . $e_orders->order_id . ' Phone:' . $phone);
+            });
+        } catch (\Exception $e)
+        {
+            return false;
+        }
 
         return true;
     }
