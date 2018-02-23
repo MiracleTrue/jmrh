@@ -32,7 +32,7 @@
 
 .ary-ope {
 	width: 514px;
-	margin: 57px auto 0 auto;
+	margin: 57px auto 60px auto;
 }
 
 .error {
@@ -122,7 +122,7 @@ li {
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
+						<input style="width: 313px;margin-left: 33px;" type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
 						<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;">{{$item['spec_name']}}</span>
 					</p>
@@ -136,7 +136,7 @@ li {
 				<div class="ary_adddiv">
 					<p class="div_floatleft">
 						<span>联系人</span>
-						<input type="text" class="army_contact_person" name="" id="" value="{{$item['contact_person']}}" />
+						<input style="margin-left: 33px;width: 313px;" type="text" class="army_contact_person" name="" id="" value="{{$item['contact_person']}}" />
 					</p>
 					<p class="div_floatright">
 						<span>电话</span>
@@ -149,7 +149,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input style="width: 286px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
+						<input style="width: 296px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>
@@ -173,7 +173,7 @@ li {
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="" readonly="readonly"/>
+						<input style="margin-left: 33px;" type="text" name="product_name" class="product_name" value="" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
 					<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;"></span>
 					
@@ -189,7 +189,7 @@ li {
 				<div class="ary_adddiv">
 					<p class="div_floatleft">
 						<span>联系人</span>
-						<input type="text" class="army_contact_person" name="" id="" value="" />
+						<input  style="margin-left: 33px" class="army_contact_person" name="" id="" value="" />
 					</p>
 					<p class="div_floatright">
 						<span>电话</span>

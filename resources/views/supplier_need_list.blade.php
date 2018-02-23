@@ -8,7 +8,26 @@
     	<link rel="stylesheet" type='text/css' media='print' href="{{asset('webStatic/css/print.css')}}">
     
     	<style type="text/css">
- 
+	 .daochubiaoge{
+		width: 160px;
+		height: 38px;
+		text-align: center;
+		line-height: 38px;
+		background: #feb501;
+		border-radius: 20px;
+		display: inline-block;
+		color: #FFFFFF;
+	}
+	.printdingdan,.printAll,.cancelprint{
+		width: 90px;
+		height: 38px;
+		text-align: center;
+		line-height: 38px;
+		background: #F3570D;
+		border-radius: 20px;
+		color: #FFFFFF;	
+		display: inline-block;
+	}
     	</style>
 @endsection
 @section('content')
@@ -41,11 +60,11 @@
 				<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#start_time'})" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 				<span>-</span>
 				<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#end_time'})" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
-				<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
+				<a class="daochubiaoge" onclick="biaoge(this)" style="margin-left: 10px;font-size: 14px;">导出表格到本地</a>	
 			
-			<a class="printdingdan" style="margin-left: 10px;color: blue;font-size: 14px;" >打印</a>
-				<a class="printAll" style="margin-left: 10px;color: blue;font-size: 14px;">确认打印</a>
-				<a class="cancelprint" style="margin-left: 10px;color: blue;font-size: 14px;">取消打印</a>
+			<a class="printdingdan" style="margin-left: 10px;font-size: 14px;" >打印</a>
+				<a class="printAll" style="margin-left: 10px;font-size: 14px;background: #0e99dc;">确认打印</a>
+				<a class="cancelprint" style="margin-left: 10px;font-size: 14px;">取消打印</a>
 			
 			</div>
 			<table>

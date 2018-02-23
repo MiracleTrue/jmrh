@@ -8,6 +8,11 @@
 		color: red;
 		margin-right: 10px;
 		}
+	input{
+		width: 257px;
+		height: 36px;
+		line-height: 36px;
+	}	
 </style>
 @endsection
 	<section style="padding-left: 2%;">
@@ -40,7 +45,7 @@
 			<div class="guige">
 				<ul style="overflow: hidden;">
 						@foreach($product_info['spec_info'] as $item)
-						<li spec_unit="{{$item['spec_unit']}}" spec_id="{{$item['spec_id']}}" style="float: left;width: 77px;height:100px;margin-right: 12px;cursor: pointer;"><img src="{{$item['image_thumb']}}" style="width: 100%;height: 77px;border: 3px solid #FFFFFF;"/><p style="text-align: center;font-size: 16px;font-weight: bold;line-height: 16px;">{{$item['spec_name']}}</p></li>
+						<li spec_unit="{{$item['spec_unit']}}" spec_id="{{$item['spec_id']}}" style="float: left;width: 77px;height:100px;margin-right: 12px;cursor: pointer;"><img src="{{$item['image_thumb']}}" onerror="this.src='{{asset('webStatic/images/noimg.png')}}'" style="width: 100%;height: 77px;border: 3px solid #FFFFFF;"/><p style="text-align: center;font-size: 16px;font-weight: bold;line-height: 16px;">{{$item['spec_name']}}</p></li>
 					@endforeach
 				</ul>
 			</div>
@@ -50,16 +55,16 @@
 				<form id="add_car" class="add_car" action="" method="post">
 					
 					
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;">数量：
-					<input type="number" name="product_number" id="" value="" min="0"/>
+				<p class="productnumber" style="font-size: 16px;margin-top: 13px;">数量：
+				<input type="number" name="product_number" id="" value="" min="0" placeholder="请输入数量" style="margin-left: 16px;"/>
   <!--  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}" value=""placeholder="请填入商品数量"/>--></p>
-				<p class="productunit" style="font-size: 16px;margin-top: 8px;">单位：<span class="product_unit" style="font-weight: bolder;"></span></p>
+				<p class="productunit" style="font-size: 16px;margin-top: 10px;margin-bottom: 10px;">单位：<span class="product_unit" style="font-weight: bolder;"></span></p>
 				
-					@if($manage_user['identity'] == '4')
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 24px;display: inline-block;" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" /> </p> 
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">联系人</span><input name="contact_person" class="product_number" style="height: 24px;display: inline-block;" type="text" /> </p> 
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">电话 </span><input name="contact_tel" class="product_number" style="height: 24px;display: inline-block;" type="text" /> </p> 
-				<p class="productnumber" style="font-size: 16px;margin-top: 5px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 24px;display: inline-block;"  value=""/> </p> 
+				@if($manage_user['identity'] == '4')
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 36px;display: inline-block;" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" /> </p> 
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">联系人</span><input name="contact_person" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">电话 </span><input name="contact_tel" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 36px;display: inline-block;"  value=""/> </p> 
 				@endif
 				<p><input type="submit" class="productshow_pspan1 addshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;float: left;"  name="" id="" value="加入购物车" />
 					<span class="productshow_pspan1 goshop" style="width: 164px;height: 63px;line-height: 63px;border-radius: 40px;font-size: 18px;background: #fe8d01;margin-left: 20px;">去购物车</span>

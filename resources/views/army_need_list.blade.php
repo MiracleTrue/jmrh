@@ -8,13 +8,33 @@
 	<link rel="stylesheet" media='print' href="{{asset('webStatic/css/military.css')}}">
   	<link rel="stylesheet" type='text/css' media='print' href="{{asset('webStatic/css/print.css')}}">
 <style>
+.daochubiaoge{
+	width: 160px;
+	height: 38px;
+	text-align: center;
+	line-height: 38px;
+	background: #feb501;
+	border-radius: 20px;
+	display: inline-block;
+	color: #FFFFFF;
+}
+.printdingdan,.printAll,.cancelprint{
+	width: 90px;
+	height: 38px;
+	text-align: center;
+	line-height: 38px;
+	background: #F3570D;
+	border-radius: 20px;
+	color: #FFFFFF;	
+	display: inline-block;
+}
 
 </style>
 
 @endsection
 @section('content')
   <section style="position: relative;">
-  	<div class="refresh" style="top: 149px;">
+  	<div class="refresh" style="top: 159px;">
   		<img src="{{asset('webStatic/images/refresh.png')}}" />
   	</div>
 			<div style="margin-bottom: 30px;line-height: 36px;">
@@ -40,27 +60,27 @@
 					<input style="width: 120px; margin-left: 10px;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#start_time'})" class="laydate-icon tre-time start_time"  name="army_receive_time" id="start_time"  placeholder="请选择日期"/>
 					<span>-</span>
 					<input style="width: 120px;margin-left: 0;"  autocomplete="off" style="margin-left: 15px;" onClick="laydate({format: 'YYYY-MM-DD',elem:'#end_time'})" class="laydate-icon tre-time end_time"  name="army_receive_time" id="end_time"  placeholder="请选择日期"/>
-					<a onclick="biaoge(this)" style="margin-left: 10px;color: blue;font-size: 14px;">导出表格到本地</a>	
-					<a class="printdingdan" style="margin-left: 10px;color: blue;font-size: 14px;" >打印</a>
-					<a class="printAll" style="margin-left: 10px;color: blue;font-size: 14px;">确认打印</a>
-					<a class="cancelprint" style="margin-left: 10px;color: blue;font-size: 14px;">取消打印</a>
+					<a class="daochubiaoge" onclick="biaoge(this)" style="margin-left: 10px;font-size: 14px;">导出表格到本地</a>	
+					<a class="printdingdan" style="margin-left: 10px;font-size: 14px;" >打印</a>
+					<a class="printAll" style="margin-left: 10px;font-size: 14px;background: #0e99dc;">确认打印</a>
+					<a class="cancelprint" style="margin-left: 10px;font-size: 14px;">取消打印</a>
 				</div>
 			<table>
 				<tbody>
 					<tr class="tr1">
 						<th style="width: 5%;"><span>序号</span></th>
-						<!--	@if($manage_user['identity'] == '1')
-							<th style="width: 8%;"><span>军方名称</span></th>
-							@endif-->
+							@if($manage_user['identity'] == '1')
+							<th style="width: 6%;"><span>军方名称</span></th>
+							@endif
 						<th style="width: 10%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
-						<th style="width: 8%;"><span>规格</span></th>
+						<th style="width: 7%;"><span>规格</span></th>
 						<th style="width: 8%;"><span>到货时间</span></th>
 						<!--<th style="width: 8%;"><span style="">价格</span></th>-->
 						<th style="width: 9%;"><span style="">数量</span></th>
-						<th style="width: 8%;"><span style="">联系人</span></th>
+						<th style="width: 6%;"><span style="">联系人</span></th>
 						<th style="width: 8%;"><span style="">电话</span></th>
-						<th style="width: 6%;"><span style="">备注</span></th>
+						<th style="width: 5%;"><span style="">备注</span></th>
 						<th style="width: 7%;"><span style="">状态</span></th>
 						<th style="width: 7%;"><span style="">质检状态</span></th>
 						<th ><span style="">操作</span></th>
@@ -70,9 +90,9 @@
             
             <tr class="orer_id" order_id="{{$item['order_id']}}">
                 <td >{{$item['order_id']}}</td>
-                <!--@if($manage_user['identity'] == '1')
+                @if($manage_user['identity'] == '1')
 						<td>{{$item['army_info']['nick_name']}}</td>
-				@endif-->
+				@endif
                 <td>{{$item['order_sn']}}</td>
                 <td>{{$item['product_name']}}</td>
                 <td>{{$item['spec_name']}}</td>

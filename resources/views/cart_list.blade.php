@@ -22,7 +22,7 @@
     			border-radius: 40px;
     			font-size: 40px;
     			float: right;
-    			margin-top: 60px;
+    			margin-top: 37px;
     			margin-right: 20px;
     		}
     		.gouwuchediv{
@@ -40,7 +40,7 @@
 @endsection
 
 @section('content')
-<div style="height: 150px;line-height: 150px;">
+<div style="height: 75px;line-height: 150px;">
 	<div class="gouwuchediv">购物车</div>
 </div>
 		<table>
@@ -183,7 +183,18 @@
 		if(xiadanData2==""){
 			layer.msg("请选择下单商品", {icon: 2, time: 1000},function(){});
 		}else{
-			var xiadan= layer.open({
+			if({{$manage_user['identity']}} == '2'){
+				  layer.open({
+		      type: 2,
+		      title: false,
+		      maxmin: false,
+		       fixed :false,
+		      shadeClose: true, //点击遮罩关闭层
+		      area : ['965px' , '600px'],
+		      content: '{{url('platform/need/view/release')}}'
+		    });
+			}else{
+				var xiadan= layer.open({
 		      type: 2,
 		      title: false,
 		      maxmin: false,
@@ -192,6 +203,8 @@
 		      area : ['965px' , '850px'],
 		      content: '{{url('army/need/view/release')}}'+"/"+xiadanData2
 		    });
+			}
+		
 		}
 	
 	})
