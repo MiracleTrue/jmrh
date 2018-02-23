@@ -33,6 +33,7 @@ class CartController extends Controller
         $manage_u = session('ManageUser');
         $where = array();
         $this->ViewData['cart_list'] = array();
+        $this->ViewData['manage_user'] = $manage_u;
 
         /*加入sql条件购物车所有者id*/
         array_push($where, ['shopping_cart.user_id', '=', $manage_u->user_id]);

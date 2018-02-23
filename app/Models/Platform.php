@@ -448,6 +448,7 @@ class Platform extends CommonModel
         $e_orders = Orders::where('order_id', $order_id)->where('type', Army::ORDER_TYPE_ARMY)->where('status', CommonModel::ORDER_AWAIT_ALLOCATION)->firstOrFail();
 
         $e_orders->status = CommonModel::ORDER_ALLOCATION_PLATFORM;
+        $e_orders->quality_check = CommonModel::ORDER_IS_QUALITY_CHECK;
         $e_orders->save();
         User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
         return true;
