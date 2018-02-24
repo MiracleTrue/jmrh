@@ -36,6 +36,9 @@
     			margin-top: 60px;
     			margin-left: 40px;
     		}
+    		.product_num{
+    			width: 50%;
+    		}
     	</style>
 @endsection
 
