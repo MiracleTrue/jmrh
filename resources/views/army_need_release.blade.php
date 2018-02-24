@@ -32,7 +32,8 @@
 
 .ary-ope {
 	width: 514px;
-	margin: 57px auto 60px auto;
+	margin: 57px auto 0 auto;
+	padding-bottom: 60px;
 }
 
 .error {
