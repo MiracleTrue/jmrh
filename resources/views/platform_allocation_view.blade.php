@@ -227,7 +227,7 @@ $(".confirm_time").change(function(){
 		s = date.getSeconds(); 
 	/*	console.log(Y+M+D+h+m+s); */
 		confirm_time=Y+M+D+h+m+s;
-		console.log(confirm_time)
+		//console.log(confirm_time)
 })
 var fenpeistaus=true;
 $("#kucungongying").click(function(){
@@ -235,12 +235,12 @@ $("#kucungongying").click(function(){
 		 
 		$(".input_value,.shijian").hide();
 		fenpeistaus=false;
-		console.log(fenpeistaus);
+	//	console.log(fenpeistaus);
 		
 	}else{
 			$(".input_value,.shijian").show();
 			fenpeistaus=true;
-			console.log(fenpeistaus)
+			//console.log(fenpeistaus)
 	}
 })
 
@@ -302,7 +302,7 @@ $("#kucungongying").click(function(){
 				            	
 				            },
 				            success: function (res) {
-				            	console.log(res)
+				            	//console.log(res)
 				            if(res.code==0){
 				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 				             	   parent.location.reload();	 
@@ -345,7 +345,7 @@ $("#kucungongying").click(function(){
 				            	
 				            },
 				            success: function (res) {
-				            	console.log(res)
+				            	//console.log(res)
 				            if(res.code==0){
 				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 				             	   parent.location.reload();	 
@@ -386,7 +386,7 @@ $("#kucungongying").click(function(){
 				            	
 				            },
 				            success: function (res) {
-				            	console.log(res)
+				            	//console.log(res)
 				            if(res.code==0){
 				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
 				             	   parent.location.reload();	 

@@ -114,11 +114,11 @@ tr a {
 
 .mly-more div:nth-child(2) {
 	overflow: hidden;
-	margin-top: 38px;
+
 }
 .mly-more div:first-child+div{
 	overflow: hidden;
-	margin-top: 38px;
+
 }
 
 .mly-more div:nth-child(2) p:nth-child(1) {
@@ -164,10 +164,10 @@ tr a {
 
 .mly-more div:nth-child(3) {
 	overflow: hidden;
-	margin-top: 38px;
+	
 }.mly-more div:first-child+div+div {
 	overflow: hidden;
-	margin-top: 38px;
+	
 }
 
 

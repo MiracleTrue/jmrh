@@ -83,7 +83,7 @@
 			            	
 			            },
 			            success: function (res) {
-			        	console.log(res);
+			        	//console.log(res);
 			        	
 			             if(res.code==0){
 			             	price_id=res.data.price_info.price_id;
@@ -122,7 +122,7 @@
 						        _token:'{{csrf_token()}}'
 						      },
 						      success:function(res){
-						      	console.log(res);
+						      //	console.log(res);
 						      	if(res.code==0){
 						      		 layer.msg(res.messages, {icon: 1, time: 1000},function(){
 						      	 	$(elm).parent().parent().parent().remove();
@@ -142,7 +142,7 @@
 						        _token:'{{csrf_token()}}'
 						      },
 						      success:function(res){
-						      	console.log(res);
+						      	//console.log(res);
 						      	if(res.code==0){
 						      		 layer.msg(res.messages, {icon: 1, time: 1000},function(){
 						      	 	$(elm).parent().parent().parent().remove();

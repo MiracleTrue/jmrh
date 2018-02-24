@@ -249,7 +249,7 @@ $(".moreName").on("click", function() {
 							},
 							success: function(res) {
 								var resData = JSON.parse(res)
-								console.log(resData);
+								//console.log(resData);
 								var myData = resData.data;
 
 								$(".nameul").empty();
@@ -320,7 +320,7 @@ $(".moreName").on("click", function() {
 			});
 		})
 				$(".moreaddxuiqu").click(function() {
-						$(".xuqiuparent").eq(0).clone(true).prependTo(".xuqiugrandpa");
+						$(".xuqiuparent").eq(0).clone(true).appendTo(".xuqiugrandpa");
 						addId();
 					})
 				addId();
@@ -474,7 +474,7 @@ $(function() {
 
 				},
 				success: function(res) {
-					console.log(res);
+					//console.log(res);
 
 					if(res.code == 0) {
 						layer.msg(res.messages, {

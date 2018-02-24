@@ -168,9 +168,9 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 	$(".addguige").click(function(){
 		specnum++;
 		 formclass="addspec"+specnum;
-		 console.log(formclass)
+		// console.log(formclass)
 		$(".seccendstep").append('<form class=formclass><div class="seccendstep_div1"><p><span>规格名</span><input type="text" name="spec_name" id="" value="" /></p><p><span>规格图片</span><input type="file"  accept="image/gif, image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" /></p><p><span >公开价</span><input type="text" name="product_price" id="" value="" /><input type="button"  class="xieyiguanli" name="" id="" value="协议价管理" onclick="xieyiguanli(this)"/></p><span class="deleguige" onclick="ProductSpecDelete(this)">删除</span><input type="submit"  class="addspecsubmit" name="" id="" value="确认" onclick="myform(this,formclass)"/></div><input type="hidden" name="product_id" id="product_id" value="{{$product_info['product_id']}}" /></form>');
-		console.log($(".deleguige").length);
+		//console.log($(".deleguige").length);
 		/*$(".deleguige").on("click",function(){
 			$(this).parent().remove();
 		});*/
@@ -182,7 +182,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
   
   	function ProductSpecDelete(elm){
   		var spec_id = $(elm).parent().parent().attr("spec_id");
-  		console.log(spec_id);
+  		//console.log(spec_id);
   			if(spec_id){
   				$.ajax({
 		  			  url: '{{url("product/spec/delete")}}',
@@ -193,7 +193,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 				        _token:'{{csrf_token()}}'
 				      },
 				      success:function(res){
-				      	console.log(res);
+				     // 	console.log(res);
 				      	if(res.code==0){
 				      		 layer.msg(res.messages, {icon: 1, time: 1000},function(){
 				      	 	$(elm).parent().remove();
@@ -247,7 +247,7 @@ $(".es-input").val("{{$product_info['product_unit'] or ''}}");
 		            	
 		            },
 		            success: function (res) {
-		        	console.log(res);
+		        	//console.log(res);
 		        	/*spec_id=res.data.spec_info.spec_id;
 		        that.parent().parent().attr("spec_id",spec_id);*/
 		             if(res.code==0){
@@ -273,7 +273,7 @@ var that;
 var addspecstate=false;
    //新增商品规格验证
 	   function myform(elm,formclass){
-	   	console.log($(elm).parent().parent());
+	   //	console.log($(elm).parent().parent());
 	  	that=$(elm);
 	   	var addspec= $(elm).parent().parent().validate({
 	        rules: {
@@ -319,7 +319,7 @@ var addspecstate=false;
 		            	
 		            },
 		            success: function (res) {
-		        	console.log(res);
+		        	//console.log(res);
 		        	
 		             if(res.code==0){
 		             	spec_id=res.data.spec_info.spec_id;
@@ -362,7 +362,7 @@ $(".netxstep2").click(function(){
 
 function xieyiguanli(elm){
 	var xieyi_spec_id=$(elm).parent().parent().parent().attr("spec_id");
-	console.log(xieyi_spec_id);
+	//console.log(xieyi_spec_id);
 	if(xieyi_spec_id){
 		 layer.open({
 			      type: 2,
@@ -461,7 +461,7 @@ function xieyiguanli(elm){
 		            	
 		            },
 		            success: function (res) {
-		        	console.log(res);
+		        	//console.log(res);
 		        	
 		            /* if(res.code==0){
 		             	spec_id=res.data.spec_info.spec_id;

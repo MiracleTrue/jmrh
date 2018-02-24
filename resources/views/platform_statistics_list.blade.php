@@ -159,7 +159,7 @@
 						success:function(resData){
 							printData="";
 							var data=JSON.parse(resData)
-							console.log(data)
+						//	console.log(data)
 							var mydata=data.data;
 							$("#myprint").empty();
 							for(var i in mydata){
@@ -185,7 +185,7 @@
 					    	},
 						success:function(resData){
 							var data=JSON.parse(resData)
-							console.log(data)
+						//	console.log(data)
 							var mydata=data.data;
 							$("#myprint").empty();
 							for(var i in mydata){

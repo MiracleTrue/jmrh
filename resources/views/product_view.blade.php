@@ -158,10 +158,11 @@ font-weight: bold;
 				</p>
 				<!--供应商协议价-->
 				<div style="height: 48px;line-height: 48px;color:#0e99dc ;font-size: 16px;">供应商协议价：</div>
-				
+				<div>
 				<div class="fa_agreementprice">
-					<div class="agreementprice">
+					
 						@foreach($item['supplier_price'] as $items)	
+						<div class="agreementprice">
 							<p class="suliper" style="position: relative;">
 								<label>选择供应商</label>
 								<select class="supplier_list supplier2" name="supplier_list">
@@ -174,13 +175,14 @@ font-weight: bold;
 							<a style="position: absolute;right: 69px;top: 3px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></a>	
 								<span class="deljiage" style="position: absolute;right: 10px;top: 0;color: #0e99dc;cursor: pointer;">删除</span>	
 							</p>
-							
+						</div>	
 						@endforeach
-					</div>
 					
-					<div class="add_agreementprice" onclick="addjiage(this)"><a>增加供应商协议价</a></div>
+					
+					
 				</div>
-				
+				<div class="add_agreementprice" onclick="addjiage(this)"><a>增加供应商协议价</a></div>
+				</div>
 				<!--军方协议价-->
 				<div style="position: relative;">
 					<label style="font-size: 15px;">军方协议价</label><input class="army_price" name="army_price" type="text" value="{{$item['product_price'] or ''}}" />
@@ -212,7 +214,9 @@ font-weight: bold;
 				</p>
 				<!--供应商协议价-->
 				<div style="height: 48px;line-height: 48px;color:#0e99dc ;font-size: 16px;">供应商协议价：</div>
-				
+				<div>
+					
+			
 				<div class="fa_agreementprice">
 					<div class="agreementprice" style="position: relative;">
 						<p class="suliper" style="position: relative;">
@@ -232,9 +236,10 @@ font-weight: bold;
 
 					</div>
 					
-						<div  class="add_agreementprice" onclick="addjiage(this)">增加供应商协议价</div>
+					
 				</div>
-				
+					<div  class="add_agreementprice" onclick="addjiage(this)">增加供应商协议价</div>
+				</div>
 				<!--军方协议价-->
 				<div style="position: relative;"><label style="font-size: 15px;">军方协议价</label><input class="army_price" type="text" name="army_price" id="" value="" />
 					<div style="position: absolute;left:321px;top: 13px;font-size: 14px;"><span>元/</span><span class="myspec_unit">斤</span></div>
@@ -294,9 +299,9 @@ font-weight: bold;
 
 	function addjiage(elm){
 		/*	$(".agreementprice").eq(0).clone().prependTo($(elm).parent());*/
-		var jiageelm=$(".suliper").eq(0).clone(true);
+		var jiageelm=$(".agreementprice").eq(0).clone(true);
 		jiageelm.find("input").val("")
-		jiageelm.prependTo($(elm).parent());
+		jiageelm.appendTo($(elm).parent().find('.fa_agreementprice'));
 		/*$(elm).parent().jQueryprepend('<div class="agreementprice"><p class="suliper"><label>选择供应商</label><select class="supplier_list supplier2" name="supplier_list"><option value="2">AA</option><option value="3">BB</option><option value="5">蔬菜366</option></select><label>价格</label><input type="text" class="supplier_price supplier2" name="" id="" value=""></p><div><span>元/</span><span>斤</span></div><p></p></div>')
 	*/
 	}
@@ -309,8 +314,8 @@ font-weight: bold;
 		
 		
 			$(".deljiage").on("click",function(){
-				if($(".suliper").length>1){
-					$(this).parent().remove();
+				if($(".agreementprice").length>1){
+					$(this).parent().parent().remove();
 				}
 			})
 	
@@ -322,7 +327,7 @@ font-weight: bold;
 		var imgName=$(this).val();
 		var arr=imgName.split('\\');
 		var my=arr[arr.length-1];
-		console.log(my)
+		//console.log(my)
 		/*$(this).siblings("input.faker").val(my);*/
 		 $(this).parent().find(".faker").val(my);
 		
@@ -402,7 +407,7 @@ font-weight: bold;
 		  	data:formData, 
 		    success:function(resData){
 		    	
-		    console.log(resData);
+		   // console.log(resData);
 		    if(resData.code==0){
 		    	
  				  layer.msg(resData.messages, {icon: 1, time: 1000});
@@ -672,7 +677,7 @@ $(function(){
 		            	
 		            },
 		            success: function (res) {
-		        	console.log(res);
+		        	//console.log(res);
 		        	
 			           if(res.code==0){			             	
 			             	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  

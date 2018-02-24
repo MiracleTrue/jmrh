@@ -82,7 +82,7 @@
 				</tbody>
 			</table>
 			<div style="height: 174px;background: #fbfbfb;width: 85%;">
-					<div style="font-size: 16px;width: 14%;line-height: 70px;float: left;">
+					<div style="font-size: 16px;width: 200px;line-height: 70px;float: left;">
 						<input style="margin-left: 20%;" class="allcheck" type="checkbox" name="" id="" value="" /><label style="margin-left: 30px;">全选</label><a class="more_delete" style="margin-left: 30px;">删除</a>
 					</div>
 					<div class="xiadan">下单</div>
@@ -151,7 +151,7 @@
 		    			},
 		    			success:function(res){
 		    				var resData=JSON.parse(res);
-		    				console.log(resData);
+		    			//	console.log(resData);
 		    				if(resData.code==0){
 		    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){});
 		    					 
@@ -231,7 +231,7 @@
 		    			},
 		    			success:function(res){
 		    				var resData=JSON.parse(res);
-		    				console.log(resData);
+		    				//console.log(resData);
 		    				if(resData.code==0){
 		    					 layer.msg(resData.messages, {icon: 1, time: 1000},function(){
 		    					 });
