@@ -272,6 +272,9 @@ $("#kucungongying").click(function(){
           },
           confirm_time2:{
           	  required: true
+          },
+          platform_allocation_number:{
+          	 required: true
           }
         },
          messages: {
@@ -282,11 +285,48 @@ $("#kucungongying").click(function(){
 	      },
 	      confirm_time2:{
 	      	required:"请选择接单时间"
-	      }
+	      },
+	      platform_allocation_number:{
+          	 required: "请输入库存分配数量"
+          }
 	    },
 	    errorLabelContainer:$("div.error"),
 	     wrapper:"li",
 	        submitHandler: function (form) {
+	        	if({{$order_info['type']}} =='2'){
+	        			if($(".confirm_time option:selected").val()!=0){        			
+	        			$(form).ajaxSubmit({
+				            url: '{{url("platform/allocation/offer")}}',
+				            type: 'POST',
+				            dataType: 'JSON',
+				            data:{
+				            	confirm_time:confirm_time,
+				            	_token:'{{csrf_token()}}'
+				            },
+				            beforeSend:function(res){
+				            	$("input[type='submit']").attr("disabled","true");
+				            	
+				            },
+				            success: function (res) {
+				            	console.log(res)
+				            if(res.code==0){
+				            	  layer.msg(res.messages, {icon: 1, time: 1000},function(){  
+				             	   parent.location.reload();	 
+				             	   	  layer.closeAll('');
+				             	   });
+								
+				             }else{
+				             	 layer.msg(res.messages, {icon: 2, time: 1000},function(){
+				             	   $("input[type='submit']").removeAttr("disabled");
+				             	 });
+				             }
+				            }
+				        });
+		       	}else{
+		       		 layer.msg("请选择接单时间", {icon: 2, time: 1000});
+		       	}
+	        	}else{
+	        		
 	        	supplier_A_number=$(".supplier_A_number").val();
 	        	supplier_B_number=$(".supplier_B_number").val();
 	        	supplier_C_number=$(".supplier_C_number").val();
@@ -330,7 +370,7 @@ $("#kucungongying").click(function(){
 		       	}
 	        	}
 	        	
-		         
+		     }    
 		         
 	        }
 	

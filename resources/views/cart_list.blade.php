@@ -191,7 +191,7 @@
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
 		      area : ['965px' , '600px'],
-		      content: '{{url('platform/need/view/release')}}'
+		      content: '{{url('platform/need/view/release')}}'+"/"+xiadanData2
 		    });
 			}else{
 				var xiadan= layer.open({

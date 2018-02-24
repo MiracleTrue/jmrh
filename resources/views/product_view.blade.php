@@ -80,6 +80,11 @@ font-weight: bold;
 	padding-bottom: 25px;
 	border-bottom: 1px dashed #333333;
 }
+.deleguige{
+	cursor: pointer;
+	color: #0e99dc;
+	font-size: 14px;
+}
 </style>
 @endsection
 
@@ -139,7 +144,7 @@ font-weight: bold;
 	 	<!--商品id-->
 	 	<input type="hidden" name="product_id" id="product_id" value="{{$product_info['product_id']}}" />
     	@foreach($product_info['spec_info'] as $item)
-			<div class="addguige">
+			<div class="addguige" style="position: relative;">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
 					<input image_thumb="{{$item['image_thumb']}}" image_original="{{$item['image_original']}}" style="padding-top: 10px;height: 29px;" class="upimgclass product_img spec_image" style="z-index: 1; filter: alpha(opacity=0);opacity: 0" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" id="spec_image" value="" />
@@ -167,6 +172,7 @@ font-weight: bold;
 								<label style="margin-left: 40px;">价格</label>
 								<input type="text" class="supplier_price supplier2" name="supplier_price"  value="{{$items['price'] or ''}}" />
 							<a style="position: absolute;right: 69px;top: 3px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></a>	
+								<span class="deljiage" style="position: absolute;right: 10px;top: 0;color: #0e99dc;cursor: pointer;">删除</span>	
 							</p>
 							
 						@endforeach
@@ -181,14 +187,14 @@ font-weight: bold;
 					<div style="position: absolute;left: 321px;top: 12px;font-size: 14px;"><span>元/</span><span class="myspec_unit">{{$item['spec_unit']}}</span></div>
 	
 				</div>
-				
+				<div class="deleguige" style="position: absolute;right: 20px;bottom: 20px;cursor: pointer;">删除此规格</div>
 			</div>
 		@endforeach
     		@else
     		
     		<!--添加商品-->
     		
-    	<div class="addguige">
+    	<div class="addguige" style="position: relative;">
 				<p style="height: 60px;line-height: 47px;font-size: 15px;position: relative;">
 					<label>规格图片</label>
 					<input style="padding-top: 10px;height: 29px;" class="upimgclass spec_image product_img" type="file" onchange="upimg(this)"  accept="image/gif,image/jpeg,image/jpg,image/png" name="spec_image" />
@@ -220,7 +226,9 @@ font-weight: bold;
 							<input style="position: relative;" type="text" class="supplier_price supplier2" name="supplier_price" id="" value="" />
 						<a style="position: absolute;right: 76px;top: 3px;"><span>元/</span><span class="myspec_unit">斤</span></a>
 							
+							<span class="deljiage" style="position: absolute;right: 10px;top: 0;color: #0e99dc;cursor: pointer;">删除</span>	
 						</p>
+						
 
 					</div>
 					
@@ -232,7 +240,7 @@ font-weight: bold;
 					<div style="position: absolute;left:321px;top: 13px;font-size: 14px;"><span>元/</span><span class="myspec_unit">斤</span></div>
 	
 				</div>
-				
+				<div class="deleguige" style="position: absolute;right: 20px;bottom: 20px;cursor: pointer;">删除此规格</div>
 			</div>
     		@endif
 		
@@ -266,12 +274,14 @@ font-weight: bold;
 <script type="text/javascript" src="{{asset('/webStatic/library/jqueryJson/jquery.json.js')}}"></script>
 
 <script>
+	
 	$(".labelid").click(function(){
 		$(this).parent().siblings(".spec_image").trigger("click");
 	});
 	$(".conadd").click(function(){
-		var addguige=$(this).parent().find(".addguige").eq(0);
-			addguige.clone(true).appendTo("#addguigefa");
+		var addguige=$(this).parent().find(".addguige").eq(0).clone(true);
+		addguige.find("input").not(".faker").val("");
+			addguige.appendTo("#addguigefa");
 			
 		addId();
 	})
@@ -284,12 +294,25 @@ font-weight: bold;
 
 	function addjiage(elm){
 		/*	$(".agreementprice").eq(0).clone().prependTo($(elm).parent());*/
-		$(".suliper").eq(0).clone(true).prependTo($(elm).parent());
+		var jiageelm=$(".suliper").eq(0).clone(true);
+		jiageelm.find("input").val("")
+		jiageelm.prependTo($(elm).parent());
 		/*$(elm).parent().jQueryprepend('<div class="agreementprice"><p class="suliper"><label>选择供应商</label><select class="supplier_list supplier2" name="supplier_list"><option value="2">AA</option><option value="3">BB</option><option value="5">蔬菜366</option></select><label>价格</label><input type="text" class="supplier_price supplier2" name="" id="" value=""></p><div><span>元/</span><span>斤</span></div><p></p></div>')
 	*/
 	}
 	
-	
+		$(".deleguige").on("click",function(){
+				if($(".deleguige").length>1){
+					$(this).parent().remove();
+				}
+		})
+		
+		
+			$(".deljiage").on("click",function(){
+				if($(".suliper").length>1){
+					$(this).parent().remove();
+				}
+			})
 	
 	
 	
