@@ -298,6 +298,8 @@ class Platform extends CommonModel
                 $e_orders->save();
                 foreach ($supplier_arr as $item)
                 {
+                    /*时区设置*/
+                    date_default_timezone_set('PRC');
                     if (!$this->allocationOfferToSupplier($e_orders, $item['supplier_id'], $e_products->spec_info->spec_id, $item['product_number'], array('platform_receive_time' => strtotime($arr['platform_receive_time']), 'confirm_time' => strtotime($arr['confirm_time']), 'warning_time' => $arr['warning_time'])))
                     {
                         throw new SupplierPriceNotFindException();
