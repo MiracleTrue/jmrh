@@ -73,9 +73,10 @@
 						<th style="width: 9%;"><span>序号</span></th>
 						<th style="width: 18%;"><span>订单号</span></th>
 						<th style="width: 10%;"><span>品名</span></th>
+						<th style="width: 7%;"><span>规格</span></th>
 						<th style="width: 12%;"><span>到货时间</span></th>
 						<th style="width: 14%;"><span style="">数量</span></th>
-						<th style="width: 14%;"><span style="">报价</span></th>
+						<th><span style="">报价</span></th>
 
 						<th style=""><span style="">操作</span></th>
 					</tr>
@@ -84,6 +85,7 @@
 						<td>{{$item->offer_id}}</td>
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
+						<td>{{$item['order_info']['spec_unit']}}</td>
 						<td>{{$item['platform_receive_date']}}</td>
 						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['spec_unit']}}</td>
 						<!--<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>-->
