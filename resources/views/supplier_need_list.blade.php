@@ -85,7 +85,7 @@
 						<td>{{$item->offer_id}}</td>
 						<td>{{$item['order_info']['order_sn']}}</td>
 						<td>{{$item['order_info']['product_name']}}</td>
-						<td>{{$item['order_info']['spec_unit']}}</td>
+						<td>{{$item['order_info']['spec_name']}}</td>
 						<td>{{$item['platform_receive_date']}}</td>
 						<td>{{$item['order_info']['product_number']}}{{$item['order_info']['spec_unit']}}</td>
 						<!--<td>@if($item->status_text=="等待通过"){{$item->total_price}}元 @else{{$item->status_text}} @endif </td>-->
