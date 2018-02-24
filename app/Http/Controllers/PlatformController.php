@@ -726,10 +726,21 @@ class PlatformController extends Controller
         ];
         $validator = Validator::make($request->all(), $rules);
 
-        if ($validator->passes() && $platform->inventorySupplyNeed($request->input('order_id')))
-        {   /*验证通过并且处理成功*/
-            $m3result->code = 0;
-            $m3result->messages = '平台库存供应';
+        if ($validator->passes())
+        {
+            $order_info = $platform->getOrderInfo($request->input('order_id'));
+            $repertory_info = $platform->getRepertory($order_info->product_name, $order_info->spec_name);
+            if (bcsub($repertory_info['number'], $order_info->product_number, 2) < 0)
+            {
+                $m3result->code = 2;
+                $m3result->messages = '库存供应数量不足';
+            }
+            else
+            {
+                $platform->inventorySupplyNeed($request->input('order_id'));
+                $m3result->code = 0;
+                $m3result->messages = '平台库存供应';
+            }
         }
         else
         {
@@ -748,11 +759,6 @@ class PlatformController extends Controller
      */
     public function ConfirmReceive(Request $request)
     {
-//        $arr = array(
-//            'order_id' => '7',
-//            'offer_id' => 4,
-//        );
-//        $request->merge($arr);
         /*初始化*/
         $m3result = new M3Result();
         $platform = new Platform();
@@ -839,22 +845,6 @@ class PlatformController extends Controller
      */
     public function NeedRelease(Request $request)
     {
-//        $arr = array(
-//            'order_json' => '[
-//    {
-//        "product_name": "苹果",
-//        "spec_name": "无水",
-//        "product_number": "200",
-//    },
-//    {
-//        "product_name": "橘子",
-//        "spec_name": "大橘子",
-//        "product_number": "600",
-//    }
-//]'
-//        );
-//
-//        $request->merge($arr);
         /*初始化*/
         $platform = new Platform();
         $m3result = new M3Result();
@@ -915,64 +905,6 @@ class PlatformController extends Controller
         }
 
         return $m3result->toJson();
-
-
-//        /*初始化*/
-//        $platform = new Platform();
-//        $m3result = new M3Result();
-//
-//        /*验证规则*/
-//        $rules = [
-//            'product_name' => 'required',
-//            'product_number' => 'required|integer|min:1',
-//            'product_unit' => 'required',
-//            'platform_receive_time' => 'required|date|after:now',
-//            'confirm_time' => 'required|date|before_or_equal:' . $request->input('platform_receive_time')
-//        ];
-//        $validator = Validator::make($request->all(), $rules);
-//        /*供货商A增加规则*/
-//        $validator->sometimes('supplier_A', [
-//            'required',
-//            'integer',
-//            Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_A'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
-//        ], function ($input)
-//        {
-//            return !empty($input->supplier_A);/*return true时才增加验证规则!*/
-//        });
-//        /*供货商B增加规则*/
-//        $validator->sometimes('supplier_B', [
-//            'required',
-//            'integer',
-//            Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_B'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
-//        ], function ($input)
-//        {
-//            return !empty($input->supplier_B);/*return true时才增加验证规则!*/
-//        });
-//        /*供货商C增加规则*/
-//        $validator->sometimes('supplier_C', [
-//            'required',
-//            'integer',
-//            Rule::exists('users', 'user_id')->where('user_id', $request->input('supplier_C'))->where('is_disable', User::NO_DISABLE)->where('identity', User::SUPPLIER_ADMIN)
-//        ], function ($input)
-//        {
-//            return !empty($input->supplier_C);/*return true时才增加验证规则!*/
-//        });
-//
-//        $supplier_arr = collect([$request->input('supplier_A'), $request->input('supplier_B'), $request->input('supplier_C')])->filter()->unique()->all();
-//        if (!empty($supplier_arr) && $validator->passes() && $platform->releaseNeed($request->all(), $supplier_arr))
-//        {   /*验证通过并且处理成功*/
-//            $m3result->code = 0;
-//            $m3result->messages = '平台需求发布成功';
-//        }
-//        else
-//        {
-//            $m3result->code = 1;
-//            $m3result->messages = '数据验证失败';
-//            $m3result->data['validator'] = $validator->messages();
-//            $m3result->data['platform'] = $platform->messages();
-//        }
-//
-//        return $m3result->toJson();
     }
 
     /**
