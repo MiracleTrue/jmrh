@@ -52,7 +52,7 @@
 					
 				
 				<span class="shijian" style="margin-left: 20px;">分配数量</span>
-				<input type="number" class="fenpeinumber shijian" name="platform_allocation_number" id="" value="" style="width: 110px;height: 30px;" min="0"/>
+				<input type="number" class="fenpeinumber shijian" name="platform_allocation_number" id="" value="0.00" style="width: 110px;height: 30px;" min="0"/>
 				
 				<input type="checkbox" name="" id="kucungongying" value="" style="width: 20px;height: 20px;"/>
 				<label for="kucungongying">全部库存供应</label>
@@ -272,9 +272,6 @@ $("#kucungongying").click(function(){
           },
           confirm_time2:{
           	  required: true
-          },
-          platform_allocation_number:{
-          	 required: true
           }
         },
          messages: {
@@ -285,10 +282,7 @@ $("#kucungongying").click(function(){
 	      },
 	      confirm_time2:{
 	      	required:"请选择接单时间"
-	      },
-	      platform_allocation_number:{
-          	 required: "请输入库存分配数量"
-          }
+	      }	      
 	    },
 	    errorLabelContainer:$("div.error"),
 	     wrapper:"li",
@@ -413,10 +407,10 @@ $("#kucungongying").click(function(){
      	
      }
       })
-      $(".clt-reset").on("click",function(){
+     /* $(".clt-reset").on("click",function(){
      	   validatorAdd.resetForm();
      	
-        });
+        });*/
 
 
   </script>

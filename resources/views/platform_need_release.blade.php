@@ -122,7 +122,7 @@ li {
 
 					<p style="text-indent: 15px;" class="div_floatleft" >
 						<span>品名</span>
-						<input type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
+						<input style="margin-left: 33px;" type="text" name="product_name" class="product_name" value="{{$item['product_name']}}" readonly="readonly"/>
 						<img class="moreName" style="position: absolute;left: 360px;top: 10px;"  src="{{asset('webStatic/images/morepinming.png')}}" alt="选择品名" />
 						<span class="form_spec_name" style="position: absolute;left: 180px;top: 10px;">{{$item['spec_name']}}</span>
 					</p>
