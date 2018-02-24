@@ -127,17 +127,22 @@ class Supplier extends CommonModel
                 $this::orderLog($e_orders->order_id, $e_users->nick_name . ' 需供货量:' . $e_order_offer->product_number . ' (同意供货)');
                 User::userLog('订单ID:' . $e_orders->order_id . ',订单号:' . $e_orders->order_sn);
 
-                $order_info = $platform->getOrderInfo($e_orders->order_id);
-                $confirm_offer = $order_info->offer_info->filter(function ($value)
-                {
-                    return $value->status == CommonModel::OFFER_AWAIT_CONFIRM;
-                });
+                $count_order_offer = OrderOffer::where('order_id', $e_order_offer->order_id)->where('status', CommonModel::OFFER_AWAIT_REPLY)->count();
 
-                /*查询该订单下的offer  如果验证供货数量不正确将订单状态设置为 "重新分配"*/
-                if(bcadd($confirm_offer->sum('product_number'), $order_info->platform_allocation_number, 2) != $order_info->product_number)
+                if ($count_order_offer == 0)
                 {
-                    Orders::where('order_id', $e_order_offer->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);
+                    $order_info = $platform->getOrderInfo($e_orders->order_id);
+                    $confirm_offer = $order_info->offer_info->filter(function ($value)
+                    {
+                        return $value->status == CommonModel::OFFER_AWAIT_CONFIRM;
+                    });
+                    /*查询该订单下的offer  如果验证供货数量不正确将订单状态设置为 "重新分配"*/
+                    if (bcadd($confirm_offer->sum('product_number'), $order_info->platform_allocation_number, 2) != $order_info->product_number)
+                    {
+                        Orders::where('order_id', $e_order_offer->order_id)->update(['status' => CommonModel::ORDER_AGAIN_ALLOCATION]);
+                    }
                 }
+
 
                 /*发送短信*/
                 $phone = Users::find($e_order_offer->allocation_user_id)->phone;
