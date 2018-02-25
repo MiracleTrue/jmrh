@@ -258,7 +258,7 @@ font-weight: bold;
 				<script id="container" name="product_content" type="text/plain">
          	   		
         </script>
-		<div style="text-align: center;margin-top: 50px;">
+		<div style="text-align: center;margin-top: 50px;padding-bottom: 50px;">
 			<input class="addspecsubmit" type="submit" name="" id="" value="提交" />
 			<input class="reset" type="reset" name="" id="" value="重置" />
 		</div>	

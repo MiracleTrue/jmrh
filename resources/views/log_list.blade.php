@@ -13,6 +13,7 @@
 <section>
 		<div class="refresh">
 	  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+	  		<span style="color: #4eb4e5;">点击刷新</span>
 	  	</div>
 			<div style="margin-bottom: 78px;">
 

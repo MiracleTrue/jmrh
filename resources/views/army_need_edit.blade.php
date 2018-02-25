@@ -169,7 +169,7 @@ li {
 		</div>-->
 		<input type="hidden" name="spec_name" id="spec_name" value="{{$order_info['spec_name']}}" />
 		<input type="hidden" name="order_id" id="order_id" value="{{$order_info['order_id']}}" />
-		<div class="ary-ope" style="">
+		<div class="ary-ope" style="padding-bottom: 30px;">
 			<input type="submit" class="ary-submit" name="ary-submit" id="ary-submit" value="提交" />
 			<input type="reset" class="ary-reset" name="ary-reset" id="ary-reset" value="重置" />
 		</div>

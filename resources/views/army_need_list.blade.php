@@ -36,6 +36,7 @@
   <section style="position: relative;">
   	<div class="refresh" style="top: 159px;">
   		<img src="{{asset('webStatic/images/refresh.png')}}" />
+  		<span style="color: #4eb4e5;">点击刷新</span>
   	</div>
 			<div style="margin-bottom: 30px;line-height: 36px;">
 				<a href="#" class="mly-tianjia"></a>
@@ -367,7 +368,7 @@ $(".refresh").on("click",function(){
             maxmin: false,
             fixed :false,
             shadeClose: true, //点击遮罩关闭层
-            area: ['965px' , '550px'],
+            area: ['965px' , '70%'],
             content: '{{url('army/need/view/edit')}}'+'/'+order_id
         });
 		
@@ -441,7 +442,7 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		      fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['965px' , '850px'],
+		      area : ['965px' , '80%'],
 		      content: '{{url('army/need/view/release')}}'
 		    });
 		  });

@@ -53,6 +53,8 @@
       <section>
       		<div class="refresh" style="top: 159px;">
 		  		<img src="{{asset('webStatic/images/refresh.png')}}" />
+		  		  		<span style="color: #4eb4e5;">点击刷新</span>
+
 		  	</div>
 			<div style="line-height: 36px;margin-bottom: 30px;">
 				<a href="#" class="tre-tianjia"></a>
@@ -389,7 +391,7 @@ $(".refresh").on("click",function(){
 		      maxmin: false,
 		       fixed :false,
 		      shadeClose: true, //点击遮罩关闭层
-		      area : ['900px' , '600px'],
+		      area : ['940px' , '81%'],
 		      content: '{{url('platform/allocation/view')}}'+'/'+order_id
 		    });
 		  }

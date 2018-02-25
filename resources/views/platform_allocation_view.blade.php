@@ -167,7 +167,7 @@
 				</p>
 			</div>
 			<input type="hidden" name="order_id" id="order_id" value="{{$order_info['order_id']}}" />
-			<div class="clt-ope">
+			<div class="clt-ope" style="padding-bottom: 30px;">
 				
 				<input class="clt-submit" type="submit" name="" id="clt-submit" value="提交" />
 				<input class="clt-reset" type="reset" name="" id="clt-reset" value="重置" />

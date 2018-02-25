@@ -172,7 +172,7 @@ li {
 		<div style="text-align: center;padding-top: 33px;">
 			<img class="moreaddxuiqu" src="{{asset('webStatic/images/morebtn.png')}}"/>
 		</div>
-		<div class="ary-ope" style="">
+		<div class="ary-ope" style="padding-bottom: 50px;">
 			<input type="submit" class="ary-submit" name="ary-submit" id="ary-submit" value="提交" />
 			<input type="reset" class="ary-reset" name="ary-reset" id="ary-reset" value="重置" />
 		</div>

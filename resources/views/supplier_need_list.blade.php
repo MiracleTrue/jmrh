@@ -32,8 +32,9 @@
 @endsection
 @section('content')
 <section>
-		<div class="refresh" style="top: 142px;">
+		<div class="refresh" style="top: 155px;">
   			<img src="{{asset('webStatic/images/refresh.png')}}" />
+  			<span style="color: #4eb4e5;">点击刷新</span>
   		</div>
 			<div style="line-height: 36px;margin-bottom: 20px;">
 				
