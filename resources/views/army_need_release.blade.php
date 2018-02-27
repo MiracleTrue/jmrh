@@ -394,7 +394,7 @@ $(".moreName").on("click", function() {
 								laydate({
 											format: 'YYYY-MM-DD hh:mm:ss',
 											istime: true, 
-											min: laydate.now(0),
+											min: laydate.now(0, "YYYY-MM-DD 00:00:00"),
 											elem:'#'+$(this).attr("id")
 										})	
 							
