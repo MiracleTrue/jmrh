@@ -320,7 +320,10 @@ $(".moreName").on("click", function() {
 			});
 		})
 				$(".moreaddxuiqu").click(function() {
-						$(".xuqiuparent").eq(0).clone(true).appendTo(".xuqiugrandpa");
+					var pingtaidingdan=$(".xuqiuparent").eq(0).clone(true);
+					pingtaidingdan.find("input").val("");
+					pingtaidingdan.find(".form_spec_name,.my_unit").text("");
+						pingtaidingdan.appendTo(".xuqiugrandpa");
 						addId();
 					})
 				addId();

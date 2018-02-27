@@ -370,7 +370,10 @@ $(".moreName").on("click", function() {
 			});
 		})
 				$(".moreaddxuiqu").click(function() {
-						$(".xuqiuparent").eq(0).clone(true).prependTo(".xuqiugrandpa");
+					var junfangdingdan=$(".xuqiuparent").eq(0).clone(true);
+					junfangdingdan.find("input").val("");
+					junfangdingdan.find(".form_spec_name,.my_unit").text("");
+						junfangdingdan.appendTo(".xuqiugrandpa");
 						addId();
 					})
 				addId();
