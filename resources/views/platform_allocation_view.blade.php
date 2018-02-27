@@ -125,9 +125,9 @@
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
 					@if($order_info['type'] =='2')
-				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, 'YYYY-MM-DD 00:00:00')})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@else
-					<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(),max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}'})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+					<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}'})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@endif
 				</p>
 			<p>

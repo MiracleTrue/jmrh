@@ -119,7 +119,7 @@
 			<div class="shijian">
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
-				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, 'YYYY-MM-DD 00:00:00')})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 				</p>
 			<p>
 					<span>接单时间</span>

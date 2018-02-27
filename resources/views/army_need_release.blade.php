@@ -150,7 +150,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input style="width: 296px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
+						<input style="width: 296px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now(0, "YYYY-MM-DD 00:00:00")})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>

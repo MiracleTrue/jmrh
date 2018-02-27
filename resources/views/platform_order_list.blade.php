@@ -403,7 +403,7 @@ $(".refresh").on("click",function(){
 			      maxmin: false,
 			       fixed :false,
 			      shadeClose: true, //点击遮罩关闭层
-			      area : ['900px' , '600px'],
+			      area : ['930px' , '81%'],
 			      content: '{{url('platform/re/allocation/view')}}'+'/'+order_id
 		    });
 		  }

@@ -147,7 +147,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input autocomplete="off" type="text" value="{{$order_info['army_receive_time']}}" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$order_info['army_receive_time'] or ''}}"  style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
+						<input autocomplete="off" type="text" value="{{$order_info['army_receive_time']}}" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$order_info['army_receive_time'] or ''}}"  style="width: 286px;" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>
@@ -390,6 +390,9 @@ $(function() {
 		}
 
 	});
+	$(".laydate-icon").click(function(){
+		laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, "YYYY-MM-DD 00:00:00")})
+	})
 		$(".ary-reset").on("click",function(){
      	   addspec.resetForm();
      	
