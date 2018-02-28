@@ -125,9 +125,9 @@
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
 					@if($order_info['type'] =='2')
-				 	<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, 'YYYY-MM-DD 00:00:00')})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 267px;" onClick="junfangdate(this)"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@else
-					<input  style="width: 267px;" onClick="laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}'})"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+					<input  style="width: 267px;" onClick="pingtaidate(this)"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@endif
 				</p>
 			<p>
@@ -189,6 +189,59 @@
 	
 
 }();
+	/*时间戳互相转换*/
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+	 
+	function unix_to_datetime(unix) {
+	    var now = new Date(parseInt(unix) * 1000);
+	    return now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+	}
+	
+
+
+	function junfangdate(elm){
+		 var timestamp = Date.parse(new Date())/1000;
+					//console.log(timestamp)
+					var mydate;
+		laydate({
+			format: 'YYYY-MM-DD hh:mm:ss',
+			istime: true,
+			min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
+			choose: function(datas){
+			mydate=datetime_to_unix(datas);
+			if(mydate<=timestamp){
+				//console.log('false')
+				$(elm).val('');
+				layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+			}
+		    }})
+	}
+function pingtaidate(elm){
+	 var timestamp = Date.parse(new Date())/1000;
+					//console.log(timestamp)
+					var mydate;
+	laydate({
+		format: 'YYYY-MM-DD hh:mm:ss',
+		istime: true, 
+		min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
+		max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}',
+		choose: function(datas){
+			 mydate=datetime_to_unix(datas);
+			if(mydate<=timestamp){
+				//console.log('false')
+				$(elm).val('');
+				layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+			}
+		    }
+	})
+}
+
 
 $(".input_value select").on("click",function(){
 	$(this).siblings(".xieyijia").val($(this).find('option:selected').attr("pricedata")+"/"+"{{$order_info['spec_unit']}}");

@@ -101,7 +101,9 @@ li {
 	list-style: none;
 	
 }
-
+.layui-laydate-content table{
+	width:100%;
+}
 </style>
 @endsection
 @section('content')
@@ -150,7 +152,7 @@ li {
 
 					<p class="div_floatright">
 						<span>到货时间</span>
-						<input style="width: 296px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now(0, "YYYY-MM-DD 00:00:00")})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
+						<input style="width: 296px;"  autocomplete="off" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now()})" class="laydate-icon army_receive_time"  name="army_receive_time"  value="{{$item['army_receive_date']}}" placeholder="请选择日期(必须大于现在时间)"/>
 					</p>
 
 				</div>
@@ -387,33 +389,61 @@ $(".moreName").on("click", function() {
 							})
 					}
 					
+					
 						
-						$(".army_receive_time").on("click",function(){
-								
-								
-								laydate({
-											format: 'YYYY-MM-DD hh:mm:ss',
-											istime: true, 
-											min: laydate.now(0, "YYYY-MM-DD 00:00:00"),
-											elem:'#'+$(this).attr("id")
-										})	
-							
-								
-						})
-						
-					
-					
-					
+
 					
 					
 $(function() {
-	
-	
+		/*时间戳互相转换*/
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+	 
+	function unix_to_datetime(unix) {
+	    var now = new Date(parseInt(unix) * 1000);
+	    return now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+	}
+	 
+	/*var datetime = '2012-11-16 10:36:50';
+	var unix = datetime_to_unix(datetime);*/
+/*	console.log(datetime+' 转换后的时间戳为: '+unix+'');*/
+	/* 
+	var unix = 1353033300;
+	var datetime = unix_to_datetime(unix);
+	document.write(unix+' 转换后的日期为: '+datetime);*/
+				
+				
 		
-	
-
-
-
+						$(".army_receive_time").on("click",function(){
+								var timestamp = Date.parse(new Date())/1000;
+								//console.log(timestamp)
+								var mydate;
+							var that=$(this)
+								
+								laydate({
+											elem:'#'+$(this).attr("id"),
+											format: 'YYYY-MM-DD hh:mm:ss',
+											istime: true,
+											min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
+											choose: function(datas){
+												
+											 mydate=datetime_to_unix(datas);
+											if(mydate<=timestamp){
+												//console.log('false')
+												that.val('');
+												layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+											}
+										    }
+											
+										})	
+								
+							
+						})	
 
 	var arr = [];
 

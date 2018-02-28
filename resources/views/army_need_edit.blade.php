@@ -390,8 +390,39 @@ $(function() {
 		}
 
 	});
+	
+		/*时间戳互相转换*/
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+	 
+	function unix_to_datetime(unix) {
+	    var now = new Date(parseInt(unix) * 1000);
+	    return now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+	}
+	
+		
+	
 	$(".laydate-icon").click(function(){
-		laydate({format: 'YYYY-MM-DD hh:mm:ss',istime: true, min: laydate.now(0, "YYYY-MM-DD 00:00:00")})
+		var timestamp = Date.parse(new Date())/1000;
+					//console.log(timestamp)
+					var mydate;
+		
+		var that=$(this)
+		laydate({format: 'YYYY-MM-DD hh:mm:ss',
+		istime: true, min: laydate.now(0, "YYYY-MM-DD 00:00:00"),
+		choose: function(datas){
+			 mydate=datetime_to_unix(datas);
+			if(mydate<=timestamp){
+				//console.log('false')
+				that.val('');
+				layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+			}
+		    }})
 	})
 		$(".ary-reset").on("click",function(){
      	   addspec.resetForm();

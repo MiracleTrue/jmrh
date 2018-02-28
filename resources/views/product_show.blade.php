@@ -61,7 +61,7 @@
 				<p class="productunit" style="font-size: 16px;margin-top: 10px;margin-bottom: 10px;">单位：<span class="product_unit" style="font-weight: bolder;"></span></p>
 				
 				@if($manage_user['identity'] == '4')
-				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 36px;display: inline-block;" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss',min: laydate.now(0, 'YYYY-MM-DD 00:00:00')})" /> </p> 
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 36px;display: inline-block;" onClick="xiangqingDate(this)" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">联系人</span><input name="contact_person" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">电话 </span><input name="contact_tel" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 36px;display: inline-block;"  value=""/> </p> 
@@ -88,6 +88,43 @@
 
 
 <script type="text/javascript">
+			/*时间戳互相转换*/
+	function datetime_to_unix(datetime){
+	    var tmp_datetime = datetime.replace(/:/g,'-');
+	    tmp_datetime = tmp_datetime.replace(/ /g,'-');
+	    var arr = tmp_datetime.split("-");
+	    var now = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+	    return parseInt(now.getTime()/1000);
+	}
+	 
+	function unix_to_datetime(unix) {
+	    var now = new Date(parseInt(unix) * 1000);
+	    return now.toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+	}
+	
+		
+	
+	
+	function xiangqingDate(elm){
+		var timestamp = Date.parse(new Date())/1000;
+					//console.log(timestamp)
+					var mydate;
+		laydate({
+			istime: true,
+			 format: 'YYYY-MM-DD hh:mm:ss',
+			 min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
+			 	choose:function(datas){
+					 mydate=datetime_to_unix(datas);
+					if(mydate<=timestamp){
+						//console.log('false')
+						$(elm).val('');
+						layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+					}
+				 }
+			 })
+	}
+	
+	
 	$(function(){
 		$(".goshop").click(function(){
 			var indexlayer1=layer.open({
