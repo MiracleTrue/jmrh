@@ -61,7 +61,7 @@
 				<p class="productunit" style="font-size: 16px;margin-top: 10px;margin-bottom: 10px;">单位：<span class="product_unit" style="font-weight: bolder;"></span></p>
 				
 				@if($manage_user['identity'] == '4')
-				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" class="product_number laydate-icon" style="height: 36px;display: inline-block;" onClick="xiangqingDate(this)" /> </p> 
+				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">到货时间   </span><input name="army_receive_time" id="army_receive_time" class="product_number laydate-icon" style="height: 36px;display: inline-block;"/> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">联系人</span><input name="contact_person" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">电话 </span><input name="contact_tel" class="product_number" style="height: 36px;display: inline-block;" type="text" /> </p> 
 				<p class="productnumber" style="font-size: 16px;margin-top: 9px;"><span style="width: 70px;display: inline-block;">备注 </span><input name="note" class="product_number" type="text" style="height: 36px;display: inline-block;"  value=""/> </p> 
@@ -103,13 +103,13 @@
 	}
 	
 		
-	
-	
-	function xiangqingDate(elm){
-		var timestamp = Date.parse(new Date())/1000;
+	$("#army_receive_time").click(function(){
+			var timestamp = Date.parse(new Date())/1000;
 					//console.log(timestamp)
 					var mydate;
+						var that=$(this)
 		laydate({
+			elm:"#army_receive_time",
 			istime: true,
 			 format: 'YYYY-MM-DD hh:mm:ss',
 			 min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
@@ -117,13 +117,12 @@
 					 mydate=datetime_to_unix(datas);
 					if(mydate<=timestamp){
 						//console.log('false')
-						$(elm).val('');
+						that.val('');
 						layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
 					}
 				 }
 			 })
-	}
-	
+	})
 	
 	$(function(){
 		$(".goshop").click(function(){

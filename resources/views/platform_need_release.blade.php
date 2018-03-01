@@ -368,6 +368,7 @@ $(function() {
 	var arr = [];
 
 	function jsonData() {
+		arr = [];
 		$('.xuqiuparent').each(function(i, index) {
 			var obj = new Object();
 			obj.product_number = $(".product_number").eq(i).val();
@@ -390,7 +391,7 @@ $(function() {
 
 	}
 	function jsonData2() {
-	
+		arr = [];
 		$('.xuqiuparent').each(function(i, index) {
 			var obj = new Object();
 			obj.product_number = $(".product_number").eq(i).val();

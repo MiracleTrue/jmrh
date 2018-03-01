@@ -125,9 +125,9 @@
 				<p style="text-indent: 20px;">
 					<span>到货时间</span>
 					@if($order_info['type'] =='2')
-				 	<input  style="width: 267px;" onClick="junfangdate(this)"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+				 	<input  style="width: 267px;" autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@else
-					<input  style="width: 267px;" onClick="pingtaidate(this)"  autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
+					<input  style="width: 267px;" autocomplete="off" type="" name="platform_receive_time" id="platform_receive_time" value="" class="laydate-icon" placeholder="请选择时间"/>
 					@endif
 				</p>
 			<p>
@@ -205,42 +205,31 @@
 	
 
 
-	function junfangdate(elm){
+
+
+	$("#platform_receive_time").click(function(){
 		 var timestamp = Date.parse(new Date())/1000;
 					//console.log(timestamp)
 					var mydate;
-		laydate({
-			format: 'YYYY-MM-DD hh:mm:ss',
-			istime: true,
-			min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
-			choose: function(datas){
-			mydate=datetime_to_unix(datas);
-			if(mydate<=timestamp){
-				//console.log('false')
-				$(elm).val('');
-				layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
-			}
-		    }})
-	}
-function pingtaidate(elm){
-	 var timestamp = Date.parse(new Date())/1000;
-					//console.log(timestamp)
-					var mydate;
-	laydate({
-		format: 'YYYY-MM-DD hh:mm:ss',
-		istime: true, 
-		min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
-		max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}',
-		choose: function(datas){
-			 mydate=datetime_to_unix(datas);
-			if(mydate<=timestamp){
-				//console.log('false')
-				$(elm).val('');
-				layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
-			}
-		    }
+					var that=$(this)
+			laydate({
+				format: 'YYYY-MM-DD hh:mm:ss',
+				istime: true, 
+				min: laydate.now(0, 'YYYY-MM-DD 00:00:00'),
+				max:'{{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s",$order_info['army_receive_date'])->subSecond()->toDateTimeString()}}',
+				choose: function(datas){
+					 mydate=datetime_to_unix(datas);
+					if(mydate<=timestamp){
+						//console.log('false')
+						that.val('');
+						layer.msg("选择的时间请大于现在时间",{icon: 2,time: 1200})
+					}
+				    }
+			})
 	})
-}
+
+	
+
 
 
 $(".input_value select").on("click",function(){

@@ -442,7 +442,8 @@ font-weight: bold;
    //  $(".submitadd").click(function(){
      //json()
       	  function json(){
-    	
+	    	bigarry=[];
+	    	supplier_price=[];
 		      	$(".addguige").each(function(i,elm){
 		      		var obj = new Object();
 		      	
@@ -462,12 +463,12 @@ font-weight: bold;
 					  		obj.supplier_price.push(obj2)
 			  		});
 		     
-				  		             bigarry.push(obj);
+				  		 bigarry.push(obj);
 			  
 			  	});
-			  	
+			  
 		       strjson = JSON.parse($.toJSON(bigarry));
-			
+		    
 		      spec_json=JSON.stringify(strjson);
 		      //console.log(JSON.parse(strjson))
 		     // console.log(spec_json);
@@ -579,7 +580,7 @@ $(function(){
 			             }else{
 			             	
 			             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
-			             	   	spec_json="";
+			             	
 			             
 			             	 			 $(".addspecsubmit").removeAttr("disabled");
 			             	   });
@@ -690,7 +691,8 @@ $(function(){
 			             	
 			             
 			             	   layer.msg(res.messages, {icon: 2, time: 1000},function(){
-			             	 			 $(".addspecsubmit").removeAttr("disabled");
+			    
+			             	 	 $(".addspecsubmit").removeAttr("disabled");
 			             	   });
 			             }
 		            }
